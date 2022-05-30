@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'HarmonyOS Sans TC Medium';
+    src: url(../fonts/HarmonyOS_Sans_TC_Medium.ttf) format('truetype');
+}
+
+html, body, #app, .max-height {
+    height: 100%;
+}
+
+* {
+    font-family: 'HarmonyOS Sans TC Medium', sans-serif !important;
+}

@@ -1,0 +1,51 @@
+import route from "@/scripts/route";
+import {Component, Inertia} from "@inertiajs/inertia";
+import {computed, ComputedRef, h, ref} from "vue";
+import {get} from "lodash-es";
+import {usePage} from "@inertiajs/inertia-vue3";
+import {darkTheme, lightTheme, NIcon, useOsTheme} from "naive-ui";
+import {RouteParamsWithQueryOverload} from "ziggy-js";
+
+export const isMobile = computed(() => window.innerWidth < 768);
+export const theme = ref(useOsTheme().value === 'dark' ? darkTheme : lightTheme);
+
+export function toRoute(target: string) {
+    if (route().current() !== target) {
+        const url = route(target);
+        Inertia.visit(url);
+    }
+}
+
+export function toRouteWithParams(target: string, params: RouteParamsWithQueryOverload) {
+    if (route().current() !== target) {
+        const url = route(target, params);
+        Inertia.visit(url);
+    }
+}
+
+export function toURL(url: string | null) {
+    if (url) {
+        open(url);
+    }
+}
+
+export function getProp<T>(key: string, defaultValue?: any): ComputedRef<T> {
+    return computed(() => {
+        const props = usePage().props.value;
+        return get(props, key, defaultValue);
+    });
+}
+
+export function renderIcon(icon: Component) {
+    return () => h(NIcon, null, {
+        default: () => h(icon as string, null)
+    });
+}
+
+export function formatTime(time: string, defaultText?: string) {
+    if (!time) {
+        return defaultText;
+    }
+
+    return new Date(time).toLocaleString();
+}
