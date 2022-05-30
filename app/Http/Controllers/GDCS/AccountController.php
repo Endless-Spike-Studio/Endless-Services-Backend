@@ -6,8 +6,10 @@ use App\Enums\GDCS\FriendState;
 use App\Enums\GDCS\Response;
 use App\Http\Requests\GDCS\AccountInfoFetchRequest;
 use App\Http\Requests\GDCS\AccountLoginApiRequest;
+use App\Http\Requests\GDCS\AccountLoginRequest;
 use App\Http\Requests\GDCS\AccountModAccessRequest;
 use App\Http\Requests\GDCS\AccountRegisterApiRequest;
+use App\Http\Requests\GDCS\AccountRegisterRequest;
 use App\Http\Requests\GDCS\AccountSettingUpdateApiRequest;
 use App\Http\Requests\GDCS\AccountVerifyRequest;
 use App\Http\Requests\GDCS\Request as GDCS_Request;
@@ -33,7 +35,7 @@ class AccountController extends Controller
 {
     use HasMessage;
 
-    public function register(AccountRegisterApiRequest $request): int
+    public function register(AccountRegisterRequest $request): int
     {
         $data = $request->validated();
 
@@ -60,7 +62,7 @@ class AccountController extends Controller
         return to_route('gdcs.home');
     }
 
-    public function login(AccountLoginApiRequest $request): string|int
+    public function login(AccountLoginRequest $request): string|int
     {
         $data = $request->validated();
 
