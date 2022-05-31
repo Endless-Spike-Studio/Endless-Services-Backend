@@ -13,7 +13,7 @@ class StaticFilesUploadCommand extends Command
     protected $description = 'Upload static files';
 
     protected string $disk = 'oss';
-    protected string $prefix = '/static';
+    protected string $prefix = '/static/gdcn';
     protected array $ignore = ['.', '..'];
     protected FilesystemAdapter|Filesystem $storage;
 
