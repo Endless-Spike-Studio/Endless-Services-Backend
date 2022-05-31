@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\ApiController;
 use App\Http\Controllers\GDCS\CustomSongController as GDCS_CustomSongController;
 use App\Http\Controllers\GDProxy\CustomSongController as GDProxy_CustomSongController;
 use App\Http\Controllers\NGProxyController;
 use Illuminate\Support\Facades\Route;
+use Tightenco\Ziggy\Ziggy;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +23,7 @@ Route::group([
     Route::group([
         'domain' => 'fw.geometrydashchinese.com'
     ], static function () {
-        Route::get('/routes', [ApiController::class, 'routes'])->name('ziggy.routes');
+        Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
     });
 
     Route::group([
