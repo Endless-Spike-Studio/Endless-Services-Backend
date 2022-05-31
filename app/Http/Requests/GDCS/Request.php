@@ -9,6 +9,7 @@ use App\Models\GDCS\User;
 use GDCN\GDAlgorithm\enums\Keys;
 use GDCN\GDAlgorithm\GDAlgorithm;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,31 +30,23 @@ class Request extends FormRequest
             return false;
         }
 
-        $account = Account::query()
-            ->find(
-                $this->get('accountID')
-            );
+        $accountID = $this->get('accountID');
+        $gjp = $this->get('gjp');
 
-        if (empty($account)) {
+        try {
+            $this->account = Account::query()
+                ->findOrFail($accountID);
+
+            $password = GDAlgorithm::decode($gjp, Keys::ACCOUNT_PASSWORD->value);
+            if (!Hash::check($password, $this->account->password)) {
+                return false;
+            }
+
+            $this->user = $this->account->user ?? $this->newPlayer();
+            return !empty($this->user);
+        } catch (ModelNotFoundException) {
             return false;
         }
-
-        $this->account = $account;
-        $password = GDAlgorithm::decode(
-            $this->get('gjp'),
-            Keys::ACCOUNT_PASSWORD->value
-        );
-
-        if (!Hash::check($password, $this->account->password)) {
-            return false;
-        }
-
-        if (empty($this->account->user)) {
-            $this->newPlayer();
-        }
-
-        $this->user = $this->account->user;
-        return true;
     }
 
     protected function authAccountUsingName(): bool
@@ -62,25 +55,23 @@ class Request extends FormRequest
             return false;
         }
 
-        $account = Account::query()
-            ->whereName(
-                $this->get('userName')
-            )->first();
+        $name = $this->get('userName');
+        $password = $this->get('password');
 
-        if (empty($account)) {
+        try {
+            $this->account = Account::query()
+                ->whereName($name)
+                ->firstOrFail();
+
+            if (!Hash::check($password, $this->account->password)) {
+                return false;
+            }
+
+            $this->user = $this->account->user ?? $this->newPlayer();
+            return !empty($this->user);
+        } catch (ModelNotFoundException) {
             return false;
         }
-
-        $this->account = $account;
-        if (!Hash::check($this->get('password'), $this->account->password)) {
-            return false;
-        }
-
-        if (!empty($this->account->user)) {
-            $this->user = $this->account->user;
-        }
-
-        return true;
     }
 
     protected function authUser(): bool
@@ -89,30 +80,26 @@ class Request extends FormRequest
             return false;
         }
 
-        $user = User::query()
-            ->whereKey(
-                $this->get('uuid')
-            )->orWhere(
-                'uuid',
-                $this->get('udid')
-            )
-            ->where(
-                'udid',
-                $this->get('udid')
-            )->firstOr(
-                fn() => $this->newPlayer()
-            );
+        $uuid = $this->get('uuid');
+        $udid = $this->get('udid');
 
-        if (empty($user)) {
-            return false;
+        try {
+            $user = User::query()
+                ->whereKey($uuid)
+                ->orWhere('uuid', $udid)
+                ->where('udid', $udid)
+                ->firstOrFail();
+
+            $this->user = $user;
+            if (!empty($this->user->account)) {
+                $this->account = $this->user->account;
+            }
+
+            return !empty($this->user);
+        } catch (ModelNotFoundException) {
+            $this->user = $this->newPlayer();
+            return !empty($this->user);
         }
-
-        $this->user = $user;
-        if (!empty($this->user->account)) {
-            $this->account = $this->user->account;
-        }
-
-        return true;
     }
 
     public function auth(): bool
@@ -124,19 +111,15 @@ class Request extends FormRequest
 
     public function newPlayer(): ?User
     {
-        $uuid = $this->get(
-            'udid',
-            Str::uuid()
-                ->toString()
-        );
+        $randomUUID = Str::uuid()
+            ->toString();
+
+        $udid = $this->get('udid', $randomUUID);
+        $uuid = $this->account->id ?? $udid;
+        $name = $this->get('userName', $this->account->name ?? 'Player');
 
         return User::query()
-            ->firstOrCreate([
-                'uuid' => $this->account->id ?? $uuid
-            ], [
-                'name' => $this->get('userName', $this->account->name ?? 'Player'),
-                'udid' => $uuid
-            ]);
+            ->firstOrCreate(['uuid' => $uuid], ['name' => $name, 'udid' => $udid]);
     }
 
     /**
