@@ -3,7 +3,6 @@
 use App\Http\Controllers\GDCS\AccountController;
 use App\Http\Controllers\GDCS\AccountLinkController;
 use App\Http\Controllers\GDCS\CustomSongController;
-use App\Http\Controllers\GDCS\LevelPackAdminController;
 use App\Http\Controllers\GDCS\LevelTempUploadAccessController;
 use App\Http\Controllers\GDCS\LevelTransferController;
 use App\Http\Controllers\UserController;
@@ -94,15 +93,6 @@ Route::group([
     Route::group([
         'middleware' => 'auth:gdcs'
     ], static function () {
-        Route::group([
-            'prefix' => 'admin',
-            'as' => 'admin.',
-            'middleware' => 'role_or_permission:admin,gdcs'
-        ], static function () {
-            Route::inertia('/', 'GDCS/Admin/Home')->name('home');
-            Route::resource('/level/pack', LevelPackAdminController::class);
-        });
-
         Route::group([
             'prefix' => 'account',
             'as' => 'account.'
