@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'HarmonyOS Sans TC Medium';
-    src: url(../fonts/HarmonyOS_Sans_TC_Medium.ttf) format('truetype');
+    font-family: 'HarmonyOS Sans SC Medium';
+    src: url(../fonts/HarmonyOS_Sans_SC_Medium.ttf) format('truetype');
 }
 
 html, body, #app, .max-height {
@@ -12,5 +12,5 @@ html, body, #app, .max-height {
 }
 
 * {
-    font-family: 'HarmonyOS Sans TC Medium', sans-serif !important;
+    font-family: 'HarmonyOS Sans SC Medium', sans-serif !important;
 }
