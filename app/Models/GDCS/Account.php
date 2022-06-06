@@ -68,6 +68,11 @@ class Account extends Authenticatable implements MustVerifyEmailContract
         }
     }
 
+    public function failedLogs(): HasMany
+    {
+        return $this->hasMany(AccountFailedLog::class);
+    }
+
     public function getFriendAccountIdsWithSelfAttribute(): array
     {
         return $this->friends()
