@@ -44,8 +44,9 @@ class AccountController extends Controller
 
     public function register(AccountRegisterRequest $request): int
     {
-        $data = $request->validated();
-        Arr::rename($data, 'userName', 'name');
+        $data = Arr::rename($request->validated(), [
+            'userName' => 'name'
+        ]);
 
         $account = Account::create($data);
         AccountRegistered::dispatch($account);

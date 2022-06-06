@@ -9,11 +9,15 @@ class MacroServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        Arr::macro('rename', static function (&$arr, string $key, string $to) {
-            if (array_key_exists($key, $arr)) {
-                $arr[$to] = $arr[$key];
-                unset($arr[$key]);
+        Arr::macro('rename', static function (array $arr, array $changes) {
+            foreach ($changes as $key => $to) {
+                if (Arr::has($arr, $key)) {
+                    $arr[$to] = $arr[$key];
+                    unset($arr[$key]);
+                }
             }
+
+            return $arr;
         });
     }
 }
