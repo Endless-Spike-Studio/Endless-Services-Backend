@@ -18,7 +18,10 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                $this->message(__('messages.already_logged'), ['type' => 'error']);
+                $this->pushErrorMessage(
+                    __('messages.already_logged')
+                );
+
                 return redirect(RouteServiceProvider::HOME);
             }
         }

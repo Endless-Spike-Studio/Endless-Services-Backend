@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 
 class Account extends Authenticatable implements MustVerifyEmailContract
@@ -135,51 +134,5 @@ class Account extends Authenticatable implements MustVerifyEmailContract
             ->where('account_id', $targetAccountID)
             ->where('target_account_id', $this->id)
             ->exists();
-    }
-
-    public function getNewMessageCountAttribute(): int
-    {
-        return AccountMessage::query()
-            ->where([
-                'target_account_id' => $this->id,
-                'new' => true
-            ])->count();
-    }
-
-    public function getNewFriendRequestCountAttribute(): int
-    {
-        return AccountFriendRequest::query()
-            ->where([
-                'target_account_id' => $this->id,
-                'new' => true
-            ])->count();
-    }
-
-    public function getNewFriendCountAttribute(): int
-    {
-        return AccountFriend::query()
-            ->where([
-                'account_id' => $this->id,
-                'new' => true
-            ])
-            ->union(
-                AccountFriend::query()
-                    ->where([
-                        'friend_account_id' => $this->id,
-                        'friend_new' => true
-                    ])->toBase()
-            )->count();
-    }
-
-    public function isFriendWith(int $targetAccountID): bool
-    {
-        return AccountFriend::findBetween($this->id, $targetAccountID)->exists();
-    }
-
-    public function setPasswordAttribute(?string $password): void
-    {
-        if (!empty($password)) {
-            $this->attributes['password'] = Hash::make($password);
-        }
     }
 }

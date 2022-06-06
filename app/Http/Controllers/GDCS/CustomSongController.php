@@ -29,7 +29,7 @@ class CustomSongController extends Controller
             ->whereDownloadUrl($data['link']);
 
         if ($query->exists()) {
-            $this->message(__('messages.custom_song.already_exist_with_id', [
+            $this->pushMessage(__('messages.custom_song.already_exist_with_id', [
                 'id' => $query->getKey() + config('gdcs.custom_song_offset')
             ]), ['type' => 'error']);
 
@@ -41,13 +41,13 @@ class CustomSongController extends Controller
         $req = $proxy->get($data['link']);
 
         if (Str::contains($data['link'], [163, 126, 'netease'])) {
-            $this->message(__('messages.custom_song.netease_link_found'), ['type' => 'error']);
+            $this->pushMessage(__('messages.custom_song.netease_link_found'), ['type' => 'error']);
             return to_route('gdcs.tools.song.custom.create.netease');
         }
 
         $contentType = $req->header('Content-Type');
         if (explode('/', $contentType)[0] !== 'audio') {
-            $this->message(__('messages.custom_song.invalid_link'), ['type' => 'error']);
+            $this->pushMessage(__('messages.custom_song.invalid_link'), ['type' => 'error']);
             return back();
         }
 
@@ -62,7 +62,7 @@ class CustomSongController extends Controller
                 'download_url' => $data['link']
             ]);
 
-        $this->message(__('messages.created'), ['type' => 'success']);
+        $this->pushMessage(__('messages.created'), ['type' => 'success']);
         return to_route('gdcs.tools.song.custom.list');
     }
 
@@ -79,7 +79,7 @@ class CustomSongController extends Controller
             ->whereDownloadUrl($link);
 
         if ($query->exists()) {
-            $this->message(__('messages.custom_song.already_exist_with_id', [
+            $this->pushMessage(__('messages.custom_song.already_exist_with_id', [
                 'id' => $query->getKey() + config('gdcs.custom_song_offset')
             ]), ['type' => 'error']);
             return back();
@@ -92,7 +92,7 @@ class CustomSongController extends Controller
             ->json('songs.0');
 
         if ($songInfo === null) {
-            $this->message(__('messages.custom_song.not_found'), ['type' => 'error']);
+            $this->pushMessage(__('messages.custom_song.not_found'), ['type' => 'error']);
             return back();
         }
 
@@ -107,7 +107,7 @@ class CustomSongController extends Controller
                 'download_url' => $link
             ]);
 
-        $this->message(__('messages.created'), ['type' => 'success']);
+        $this->pushMessage(__('messages.created'), ['type' => 'success']);
         return to_route('gdcs.tools.song.custom.list');
     }
 
@@ -120,12 +120,12 @@ class CustomSongController extends Controller
             ->whereKey($id);
 
         if (!$query->exists()) {
-            $this->message(__('messages.custom_song.not_found'), ['type' => 'error']);
+            $this->pushMessage(__('messages.custom_song.not_found'), ['type' => 'error']);
             return back();
         }
 
         $query->delete();
-        $this->message(__('messages.deleted'), ['type' => 'success']);
+        $this->pushMessage(__('messages.deleted'), ['type' => 'success']);
 
         return back();
     }

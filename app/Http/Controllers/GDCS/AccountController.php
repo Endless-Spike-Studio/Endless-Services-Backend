@@ -4,6 +4,9 @@ namespace App\Http\Controllers\GDCS;
 
 use App\Enums\GDCS\FriendState;
 use App\Enums\GDCS\Response;
+use App\Events\GDCS\AccountEmailChanged;
+use App\Events\GDCS\AccountPasswordChanged;
+use App\Events\GDCS\AccountRegistered;
 use App\Http\Requests\GDCS\AccountInfoFetchRequest;
 use App\Http\Requests\GDCS\AccountLoginApiRequest;
 use App\Http\Requests\GDCS\AccountLoginRequest;
@@ -19,6 +22,9 @@ use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountFriendRequest;
 use App\Models\GDCS\User;
 use App\Models\GDCS\UserScore;
+use App\Repositories\GDCS\AccountFriendRepository;
+use App\Repositories\GDCS\AccountFriendRequestRepository;
+use App\Repositories\GDCS\AccountMessageRepository;
 use App\Services\GDCS\AccountBlockService;
 use App\Services\GDCS\AccountFriendService;
 use GDCN\GDObject\GDObject;
@@ -26,6 +32,7 @@ use Illuminate\Auth\SessionGuard;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redirect;
@@ -38,12 +45,11 @@ class AccountController extends Controller
     public function register(AccountRegisterRequest $request): int
     {
         $data = $request->validated();
+        Arr::rename($data, 'userName', 'name');
 
-        $data['name'] = $data['userName'];
-        $account = Account::query()
-            ->create($data);
+        $account = Account::create($data);
+        AccountRegistered::dispatch($account);
 
-        $account->sendEmailVerificationNotification();
         return Response::ACCOUNT_REGISTER_SUCCESS->value;
     }
 
@@ -54,40 +60,15 @@ class AccountController extends Controller
 
         if (!$account->hasVerifiedEmail()) {
             $account->markEmailAsVerified();
-            $this->message(__('messages.email_verified'), ['type' => 'success']);
+
+            $this->pushErrorMessage(
+                __('messages.email_verified')
+            );
         } else {
-            $this->message(__('messages.email_already_verified'), ['type' => 'error']);
+            $this->pushMessage(__('messages.email_already_verified'), ['type' => 'error']);
         }
 
         return to_route('gdcs.home');
-    }
-
-    public function login(AccountLoginRequest $request): string|int
-    {
-        $data = $request->validated();
-
-        $account = $request->account;
-        if (!$account->hasVerifiedEmail()) {
-            return Response::ACCOUNT_LOGIN_FAILED_EMAIL_NOT_VERIFIED->value;
-        }
-
-        $user = User::query()
-            ->where('uuid', $account->id)
-            ->firstOrNew();
-
-        $user->name = $account->name;
-        $user->uuid = $account->id;
-        $user->udid = $data['udid'];
-        $user->save();
-
-        if ($user->ban?->login_ban) {
-            return Response::ACCOUNT_LOGIN_FAILED_BANNED->value;
-        }
-
-        return implode(',', [
-            $account->id,
-            $user->id
-        ]);
     }
 
     /**
@@ -175,9 +156,17 @@ class AccountController extends Controller
         ];
 
         if ($requestAuth && $data['accountID'] === $data['targetAccountID']) {
-            $userInfo[38] = $target->new_message_count;
-            $userInfo[39] = $target->new_friend_request_count;
-            $userInfo[40] = $target->new_friend_count;
+            $userInfo[38] = app(AccountMessageRepository::class)
+                ->findNewByAccount($data['targetAccountID'])
+                ->count();
+
+            $userInfo[39] = app(AccountFriendRequestRepository::class)
+                ->findNewByAccount($data['targetAccountID'])
+                ->count();
+
+            $userInfo[40] = app(AccountFriendRepository::class)
+                ->findNewByAccount($data['targetAccountID'])
+                ->count();
         }
 
         if (!empty($friendRequest)) {
@@ -206,15 +195,40 @@ class AccountController extends Controller
     {
         $data = $request->validated();
 
-        $account = Account::query()
-            ->create($data);
-
+        $account = Account::create($data);
         Auth::login($account, true);
+        AccountRegistered::dispatch($account);
 
-        $account->sendEmailVerificationNotification();
-        $this->message(__('messages.register_success'), ['type' => 'success']);
-
+        $this->pushMessage(__('messages.register_success'), ['type' => 'success']);
         return to_route('home');
+    }
+
+    public function login(AccountLoginRequest $request): string|int
+    {
+        $data = $request->validated();
+
+        $account = $request->account;
+        if (!$account->hasVerifiedEmail()) {
+            return Response::ACCOUNT_LOGIN_FAILED_EMAIL_NOT_VERIFIED->value;
+        }
+
+        $user = User::query()
+            ->where('uuid', $account->id)
+            ->firstOrNew();
+
+        $user->name = $account->name;
+        $user->uuid = $account->id;
+        $user->udid = $data['udid'];
+        $user->save();
+
+        if ($user->ban?->login_ban) {
+            return Response::ACCOUNT_LOGIN_FAILED_BANNED->value;
+        }
+
+        return implode(',', [
+            $account->id,
+            $user->id
+        ]);
     }
 
     public function apiLogin(GDCS_Request $gdcs_request, AccountLoginApiRequest $request): RedirectResponse
@@ -223,7 +237,7 @@ class AccountController extends Controller
         $auth = Auth::guard('gdcs');
 
         if (!$auth->attempt($data, true)) {
-            $this->message(__('messages.login_failed'), ['type' => 'error']);
+            $this->pushMessage(__('messages.login_failed'), ['type' => 'error']);
             return back();
         }
 
@@ -239,17 +253,28 @@ class AccountController extends Controller
     public function resendEmailVerification(): RedirectResponse
     {
         $account = Request::user('gdcs');
-        $attempt = RateLimiter::attempt("gdcs:resendEmailVerification:$account->id", 1, function () use ($account) {
-            if ($account->hasVerifiedEmail()) {
-                $this->message(__('messages.email_already_verified'), ['type' => 'error']);
-            } else {
-                SendEmailVerification::dispatch($account);
-                $this->message(__('messages.verification_sent'), ['type' => 'success']);
-            }
-        }, 3600);
+
+        $attempt = RateLimiter::attempt(
+            "gdcs:resendEmailVerification:$account->id",
+            1,
+            function () use ($account) {
+                if ($account->hasVerifiedEmail()) {
+                    $this->pushErrorMessage(
+                        __('messages.email_already_verified')
+                    );
+                } else {
+                    SendEmailVerification::dispatch($account);
+
+                    $this->pushSuccessMessage(
+                        __('messages.verification_sent')
+                    );
+                }
+            }, 3600);
 
         if (!$attempt) {
-            $this->message(__('messages.too_fast'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.too_fast')
+            );
         }
 
         return back();
@@ -262,15 +287,21 @@ class AccountController extends Controller
 
         /** @var Account $account */
         $account = $auth->user();
+        $account->update($data);
 
-        if ($account->email !== $data['email']) {
-            $data['email_verified_at'] = null;
+        if ($account->wasChanged('password')) {
+            AccountPasswordChanged::dispatch($account);
         }
 
-        $account->update($data);
-        SendEmailVerification::dispatch($account);
+        if ($account->wasChanged('email')) {
+            $account->update([
+                'email_verified_at' => null
+            ]);
 
-        $this->message(__('messages.profile_updated'), ['type' => 'success']);
+            AccountEmailChanged::dispatch($account);
+        }
+
+        $this->pushMessage(__('messages.profile_updated'), ['type' => 'success']);
         return back();
     }
 
@@ -278,8 +309,8 @@ class AccountController extends Controller
     {
         /** @var SessionGuard $auth */
         $auth = Auth::guard('gdcs');
-
         $auth->logoutCurrentDevice();
+
         return to_route('gdcs.home');
     }
 }

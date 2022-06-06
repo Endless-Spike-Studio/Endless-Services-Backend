@@ -23,16 +23,19 @@ class ProcessSongJob implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
-        $data = app('proxy')
-            ->withOptions([
-                'decode_content' => false
-            ])
-            ->get(
-                urldecode($this->url)
-            )
-            ->body();
+        $storage = app('storage:ngproxy.song_data');
 
-        app('storage:ngproxy.song_data')
-            ->put($this->id, $data);
+        if (!$storage->allExists($this->id)) {
+            $data = app('proxy')
+                ->withOptions([
+                    'decode_content' => false
+                ])
+                ->get(
+                    urldecode($this->url)
+                )
+                ->body();
+
+            $storage->put($this->id, $data);
+        }
     }
 }

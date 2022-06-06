@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserEmailChanged;
+use App\Events\UserPasswordChanged;
+use App\Events\UserRegistered;
 use App\Http\Requests\UserLoginApiRequest;
 use App\Http\Requests\UserRegisterApiRequest;
 use App\Http\Requests\UserSettingUpdateApiRequest;
@@ -22,26 +25,13 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        $user = User::query()
-            ->create($data);
-
+        $user = User::create($data);
         Auth::login($user, true);
-        $user->sendEmailVerificationNotification();
-        $this->message(__('messages.register_success'), ['type' => 'success']);
+        UserRegistered::dispatch($user);
 
-        return to_route('home');
-    }
-
-    public function verify(UserVerifyApiRequest $request): RedirectResponse
-    {
-        $user = $request->user();
-        if ($user->hasVerifiedEmail()) {
-            $this->message(__('messages.email_already_verified'), ['type' => 'error']);
-            return back();
-        }
-
-        $user->markEmailAsVerified();
-        $this->message(__('messages.email_verified'), ['type' => 'success']);
+        $this->pushSuccessMessage(
+            __('messages.register_success')
+        );
 
         return to_route('home');
     }
@@ -49,12 +39,36 @@ class UserController extends Controller
     public function login(UserLoginApiRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
         if (!Auth::attempt($data, true)) {
-            $this->message(__('messages.login_failed'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.login_failed')
+            );
+
             return back();
         }
 
         return Redirect::intended();
+    }
+
+    public function verify(UserVerifyApiRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            $this->pushErrorMessage(
+                __('messages.email_already_verified')
+            );
+
+            return back();
+        }
+
+        $user->markEmailAsVerified();
+        $this->pushSuccessMessage(
+            __('messages.email_verified')
+        );
+
+        return to_route('home');
     }
 
     public function logout(): RedirectResponse
@@ -66,18 +80,31 @@ class UserController extends Controller
     public function resendEmailVerification(): RedirectResponse
     {
         $user = Request::user();
-        $attempt = RateLimiter::attempt("gdcn:resendEmailVerification:$user->id", 1, function () use ($user) {
-            if ($user->hasVerifiedEmail()) {
-                $this->message(__('messages.email_already_verified'), ['type' => 'error']);
-                return;
-            }
 
-            $user->sendEmailVerificationNotification();
-            $this->message(__('messages.verification_sent'), ['type' => 'success']);
-        }, 3600);
+        $attempt = RateLimiter::attempt(
+            "gdcn:resendEmailVerification:$user->id",
+            1,
+            function () use ($user) {
+                if ($user->hasVerifiedEmail()) {
+                    $this->pushErrorMessage(
+                        __('messages.email_already_verified')
+                    );
+
+                    return false;
+                }
+
+                $user->sendEmailVerificationNotification();
+                $this->pushSuccessMessage(
+                    __('messages.verification_sent')
+                );
+
+                return true;
+            }, 3600);
 
         if (!$attempt) {
-            $this->message(__('messages.too_fast'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.too_fast')
+            );
         }
 
         return back();
@@ -90,14 +117,22 @@ class UserController extends Controller
         $user = $request->user();
         $user->update($data);
 
-        if ($user->wasChanged('email')) {
-            $user->email_verified_at = null;
-            $user->save();
-
-            $user->sendEmailVerificationNotification();
+        if ($user->wasChanged('password')) {
+            UserPasswordChanged::dispatch($user);
         }
 
-        $this->message(__('messages.profile_updated'), ['type' => 'success']);
+        if ($user->wasChanged('email')) {
+            $user->update([
+                'email_verified_at' => null
+            ]);
+
+            UserEmailChanged::dispatch($user);
+        }
+
+        $this->pushSuccessMessage(
+            __('messages.profile_updated')
+        );
+
         return back();
     }
 }

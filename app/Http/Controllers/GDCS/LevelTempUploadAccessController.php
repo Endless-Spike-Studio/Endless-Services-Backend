@@ -23,7 +23,7 @@ class LevelTempUploadAccessController extends Controller
             ->count();
 
         if ($count >= $maxCount) {
-            $this->message(__('messages.temp_level_access.create_too_many'), ['type' => 'error']);
+            $this->pushMessage(__('messages.temp_level_access.create_too_many'), ['type' => 'error']);
             return back();
         }
 
@@ -32,7 +32,7 @@ class LevelTempUploadAccessController extends Controller
                 'ip' => Request::ip()
             ]);
 
-        $this->message(__('messages.created'), ['type' => 'success']);
+        $this->pushMessage(__('messages.created'), ['type' => 'success']);
         return back();
     }
 
@@ -45,9 +45,9 @@ class LevelTempUploadAccessController extends Controller
             ->whereKey($id);
 
         if (!$query->exists()) {
-            $this->message(__('messages.delete_failed'), ['type' => 'error']);
+            $this->pushMessage(__('messages.delete_failed'), ['type' => 'error']);
         } else {
-            $this->message(__('messages.deleted'), ['type' => 'success']);
+            $this->pushMessage(__('messages.deleted'), ['type' => 'success']);
             $query->delete();
         }
 

@@ -7,10 +7,18 @@ use Illuminate\Database\Eloquent\Builder;
 
 class AccountLinkRepository
 {
+    public function __construct(
+        protected AccountLink $model
+    )
+    {
+    }
+
     public function findByAccount(int $accountID, int $linkID): AccountLink|Builder
     {
-        return AccountLink::query()
-            ->where('account_id', $accountID)
-            ->whereKey($linkID);
+        return $this->model
+            ->where([
+                'id' => $linkID,
+                'account_id' => $accountID
+            ]);
     }
 }

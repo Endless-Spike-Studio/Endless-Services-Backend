@@ -14,7 +14,6 @@ use App\Services\StorageService;
 use GDCN\GDObject\GDObject;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use function app;
 use function config;
@@ -170,11 +169,7 @@ class NGProxyController extends Controller
         try {
             /** @var StorageService $storage */
             $storage = app('storage:ngproxy.song_data');
-            $data = $storage->get($id);
-
-            return Response::streamDownload(static function () use ($data) {
-                echo $data;
-            }, $id . '.mp3');
+            return $storage->download($id);
         } catch (StorageContentMissingException) {
             $songDownloadUrl = Arr::get($this->tryGetFromGDAPI($id), 10);
             ProcessSongJob::dispatchSync($id, $songDownloadUrl);
