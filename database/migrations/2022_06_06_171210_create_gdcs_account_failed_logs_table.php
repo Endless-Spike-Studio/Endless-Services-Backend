@@ -6,9 +6,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up()
+    public function up(): void
     {
-        Schema::create('gdcs_account_failed_logs', function (Blueprint $table) {
+        Schema::create('gdcs_account_failed_logs', static function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class);
             $table->string('content');
@@ -16,7 +16,7 @@ return new class extends Migration {
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('gdcs_account_failed_logs');
     }
