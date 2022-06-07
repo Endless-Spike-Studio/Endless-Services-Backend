@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {watchEffect} from "vue";
 import {each} from "lodash-es";
 import {useMessage} from "naive-ui";
@@ -15,6 +15,4 @@ watchEffect(() => {
 });
 </script>
 
-<template>
-
-</template>
+<template/>
