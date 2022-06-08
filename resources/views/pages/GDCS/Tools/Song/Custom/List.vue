@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import {NButton, NCard, NDataTable, NSpace} from "naive-ui";
+<script lang="ts" setup>
+import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
 import {getProp, toRoute, toURL} from "@/scripts/helpers";
 import {CustomSong, User} from "@/scripts/types/backend";
 import {h} from "vue";
@@ -59,15 +59,20 @@ const columns = [
                 }, {
                     default: () => '试听'
                 }),
-                h(NButton, {
-                    disabled: row.account?.id !== account.value.id || form.processing,
-                    onClick: () => form.delete(
+                h(NPopconfirm, {
+                    onPositiveClick: () => form.delete(
                         route('gdcs.tools.song.custom.delete.api', {
                             id: row.id
                         })
                     )
                 }, {
-                    default: () => '删除'
+                    default: () => '确认删除 ?',
+                    trigger: () => h(NButton, {
+                        type: 'error',
+                        disabled: row.account?.id !== account.value.id || form.processing
+                    }, {
+                        default: () => '删除'
+                    })
                 })
             ]);
         }
@@ -76,7 +81,7 @@ const columns = [
 </script>
 
 <template layout="GDCS">
-    <n-card title="自定义歌曲" class="lg:w-2/3 mx-auto">
+    <n-card class="lg:w-2/3 mx-auto" title="自定义歌曲">
         <n-space vertical>
             <n-space>
                 <n-button @click="toRoute('gdcs.tools.song.custom.create.link')">使用外链创建</n-button>

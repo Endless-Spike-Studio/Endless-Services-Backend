@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import {NButton, NCard, NDataTable, NSpace} from "naive-ui";
+<script lang="ts" setup>
+import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
 import {formatTime, toRoute} from "@/scripts/helpers";
 import {AccountLink} from "@/scripts/types/backend";
 import {h} from "vue";
@@ -38,25 +38,28 @@ const columns = [
         render: (row: AccountLink) => {
             const form = useForm({});
 
-            return h(NSpace, null, () => [
-                h(NButton, {
-                    disabled: form.processing,
-                    onClick: () => form.delete(
-                        route('gdcs.tools.account.link.delete.api', {
-                            id: row.id
-                        })
-                    )
+            return h(NPopconfirm, {
+                onPositiveClick: () => form.delete(
+                    route('gdcs.tools.account.link.delete.api', {
+                        id: row.id
+                    })
+                )
+            }, {
+                default: () => '确认删除 ?',
+                trigger: () => h(NButton, {
+                    type: 'error',
+                    disabled: form.processing
                 }, {
                     default: () => '解绑'
                 })
-            ]);
+            });
         }
     }
 ]
 </script>
 
 <template layout="GDCS">
-    <n-card title="账号链接" class="lg:w-2/3 mx-auto">
+    <n-card class="lg:w-2/3 mx-auto" title="账号链接">
         <n-space vertical>
             <n-button @click="toRoute('gdcs.tools.account.link.create')">创建新链接</n-button>
             <n-data-table :columns="columns" :data="links"/>

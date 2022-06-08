@@ -40,6 +40,7 @@ const columns = [
                     })
                 )
             }, {
+                default: () => '确认删除 ?',
                 trigger: () => h(NButton, {
                     type: 'error',
                     disabled: form.processing
