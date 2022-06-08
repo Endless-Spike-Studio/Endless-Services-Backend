@@ -33,8 +33,10 @@ class LevelTransferPresenter
 
     protected function links(): array
     {
-        return Request::user('gdcs')
-            ->getRelationValue('links')
+        return Auth::guard('gdcs')
+            ->user()
+            ->load('links:id,target_name,target_account_id,target_user_id')
+            ->getRelation('links')
             ->map(fn(AccountLink $link) => [
                 'label' => $link->target_name . ' [' . $link->target_account_id . ', ' . $link->target_user_id . ']',
                 'value' => $link->id
@@ -51,9 +53,12 @@ class LevelTransferPresenter
 
     protected function levels(): array
     {
-        return Request::user('gdcs')
-            ->getRelationValue('user')
-            ->getRelationValue('levels')
+        return Auth::guard('gdcs')
+            ->user()
+            ->load('user:id')
+            ->getRelation('user')
+            ->load('levels:id,name,user_id')
+            ->getRelation('levels')
             ->map(fn(Level $level) => [
                 'label' => "$level->name [$level->id]",
                 'value' => $level->id

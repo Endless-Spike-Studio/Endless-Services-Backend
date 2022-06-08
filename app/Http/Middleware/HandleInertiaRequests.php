@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
@@ -22,19 +23,17 @@ class HandleInertiaRequests extends Middleware
 
         return array_merge(parent::share($request), [
             'gdcn' => [
-                'user' => $request->user()
-                    ?->select(['id', 'name'])
-                    ?->firstOrFail()
+                'user' => Auth::user()
+                    ?->only(['id', 'name'])
             ],
             'gdcs' => [
-                'account' => $request->user('gdcs')
-                    ?->select(['id', 'name'])
-                    ?->firstOrFail(),
-                'user' => $request->user('gdcs')
-                    ?->select(['id', 'name'])
-                    ?->with('user:id,uuid,name')
-                    ?->firstOrFail()
-                    ?->getRelation('user')
+                'account' => Auth::guard('gdcs')
+                    ?->user()
+                    ->only(['id', 'name']),
+                'user' => Auth::guard('gdcs')
+                    ?->user()
+                    ->load('user:id,uuid,name')
+                    ->getRelation('user')
             ],
             'messages' => Session::pull('messages', []),
             'versions' => [

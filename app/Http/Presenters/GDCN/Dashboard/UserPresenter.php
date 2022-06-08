@@ -2,30 +2,28 @@
 
 namespace App\Http\Presenters\GDCN\Dashboard;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class UserPresenter
 {
-    public function renderProfile(Request $request): Response
+    public function renderProfile(): Response
     {
         return Inertia::render('GDCN/User/Profile', [
             'gdcn' => [
-                'user' => $request->user()
-                    ?->select(['id', 'name', 'email', 'email_verified_at', 'created_at'])
-                    ?->firstOrFail()
+                'user' => Auth::user()
+                    ?->only(['id', 'name', 'email', 'email_verified_at', 'created_at'])
             ]
         ]);
     }
 
-    public function renderSetting(Request $request): Response
+    public function renderSetting(): Response
     {
         return Inertia::render('GDCN/User/Setting', [
             'gdcn' => [
-                'user' => $request->user()
-                    ?->select(['id', 'name', 'email'])
-                    ?->firstOrFail()
+                'user' => Auth::user()
+                    ?->only(['id', 'name', 'email'])
             ]
         ]);
     }

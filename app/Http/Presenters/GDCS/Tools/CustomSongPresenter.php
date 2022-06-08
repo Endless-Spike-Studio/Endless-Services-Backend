@@ -11,9 +11,8 @@ class CustomSongPresenter
     public function list(): Response
     {
         return Inertia::render('GDCS/Tools/Song/Custom/List', [
-            'songs' => CustomSong::query()
-                ->with('account:id,name')
-                ->get(),
+            'songs' => CustomSong::all()
+                ?->load('account:id,name'),
             'customSongOffset' => config('gdcs.custom_song_offset')
         ]);
     }
