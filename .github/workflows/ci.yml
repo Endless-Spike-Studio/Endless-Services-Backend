@@ -19,12 +19,10 @@ jobs:
       - name: Install composer dependencies
         run: |
           composer install
-      - name: Install front-end dependencies
+      - name: Install and build front-end dependencies and resources
         run: |
           npm install --global pnpm
           pnpm install
-      - name: Build front-end resources
-        run: |
           pnpm run build
       - name: Prepare Laravel Application
         run: |
