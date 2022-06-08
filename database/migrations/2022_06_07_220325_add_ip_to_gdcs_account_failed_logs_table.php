@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('gdcs_account_failed_logs', static function (Blueprint $table) {
-            $table->ipAddress('ip');
+            $table->ipAddress('ip')->nullable();
         });
     }
 
