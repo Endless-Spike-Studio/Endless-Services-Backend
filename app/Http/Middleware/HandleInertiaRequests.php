@@ -7,21 +7,34 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
+use Innocenzi\Vite\Vite;
 
 class HandleInertiaRequests extends Middleware
 {
     public function share(Request $request): array
     {
         $hash = Cache::get('git_commit_hash', static function () {
-            return exec('git log --pretty="%h" -n1 HEAD');
+            $hash = exec('git log --pretty="%h" -n1 HEAD');
+            Cache::set('git_commit_hash', $hash);
+
+            return $hash;
         });
 
-        Cache::set('git_commit_hash', $hash);
         return array_merge(parent::share($request), [
-            'user' => $request->user(),
+            'gdcn' => [
+                'user' => $request->user()
+                    ?->select(['id', 'name'])
+                    ?->firstOrFail()
+            ],
             'gdcs' => [
                 'account' => $request->user('gdcs')
-                    ?->load('user')
+                    ?->select(['id', 'name'])
+                    ?->firstOrFail(),
+                'user' => $request->user('gdcs')
+                    ?->select(['id', 'name'])
+                    ?->with('user:id,uuid,name')
+                    ?->firstOrFail()
+                    ?->getRelation('user')
             ],
             'messages' => Session::pull('messages', []),
             'versions' => [
@@ -34,6 +47,6 @@ class HandleInertiaRequests extends Middleware
 
     public function version(Request $request): ?string
     {
-        return vite()->getHash();
+        return app(Vite::class)->getHash();
     }
 }

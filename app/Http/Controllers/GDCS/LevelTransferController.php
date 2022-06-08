@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\GeometryDashServer;
 use App\Enums\GDCS\LevelSearchType;
 use App\Enums\GDCS\LevelTransferType;
-use App\Exceptions\GDCS\GeometryDashServerNotFoundException;
 use App\Exceptions\GDCS\LevelTransferTargetLinkNotFoundException;
 use App\Exceptions\InvalidResponseException;
 use App\Exceptions\StorageContentMissingException;
@@ -42,14 +40,12 @@ class LevelTransferController extends Controller
                 $link = $account->links()
                     ->whereKey($data['linkID'])
                     ->firstOrFail();
-
-                $server = GeometryDashServer::from($link->server);
             } catch (ModelNotFoundException) {
                 throw new LevelTransferTargetLinkNotFoundException();
             }
 
             $response = app('proxy')
-                ->post($server->value . '/downloadGJLevel22.php', [
+                ->post('http://' . $link->server . '/downloadGJLevel22.php', [
                     'levelID' => $data['levelID'],
                     'secret' => 'Wmfd2893gb7'
                 ])->body();
@@ -61,7 +57,7 @@ class LevelTransferController extends Controller
                 throw new LevelTransferTargetLinkNotFoundException();
             }
 
-            $levelInfo = 'transfer:' . $server->name . '|' . $levelObject[1];
+            $levelInfo = 'transfer:' . $link->server . '|' . $levelObject[1];
 
             $level = Level::query()
                 ->create([
@@ -91,14 +87,12 @@ class LevelTransferController extends Controller
 
             $account->levelTransferRecords()
                 ->create([
-                    'type' => LevelTransferType::OFFICIAL,
+                    'type' => LevelTransferType::IN,
                     'original_level_id' => $levelObject[1],
                     'level_id' => $level->id
                 ]);
 
             $this->pushMessage(__('messages.level_transfer.success'), ['type' => 'success']);
-        } catch (GeometryDashServerNotFoundException) {
-            $this->pushMessage(__('messages.level_transfer.level_not_found'), ['type' => 'error']);
         } catch (InvalidResponseException) {
             $this->pushMessage(__('messages.robtop_now_not_like_you'), ['type' => 'error']);
         } catch (LevelTransferTargetLinkNotFoundException) {
@@ -162,7 +156,7 @@ class LevelTransferController extends Controller
                 ->whereKey($data['linkID'])
                 ->firstOrFail();
 
-            $storage = app(LevelDataController::class);
+            $storage = app('storage:gdcs.level_data');
             $levelString = $storage->get($level->id);
 
             $response = app('proxy')

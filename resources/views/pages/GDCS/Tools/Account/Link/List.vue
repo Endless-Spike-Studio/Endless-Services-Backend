@@ -5,6 +5,8 @@ import {AccountLink} from "@/scripts/types/backend";
 import {h} from "vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
+import servers from "@/scripts/enums/servers";
+import {find} from "lodash-es";
 
 defineProps({
     links: {
@@ -20,7 +22,8 @@ const columns = [
     },
     {
         title: '服务器',
-        key: 'server'
+        key: 'server',
+        render: (row: AccountLink) => guessServerName(row.server)
     },
     {
         title: '链接账号',
@@ -55,7 +58,19 @@ const columns = [
             });
         }
     }
-]
+];
+
+function guessServerName(server: string) {
+    const item = find(servers, {
+        host: server
+    });
+
+    if (!item) {
+        return server;
+    }
+
+    return `${item.name} [${item.id}]`;
+}
 </script>
 
 <template layout="GDCS">

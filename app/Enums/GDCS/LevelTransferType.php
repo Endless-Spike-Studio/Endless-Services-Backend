@@ -4,7 +4,7 @@ namespace App\Enums\GDCS;
 
 enum LevelTransferType: int
 {
-    case OFFICIAL = 1;
-    case OLD_GDCN = 2;
-    case OUT = 3;
+    case IN = 1;
+    case OUT = 2;
+    case OLD_GDCN = 3;
 }

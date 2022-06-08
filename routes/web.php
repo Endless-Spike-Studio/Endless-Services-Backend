@@ -5,12 +5,16 @@ use App\Http\Controllers\GDCS\AccountLinkController;
 use App\Http\Controllers\GDCS\CustomSongController;
 use App\Http\Controllers\GDCS\LevelTempUploadAccessController;
 use App\Http\Controllers\GDCS\LevelTransferController;
+use App\Http\Controllers\GDCS\Web\AccountFailedLogController;
 use App\Http\Controllers\UserController;
-use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
-use App\Http\Presenters\GDCS\CustomSongToolPresenter;
+use App\Http\Presenters\GDCN\Dashboard\UserPresenter;
+use App\Http\Presenters\GDCS\Dashboard\AccountPresenter;
+use App\Http\Presenters\GDCS\Dashboard\InformationPresenter;
 use App\Http\Presenters\GDCS\DashboardPresenter;
-use App\Http\Presenters\GDCS\LevelTempUploadAccessToolPresenter;
-use App\Http\Presenters\GDCS\LevelTransferToolPresenter;
+use App\Http\Presenters\GDCS\Tools\AccountLinkPresenter;
+use App\Http\Presenters\GDCS\Tools\CustomSongPresenter;
+use App\Http\Presenters\GDCS\Tools\LevelTempUploadAccessPresenter;
+use App\Http\Presenters\GDCS\Tools\LevelTransferPresenter;
 use App\Http\Presenters\NGProxyPresenter;
 use Illuminate\Support\Facades\Route;
 
@@ -51,9 +55,9 @@ Route::group([
             'prefix' => 'user',
             'as' => 'user.'
         ], static function () {
-            Route::inertia('/profile', 'GDCN/User/Profile')->name('profile');
+            Route::inertia('/profile', [UserPresenter::class, 'renderProfile'])->name('profile');
             Route::post('/resend:email_verification', [UserController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
-            Route::inertia('/setting', 'GDCN/User/Setting')->name('setting');
+            Route::get('/setting', [UserPresenter::class, 'renderSetting'])->name('setting');
             Route::patch('/setting', [UserController::class, 'updateSetting'])->name('setting.update.api');
             Route::get('/logout', [UserController::class, 'logout'])->name('logout.api');
         });
@@ -101,11 +105,13 @@ Route::group([
                 ->middleware('signed')
                 ->name('verify');
 
-            Route::inertia('/profile', 'GDCS/Account/Profile')->name('profile');
+            Route::get('/profile', [AccountPresenter::class, 'renderProfile'])->name('profile');
             Route::post('/resend:email_verification', [AccountController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
-            Route::inertia('/setting', 'GDCS/Account/Setting')->name('setting');
+            Route::get('/setting', [AccountPresenter::class, 'renderSetting'])->name('setting');
             Route::patch('/setting', [AccountController::class, 'updateSetting'])->name('setting.update.api');
+            Route::get('/failed-log', [AccountPresenter::class, 'renderFailedLogs'])->name('failed-log');
             Route::get('/logout', [AccountController::class, 'logout'])->name('logout.api');
+            Route::delete('/failed-logs', [AccountFailedLogController::class, 'clear'])->name('failed-log.clear.api');
         });
 
         Route::group([
@@ -114,15 +120,15 @@ Route::group([
         ], static function () {
             Route::get('/', [DashboardPresenter::class, 'renderHome'])->name('home');
 
-            Route::get('/account/{id}', [DashboardPresenter::class, 'renderAccountInfo'])
+            Route::get('/account/{id}', [InformationPresenter::class, 'renderAccount'])
                 ->where('id', '\d+')
                 ->name('account.info');
 
-            Route::get('/level/{id}', [DashboardPresenter::class, 'renderLevelInfo'])
+            Route::get('/level/{id}', [InformationPresenter::class, 'renderLevel'])
                 ->where('id', '\d+')
                 ->name('level.info');
 
-            Route::get('/user/{id}', [DashboardPresenter::class, 'renderUserInfo'])
+            Route::get('/user/{id}', [InformationPresenter::class, 'renderUser'])
                 ->where('id', '\d+')
                 ->name('user.info');
         });
@@ -141,8 +147,8 @@ Route::group([
                     'prefix' => 'link',
                     'as' => 'link.'
                 ], static function () {
-                    Route::get('/list', [AccountLinkToolPresenter::class, 'list'])->name('list');
-                    Route::get('/create', [AccountLinkToolPresenter::class, 'create'])->name('create');
+                    Route::get('/list', [AccountLinkPresenter::class, 'list'])->name('list');
+                    Route::inertia('/create', 'GDCS/Tools/Account/Link/Create')->name('create');
 
                     Route::post('/create', [AccountLinkController::class, 'create'])->name('create.api');
                     Route::delete('/{id}', [AccountLinkController::class, 'delete'])
@@ -159,7 +165,7 @@ Route::group([
                     'prefix' => 'tempUploadAccess',
                     'as' => 'temp_upload_access.'
                 ], static function () {
-                    Route::get('/list', [LevelTempUploadAccessToolPresenter::class, 'list'])->name('list');
+                    Route::get('/list', [LevelTempUploadAccessPresenter::class, 'list'])->name('list');
                     Route::get('/create', [LevelTempUploadAccessController::class, 'create'])->name('create.api');
 
                     Route::delete('/{id}', [LevelTempUploadAccessController::class, 'delete'])
@@ -173,10 +179,10 @@ Route::group([
                 ], static function () {
                     Route::inertia('/', 'GDCS/Tools/Level/Transfer/Home')->name('home');
 
-                    Route::get('/in', [LevelTransferToolPresenter::class, 'in'])->name('in');
+                    Route::get('/in', [LevelTransferPresenter::class, 'in'])->name('in');
                     Route::post('/in', [LevelTransferController::class, 'transferIn'])->name('in.api');
 
-                    Route::get('/out', [LevelTransferToolPresenter::class, 'out'])->name('out');
+                    Route::get('/out', [LevelTransferPresenter::class, 'out'])->name('out');
                     Route::post('/out', [LevelTransferController::class, 'transferOut'])->name('out.api');
                 });
             });
@@ -189,7 +195,7 @@ Route::group([
                     'prefix' => 'custom',
                     'as' => 'custom.'
                 ], static function () {
-                    Route::get('/list', [CustomSongToolPresenter::class, 'list'])->name('list');
+                    Route::get('/list', [CustomSongPresenter::class, 'list'])->name('list');
 
                     Route::inertia('/create:link', 'GDCS/Tools/Song/Custom/Create/Link')->name('create.link');
                     Route::post('/create:link', [CustomSongController::class, 'createLink'])->name('create.link.api');

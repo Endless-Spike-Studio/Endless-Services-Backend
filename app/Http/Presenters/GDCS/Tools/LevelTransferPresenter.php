@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Presenters\GDCS;
+namespace App\Http\Presenters\GDCS\Tools;
 
 use App\Http\Controllers\GDCS\LevelTransferController;
 use App\Models\GDCS\AccountLink;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LevelTransferToolPresenter
+class LevelTransferPresenter
 {
     public function in(): Response
     {

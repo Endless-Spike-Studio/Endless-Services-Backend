@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\GeometryDashServer;
 use App\Exceptions\InvalidResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\HelperController;
 use App\Http\Requests\GDCS\AccountLinkCreateRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
-use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use Illuminate\Support\Str;
@@ -21,11 +19,11 @@ class AccountLinkController extends Controller
     public function create(AccountLinkCreateRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $server = GeometryDashServer::from($data['server']);
+        $server = parse_url($data['server'], PHP_URL_HOST);
 
         try {
             $response = app('proxy')
-                ->post($server->value . '/accounts/loginGJAccount.php', [
+                ->post('http://' . $server . '/accounts/loginGJAccount.php', [
                     'userName' => $data['name'],
                     'password' => $data['password'],
                     'udid' => Str::uuid()
@@ -34,7 +32,7 @@ class AccountLinkController extends Controller
                 ])->body();
 
             HelperController::checkResponse($response);
-        } catch (InvalidResponseException|Exception) {
+        } catch (InvalidResponseException) {
             $this->pushMessage(__('messages.robtop_now_not_like_you'), ['type' => 'error']);
             return back();
         }
@@ -45,7 +43,7 @@ class AccountLinkController extends Controller
 
         $account->links()
             ->create([
-                'server' => $server->value,
+                'server' => $server,
                 'target_name' => $data['name'],
                 'target_account_id' => $accountID,
                 'target_user_id' => $userID

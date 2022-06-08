@@ -29,7 +29,7 @@ const rules = {
     }
 };
 
-const user = getProp<User>('user');
+const user = getProp<User>('gdcn.user');
 const form = useForm({
     name: user.value.name,
     email: user.value.email,

@@ -6,7 +6,7 @@ import {getProp, renderIcon} from "@/scripts/helpers";
 import {User} from "@/scripts/types/backend";
 import CommonLayout from "@/views/components/CommonLayout.vue";
 
-const user = getProp<User>('user');
+const user = getProp<User>('gdcn.user');
 
 const options = {
     logo: {

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Presenters\GDCS;
+namespace App\Http\Presenters\GDCS\Tools;
 
 use App\Models\GDCS\CustomSong;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class CustomSongToolPresenter
+class CustomSongPresenter
 {
     public function list(): Response
     {

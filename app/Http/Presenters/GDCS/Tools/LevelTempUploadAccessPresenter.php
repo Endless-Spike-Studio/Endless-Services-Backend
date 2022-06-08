@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Presenters\GDCS;
+namespace App\Http\Presenters\GDCS\Tools;
 
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LevelTempUploadAccessToolPresenter
+class LevelTempUploadAccessPresenter
 {
     public function list(): Response
     {

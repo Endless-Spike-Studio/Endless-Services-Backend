@@ -7,6 +7,7 @@ import {reactive} from "vue";
 import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace, NText} from "naive-ui";
 
 const account = getProp<User>('gdcs.account');
+const user = getProp<User>('gdcs.user');
 const resendEmailVerificationForm = useForm({});
 
 const hidden = reactive({
@@ -45,22 +46,23 @@ const hidden = reactive({
                     </n-button>
 
                     <n-button @click="toRoute('gdcs.account.setting')">账号设置</n-button>
+                    <n-button @click="toRoute('gdcs.account.failed-log')">失败日志</n-button>
                 </n-space>
             </template>
         </n-card>
 
-        <n-card v-if="account.user" class="lg:w-2/3 mx-auto" title="用户资料">
+        <n-card v-if="user" class="lg:w-2/3 mx-auto" title="用户资料">
             <n-descriptions :bordered="true" :column="isMobile ? 1 : 3">
                 <n-descriptions-item label="ID">
-                    {{ account.user.id }}
+                    {{ user.id }}
                 </n-descriptions-item>
                 <n-descriptions-item label="名称">
-                    {{ account.user.name }}
+                    {{ user.name }}
                 </n-descriptions-item>
                 <n-descriptions-item label="uuid">
                     <n-space>
-                        <n-text v-if="hidden.uuid">{{ '*'.repeat(account.user.uuid.length) }}</n-text>
-                        <n-text v-else>{{ account.user.uuid }}</n-text>
+                        <n-text v-if="hidden.uuid">{{ '*'.repeat(user.uuid.length) }}</n-text>
+                        <n-text v-else>{{ user.uuid }}</n-text>
 
                         <n-button text type="primary" @click="hidden.uuid = !hidden.uuid">
                             ({{ hidden.uuid ? '显示' : '隐藏' }})
@@ -69,8 +71,8 @@ const hidden = reactive({
                 </n-descriptions-item>
                 <n-descriptions-item label="udid">
                     <n-space>
-                        <n-text v-if="hidden.udid">{{ '*'.repeat(account.user.udid.length) }}</n-text>
-                        <n-text v-else>{{ account.user.udid }}</n-text>
+                        <n-text v-if="hidden.udid">{{ '*'.repeat(user.udid.length) }}</n-text>
+                        <n-text v-else>{{ user.udid }}</n-text>
 
                         <n-button text type="primary" @click="hidden.udid = !hidden.udid">
                             ({{ hidden.udid ? '显示' : '隐藏' }})
@@ -78,7 +80,7 @@ const hidden = reactive({
                     </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="创建时间">
-                    {{ formatTime(account.user.created_at, '未知') }}
+                    {{ formatTime(user.created_at, '未知') }}
                 </n-descriptions-item>
             </n-descriptions>
         </n-card>

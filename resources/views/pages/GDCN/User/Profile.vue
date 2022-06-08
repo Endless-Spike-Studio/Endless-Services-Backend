@@ -5,7 +5,7 @@ import {User} from "@/scripts/types/backend";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
 
-const user = getProp<User>('user');
+const user = getProp<User>('gdcn.user');
 const resendEmailVerificationForm = useForm({});
 </script>
 

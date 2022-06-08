@@ -6,9 +6,25 @@ export interface Model {
     updated_at: string;
 }
 
-export interface Message {
-    content: string;
-    options: MessageOptions;
+declare namespace GDCS {
+    export interface Account extends Model {
+        name: string;
+        email: string;
+        email_verified_at: string;
+        failedLogs?: AccountFailedLog[];
+    }
+
+    export interface AccountFailedLog extends Model {
+        account_id: number;
+        content: string;
+        ip: string;
+    }
+
+    export interface User extends Model {
+        name: string;
+        uuid: string | number;
+        udid: string;
+    }
 }
 
 export interface User extends Model {
@@ -47,4 +63,9 @@ export interface AccountLink extends Model {
 export interface TempLevelUploadAccess extends Model {
     account_id: number;
     ip: string;
+}
+
+export interface Message {
+    content: string;
+    options: MessageOptions;
 }
