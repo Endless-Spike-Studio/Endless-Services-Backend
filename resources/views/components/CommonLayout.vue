@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {
-    createDiscreteApi,
     darkTheme,
     GlobalTheme,
     lightTheme,
@@ -13,8 +12,10 @@ import {
     NLayoutContent,
     NLayoutFooter,
     NLayoutHeader,
+    NLoadingBarProvider,
     NMenu,
     NMessageProvider,
+    NNotificationProvider,
     NSpace,
     NThing,
     useOsTheme
@@ -25,7 +26,10 @@ import route, {routes} from "@/scripts/route";
 import {Message} from "@/scripts/types/backend";
 import {each} from "lodash-es";
 import {BranchesOutlined} from "@vicons/antd";
+import GlobalApiInjector from "@/views/components/GlobalApiInjector.vue";
+import {useGlobalStore} from "@/scripts/stores";
 
+const currentRoute = ref();
 const props = defineProps({
     theme: {
         type: String,
@@ -48,97 +52,94 @@ const props = defineProps({
     }
 });
 
-const currentRoute = ref(
-    route().current()
-);
-
-watch(routes, () => {
-    currentRoute.value = route().current();
-});
-
-const messages = getProp<Message[]>('messages', []);
-const themeRef = ref<GlobalTheme>(props.theme === 'light' ? lightTheme : darkTheme);
 const versions = getProp('versions', {
     php: 'Unknown',
     laravel: 'Unknown',
     git: 'Unknown'
 });
 
-const {message: $message} = createDiscreteApi(['message'], {
-    configProviderProps: {
-        theme: themeRef
-    }
+const themeRef = ref<GlobalTheme>(props.theme === 'light' ? lightTheme : darkTheme);
+
+watch(routes, () => {
+    currentRoute.value = route().current();
 });
 
-watch(
-    messages,
-    items => each(
-        items,
-        item => $message.create(item.content, item.options)
-    )
-);
+watch(getProp<Message[]>('messages', []), messages => {
+    const globalStore = useGlobalStore();
+
+    return each(messages, message => {
+        return globalStore.$message.create(message.content, message.options);
+    });
+});
 </script>
 
 <template>
     <n-config-provider :theme="themeRef" class="h-full">
-        <n-dialog-provider>
-            <n-message-provider>
-                <n-layout class="h-full">
-                    <n-layout-header>
-                        <n-space v-if="!isMobile" justify="space-between">
-                            <n-menu v-model:value="currentRoute"
-                                    :options="menu.left"
-                                    mode="horizontal"
-                                    @update:value="toRoute"/>
+        <n-message-provider>
+            <n-dialog-provider>
+                <n-notification-provider>
+                    <n-loading-bar-provider>
+                        <global-api-injector/>
 
-                            <n-menu v-model:value="currentRoute"
-                                    :options="menu.right"
-                                    mode="horizontal"
-                                    @update:value="toRoute"/>
-                        </n-space>
+                        <n-layout class="h-full">
+                            <n-layout-header>
+                                <n-space v-if="!isMobile" justify="space-between">
+                                    <n-menu v-model:value="currentRoute"
+                                            :options="menu.left"
+                                            mode="horizontal"
+                                            @update:value="toRoute"/>
 
-                        <n-menu v-else
-                                v-model:value="currentRoute"
-                                :default-expanded-keys="[]"
-                                :options="menu.mobile"
-                                @update:value="toRoute"/>
-                    </n-layout-header>
+                                    <n-menu v-model:value="currentRoute"
+                                            :options="menu.right"
+                                            mode="horizontal"
+                                            @update:value="toRoute"/>
+                                </n-space>
 
-                    <n-layout-content class="p-5 pb-32 lg:pb-20">
-                        <n-space vertical>
-                            <slot/>
-                        </n-space>
-                    </n-layout-content>
+                                <n-menu v-else
+                                        v-model:value="currentRoute"
+                                        :default-expanded-keys="[]"
+                                        :options="menu.mobile"
+                                        @update:value="toRoute"/>
+                            </n-layout-header>
 
-                    <n-layout-footer class="lg:text-center p-5" position="absolute">
-                        <n-space justify="space-between">
-                            <n-thing>
-                                <span>&copy; 2022 - {{ new Date().getFullYear() }}</span>
-                                <n-divider vertical/>
+                            <n-layout-content class="p-5 pb-32 lg:pb-20">
+                                <n-space vertical>
+                                    <slot/>
+                                </n-space>
+                            </n-layout-content>
 
-                                <n-button text @click="toRoute('home')">
-                                    {{ isMobile ? footer.short : footer.long }}
-                                </n-button>
+                            <n-layout-footer class="lg:text-center p-5" position="absolute">
+                                <n-space justify="space-between">
+                                    <n-thing>
+                                        <span>&copy; 2022 - {{ new Date().getFullYear() }}</span>
+                                        <n-divider vertical/>
 
-                                <n-divider vertical/>
-                                <n-button text @click="toURL('https://beian.miit.gov.cn')">吉ICP备18006293号</n-button>
-                            </n-thing>
+                                        <n-button text @click="toRoute('home')">
+                                            {{ isMobile ? footer.short : footer.long }}
+                                        </n-button>
 
-                            <n-thing>
-                                <span>PHP {{ versions.php }}</span>
-                                <n-divider vertical/>
+                                        <n-divider vertical/>
+                                        <n-button text @click="toURL('https://beian.miit.gov.cn')">吉ICP备18006293号
+                                        </n-button>
+                                    </n-thing>
 
-                                <span>Laravel {{ versions.laravel }}</span>
-                                <n-divider vertical/>
+                                    <n-thing>
+                                        <span>PHP {{ versions.php }}</span>
+                                        <n-divider vertical/>
 
-                                <span>
+                                        <span>Laravel {{ versions.laravel }}</span>
+                                        <n-divider vertical/>
+
+                                        <span>
                                     <n-icon :component="BranchesOutlined"/> {{ versions.git }}
                                 </span>
-                            </n-thing>
-                        </n-space>
-                    </n-layout-footer>
-                </n-layout>
-            </n-message-provider>
-        </n-dialog-provider>
+                                    </n-thing>
+                                </n-space>
+                            </n-layout-footer>
+                        </n-layout>
+                    </n-loading-bar-provider>
+                </n-notification-provider>
+            </n-dialog-provider>
+        </n-message-provider>
     </n-config-provider>
 </template>
