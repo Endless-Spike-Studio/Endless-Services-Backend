@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', config('app.locale')) }}">
+<html class="h-full" lang="{{ str_replace( '_', '-', config('app.locale') ) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +17,7 @@
         <script nomodule src="{{ vite_entry('vite/legacy-polyfills') }}"></script>
     @endenv
 </head>
-<body>
+<body class="h-full">
 @inertia
 </body>
 </html>

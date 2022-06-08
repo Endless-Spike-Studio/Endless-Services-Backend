@@ -7,10 +7,7 @@
     src: url(../fonts/HarmonyOS_Sans_SC_Medium.ttf) format('truetype');
 }
 
-html, body, #app, .max-height {
-    height: 100%;
-}
-
-* {
-    font-family: 'HarmonyOS Sans SC Medium', sans-serif !important;
+#app {
+    @apply h-full;
+    font-family: 'HarmonyOS Sans SC Medium', sans-serif;
 }
