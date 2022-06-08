@@ -28,11 +28,11 @@ class HandleInertiaRequests extends Middleware
             ],
             'gdcs' => [
                 'account' => Auth::guard('gdcs')
-                    ?->user()
-                    ->only(['id', 'name']),
+                    ->user()
+                    ?->only(['id', 'name']),
                 'user' => Auth::guard('gdcs')
-                    ?->user()
-                    ->load('user:id,uuid,name')
+                    ->user()
+                    ?->load('user:id,uuid,name')
                     ->getRelation('user')
             ],
             'messages' => Session::pull('messages', []),
