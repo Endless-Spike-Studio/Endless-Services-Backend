@@ -1,0 +1,144 @@
+<script lang="ts" setup>
+import {
+    createDiscreteApi,
+    darkTheme,
+    GlobalTheme,
+    lightTheme,
+    NButton,
+    NConfigProvider,
+    NDialogProvider,
+    NDivider,
+    NIcon,
+    NLayout,
+    NLayoutContent,
+    NLayoutFooter,
+    NLayoutHeader,
+    NMenu,
+    NMessageProvider,
+    NSpace,
+    NThing,
+    useOsTheme
+} from "naive-ui";
+import {ref, watch} from "vue";
+import {getProp, isMobile, toRoute, toURL} from "@/scripts/helpers";
+import route, {routes} from "@/scripts/route";
+import {Message} from "@/scripts/types/backend";
+import {each} from "lodash-es";
+import {BranchesOutlined} from "@vicons/antd";
+
+const props = defineProps({
+    theme: {
+        type: String,
+        default: () => useOsTheme().value
+    },
+    menu: {
+        type: Object,
+        default: () => ({
+            left: [],
+            right: [],
+            mobile: []
+        })
+    },
+    footer: {
+        type: Object,
+        default: () => ({
+            long: 'Geometry Dash Chinese',
+            short: 'GDCN'
+        })
+    }
+});
+
+const currentRoute = ref(
+    route().current()
+);
+
+watch(routes, () => {
+    currentRoute.value = route().current();
+});
+
+const messages = getProp<Message[]>('messages', []);
+const themeRef = ref<GlobalTheme>(props.theme === 'light' ? lightTheme : darkTheme);
+const versions = getProp('versions', {
+    php: 'Unknown',
+    laravel: 'Unknown',
+    git: 'Unknown'
+});
+
+const {message: $message} = createDiscreteApi(['message'], {
+    configProviderProps: {
+        theme: themeRef
+    }
+});
+
+watch(
+    messages,
+    items => each(
+        items,
+        item => $message.create(item.content, item.options)
+    )
+);
+</script>
+
+<template>
+    <n-config-provider :theme="themeRef" class="h-full">
+        <n-dialog-provider>
+            <n-message-provider>
+                <n-layout class="h-full">
+                    <n-layout-header>
+                        <n-space v-if="!isMobile" justify="space-between">
+                            <n-menu v-model:value="currentRoute"
+                                    :options="menu.left"
+                                    mode="horizontal"
+                                    @update:value="toRoute"/>
+
+                            <n-menu v-model:value="currentRoute"
+                                    :options="menu.right"
+                                    mode="horizontal"
+                                    @update:value="toRoute"/>
+                        </n-space>
+
+                        <n-menu v-else
+                                v-model:value="currentRoute"
+                                :default-expanded-keys="[]"
+                                :options="menu.mobile"
+                                @update:value="toRoute"/>
+                    </n-layout-header>
+
+                    <n-layout-content class="p-5 pb-32 lg:pb-20">
+                        <n-space vertical>
+                            <slot/>
+                        </n-space>
+                    </n-layout-content>
+
+                    <n-layout-footer class="lg:text-center p-5" position="absolute">
+                        <n-space justify="space-between">
+                            <n-thing>
+                                <span>&copy; 2022 - {{ new Date().getFullYear() }}</span>
+                                <n-divider vertical/>
+
+                                <n-button text @click="toRoute('home')">
+                                    {{ isMobile ? footer.short : footer.long }}
+                                </n-button>
+
+                                <n-divider vertical/>
+                                <n-button text @click="toURL('https://beian.miit.gov.cn')">吉ICP备18006293号</n-button>
+                            </n-thing>
+
+                            <n-thing>
+                                <span>PHP {{ versions.php }}</span>
+                                <n-divider vertical/>
+
+                                <span>Laravel {{ versions.laravel }}</span>
+                                <n-divider vertical/>
+
+                                <span>
+                                    <n-icon :component="BranchesOutlined"/> {{ versions.git }}
+                                </span>
+                            </n-thing>
+                        </n-space>
+                    </n-layout-footer>
+                </n-layout>
+            </n-message-provider>
+        </n-dialog-provider>
+    </n-config-provider>
+</template>

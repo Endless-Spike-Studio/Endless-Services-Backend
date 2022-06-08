@@ -10,11 +10,6 @@ use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
-    public function version(Request $request): ?string
-    {
-        return vite()->getHash();
-    }
-
     public function share(Request $request): array
     {
         $hash = Cache::get('git_commit_hash', static function () {
@@ -29,9 +24,16 @@ class HandleInertiaRequests extends Middleware
                     ?->load('user')
             ],
             'messages' => Session::pull('messages', []),
-            'php_version' => PHP_VERSION,
-            'laravel_version' => App::version(),
-            'git_commit_hash' => $hash
+            'versions' => [
+                'php' => PHP_VERSION,
+                'laravel' => App::version(),
+                'git' => $hash
+            ]
         ]);
+    }
+
+    public function version(Request $request): ?string
+    {
+        return vite()->getHash();
     }
 }

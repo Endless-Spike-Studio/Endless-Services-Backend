@@ -1,11 +1,9 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {NButton, NDivider, NDropdown, NIcon, NSpace} from "naive-ui";
-import Banner from "@/images/GDCS/Banner.png";
-import TeamMembers from "@/views/components/TeamMembers.vue";
-import CodeTime from "@/views/components/CodeTime.vue";
-import HomeButtons from "@/views/components/HomeButtons.vue";
 import {AndroidFilled, AppleFilled, WindowsFilled} from "@vicons/antd";
 import {toURL} from "@/scripts/helpers";
+import CommonHome from "@/views/components/CommonHome.vue";
+import Banner from "@/images/GDCS/Banner.png";
 
 const windowsDownloadOptions = [
     {
@@ -24,17 +22,10 @@ function handleWindowsDownload(suffix: string) {
 </script>
 
 <template layout="GDCS">
-    <n-space vertical>
-        <div class="mx-auto lg:w-1/2">
-            <img :src="Banner" alt="Banner">
-        </div>
-
-        <div class="mx-auto py-5">
-            <home-buttons join-group-button-text="加入 GDCS 讨论群"/>
-        </div>
-
-        <div class="text-center lg:w-1/5 mx-auto">
+    <common-home :banner="Banner" group-name="GDCS 讨论群" team-name="GDCS 团队">
+        <n-space class="lg:w-1/3 mx-auto" vertical>
             <n-divider>下载</n-divider>
+
             <n-space justify="center">
                 <n-button @click="toURL('https://cdn.geometrydashchinese.com/client/GDCS.apk')">
                     <template #icon>
@@ -68,14 +59,6 @@ function handleWindowsDownload(suffix: string) {
                     Mac | IOS
                 </n-button>
             </n-space>
-        </div>
-
-        <div class="text-center lg:w-1/5 mx-auto pt-5">
-            <code-time/>
-        </div>
-
-        <div class="lg:w-2/3 py-5 mx-auto">
-            <team-members title="GDCS 团队"/>
-        </div>
-    </n-space>
+        </n-space>
+    </common-home>
 </template>

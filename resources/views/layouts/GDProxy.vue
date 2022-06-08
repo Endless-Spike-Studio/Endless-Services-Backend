@@ -1,20 +1,9 @@
 <script lang="ts" setup>
-import {
-    NConfigProvider,
-    NLayout,
-    NLayoutContent,
-    NLayoutFooter,
-    NLayoutHeader,
-    NMessageProvider,
-    NSpace
-} from "naive-ui";
 import {computed, h} from "vue";
 import {HomeTwotone} from "@vicons/antd";
 import Logo from "@/images/Logo.png";
-import BackendMessageReceiver from "@/views/components/BackendMessageReceiver.vue";
-import LayoutHeader from "@/views/components/LayoutHeader.vue";
-import LayoutFooter from "@/views/components/LayoutFooter.vue";
-import {renderIcon, theme} from "@/scripts/helpers";
+import {renderIcon} from "@/scripts/helpers";
+import CommonLayout from "@/views/components/CommonLayout.vue";
 
 const options = {
     logo: {
@@ -46,28 +35,15 @@ const menu = computed(
         right: []
     })
 );
+
+const footer = {
+    short: 'GDProxy',
+    long: 'Geometry Dash Proxy'
+}
 </script>
 
 <template>
-    <n-config-provider :theme="theme" class="max-height">
-        <n-message-provider>
-            <backend-message-receiver/>
-
-            <n-layout class="max-height">
-                <n-layout-header>
-                    <layout-header :menu="menu"/>
-                </n-layout-header>
-
-                <n-layout-content :content-style="{ padding: '24px' }">
-                    <n-space vertical>
-                        <slot/>
-                    </n-space>
-                </n-layout-content>
-
-                <n-layout-footer class="lg:text-center p-5" position="absolute">
-                    <layout-footer long-text="Geometry Dash Proxy" short-text="GDProxy"/>
-                </n-layout-footer>
-            </n-layout>
-        </n-message-provider>
-    </n-config-provider>
+    <common-layout :footer="footer" :menu="menu">
+        <slot/>
+    </common-layout>
 </template>

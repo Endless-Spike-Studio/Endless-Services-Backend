@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import {NButton, NCard, NDataTable, NSpace} from "naive-ui";
+<script lang="ts" setup>
+import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
 import {formatTime, toRoute} from "@/scripts/helpers";
 import {TempLevelUploadAccess} from "@/scripts/types/backend";
 import {h} from "vue";
@@ -33,25 +33,27 @@ const columns = [
         render: (row: TempLevelUploadAccess) => {
             const form = useForm({});
 
-            return h(NSpace, null, () => [
-                h(NButton, {
-                    disabled: form.processing,
-                    onClick: () => form.delete(
-                        route('gdcs.tools.level.temp_upload_access.delete.api', {
-                            id: row.id
-                        })
-                    )
+            return h(NPopconfirm, {
+                onPositiveClick: () => form.delete(
+                    route('gdcs.tools.level.temp_upload_access.delete.api', {
+                        id: row.id
+                    })
+                )
+            }, {
+                trigger: () => h(NButton, {
+                    type: 'error',
+                    disabled: form.processing
                 }, {
                     default: () => '删除'
                 })
-            ]);
+            });
         }
     }
 ]
 </script>
 
 <template layout="GDCS">
-    <n-card title="临时关卡上传许可" class="lg:w-2/3 mx-auto">
+    <n-card class="lg:w-2/3 mx-auto" title="临时关卡上传许可">
         <n-space vertical>
             <n-button @click="toRoute('gdcs.tools.level.temp_upload_access.create.api')">创建新的临时关卡上传许可</n-button>
             <n-data-table :columns="columns" :data="accesses"/>
