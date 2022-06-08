@@ -1,12 +1,18 @@
 <script lang="ts" setup>
 import {formatTime, getProp, isMobile, toRoute} from "@/scripts/helpers";
-import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace} from "naive-ui";
 import {User} from "@/scripts/types/backend";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
+import {reactive} from "vue";
+import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace, NText} from "naive-ui";
 
 const account = getProp<User>('gdcs.account');
 const resendEmailVerificationForm = useForm({});
+
+const hidden = reactive({
+    uuid: true,
+    udid: true
+});
 </script>
 
 <template layout="GDCS">
@@ -52,10 +58,24 @@ const resendEmailVerificationForm = useForm({});
                     {{ account.user.name }}
                 </n-descriptions-item>
                 <n-descriptions-item label="uuid">
-                    {{ account.user.uuid }}
+                    <n-space>
+                        <n-text v-if="hidden.uuid">{{ '*'.repeat(account.user.uuid.length) }}</n-text>
+                        <n-text v-else>{{ account.user.uuid }}</n-text>
+
+                        <n-button text type="primary" @click="hidden.uuid = !hidden.uuid">
+                            ({{ hidden.uuid ? '显示' : '隐藏' }})
+                        </n-button>
+                    </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="udid">
-                    {{ account.user.udid }}
+                    <n-space>
+                        <n-text v-if="hidden.udid">{{ '*'.repeat(account.user.udid.length) }}</n-text>
+                        <n-text v-else>{{ account.user.udid }}</n-text>
+
+                        <n-button text type="primary" @click="hidden.udid = !hidden.udid">
+                            ({{ hidden.udid ? '显示' : '隐藏' }})
+                        </n-button>
+                    </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="创建时间">
                     {{ formatTime(account.user.created_at, '未知') }}
