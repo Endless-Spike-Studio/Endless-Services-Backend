@@ -1,32 +1,31 @@
+on: push
 name: CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
 jobs:
-  phpunit:
+  testing:
     runs-on: ubuntu-latest
     container:
       image: kirschbaumdevelopment/laravel-test-runner:8.1
     services:
       mysql:
-        image: mysql:8.0
+        image: mariadb
         env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: test
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MARIADB_DATABASE: gdcn
         ports:
           - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v3
       - name: Install composer dependencies
         run: |
-          composer install --no-scripts
+          composer install
+      - name: Install front-end dependencies
+        run: |
+          npm install --global pnpm
+          pnpm install
+      - name: Build front-end resources
+        run: |
+          pnpm run build
       - name: Prepare Laravel Application
         run: |
           cp .env.ci .env
