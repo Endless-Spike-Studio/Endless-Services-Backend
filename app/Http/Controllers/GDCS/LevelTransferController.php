@@ -45,7 +45,7 @@ class LevelTransferController extends Controller
             }
 
             $response = app('proxy')
-                ->post('http://' . $link->server . '/downloadGJLevel22.php', [
+                ->post($link->server . '/downloadGJLevel22.php', [
                     'levelID' => $data['levelID'],
                     'secret' => 'Wmfd2893gb7'
                 ])->body();

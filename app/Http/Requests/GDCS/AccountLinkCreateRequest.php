@@ -11,7 +11,8 @@ class AccountLinkCreateRequest extends Request
         return [
             'server' => [
                 'required',
-                'string'
+                'string',
+                'active_url'
             ],
             'name' => [
                 'required',
