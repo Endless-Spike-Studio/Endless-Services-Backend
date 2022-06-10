@@ -55,7 +55,7 @@ Route::group([
             'prefix' => 'user',
             'as' => 'user.'
         ], static function () {
-            Route::inertia('/profile', [UserPresenter::class, 'renderProfile'])->name('profile');
+            Route::get('/profile', [UserPresenter::class, 'renderProfile'])->name('profile');
             Route::post('/resend:email_verification', [UserController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
             Route::get('/setting', [UserPresenter::class, 'renderSetting'])->name('setting');
             Route::patch('/setting', [UserController::class, 'updateSetting'])->name('setting.update.api');
