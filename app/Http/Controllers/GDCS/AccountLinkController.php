@@ -19,11 +19,10 @@ class AccountLinkController extends Controller
     public function create(AccountLinkCreateRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $server = parse_url($data['server'], PHP_URL_HOST);
 
         try {
             $response = app('proxy')
-                ->post('http://' . $server . '/accounts/loginGJAccount.php', [
+                ->post('http://' . $data['server'] . '/accounts/loginGJAccount.php', [
                     'userName' => $data['name'],
                     'password' => $data['password'],
                     'udid' => Str::uuid()
@@ -43,7 +42,7 @@ class AccountLinkController extends Controller
 
         $account->links()
             ->create([
-                'server' => $server,
+                'server' => $data['server'],
                 'target_name' => $data['name'],
                 'target_account_id' => $accountID,
                 'target_user_id' => $userID
