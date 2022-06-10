@@ -25,7 +25,7 @@ const code_time_url = 'https://img.shields.io/endpoint?url=' + encodeURIComponen
 <template>
     <n-space vertical>
         <div v-if="banner" class="mx-auto lg:w-1/2">
-            <n-image :src="banner" alt="Banner"/>
+            <n-image :img-props="{ class: 'w-full' }" :src="banner" alt="Banner"/>
         </div>
 
         <div class="mx-auto py-5">
