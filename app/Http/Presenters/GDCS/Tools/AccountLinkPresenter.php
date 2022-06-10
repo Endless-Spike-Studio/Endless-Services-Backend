@@ -13,7 +13,7 @@ class AccountLinkPresenter
         return Inertia::render('GDCS/Tools/Account/Link/List', [
             'links' => Auth::guard('gdcs')
                 ->user()
-                ->load('links:id,server,target_name,target_account_id,target_user_id,created_at')
+                ->load('links:id,account_id,server,target_name,target_account_id,target_user_id,created_at')
                 ->getRelation('links')
         ]);
     }
