@@ -10,9 +10,7 @@ const options = {
         label: 'Geometry Dash Proxy',
         key: 'gdproxy.home',
         icon: () => h('img', {
-            style: {
-                filter: 'hue-rotate(180deg)'
-            },
+            class: 'w-full hue-rotate-180',
             src: Logo
         })
     },

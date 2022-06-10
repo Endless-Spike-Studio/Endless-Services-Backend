@@ -13,9 +13,7 @@ const options = {
         label: 'Geometry Dash Chinese Server',
         key: 'gdcs.home',
         icon: () => h('img', {
-            style: {
-                filter: 'hue-rotate(90deg)'
-            },
+            class: 'w-full hue-rotate-90',
             src: Logo
         })
     },

@@ -10,9 +10,7 @@ const options = {
         label: 'Newgrounds Proxy',
         key: 'ngproxy.home',
         icon: () => h('img', {
-            style: {
-                filter: 'hue-rotate(270deg)'
-            },
+            class: 'w-full hue-rotate-[270deg]',
             src: Logo
         })
     },
