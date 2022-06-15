@@ -210,6 +210,21 @@ Route::group([
             });
         });
     });
+
+    Route::group([
+        'as' => 'docs.',
+        'prefix' => 'docs'
+    ], static function () {
+        Route::inertia('/', 'GDCS/Docs/Home')->name('home');
+
+        Route::group([
+            'as' => 'command.',
+            'prefix' => 'command'
+        ], static function () {
+            Route::inertia('/account', 'GDCS/Docs/Command/Account')->name('account');
+            Route::inertia('/level', 'GDCS/Docs/Command/Level')->name('level');
+        });
+    });
 });
 
 Route::group([
