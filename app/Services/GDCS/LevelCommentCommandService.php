@@ -2,7 +2,6 @@
 
 namespace App\Services\GDCS;
 
-use App\Exceptions\StorageContentMissingException;
 use App\Http\Controllers\GDCS\HelperController;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\DailyLevel;
@@ -12,8 +11,6 @@ use Base64Url\Base64Url;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class LevelCommentCommandService extends CommandService
 {
@@ -101,9 +98,9 @@ class LevelCommentCommandService extends CommandService
 
                         DailyLevel::query()
                             ->create([
-                            'level_id' => $this->level->id,
-                            'apply_at' => !$daily ? Carbon::parse('tomorrow') : $daily->apply_at->addWeek()
-                        ]);
+                                'level_id' => $this->level->id,
+                                'apply_at' => !$daily ? Carbon::parse('tomorrow') : $daily->apply_at->addWeek()
+                            ]);
                         break;
                     case 'weekly':
                         $weekly = WeeklyLevel::query()
@@ -112,9 +109,9 @@ class LevelCommentCommandService extends CommandService
 
                         WeeklyLevel::query()
                             ->create([
-                            'level_id' => $this->level->id,
-                            'apply_at' => !$weekly ? Carbon::parse('next monday') : $weekly->apply_at->addWeek()
-                        ]);
+                                'level_id' => $this->level->id,
+                                'apply_at' => !$weekly ? Carbon::parse('next monday') : $weekly->apply_at->addWeek()
+                            ]);
                         break;
                     default:
                         return __('messages.command.invalid_parameters');
@@ -240,34 +237,6 @@ class LevelCommentCommandService extends CommandService
     protected function checkLevelOwner(): bool
     {
         return $this->account->user->id === $this->level->user_id;
-    }
-
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws StorageContentMissingException
-     */
-    public function replace_using(): string
-    {
-        if (!Arr::has($this->parameters, [0])) {
-            return __('messages.command.invalid_parameters');
-        }
-
-        if (!$this->checkLevelOwner()) {
-            return __('messages.command.permission_denied');
-        }
-
-        $path = Arr::get($this->parameters, 0);
-
-        $storage = app('storage:gdcs.level_data');
-
-        try {
-            $content = $storage->get($path);
-            $storage->put($this->level->id, $content);
-            return __('messages.command.execute_success');
-        } catch (StorageContentMissingException) {
-            return __('messages.command.invalid_parameters');
-        }
     }
 
     public function transfer_to(): string
