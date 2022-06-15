@@ -10,8 +10,7 @@ import {
     NInput,
     NSpace,
     NTabPane,
-    NTabs,
-    NText
+    NTabs
 } from "naive-ui";
 import Banner from "@/images/NGProxy/Banner.png";
 import {isMobile, toURL} from "@/scripts/helpers";
@@ -64,28 +63,28 @@ const fetchSongForm = useForm({});
                     <n-divider/>
                     <n-descriptions :bordered="true" :column="isMobile ? 1 : 3">
                         <n-descriptions-item label="ID">
-                            <n-text>{{ song.id }}</n-text>
+                            {{ song.id }}
                         </n-descriptions-item>
                         <n-descriptions-item label="歌曲ID">
-                            <n-text>{{ song.song_id }}</n-text>
+                            {{ song.song_id }}
                         </n-descriptions-item>
                         <n-descriptions-item label="歌曲名">
-                            <n-text>{{ song.name }}</n-text>
+                            {{ song.name }}
                         </n-descriptions-item>
                         <n-descriptions-item label="歌手ID">
-                            <n-text>{{ song.artist_id }}</n-text>
+                            {{ song.artist_id }}
                         </n-descriptions-item>
                         <n-descriptions-item label="歌手名">
-                            <n-text>{{ song.artist_name }}</n-text>
+                            {{ song.artist_name }}
                         </n-descriptions-item>
                         <n-descriptions-item label="大小">
-                            <n-text>{{ song.size }} MB</n-text>
+                            {{ song.size }} MB
                         </n-descriptions-item>
                         <n-descriptions-item label="禁用">
-                            <n-text>{{ song.disabled ? '是' : '否' }}</n-text>
+                            {{ song.disabled ? '是' : '否' }}
                         </n-descriptions-item>
                         <n-descriptions-item label="缓存时间">
-                            <n-text>{{ new Date(song.created_at).toLocaleString() }}</n-text>
+                            {{ new Date(song.created_at).toLocaleString() }}
                         </n-descriptions-item>
                         <n-descriptions-item label="下载地址">
                             <n-button text @click="toURL(song.download_url)">
