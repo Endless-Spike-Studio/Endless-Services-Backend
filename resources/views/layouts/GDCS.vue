@@ -1,10 +1,19 @@
 <script lang="ts" setup>
 import {computed, h} from "vue";
-import {DashboardTwotone, HomeTwotone, LoginOutlined, ProfileTwotone, ToolTwotone, UserOutlined} from "@vicons/antd";
+import {
+    BookTwotone,
+    DashboardTwotone,
+    HomeTwotone,
+    LoginOutlined,
+    ProfileTwotone,
+    ToolTwotone,
+    UserOutlined
+} from "@vicons/antd";
 import Logo from "@/images/Logo.png";
 import {getProp, renderIcon} from "@/scripts/helpers";
 import {User} from "@/scripts/types/backend";
 import CommonLayout from "@/views/components/CommonLayout.vue";
+import {NImage} from "naive-ui";
 
 const account = getProp<User>('gdcs.account');
 
@@ -12,8 +21,10 @@ const options = {
     logo: {
         label: 'Geometry Dash Chinese Server',
         key: 'gdcs.home',
-        icon: () => h('img', {
-            class: 'w-full hue-rotate-90',
+        icon: () => h(NImage, {
+            imgProps: {
+                class: 'w-full'
+            },
             src: Logo
         })
     },
@@ -28,9 +39,14 @@ const options = {
         icon: renderIcon(DashboardTwotone)
     },
     tools: {
-        label: 'Tools',
+        label: '在线工具',
         key: 'gdcs.tools.home',
         icon: renderIcon(ToolTwotone)
+    },
+    docs: {
+        label: '文档',
+        key: 'gdcs.docs.home',
+        icon: renderIcon(BookTwotone)
     },
     login: {
         label: '登录',
@@ -66,6 +82,7 @@ const menu = computed(
                     options.home,
                     options.dashboard,
                     options.tools,
+                    options.docs,
                     auth.value
                 ]
             }
@@ -73,7 +90,8 @@ const menu = computed(
         left: [
             options.logo,
             options.dashboard,
-            options.tools
+            options.tools,
+            options.docs
         ],
         right: [auth.value]
     })

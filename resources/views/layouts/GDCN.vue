@@ -5,6 +5,7 @@ import Logo from "@/images/Logo.png";
 import {getProp, renderIcon} from "@/scripts/helpers";
 import {User} from "@/scripts/types/backend";
 import CommonLayout from "@/views/components/CommonLayout.vue";
+import {NImage} from "naive-ui";
 
 const user = getProp<User>('gdcn.user');
 
@@ -12,7 +13,12 @@ const options = {
     logo: {
         label: 'Geometry Dash Chinese',
         key: 'home',
-        icon: () => h('img', {src: Logo})
+        icon: () => h(NImage, {
+            imgProps: {
+                class: 'w-full'
+            },
+            src: Logo
+        })
     },
     home: {
         label: '主页',
@@ -25,7 +31,7 @@ const options = {
         icon: renderIcon(DashboardTwotone)
     },
     tools: {
-        label: 'Tools',
+        label: '在线工具',
         key: 'tools.home',
         icon: renderIcon(ToolTwotone)
     },
