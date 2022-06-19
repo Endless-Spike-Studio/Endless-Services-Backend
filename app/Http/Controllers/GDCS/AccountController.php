@@ -62,7 +62,7 @@ class AccountController extends Controller
         if (!$account->hasVerifiedEmail()) {
             $account->markEmailAsVerified();
 
-            $this->pushErrorMessage(
+            $this->pushSuccessMessage(
                 __('messages.email_verified')
             );
         } else {
