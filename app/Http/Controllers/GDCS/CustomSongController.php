@@ -29,9 +29,11 @@ class CustomSongController extends Controller
             ->whereDownloadUrl($data['link']);
 
         if ($query->exists()) {
-            $this->pushMessage(__('messages.custom_song.already_exist_with_id', [
-                'id' => $query->getKey() + config('gdcs.custom_song_offset')
-            ]), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.custom_song.already_exist_with_id', [
+                    'id' => $query->getKey() + config('gdcs.custom_song_offset')
+                ])
+            );
 
             return back();
         }
@@ -41,13 +43,19 @@ class CustomSongController extends Controller
         $req = $proxy->get($data['link']);
 
         if (Str::contains($data['link'], [163, 126, 'netease'])) {
-            $this->pushMessage(__('messages.custom_song.netease_link_found'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.custom_song.netease_link_found')
+            );
+
             return to_route('gdcs.tools.song.custom.create.netease');
         }
 
         $contentType = $req->header('Content-Type');
         if (explode('/', $contentType)[0] !== 'audio') {
-            $this->pushMessage(__('messages.custom_song.invalid_link'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.custom_song.invalid_link')
+            );
+
             return back();
         }
 
@@ -62,7 +70,10 @@ class CustomSongController extends Controller
                 'download_url' => $data['link']
             ]);
 
-        $this->pushMessage(__('messages.created'), ['type' => 'success']);
+        $this->pushSuccessMessage(
+            __('messages.created')
+        );
+
         return to_route('gdcs.tools.song.custom.list');
     }
 
@@ -79,9 +90,12 @@ class CustomSongController extends Controller
             ->whereDownloadUrl($link);
 
         if ($query->exists()) {
-            $this->pushMessage(__('messages.custom_song.already_exist_with_id', [
-                'id' => $query->getKey() + config('gdcs.custom_song_offset')
-            ]), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.custom_song.already_exist_with_id', [
+                    'id' => $query->getKey() + config('gdcs.custom_song_offset')
+                ])
+            );
+
             return back();
         }
 
@@ -92,7 +106,10 @@ class CustomSongController extends Controller
             ->json('songs.0');
 
         if ($songInfo === null) {
-            $this->pushMessage(__('messages.custom_song.not_found'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.custom_song.not_found')
+            );
+
             return back();
         }
 
@@ -100,14 +117,16 @@ class CustomSongController extends Controller
             ->create([
                 'name' => $songInfo['name'],
                 'artist_name' => collect($songInfo['artists'])
-                    ->map(function ($artist) {
-                        return $artist['name'];
-                    })->implode(' / '),
+                    ->pluck('name')
+                    ->implode(' / '),
                 'size' => sprintf('%.2f', $songInfo['lMusic']['size'] / 1024 / 1024),
                 'download_url' => $link
             ]);
 
-        $this->pushMessage(__('messages.created'), ['type' => 'success']);
+        $this->pushSuccessMessage(
+            __('messages.created')
+        );
+
         return to_route('gdcs.tools.song.custom.list');
     }
 
@@ -120,12 +139,17 @@ class CustomSongController extends Controller
             ->whereKey($id);
 
         if (!$query->exists()) {
-            $this->pushMessage(__('messages.custom_song.not_found'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.custom_song.not_found')
+            );
+
             return back();
         }
 
         $query->delete();
-        $this->pushMessage(__('messages.deleted'), ['type' => 'success']);
+        $this->pushSuccessMessage(
+            __('messages.deleted')
+        );
 
         return back();
     }

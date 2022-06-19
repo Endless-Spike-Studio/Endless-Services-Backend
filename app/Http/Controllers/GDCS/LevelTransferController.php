@@ -92,11 +92,18 @@ class LevelTransferController extends Controller
                     'level_id' => $level->id
                 ]);
 
-            $this->pushMessage(__('messages.level_transfer.success'), ['type' => 'success']);
+            $this->pushSuccessMessage(
+                __('messages.level_transfer.success')
+            );
         } catch (InvalidResponseException) {
-            $this->pushMessage(__('messages.robtop_now_not_like_you'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.robtop_now_not_like_you')
+            );
         } catch (LevelTransferTargetLinkNotFoundException) {
-            $this->pushMessage(__('messages.level_transfer.creator_link_not_found'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.level_transfer.creator_link_not_found')
+            );
+
             return to_route('gdcs.tools.account.link.list');
         }
 
@@ -115,13 +122,19 @@ class LevelTransferController extends Controller
         try {
             HelperController::checkResponse($response);
         } catch (InvalidResponseException) {
-            $this->pushMessage(__('messages.robtop_now_not_like_you'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.robtop_now_not_like_you')
+            );
+
             return back();
         }
 
         $levelData = Arr::get(explode('#', $response), 0);
         if (empty($levelData)) {
-            $this->pushMessage(__('messages.level_transfer.level_not_found'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.level_transfer.level_not_found')
+            );
+
             return back();
         }
 
@@ -194,11 +207,18 @@ class LevelTransferController extends Controller
                 ])->body();
 
             HelperController::checkResponse($response);
-            $this->pushMessage(__('messages.level_transfer.success_with_id', ['id' => $response]), ['type' => 'success']);
+
+            $this->pushSuccessMessage(
+                __('messages.level_transfer.success_with_id', ['id' => $response])
+            );
         } catch (StorageContentMissingException|ModelNotFoundException) {
-            $this->pushMessage(__('messages.level_transfer.level_not_found'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.level_transfer.level_not_found')
+            );
         } catch (InvalidResponseException) {
-            $this->pushMessage(__('messages.robtop_now_not_like_you'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.robtop_now_not_like_you')
+            );
         }
 
         return back();

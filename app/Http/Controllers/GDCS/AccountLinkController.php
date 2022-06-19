@@ -32,7 +32,10 @@ class AccountLinkController extends Controller
 
             HelperController::checkResponse($response);
         } catch (InvalidResponseException) {
-            $this->pushMessage(__('messages.robtop_now_not_like_you'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.robtop_now_not_like_you')
+            );
+
             return back();
         }
 
@@ -48,7 +51,10 @@ class AccountLinkController extends Controller
                 'target_user_id' => $userID
             ]);
 
-        $this->pushMessage(__('messages.created'), ['type' => 'success']);
+        $this->pushSuccessMessage(
+            __('messages.created')
+        );
+
         return to_route('gdcs.tools.account.link.list');
     }
 
@@ -61,9 +67,14 @@ class AccountLinkController extends Controller
             ->whereKey($id);
 
         if (!$query->exists()) {
-            $this->pushMessage(__('messages.delete_failed'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.delete_failed')
+            );
         } else {
-            $this->pushMessage(__('messages.deleted'), ['type' => 'success']);
+            $this->pushSuccessMessage(
+                __('messages.deleted')
+            );
+
             $query->delete();
         }
 

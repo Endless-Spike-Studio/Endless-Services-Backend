@@ -36,5 +36,7 @@ return [
         'failed' => '关卡转移失败',
         'level_not_found' => '关卡不存在',
         'creator_link_not_found' => '链接不存在, 请先链接 creator 的账号'
-    ]
+    ],
+    'welcome_back' => '欢迎回来! :name',
+    'logout_success' => '登出成功'
 ];

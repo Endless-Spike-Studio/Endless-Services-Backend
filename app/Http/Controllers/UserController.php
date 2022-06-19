@@ -48,6 +48,12 @@ class UserController extends Controller
             return back();
         }
 
+        $this->pushSuccessMessage(
+            'messages.welcome_back', [
+                'name' => $data['name']
+            ]
+        );
+
         return Redirect::intended();
     }
 
@@ -73,6 +79,10 @@ class UserController extends Controller
 
     public function logout(): RedirectResponse
     {
+        $this->pushSuccessMessage(
+            __('messages.logout_success')
+        );
+
         Auth::logoutCurrentDevice();
         return to_route('home');
     }

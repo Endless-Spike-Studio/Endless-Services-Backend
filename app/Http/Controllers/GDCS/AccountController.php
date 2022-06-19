@@ -51,6 +51,10 @@ class AccountController extends Controller
         $account = Account::create($data);
         AccountRegistered::dispatch($account);
 
+        $this->pushSuccessMessage(
+            __('messages.register_success')
+        );
+
         return Response::ACCOUNT_REGISTER_SUCCESS->value;
     }
 
@@ -66,7 +70,9 @@ class AccountController extends Controller
                 __('messages.email_verified')
             );
         } else {
-            $this->pushMessage(__('messages.email_already_verified'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.email_already_verified')
+            );
         }
 
         return to_route('gdcs.home');
@@ -200,7 +206,10 @@ class AccountController extends Controller
         Auth::login($account, true);
         AccountRegistered::dispatch($account);
 
-        $this->pushMessage(__('messages.register_success'), ['type' => 'success']);
+        $this->pushSuccessMessage(
+            __('messages.register_success')
+        );
+
         return to_route('home');
     }
 
@@ -238,7 +247,10 @@ class AccountController extends Controller
         $auth = Auth::guard('gdcs');
 
         if (!$auth->attempt($data, true)) {
-            $this->pushMessage(__('messages.login_failed'), ['type' => 'error']);
+            $this->pushErrorMessage(
+                __('messages.login_failed')
+            );
+
             return back();
         }
 
@@ -247,6 +259,12 @@ class AccountController extends Controller
 
         $gdcs_request->account = $account;
         $gdcs_request->newPlayer();
+
+        $this->pushSuccessMessage(
+            __('messages.welcome_back', [
+                'name' => $account->name
+            ])
+        );
 
         return Redirect::intended();
     }
@@ -302,7 +320,10 @@ class AccountController extends Controller
             AccountEmailChanged::dispatch($account);
         }
 
-        $this->pushMessage(__('messages.profile_updated'), ['type' => 'success']);
+        $this->pushSuccessMessage(
+            __('messages.profile_updated')
+        );
+
         return back();
     }
 
@@ -311,6 +332,10 @@ class AccountController extends Controller
         /** @var SessionGuard $auth */
         $auth = Auth::guard('gdcs');
         $auth->logoutCurrentDevice();
+
+        $this->pushSuccessMessage(
+            __('messages.logout_success')
+        );
 
         return to_route('gdcs.home');
     }
