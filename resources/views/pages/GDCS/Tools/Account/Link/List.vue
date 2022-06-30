@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
 import {formatTime, toRoute} from "@/scripts/helpers";
-import {AccountLink} from "@/scripts/types/backend";
+import {GDCS} from "@/scripts/types/backend";
 import {h} from "vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
@@ -23,22 +23,22 @@ const columns = [
     {
         title: '服务器',
         key: 'server',
-        render: (row: AccountLink) => guessServerName(row.server)
+        render: (row: GDCS.AccountLink) => guessServerName(row.server)
     },
     {
         title: '链接账号',
         key: 'target',
-        render: (row: AccountLink) => `${row.target_name} [${row.target_account_id}, ${row.target_user_id}]`
+        render: (row: GDCS.AccountLink) => `${row.target_name} [${row.target_account_id}, ${row.target_user_id}]`
     },
     {
         title: '链接时间',
         key: 'created_at',
-        render: (row: AccountLink) => formatTime(row.created_at, '未知')
+        render: (row: GDCS.AccountLink) => formatTime(row.created_at, '未知')
     },
     {
         title: '操作',
         key: 'action',
-        render: (row: AccountLink) => {
+        render: (row: GDCS.AccountLink) => {
             const form = useForm({});
 
             return h(NPopconfirm, {

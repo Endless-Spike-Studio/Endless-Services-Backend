@@ -17,12 +17,12 @@ import {isMobile, toURL} from "@/scripts/helpers";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
 import {PropType, ref} from "vue";
-import {Song} from "@/scripts/types/backend";
+import {NGProxy} from "@/scripts/types/backend";
 import CommonHome from "@/views/components/CommonHome.vue";
 
 defineProps({
     song: {
-        type: Object as PropType<Song>
+        type: Object as PropType<NGProxy.Song>
     }
 });
 

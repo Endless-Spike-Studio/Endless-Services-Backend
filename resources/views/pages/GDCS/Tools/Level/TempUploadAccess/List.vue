@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
 import {formatTime, toRoute} from "@/scripts/helpers";
-import {TempLevelUploadAccess} from "@/scripts/types/backend";
+import {GDCS} from "@/scripts/types/backend";
 import {h} from "vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
@@ -25,12 +25,12 @@ const columns = [
     {
         title: '创建时间',
         key: 'created_at',
-        render: (row: TempLevelUploadAccess) => formatTime(row.created_at, '未知')
+        render: (row: GDCS.TempLevelUploadAccess) => formatTime(row.created_at, '未知')
     },
     {
         title: '操作',
         key: 'action',
-        render: (row: TempLevelUploadAccess) => {
+        render: (row: GDCS.TempLevelUploadAccess) => {
             const form = useForm({});
 
             return h(NPopconfirm, {

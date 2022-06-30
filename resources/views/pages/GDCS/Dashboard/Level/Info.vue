@@ -14,6 +14,8 @@ import {
 } from "naive-ui";
 import {Base64} from "js-base64";
 import {GDCS} from "@/scripts/types/backend";
+import {useForm} from "@inertiajs/inertia-vue3";
+import route from "@/scripts/route";
 
 const lengths = ['Tiny', 'Medium', 'Long', 'XL'];
 
@@ -80,6 +82,9 @@ defineProps<{
         weekly: boolean
     }
 }>();
+
+const markAsDailyForm = useForm({});
+const markAsWeeklyForm = useForm({});
 </script>
 
 <template layout="GDCS">
@@ -159,9 +164,20 @@ defineProps<{
 
             <template #footer>
                 <n-space>
-                    <n-button :disabled="!permission.rate" @click="">评分</n-button>
-                    <n-button :disabled="!permission.mark || is.daily" @click="">添加到 Daily</n-button>
-                    <n-button :disabled="!permission.mark || is.weekly" @click="">添加到 Weekly</n-button>
+                    <n-button :disabled="!permission.rate"
+                              @click="toRouteWithParams('gdcs.dashboard.level.rate', level.id)">
+                        评分
+                    </n-button>
+
+                    <n-button :disabled="!permission.mark || is.daily || is.weekly"
+                              :loading="markAsDailyForm.processing"
+                              @click="markAsDailyForm.post( route('gdcs.admin.level.mark.daily', level.id) )">添加到 Daily
+                    </n-button>
+                    <n-button :disabled="!permission.mark || is.daily || is.weekly"
+                              :loading="markAsWeeklyForm.processing"
+                              @click="markAsWeeklyForm.post( route('gdcs.admin.level.mark.weekly', level.id) )">添加到
+                        Weekly
+                    </n-button>
                 </n-space>
             </template>
         </n-card>

@@ -14,13 +14,24 @@ declare namespace GDCS {
         failedLogs?: AccountFailedLog[];
     }
 
+    export interface AccountLink extends Model {
+        account_id: number;
+        account: Account;
+        server: string;
+        target_name: string;
+        target_account_id: number;
+        target_user_id: number;
+    }
+
     export interface AccountFailedLog extends Model {
         account_id: number;
+        account: Account;
         content: string;
         ip: string;
     }
 
     export interface User extends Model {
+        account: Account | undefined;
         name: string;
         uuid: string | number;
         udid: string;
@@ -28,7 +39,7 @@ declare namespace GDCS {
 
     export interface Level extends Model {
         user_id: number;
-        user: GDCS.User;
+        user: User;
         name: string;
         desc: string;
         downloads: number;
@@ -37,7 +48,7 @@ declare namespace GDCS {
         length: number;
         audio_track: number;
         song_id: number;
-        song: GDCS.Song;
+        song: Song;
         original_level_id: number;
         original: Level;
         two_player: boolean;
@@ -49,12 +60,12 @@ declare namespace GDCS {
         created_at: string;
         updated_at: string;
         rating: LevelRating;
-        comments: GDCS.LevelComment[];
+        comments: LevelComment[];
     }
 
     export interface LevelComment extends Model {
         account_id: number;
-        account: GDCS.Account;
+        account: Account;
         level_id: number;
         comment: string;
         likes: number;
@@ -82,44 +93,38 @@ declare namespace GDCS {
         disabled: boolean;
         download_url: string | null;
     }
+
+    export interface CustomSong extends Model {
+        name: string;
+        account: Account;
+        artist_name: string;
+        size: number;
+        disabled: boolean;
+        download_url: string | null;
+    }
+
+    export interface TempLevelUploadAccess extends Model {
+        account_id: number;
+        ip: string;
+    }
+}
+
+declare namespace NGProxy {
+    export interface Song extends Model {
+        song_id: number;
+        name: string;
+        artist_id: number;
+        artist_name: string;
+        size: number;
+        disabled: boolean;
+        download_url: string | null;
+    }
 }
 
 export interface User extends Model {
     name: string;
     email: string;
     email_verified_at: string;
-}
-
-export interface Song extends Model {
-    song_id: number;
-    name: string;
-    artist_id: number;
-    artist_name: string;
-    size: number;
-    disabled: boolean;
-    download_url: string | null;
-}
-
-export interface CustomSong extends Model {
-    name: string;
-    account?: User;
-    artist_name: string;
-    size: number;
-    disabled: boolean;
-    download_url: string | null;
-}
-
-export interface AccountLink extends Model {
-    account_id: number;
-    server: string;
-    target_name: string;
-    target_account_id: number;
-    target_user_id: number;
-}
-
-export interface TempLevelUploadAccess extends Model {
-    account_id: number;
-    ip: string;
 }
 
 export interface Message {

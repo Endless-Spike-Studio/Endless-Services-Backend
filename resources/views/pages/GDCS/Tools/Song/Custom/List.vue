@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
 import {getProp, toRoute, toURL} from "@/scripts/helpers";
-import {CustomSong, User} from "@/scripts/types/backend";
+import {GDCS, User} from "@/scripts/types/backend";
 import {h} from "vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
@@ -26,12 +26,12 @@ const columns = [
     {
         title: '歌曲ID',
         key: 'song_id',
-        render: (row: CustomSong) => row.id + props.customSongOffset
+        render: (row: GDCS.CustomSong) => row.id + props.customSongOffset
     },
     {
         title: '上传者',
         key: 'uploader',
-        render: (row: CustomSong) => row.account?.name
+        render: (row: GDCS.CustomSong) => row.account?.name
     },
     {
         title: '歌曲名',
@@ -44,12 +44,12 @@ const columns = [
     {
         title: '大小',
         key: 'size',
-        render: (row: CustomSong) => row.size + ' MB'
+        render: (row: GDCS.CustomSong) => row.size + ' MB'
     },
     {
         title: '操作',
         key: 'action',
-        render: (row: CustomSong) => {
+        render: (row: GDCS.CustomSong) => {
             const form = useForm({});
 
             return h(NSpace, null, () => [

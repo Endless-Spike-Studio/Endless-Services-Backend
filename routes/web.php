@@ -5,6 +5,7 @@ use App\Http\Controllers\GDCS\AccountApiController;
 use App\Http\Controllers\GDCS\AccountFailedLogApiController;
 use App\Http\Controllers\GDCS\AccountLinkApiController;
 use App\Http\Controllers\GDCS\CustomSongApiController;
+use App\Http\Controllers\GDCS\LevelApiController;
 use App\Http\Controllers\GDCS\LevelTempUploadAccessApiController;
 use App\Http\Controllers\GDCS\LevelTransferApiController;
 use App\Http\Presenters\GDCN\Dashboard\UserPresenter;
@@ -97,6 +98,23 @@ Route::group([
     Route::group([
         'middleware' => 'auth:gdcs'
     ], static function () {
+        Route::group([
+            'as' => 'admin.',
+            'prefix' => 'admin'
+        ], static function () {
+            Route::group([
+                'as' => 'level.',
+                'prefix' => 'level'
+            ], static function () {
+                Route::group([
+                    'middleware' => 'permission:MARK_LEVEL'
+                ], static function () {
+                    Route::post('/{id}/mark:daily', [LevelApiController::class, 'markAsDaily'])->name('mark.daily');
+                    Route::post('/{id}/mark:weekly', [LevelApiController::class, 'markAsWeekly'])->name('mark.weekly');
+                });
+            });
+        });
+
         Route::group([
             'prefix' => 'account',
             'as' => 'account.'
