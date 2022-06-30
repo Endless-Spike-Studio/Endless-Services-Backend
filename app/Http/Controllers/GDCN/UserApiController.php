@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\GDCN;
 
 use App\Events\UserEmailChanged;
 use App\Events\UserPasswordChanged;
 use App\Events\UserRegistered;
-use App\Http\Requests\UserLoginApiRequest;
-use App\Http\Requests\UserRegisterApiRequest;
-use App\Http\Requests\UserSettingUpdateApiRequest;
-use App\Http\Requests\UserVerifyApiRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\GDCN\UserLoginApiRequest;
+use App\Http\Requests\GDCN\UserRegisterApiRequest;
+use App\Http\Requests\GDCN\UserSettingUpdateApiRequest;
+use App\Http\Requests\GDCN\UserVerifyApiRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
-class UserController extends Controller
+class UserApiController extends Controller
 {
     use HasMessage;
 

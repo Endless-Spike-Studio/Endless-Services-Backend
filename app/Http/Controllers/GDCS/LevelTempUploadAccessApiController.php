@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Request as RequestFacade;
 
-class LevelTempUploadAccessController extends Controller
+class LevelTempUploadAccessApiController extends Controller
 {
     use HasMessage;
 

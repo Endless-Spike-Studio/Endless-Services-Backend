@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\GDCS\Web;
+namespace App\Http\Controllers\GDCS;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\HasMessage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class AccountFailedLogController extends Controller
+class AccountFailedLogApiController extends Controller
 {
     use HasMessage;
 

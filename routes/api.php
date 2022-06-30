@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\GDCS\CustomSongController as GDCS_CustomSongController;
+use App\Http\Controllers\GDCS\CustomSongApiController as GDCS_CustomSongController;
 use App\Http\Controllers\GDProxy\CustomSongController as GDProxy_CustomSongController;
 use App\Http\Controllers\NGProxyController;
 use Illuminate\Support\Facades\Route;

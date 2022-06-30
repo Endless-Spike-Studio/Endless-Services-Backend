@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class CustomSongController extends Controller
+class CustomSongApiController extends Controller
 {
     use HasMessage;
 

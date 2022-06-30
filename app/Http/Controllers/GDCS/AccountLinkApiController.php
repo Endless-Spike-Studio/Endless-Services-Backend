@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use Illuminate\Support\Str;
 
-class AccountLinkController extends Controller
+class AccountLinkApiController extends Controller
 {
     use HasMessage;
 

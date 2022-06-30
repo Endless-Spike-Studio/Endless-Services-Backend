@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\GDCN;
 
+use App\Http\Requests\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
 
@@ -18,6 +19,7 @@ class UserVerifyApiRequest extends Request
                 $this->route('_')
             )
         );
+
         return $user->id === (int)$id && $user->getEmailForVerification() === $email;
     }
 }

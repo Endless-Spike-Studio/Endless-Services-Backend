@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\GDCS\AccountController;
-use App\Http\Controllers\GDCS\AccountLinkController;
-use App\Http\Controllers\GDCS\CustomSongController;
-use App\Http\Controllers\GDCS\LevelTempUploadAccessController;
-use App\Http\Controllers\GDCS\LevelTransferController;
-use App\Http\Controllers\GDCS\Web\AccountFailedLogController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\GDCN\UserApiController;
+use App\Http\Controllers\GDCS\AccountApiController;
+use App\Http\Controllers\GDCS\AccountFailedLogApiController;
+use App\Http\Controllers\GDCS\AccountLinkApiController;
+use App\Http\Controllers\GDCS\CustomSongApiController;
+use App\Http\Controllers\GDCS\LevelTempUploadAccessApiController;
+use App\Http\Controllers\GDCS\LevelTransferApiController;
 use App\Http\Presenters\GDCN\Dashboard\UserPresenter;
 use App\Http\Presenters\GDCS\Dashboard\AccountPresenter;
 use App\Http\Presenters\GDCS\Dashboard\InformationPresenter;
@@ -38,16 +38,16 @@ Route::group([
         'middleware' => 'guest'
     ], static function () {
         Route::inertia('/register', 'GDCN/Auth/Register')->name('register');
-        Route::post('/register', [UserController::class, 'register'])->name('register.api');
+        Route::post('/register', [UserApiController::class, 'register'])->name('register.api');
 
         Route::inertia('/login', 'GDCN/Auth/Login')->name('login');
-        Route::post('/login', [UserController::class, 'login'])->name('login.api');
+        Route::post('/login', [UserApiController::class, 'login'])->name('login.api');
     });
 
     Route::group([
         'middleware' => 'auth'
     ], static function () {
-        Route::get('/verify/{_}', [UserController::class, 'verify'])
+        Route::get('/verify/{_}', [UserApiController::class, 'verify'])
             ->middleware('signed')
             ->name('verification.verify');
 
@@ -56,10 +56,10 @@ Route::group([
             'as' => 'user.'
         ], static function () {
             Route::get('/profile', [UserPresenter::class, 'renderProfile'])->name('profile');
-            Route::post('/resend:email_verification', [UserController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
+            Route::post('/resend:email_verification', [UserApiController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
             Route::get('/setting', [UserPresenter::class, 'renderSetting'])->name('setting');
-            Route::patch('/setting', [UserController::class, 'updateSetting'])->name('setting.update.api');
-            Route::get('/logout', [UserController::class, 'logout'])->name('logout.api');
+            Route::patch('/setting', [UserApiController::class, 'updateSetting'])->name('setting.update.api');
+            Route::get('/logout', [UserApiController::class, 'logout'])->name('logout.api');
         });
 
         Route::group([
@@ -88,10 +88,10 @@ Route::group([
         'middleware' => 'guest:gdcs'
     ], static function () {
         Route::inertia('/register', 'GDCS/Auth/Register')->name('register');
-        Route::post('/register', [AccountController::class, 'apiRegister'])->name('register.api');
+        Route::post('/register', [AccountApiController::class, 'register'])->name('register.api');
 
         Route::inertia('/login', 'GDCS/Auth/Login')->name('login');
-        Route::post('/login', [AccountController::class, 'apiLogin'])->name('login.api');
+        Route::post('/login', [AccountApiController::class, 'login'])->name('login.api');
     });
 
     Route::group([
@@ -101,17 +101,17 @@ Route::group([
             'prefix' => 'account',
             'as' => 'account.'
         ], static function () {
-            Route::get('/verify', [AccountController::class, 'verify'])
+            Route::get('/verify', [AccountApiController::class, 'verify'])
                 ->middleware('signed')
                 ->name('verify');
 
             Route::get('/profile', [AccountPresenter::class, 'renderProfile'])->name('profile');
-            Route::post('/resend:email_verification', [AccountController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
+            Route::post('/resend:email_verification', [AccountApiController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
             Route::get('/setting', [AccountPresenter::class, 'renderSetting'])->name('setting');
-            Route::patch('/setting', [AccountController::class, 'updateSetting'])->name('setting.update.api');
+            Route::patch('/setting', [AccountApiController::class, 'updateSetting'])->name('setting.update.api');
             Route::get('/failed-log', [AccountPresenter::class, 'renderFailedLogs'])->name('failed-log');
-            Route::get('/logout', [AccountController::class, 'logout'])->name('logout.api');
-            Route::delete('/failed-logs', [AccountFailedLogController::class, 'clear'])->name('failed-log.clear.api');
+            Route::get('/logout', [AccountApiController::class, 'logout'])->name('logout.api');
+            Route::delete('/failed-logs', [AccountFailedLogApiController::class, 'clear'])->name('failed-log.clear.api');
         });
 
         Route::group([
@@ -150,8 +150,8 @@ Route::group([
                     Route::get('/list', [AccountLinkPresenter::class, 'list'])->name('list');
                     Route::inertia('/create', 'GDCS/Tools/Account/Link/Create')->name('create');
 
-                    Route::post('/create', [AccountLinkController::class, 'create'])->name('create.api');
-                    Route::delete('/{id}', [AccountLinkController::class, 'delete'])
+                    Route::post('/create', [AccountLinkApiController::class, 'create'])->name('create.api');
+                    Route::delete('/{id}', [AccountLinkApiController::class, 'delete'])
                         ->where('id', '\d+')
                         ->name('delete.api');
                 });
@@ -166,9 +166,9 @@ Route::group([
                     'as' => 'temp_upload_access.'
                 ], static function () {
                     Route::get('/list', [LevelTempUploadAccessPresenter::class, 'list'])->name('list');
-                    Route::get('/create', [LevelTempUploadAccessController::class, 'create'])->name('create.api');
 
-                    Route::delete('/{id}', [LevelTempUploadAccessController::class, 'delete'])
+                    Route::get('/create', [LevelTempUploadAccessApiController::class, 'create'])->name('create.api');
+                    Route::delete('/{id}', [LevelTempUploadAccessApiController::class, 'delete'])
                         ->where('id', '\d+')
                         ->name('delete.api');
                 });
@@ -180,10 +180,10 @@ Route::group([
                     Route::inertia('/', 'GDCS/Tools/Level/Transfer/Home')->name('home');
 
                     Route::get('/in', [LevelTransferPresenter::class, 'in'])->name('in');
-                    Route::post('/in', [LevelTransferController::class, 'transferIn'])->name('in.api');
+                    Route::post('/in', [LevelTransferApiController::class, 'transferIn'])->name('in.api');
 
                     Route::get('/out', [LevelTransferPresenter::class, 'out'])->name('out');
-                    Route::post('/out', [LevelTransferController::class, 'transferOut'])->name('out.api');
+                    Route::post('/out', [LevelTransferApiController::class, 'transferOut'])->name('out.api');
                 });
             });
 
@@ -198,12 +198,12 @@ Route::group([
                     Route::get('/list', [CustomSongPresenter::class, 'list'])->name('list');
 
                     Route::inertia('/create:link', 'GDCS/Tools/Song/Custom/Create/Link')->name('create.link');
-                    Route::post('/create:link', [CustomSongController::class, 'createLink'])->name('create.link.api');
+                    Route::post('/create:link', [CustomSongApiController::class, 'createLink'])->name('create.link.api');
 
                     Route::inertia('/create:netease', 'GDCS/Tools/Song/Custom/Create/Netease')->name('create.netease');
-                    Route::post('/create:netease', [CustomSongController::class, 'createNetease'])->name('create.netease.api');
+                    Route::post('/create:netease', [CustomSongApiController::class, 'createNetease'])->name('create.netease.api');
 
-                    Route::delete('/{id}', [CustomSongController::class, 'delete'])
+                    Route::delete('/{id}', [CustomSongApiController::class, 'delete'])
                         ->where('id', '\d+')
                         ->name('delete.api');
                 });

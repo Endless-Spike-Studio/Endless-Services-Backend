@@ -23,7 +23,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-class LevelTransferController extends Controller
+class LevelTransferApiController extends Controller
 {
     use HasMessage;
 

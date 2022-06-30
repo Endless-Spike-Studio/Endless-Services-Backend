@@ -4,20 +4,11 @@ namespace App\Http\Controllers\GDCS;
 
 use App\Enums\GDCS\FriendState;
 use App\Enums\GDCS\Response;
-use App\Events\GDCS\AccountEmailChanged;
-use App\Events\GDCS\AccountPasswordChanged;
 use App\Events\GDCS\AccountRegistered;
 use App\Http\Requests\GDCS\AccountInfoFetchRequest;
-use App\Http\Requests\GDCS\AccountLoginApiRequest;
 use App\Http\Requests\GDCS\AccountLoginRequest;
 use App\Http\Requests\GDCS\AccountModAccessRequest;
-use App\Http\Requests\GDCS\AccountRegisterApiRequest;
 use App\Http\Requests\GDCS\AccountRegisterRequest;
-use App\Http\Requests\GDCS\AccountSettingUpdateApiRequest;
-use App\Http\Requests\GDCS\AccountVerifyRequest;
-use App\Http\Requests\GDCS\Request as GDCS_Request;
-use App\Http\Traits\HasMessage;
-use App\Jobs\GDCS\SendEmailVerification;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountFriendRequest;
 use App\Models\GDCS\User;
@@ -28,20 +19,12 @@ use App\Repositories\GDCS\AccountMessageRepository;
 use App\Services\GDCS\AccountBlockService;
 use App\Services\GDCS\AccountFriendService;
 use GDCN\GDObject\GDObject;
-use Illuminate\Auth\SessionGuard;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 
 class AccountController extends Controller
 {
-    use HasMessage;
-
     public function register(AccountRegisterRequest $request): int
     {
         $data = Arr::rename($request->validated(), [
@@ -51,31 +34,7 @@ class AccountController extends Controller
         $account = Account::create($data);
         AccountRegistered::dispatch($account);
 
-        $this->pushSuccessMessage(
-            __('messages.register_success')
-        );
-
         return Response::ACCOUNT_REGISTER_SUCCESS->value;
-    }
-
-    public function verify(AccountVerifyRequest $request): RedirectResponse
-    {
-        /** @var Account $account */
-        $account = $request->user('gdcs');
-
-        if (!$account->hasVerifiedEmail()) {
-            $account->markEmailAsVerified();
-
-            $this->pushSuccessMessage(
-                __('messages.email_verified')
-            );
-        } else {
-            $this->pushErrorMessage(
-                __('messages.email_already_verified')
-            );
-        }
-
-        return to_route('gdcs.home');
     }
 
     /**
@@ -198,21 +157,6 @@ class AccountController extends Controller
         return $modLevel;
     }
 
-    public function apiRegister(AccountRegisterApiRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-
-        $account = Account::create($data);
-        Auth::login($account, true);
-        AccountRegistered::dispatch($account);
-
-        $this->pushSuccessMessage(
-            __('messages.register_success')
-        );
-
-        return to_route('home');
-    }
-
     public function login(AccountLoginRequest $request): string|int
     {
         $data = $request->validated();
@@ -239,104 +183,5 @@ class AccountController extends Controller
             $account->id,
             $user->id
         ]);
-    }
-
-    public function apiLogin(GDCS_Request $gdcs_request, AccountLoginApiRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-        $auth = Auth::guard('gdcs');
-
-        if (!$auth->attempt($data, true)) {
-            $this->pushErrorMessage(
-                __('messages.login_failed')
-            );
-
-            return back();
-        }
-
-        /** @var Account $account */
-        $account = $auth->user();
-
-        $gdcs_request->account = $account;
-        $gdcs_request->newPlayer();
-
-        $this->pushSuccessMessage(
-            __('messages.welcome_back', [
-                'name' => $account->name
-            ])
-        );
-
-        return Redirect::intended();
-    }
-
-    public function resendEmailVerification(): RedirectResponse
-    {
-        $account = Request::user('gdcs');
-
-        $attempt = RateLimiter::attempt(
-            "gdcs:resendEmailVerification:$account->id",
-            1,
-            function () use ($account) {
-                if ($account->hasVerifiedEmail()) {
-                    $this->pushErrorMessage(
-                        __('messages.email_already_verified')
-                    );
-                } else {
-                    SendEmailVerification::dispatch($account);
-
-                    $this->pushSuccessMessage(
-                        __('messages.verification_sent')
-                    );
-                }
-            }, 3600);
-
-        if (!$attempt) {
-            $this->pushErrorMessage(
-                __('messages.too_fast')
-            );
-        }
-
-        return back();
-    }
-
-    public function updateSetting(AccountSettingUpdateApiRequest $request): RedirectResponse
-    {
-        $data = $request->validated();
-        $auth = Auth::guard('gdcs');
-
-        /** @var Account $account */
-        $account = $auth->user();
-        $account->update($data);
-
-        if ($account->wasChanged('password')) {
-            AccountPasswordChanged::dispatch($account);
-        }
-
-        if ($account->wasChanged('email')) {
-            $account->update([
-                'email_verified_at' => null
-            ]);
-
-            AccountEmailChanged::dispatch($account);
-        }
-
-        $this->pushSuccessMessage(
-            __('messages.profile_updated')
-        );
-
-        return back();
-    }
-
-    public function logout(): RedirectResponse
-    {
-        /** @var SessionGuard $auth */
-        $auth = Auth::guard('gdcs');
-        $auth->logoutCurrentDevice();
-
-        $this->pushSuccessMessage(
-            __('messages.logout_success')
-        );
-
-        return to_route('gdcs.home');
     }
 }

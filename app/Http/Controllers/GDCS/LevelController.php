@@ -14,7 +14,6 @@ use App\Http\Requests\GDCS\LevelDescUpdateRequest;
 use App\Http\Requests\GDCS\LevelDownloadRequest;
 use App\Http\Requests\GDCS\LevelSearchRequest;
 use App\Http\Requests\GDCS\LevelUploadRequest;
-use App\Http\Traits\HasMessage;
 use App\Models\GDCS\DailyLevel;
 use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelDownloadRecord;
@@ -33,8 +32,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class LevelController extends Controller
 {
-    use HasMessage;
-
     public function upload(LevelUploadRequest $request)
     {
         $data = $request->validated();

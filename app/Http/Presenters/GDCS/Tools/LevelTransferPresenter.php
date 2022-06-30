@@ -2,7 +2,7 @@
 
 namespace App\Http\Presenters\GDCS\Tools;
 
-use App\Http\Controllers\GDCS\LevelTransferController;
+use App\Http\Controllers\GDCS\LevelTransferApiController;
 use App\Models\GDCS\AccountLink;
 use App\Models\GDCS\Level;
 use App\Repositories\GDCS\AccountLinkRepository;
@@ -18,7 +18,7 @@ class LevelTransferPresenter
         return Inertia::render('GDCS/Tools/Level/Transfer/In', [
             'links' => $this->links(),
             'levels' => Inertia::lazy(static function () {
-                return app(LevelTransferController::class)
+                return app(LevelTransferApiController::class)
                     ->loadRemoteLevels(
                         app(AccountLinkRepository::class)
                             ->findByAccount(

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\GDCN;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserLoginApiRequest extends FormRequest
+class UserRegisterApiRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -14,11 +14,18 @@ class UserLoginApiRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                Rule::exists(User::class)
+                Rule::unique(User::class)
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                Rule::unique(User::class)
             ],
             'password' => [
                 'required',
-                'string'
+                'string',
+                'confirmed'
             ]
         ];
     }
