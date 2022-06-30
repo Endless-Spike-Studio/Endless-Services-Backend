@@ -71,7 +71,7 @@ const difficulties = {
 
 defineProps<{
     level: GDCS.Level,
-    permissions: {
+    permission: {
         rate: boolean,
         mark: boolean
     },
@@ -191,9 +191,9 @@ defineProps<{
 
             <template #footer>
                 <n-space>
-                    <n-button :disabled="!permissions.rate" @click="">评分</n-button>
-                    <n-button :disabled="!permissions.mark || is.daily" @click="">添加到 Daily</n-button>
-                    <n-button :disabled="!permissions.mark || is.weekly" @click="">添加到 Weekly</n-button>
+                    <n-button :disabled="!permission.rate" @click="">评分</n-button>
+                    <n-button :disabled="!permission.mark || is.daily" @click="">添加到 Daily</n-button>
+                    <n-button :disabled="!permission.mark || is.weekly" @click="">添加到 Weekly</n-button>
                 </n-space>
             </template>
         </n-card>
