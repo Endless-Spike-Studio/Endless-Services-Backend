@@ -49,7 +49,7 @@ function handleWindowsDownload(suffix: string) {
                     </n-button>
                 </n-dropdown>
 
-                <n-button disabled @click="toURL('https://cdn.geometrydashchinese.com/client/GDCS.ipa')">
+                <n-button title="下次一定!" disabled @click="toURL('https://cdn.geometrydashchinese.com/client/GDCS.ipa')">
                     <template #icon>
                         <n-icon>
                             <apple-filled/>
