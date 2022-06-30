@@ -3,11 +3,23 @@ import {Component, Inertia} from "@inertiajs/inertia";
 import {computed, ComputedRef, h, ref} from "vue";
 import {get} from "lodash-es";
 import {usePage} from "@inertiajs/inertia-vue3";
-import {darkTheme, lightTheme, NIcon, useOsTheme} from "naive-ui";
+import {NIcon} from "naive-ui";
 import {RouteParamsWithQueryOverload} from "ziggy-js";
 
-export const isMobile = computed(() => window.innerWidth < 768);
-export const theme = ref(useOsTheme().value === 'dark' ? darkTheme : lightTheme);
+export const isMobile = ref(false);
+
+call(() => {
+    function update() {
+        isMobile.value = window.innerWidth < 768
+    }
+
+    window.addEventListener('resize', update);
+    update();
+});
+
+export function call(callback: Function) {
+    return callback();
+}
 
 export function toRoute(target: string) {
     if (route().current() !== target) {
