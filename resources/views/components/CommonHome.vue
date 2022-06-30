@@ -19,7 +19,7 @@ defineProps({
     teamName: String
 });
 
-const code_time_url = 'https://img.shields.io/endpoint?url=' + encodeURIComponent('https://codetime-api.datreks.com/badge/2270?project=gdcn&showProject=true') + '&style=for-the-badge';
+const code_time_url = 'https://img.shields.io/endpoint?url=' + encodeURIComponent('https://codetime-api.datreks.com/badge/2270') + '&style=for-the-badge';
 </script>
 
 <template>
@@ -42,7 +42,7 @@ const code_time_url = 'https://img.shields.io/endpoint?url=' + encodeURIComponen
         </div>
 
         <div class="text-center lg:w-1/5 mx-auto pt-5">
-            <n-alert :show-icon="false" closable title="Code Time">
+            <n-alert :show-icon="false" closable title="代码时间">
                 <n-image :src="code_time_url"/>
             </n-alert>
         </div>
