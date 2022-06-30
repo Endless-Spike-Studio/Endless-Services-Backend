@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {PropType} from "vue";
 import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers";
 import {
@@ -153,7 +153,7 @@ defineProps({
                     {{ level.id }}
                 </n-descriptions-item>
                 <n-descriptions-item label="作者">
-                    <n-button @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)" text>
+                    <n-button text @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)">
                         {{ level.user.name }} [{{ level.user.id }}]
                     </n-button>
                 </n-descriptions-item>
@@ -161,7 +161,7 @@ defineProps({
                     {{ level.name }}
                 </n-descriptions-item>
                 <n-descriptions-item label="简介">
-                    {{ Base64.decode(level.desc) }}
+                    {{ Base64.decode(level.desc ?? 'KE5vIGRlc2NyaXB0aW9uIHByb3ZpZGVkKQ==') }}
                 </n-descriptions-item>
                 <n-descriptions-item label="下载">
                     {{ level.downloads }}
@@ -180,12 +180,12 @@ defineProps({
                         {{ audioTracks[level.audio_track + 1] }} [{{ level.audio_track }}]
                     </n-text>
 
-                    <n-button @click="toRouteWithParams('ngproxy.info', level.song_id)" v-else text>
+                    <n-button v-else text @click="toRouteWithParams('ngproxy.info', level.song_id)">
                         {{ level.song.name }} [{{ level.song_id }}]
                     </n-button>
                 </n-descriptions-item>
                 <n-descriptions-item v-if="level.original_level_id" label="原关卡">
-                    <n-button @click="toRouteWithParams('gdcs.dashboard.level.info', level.original_level_id)" text>
+                    <n-button text @click="toRouteWithParams('gdcs.dashboard.level.info', level.original_level_id)">
                         {{ level.original.name }}
                     </n-button>
                 </n-descriptions-item>
@@ -258,7 +258,8 @@ defineProps({
                 <n-list-item v-for="comment in level.comments">
                     <n-thing>
                         <template #header>
-                            <n-button @click="toRouteWithParams('gdcs.dashboard.account.info', comment.account.id)" text>
+                            <n-button text
+                                      @click="toRouteWithParams('gdcs.dashboard.account.info', comment.account.id)">
                                 {{ comment.account.name }}:
                             </n-button>
 
