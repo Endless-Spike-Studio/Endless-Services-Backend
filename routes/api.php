@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GDCN\ProjectApiController;
 use App\Http\Controllers\GDCS\CustomSongApiController as GDCS_CustomSongController;
 use App\Http\Controllers\GDProxy\CustomSongController as GDProxy_CustomSongController;
 use App\Http\Controllers\NGProxyController;
@@ -24,6 +25,7 @@ Route::group([
         'domain' => 'fw.geometrydashchinese.com'
     ], static function () {
         Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
+        Route::post('/project/update', [ProjectApiController::class, 'update']);
     });
 
     Route::group([
