@@ -34,6 +34,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
+        "psy/psysh": "0.11.2",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^1.0"
     },
