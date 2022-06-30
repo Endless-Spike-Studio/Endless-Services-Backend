@@ -3,8 +3,11 @@
 namespace App\Http\Presenters\GDCS\Dashboard;
 
 use App\Models\GDCS\Account;
+use App\Models\GDCS\DailyLevel;
 use App\Models\GDCS\Level;
 use App\Models\GDCS\User;
+use App\Models\GDCS\WeeklyLevel;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,6 +25,9 @@ class InformationPresenter
 
     public function renderLevel(int $id): Response
     {
+        /** @var Account $account */
+        $account = Auth::guard('gdcs')->user();
+
         return Inertia::render('GDCS/Dashboard/Level/Info', [
             'level' => Level::findOrFail($id, ['id', 'user_id', 'name', 'desc', 'downloads', 'likes', 'version', 'length', 'audio_track', 'song_id', 'original_level_id', 'two_player', 'objects', 'coins', 'requested_stars', 'unlisted', 'ldm', 'created_at', 'updated_at'])
                 ->load('user:id,name')
@@ -29,7 +35,15 @@ class InformationPresenter
                 ->load('original:id,name')
                 ->load('rating:id,level_id,difficulty,featured_score,epic,demon_difficulty,auto,demon,stars,coin_verified,created_at')
                 ->load('comments:id,account_id,level_id,comment,likes,created_at')
-                ->load('comments.account:id,name')
+                ->load('comments.account:id,name'),
+            'permission' => [
+                'rate' => $account->hasPermissionTo('RATE_LEVEL'),
+                'mark' => $account->hasPermissionTo('MARK_LEVEL')
+            ],
+            'is' => [
+                'daily' => DailyLevel::whereLevelId($id)->exists(),
+                'weekly' => WeeklyLevel::whereLevelId($id)->exists()
+            ]
         ]);
     }
 

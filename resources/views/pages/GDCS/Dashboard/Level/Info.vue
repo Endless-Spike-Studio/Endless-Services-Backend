@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import {PropType} from "vue";
 import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers";
 import {
     NButton,
@@ -14,6 +13,7 @@ import {
     NThing
 } from "naive-ui";
 import {Base64} from "js-base64";
+import {GDCS} from "@/scripts/types/backend";
 
 const lengths = ['Tiny', 'Medium', 'Long', 'XL'];
 
@@ -69,80 +69,17 @@ const difficulties = {
     60: 'Auto | Demon'
 };
 
-defineProps({
-    level: {
-        type: Object as PropType<{
-            id: number;
-            user_id: number;
-
-            user: {
-                id: number;
-                name: string;
-            }
-
-            name: string;
-            desc: string;
-            downloads: number;
-            likes: number;
-            version: number;
-            length: number;
-            audio_track: number;
-            song_id: number;
-
-            song: {
-                id: number;
-                song_id: number;
-                name: string;
-            }
-
-            original_level_id: number;
-
-            original: {
-                id: number;
-                name: string;
-            }
-
-            two_player: boolean;
-            objects: number;
-            coins: number;
-            requested_stars: number;
-            unlisted: boolean;
-            ldm: boolean;
-            created_at: string;
-            updated_at: string;
-
-            rating: {
-                id: number;
-                level_id: number;
-                difficulty: number;
-                featured_score: number;
-                epic: boolean;
-                demon_difficulty: number;
-                auto: boolean;
-                demon: boolean;
-                stars: number;
-                coin_verified: boolean;
-                created_at: string;
-            }
-
-            comments: {
-                id: number;
-                account_id: number;
-
-                account: {
-                    id: number;
-                    name: string;
-                }
-
-                level_id: number;
-                comment: string;
-                likes: number;
-                created_at: string;
-            }[];
-        }>,
-        required: true
+defineProps<{
+    level: GDCS.Level,
+    permissions: {
+        rate: boolean,
+        mark: boolean
     },
-});
+    is: {
+        daily: boolean,
+        weekly: boolean
+    }
+}>();
 </script>
 
 <template layout="GDCS">
@@ -251,6 +188,14 @@ defineProps({
                     {{ formatTime(level.rating.created_at, '未知') }}
                 </n-descriptions-item>
             </n-descriptions>
+
+            <template #footer>
+                <n-space>
+                    <n-button :disabled="!permissions.rate" @click="">评分</n-button>
+                    <n-button :disabled="!permissions.mark || is.daily" @click="">添加到 Daily</n-button>
+                    <n-button :disabled="!permissions.mark || is.weekly" @click="">添加到 Weekly</n-button>
+                </n-space>
+            </template>
         </n-card>
 
         <n-card class="lg:w-2/3 mx-auto" title="关卡评论">
