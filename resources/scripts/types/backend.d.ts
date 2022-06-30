@@ -37,6 +37,16 @@ declare namespace GDCS {
         udid: string;
     }
 
+    export interface DailyLevel extends Model {
+        level_id: number;
+        apply_at: string;
+    }
+
+    export interface WeeklyLevel extends Model {
+        level_id: number;
+        apply_at: string;
+    }
+
     export interface Level extends Model {
         user_id: number;
         user: User;
@@ -61,6 +71,8 @@ declare namespace GDCS {
         updated_at: string;
         rating: LevelRating;
         comments: LevelComment[];
+        daily: DailyLevel;
+        weekly: WeeklyLevel;
     }
 
     export interface LevelComment extends Model {

@@ -8,6 +8,7 @@ import {
     NEmpty,
     NList,
     NListItem,
+    NPopover,
     NSpace,
     NText,
     NThing
@@ -16,70 +17,16 @@ import {Base64} from "js-base64";
 import {GDCS} from "@/scripts/types/backend";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
-
-const lengths = ['Tiny', 'Medium', 'Long', 'XL'];
-
-const audioTracks = [
-    'Practice: Stay Inside Me - OcularNebula',
-    'Stereo Madness - Foreverbound',
-    'Back on Track - DJVI',
-    'Polargeist - Step',
-    'Dry Out - DJVI',
-    'Base after Base - DJVI',
-    'Cant Let Go - DJVI',
-    'Jumper - Waterflame',
-    'Time Machine - Waterflame',
-    'Cycles - DJVI',
-    'xStep - DJVI',
-    'Clutterfunk - Waterflame',
-    'Theory of Everything - DJ-Nate',
-    'Electroman Adventures - Waterflame',
-    'Clubstep - DJ-Nate',
-    'Electrodynamix - DJ-Nate',
-    'Hexagon Force - Waterflame',
-    'Blast Processing - Waterflame',
-    'Theory of Everything 2 - DJ-Nate',
-    'Geometrical Dominator - Waterflame',
-    'Deadlocked - F-777',
-    'Fingerdash - MDK',
-    'The Seven Seas - F-777',
-    'Viking Arena - F-777',
-    'Airborne Robots - F-777',
-    'The Challenge - RobTop',
-    'Payload - Dex Arson',
-    'Beast Mode - Dex Arson',
-    'Machina - Dex Arson',
-    'Years - Dex Arson',
-    'Frontlines - Dex Arson',
-    'Space Pirates - Waterflame',
-    'Striker - Waterflame',
-    'Embers - Dex Arson',
-    'Round 1 - Dex Arson',
-    'Monster Dance Off - F-777',
-    'Press Start - MDK',
-    'Nock Em - Bossfight',
-    'Power Trip - Boom Kitty',
-];
-
-const difficulties = {
-    0: 'N/A',
-    10: 'Easy',
-    20: 'Normal',
-    30: 'Hard',
-    40: 'Harder',
-    50: 'Insane',
-    60: 'Auto | Demon'
-};
+import {isEmpty} from "lodash-es";
+import audioTracks from "@/scripts/enums/audioTracks";
+import levelLength from "@/scripts/enums/levelLength";
+import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties";
 
 defineProps<{
     level: GDCS.Level,
     permission: {
         rate: boolean,
         mark: boolean
-    },
-    is: {
-        daily: boolean,
-        weekly: boolean
     }
 }>();
 
@@ -115,7 +62,7 @@ const markAsWeeklyForm = useForm({});
                     {{ level.version }}
                 </n-descriptions-item>
                 <n-descriptions-item label="长度">
-                    {{ lengths[level.length] }} [{{ level.length }}]
+                    {{ levelLength[level.length] }} [{{ level.length }}]
                 </n-descriptions-item>
                 <n-descriptions-item label="歌曲">
                     <n-text v-if="level.song_id <= 0" text>
@@ -162,6 +109,28 @@ const markAsWeeklyForm = useForm({});
                 </n-descriptions-item>
             </n-descriptions>
 
+            <template #header-extra>
+                <n-text v-if="level.daily">
+                    <n-popover>
+                        <template #trigger>
+                            每日关卡 #{{ level.daily.id }}
+                        </template>
+
+                        <n-text>{{ formatTime(level.daily.apply_at, '未知') }}</n-text>
+                    </n-popover>
+                </n-text>
+
+                <n-text v-if="level.weekly">
+                    <n-popover>
+                        <template #trigger>
+                            每周关卡 #{{ level.weekly.id }}
+                        </template>
+
+                        <n-text>{{ formatTime(level.weekly.apply_at, '未知') }}</n-text>
+                    </n-popover>
+                </n-text>
+            </template>
+
             <template #footer>
                 <n-space>
                     <n-button :disabled="!permission.rate"
@@ -169,11 +138,11 @@ const markAsWeeklyForm = useForm({});
                         评分
                     </n-button>
 
-                    <n-button :disabled="!permission.mark || is.daily || is.weekly"
+                    <n-button :disabled="!permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
                               :loading="markAsDailyForm.processing"
                               @click="markAsDailyForm.post( route('gdcs.admin.level.mark.daily', level.id) )">添加到 Daily
                     </n-button>
-                    <n-button :disabled="!permission.mark || is.daily || is.weekly"
+                    <n-button :disabled="!permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
                               :loading="markAsWeeklyForm.processing"
                               @click="markAsWeeklyForm.post( route('gdcs.admin.level.mark.weekly', level.id) )">添加到
                         Weekly
@@ -186,7 +155,7 @@ const markAsWeeklyForm = useForm({});
             <n-descriptions :bordered="true" :column="isMobile ? 1 : 3">
                 <n-descriptions-item label="难度">
                     <n-text v-if="level.rating.difficulty !== 60" text>
-                        {{ difficulties[level.rating.difficulty] }}
+                        {{ levelRatingDifficulties[level.rating.difficulty] }}
                     </n-text>
 
                     <n-text v-else text>

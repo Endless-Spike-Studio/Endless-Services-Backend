@@ -63,4 +63,14 @@ class Level extends Model
     {
         return $this->belongsTo(__CLASS__, 'original_level_id', 'id');
     }
+
+    public function daily(): HasOne
+    {
+        return $this->hasOne(DailyLevel::class);
+    }
+
+    public function weekly(): HasOne
+    {
+        return $this->hasOne(WeeklyLevel::class);
+    }
 }
