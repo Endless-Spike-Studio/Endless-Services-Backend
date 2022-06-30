@@ -156,6 +156,14 @@ defineProps<{
                     {{ formatTime(level.updated_at, '未知') }}
                 </n-descriptions-item>
             </n-descriptions>
+
+            <template #footer>
+                <n-space>
+                    <n-button :disabled="!permission.rate" @click="">评分</n-button>
+                    <n-button :disabled="!permission.mark || is.daily" @click="">添加到 Daily</n-button>
+                    <n-button :disabled="!permission.mark || is.weekly" @click="">添加到 Weekly</n-button>
+                </n-space>
+            </template>
         </n-card>
 
         <n-card v-if="level.rating.id" class="lg:w-2/3 mx-auto" title="关卡评分">
@@ -188,14 +196,6 @@ defineProps<{
                     {{ formatTime(level.rating.created_at, '未知') }}
                 </n-descriptions-item>
             </n-descriptions>
-
-            <template #footer>
-                <n-space>
-                    <n-button :disabled="!permission.rate" @click="">评分</n-button>
-                    <n-button :disabled="!permission.mark || is.daily" @click="">添加到 Daily</n-button>
-                    <n-button :disabled="!permission.mark || is.weekly" @click="">添加到 Weekly</n-button>
-                </n-space>
-            </template>
         </n-card>
 
         <n-card class="lg:w-2/3 mx-auto" title="关卡评论">
