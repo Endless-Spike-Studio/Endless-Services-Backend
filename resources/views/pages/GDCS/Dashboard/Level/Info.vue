@@ -162,7 +162,8 @@ function handleSongTypeUpdate(value: string) {
 
                             <n-button v-else text @click="toRouteWithParams('ngproxy.info', levelUpdateForm.song_id)">
                                 {{
-                                    level.song_id.toString() === levelUpdateForm.song_id.toString() ? level.song.name : 'Unknown'
+                                    level.song_id.toString() === levelUpdateForm.song_id.toString() ? level.song.name :
+                                        'Unknown'
                                 }} [{{ levelUpdateForm.song_id }}]
                             </n-button>
                         </template>
@@ -270,22 +271,25 @@ function handleSongTypeUpdate(value: string) {
                         保存修改
                     </n-button>
 
-                    <n-button :disabled="!permission.rate"
+                    <n-button v-if="permission.rate"
                               @click="toRouteWithParams('gdcs.dashboard.level.rate', level.id)">
                         评分
                     </n-button>
 
                     <n-button
-                        :disabled="levelUpdateForm.processing || !permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
+                        v-if="permission.mark"
+                        :disabled="levelUpdateForm.processing || !isEmpty(level.daily) || !isEmpty(level.weekly)"
                         :loading="markAsDailyForm.processing"
-                        @click="markAsDailyForm.post( route('gdcs.admin.level.mark.daily', level.id) )">添加到 Daily
+                        @click="markAsDailyForm.post( route('gdcs.admin.level.mark.daily', level.id) )">
+                        添加到 Daily
                     </n-button>
 
                     <n-button
-                        :disabled="levelUpdateForm.processing || !permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
+                        v-if="permission.mark"
+                        :disabled="levelUpdateForm.processing || !isEmpty(level.daily) || !isEmpty(level.weekly)"
                         :loading="markAsWeeklyForm.processing"
-                        @click="markAsWeeklyForm.post( route('gdcs.admin.level.mark.weekly', level.id) )">添加到
-                        Weekly
+                        @click="markAsWeeklyForm.post( route('gdcs.admin.level.mark.weekly', level.id) )">
+                        添加到 Weekly
                     </n-button>
                 </n-space>
             </template>
