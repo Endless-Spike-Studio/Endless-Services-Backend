@@ -56,6 +56,7 @@ declare namespace GDCS {
         likes: number;
         version: number;
         length: number;
+        password: number;
         audio_track: number;
         song_id: number;
         song: Song;

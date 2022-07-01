@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\GDCS;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GDCS\LevelUpdateApiRequest;
 use App\Http\Traits\HasMessage;
+use App\Models\GDCS\Account;
 use App\Models\GDCS\DailyLevel;
+use App\Models\GDCS\Level;
 use App\Models\GDCS\WeeklyLevel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
@@ -12,6 +15,27 @@ use Illuminate\Support\Carbon;
 class LevelApiController extends Controller
 {
     use HasMessage;
+
+    public function update(int $id, LevelUpdateApiRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $level = Level::findOrFail($id);
+
+        /** @var Account $account */
+        $account = $request->user('gdcs');
+
+        if ($level->user_id === $account->user->id) {
+            $level->update($data);
+        } else {
+            abort(403);
+        }
+
+        $this->pushSuccessMessage(
+            __('messages.update_success')
+        );
+
+        return back();
+    }
 
     public function markAsDaily(int $id): RedirectResponse
     {

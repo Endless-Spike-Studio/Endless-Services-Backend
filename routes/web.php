@@ -146,6 +146,10 @@ Route::group([
                 ->where('id', '\d+')
                 ->name('level.info');
 
+            Route::patch('/level/{id}', [InformationPresenter::class, 'renderLevel'])
+                ->where('id', '\d+')
+                ->name('level.update');
+
             Route::get('/user/{id}', [InformationPresenter::class, 'renderUser'])
                 ->where('id', '\d+')
                 ->name('user.info');

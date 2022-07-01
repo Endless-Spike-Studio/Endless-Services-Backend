@@ -1,15 +1,21 @@
 <script lang="ts" setup>
-import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers";
+import {formatTime, getProp, isMobile, toRouteWithParams} from "@/scripts/helpers";
 import {
     NButton,
     NCard,
     NDescriptions,
     NDescriptionsItem,
     NEmpty,
+    NInput,
+    NInputNumber,
     NList,
     NListItem,
     NPopover,
+    NSelect,
     NSpace,
+    NSwitch,
+    NTabPane,
+    NTabs,
     NText,
     NThing
 } from "naive-ui";
@@ -17,12 +23,13 @@ import {Base64} from "js-base64";
 import {GDCS} from "@/scripts/types/backend";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
-import {isEmpty} from "lodash-es";
-import audioTracks from "@/scripts/enums/audioTracks";
+import {isEmpty, random} from "lodash-es";
+import audioTracks, {options as audioTrackOptions} from "@/scripts/enums/audioTracks";
 import levelLength from "@/scripts/enums/levelLength";
 import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties";
+import {computed, reactive} from "vue";
 
-defineProps<{
+const props = defineProps<{
     level: GDCS.Level,
     permission: {
         rate: boolean,
@@ -30,8 +37,39 @@ defineProps<{
     }
 }>();
 
+const levelUpdateForm = useForm({
+    name: props.level.name,
+    desc: Base64.decode(props.level.desc ?? 'KE5vIGRlc2NyaXB0aW9uIHByb3ZpZGVkKQ=='),
+    audio_track: props.level.audio_track.toString(),
+    song_id: props.level.song_id,
+    password: props.level.password.toString(),
+    requested_stars: props.level.requested_stars,
+    unlisted: props.level.unlisted
+});
+
+const changing = reactive({
+    name: false,
+    desc: false,
+    password: false,
+    song: false,
+    requested_stars: false
+});
+
 const markAsDailyForm = useForm({});
 const markAsWeeklyForm = useForm({});
+const isLevelOwner = computed(() => getProp('gdcs.user.id').value === props.level.user_id);
+
+function handleSongTypeUpdate(value: string) {
+    if (value === 'official') {
+        levelUpdateForm.audio_track = props.level.audio_track.toString();
+        levelUpdateForm.song_id = 0;
+    }
+
+    if (value === 'newgrounds') {
+        levelUpdateForm.song_id = props.level.song_id;
+        levelUpdateForm.audio_track = '0';
+    }
+}
 </script>
 
 <template layout="GDCS">
@@ -47,10 +85,24 @@ const markAsWeeklyForm = useForm({});
                     </n-button>
                 </n-descriptions-item>
                 <n-descriptions-item label="名称">
-                    {{ level.name }}
+                    <n-space>
+                        <n-text v-if="!changing.name">{{ levelUpdateForm.name }}</n-text>
+                        <n-input v-else v-model:value="levelUpdateForm.name"/>
+
+                        <n-button v-if="isLevelOwner" text type="primary" @click="changing.name = !changing.name">
+                            {{ !changing.name ? '(修改)' : '(保存)' }}
+                        </n-button>
+                    </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="简介">
-                    {{ Base64.decode(level.desc ?? 'KE5vIGRlc2NyaXB0aW9uIHByb3ZpZGVkKQ==') }}
+                    <n-space>
+                        <n-text v-if="!changing.desc">{{ levelUpdateForm.desc }}</n-text>
+                        <n-input v-else v-model:value="levelUpdateForm.desc"/>
+
+                        <n-button v-if="isLevelOwner" text type="primary" @click="changing.desc = !changing.desc">
+                            {{ !changing.desc ? '(修改)' : '(保存)' }}
+                        </n-button>
+                    </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="下载">
                     {{ level.downloads }}
@@ -64,14 +116,80 @@ const markAsWeeklyForm = useForm({});
                 <n-descriptions-item label="长度">
                     {{ levelLength[level.length] }} [{{ level.length }}]
                 </n-descriptions-item>
-                <n-descriptions-item label="歌曲">
-                    <n-text v-if="level.song_id <= 0" text>
-                        {{ audioTracks[level.audio_track + 1] }} [{{ level.audio_track }}]
-                    </n-text>
+                <n-descriptions-item v-if="isLevelOwner" label="密码">
+                    <n-space>
+                        <template v-if="!changing.password">
+                            <n-text v-if="(levelUpdateForm.password.toString() === '0')" type="info">禁止复制</n-text>
+                            <n-text v-else-if="(levelUpdateForm.password.toString() === '1')" type="info">免费复制</n-text>
+                            <n-text v-else>{{ levelUpdateForm.password }}</n-text>
+                        </template>
 
-                    <n-button v-else text @click="toRouteWithParams('ngproxy.info', level.song_id)">
-                        {{ level.song.name }} [{{ level.song_id }}]
-                    </n-button>
+                        <template v-else>
+                            <n-space vertical>
+                                <n-input v-model:value="levelUpdateForm.password"/>
+
+                                <n-space>
+                                    <n-button
+                                        @click="levelUpdateForm.password = 0;changing.password = !changing.password">
+                                        禁止复制
+                                    </n-button>
+
+                                    <n-button
+                                        @click="levelUpdateForm.password = 1;changing.password = !changing.password">
+                                        免费复制
+                                    </n-button>
+
+                                    <n-button
+                                        @click="levelUpdateForm.password = random(0, 999999, false).toString();changing.password = !changing.password">
+                                        随机密码
+                                    </n-button>
+                                </n-space>
+                            </n-space>
+                        </template>
+
+                        <n-button v-if="isLevelOwner" text type="primary"
+                                  @click="changing.password = !changing.password">
+                            {{ !changing.password ? '(修改)' : '(保存)' }}
+                        </n-button>
+                    </n-space>
+                </n-descriptions-item>
+                <n-descriptions-item label="歌曲">
+                    <n-space :vertical="changing.song">
+                        <template v-if="!changing.song">
+                            <n-text v-if="(levelUpdateForm.song_id.toString() === '0')" text>
+                                {{ audioTracks[levelUpdateForm.audio_track] }} [{{ levelUpdateForm.audio_track }}]
+                            </n-text>
+
+                            <n-button v-else text @click="toRouteWithParams('ngproxy.info', levelUpdateForm.song_id)">
+                                {{
+                                    level.song_id.toString() === levelUpdateForm.song_id.toString() ? level.song.name : 'Unknown'
+                                }} [{{ levelUpdateForm.song_id }}]
+                            </n-button>
+                        </template>
+
+                        <template v-else>
+                            <n-tabs
+                                :default-value="(levelUpdateForm.song_id.toString() === '0' ? 'official' : 'newgrounds')"
+                                justify-content="space-evenly"
+                                type="line"
+                                @update:value="handleSongTypeUpdate"
+                            >
+                                <n-tab-pane name="official" tab="官方歌曲">
+                                    <n-select v-model:value="levelUpdateForm.audio_track" :options="audioTrackOptions"/>
+                                </n-tab-pane>
+
+                                <n-tab-pane name="newgrounds" tab="NG歌曲">
+                                    <n-input-number v-model:value="levelUpdateForm.song_id"/>
+                                </n-tab-pane>
+                            </n-tabs>
+                        </template>
+
+                        <n-button v-if="isLevelOwner"
+                                  class="mt-2.5" text type="primary"
+                                  @click="changing.song = !changing.song">
+                            {{ !changing.song ? '(修改)' : '(保存)' }}
+                        </n-button>
+                    </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item v-if="level.original_level_id" label="原关卡">
                     <n-button text @click="toRouteWithParams('gdcs.dashboard.level.info', level.original_level_id)">
@@ -93,10 +211,21 @@ const markAsWeeklyForm = useForm({});
                     {{ level.coins }}
                 </n-descriptions-item>
                 <n-descriptions-item label="请求星星">
-                    {{ level.requested_stars }}
+                    <n-space>
+                        <n-text v-if="!changing.requested_stars">{{ levelUpdateForm.requested_stars }}</n-text>
+                        <n-input-number v-else v-model:value="levelUpdateForm.requested_stars" :max="10" :min="0"/>
+
+                        <n-button v-if="isLevelOwner" text type="primary"
+                                  @click="changing.requested_stars = !changing.requested_stars">
+                            {{ !changing.requested_stars ? '(修改)' : '(保存)' }}
+                        </n-button>
+                    </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="不公开 (Unlisted)">
-                    {{ level.unlisted ? '是' : '否' }}
+                    <n-space>
+                        <n-text>{{ levelUpdateForm.unlisted ? '是' : '否' }}</n-text>
+                        <n-switch v-if="isLevelOwner" v-model:value="levelUpdateForm.unlisted"/>
+                    </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="低画质模式 (Low Detail Mode, LDM)">
                     {{ level.ldm ? '有' : '无' }}
@@ -133,18 +262,29 @@ const markAsWeeklyForm = useForm({});
 
             <template #footer>
                 <n-space>
+                    <n-button v-if="isLevelOwner && levelUpdateForm.isDirty"
+                              :disabled="levelUpdateForm.processing"
+                              :loading="levelUpdateForm.processing"
+                              type="success"
+                              @click="levelUpdateForm.patch( route('gdcs.dashboard.level.update', level.id) )">
+                        保存修改
+                    </n-button>
+
                     <n-button :disabled="!permission.rate"
                               @click="toRouteWithParams('gdcs.dashboard.level.rate', level.id)">
                         评分
                     </n-button>
 
-                    <n-button :disabled="!permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
-                              :loading="markAsDailyForm.processing"
-                              @click="markAsDailyForm.post( route('gdcs.admin.level.mark.daily', level.id) )">添加到 Daily
+                    <n-button
+                        :disabled="levelUpdateForm.processing || !permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
+                        :loading="markAsDailyForm.processing"
+                        @click="markAsDailyForm.post( route('gdcs.admin.level.mark.daily', level.id) )">添加到 Daily
                     </n-button>
-                    <n-button :disabled="!permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
-                              :loading="markAsWeeklyForm.processing"
-                              @click="markAsWeeklyForm.post( route('gdcs.admin.level.mark.weekly', level.id) )">添加到
+
+                    <n-button
+                        :disabled="levelUpdateForm.processing || !permission.mark || !isEmpty(level.daily) || !isEmpty(level.weekly)"
+                        :loading="markAsWeeklyForm.processing"
+                        @click="markAsWeeklyForm.post( route('gdcs.admin.level.mark.weekly', level.id) )">添加到
                         Weekly
                     </n-button>
                 </n-space>
