@@ -2,9 +2,9 @@
 
 namespace App\Console;
 
-use App\Jobs\DeleteOneHourUnverifiedUser;
-use App\Jobs\GDCS\DeleteOneHourUnverifiedAccount;
-use App\Jobs\GDCS\DeleteTenMinutesUnusedTempLevelUploadAccess;
+use App\Jobs\CleanUnverifiedUser;
+use App\Jobs\GDCS\CleanUnverifiedAccount;
+use App\Jobs\GDCS\CleanUnusedTempLevelUploadAccess;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -12,9 +12,9 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(DeleteOneHourUnverifiedUser::class)->everyTenMinutes();
-        $schedule->job(DeleteOneHourUnverifiedAccount::class)->everyTenMinutes();
-        $schedule->job(DeleteTenMinutesUnusedTempLevelUploadAccess::class)->everyTenMinutes();
+        $schedule->job(CleanUnverifiedUser::class)->everyTenMinutes();
+        $schedule->job(CleanUnverifiedAccount::class)->everyTenMinutes();
+        $schedule->job(CleanUnusedTempLevelUploadAccess::class)->everyTenMinutes();
     }
 
     protected function commands(): void
