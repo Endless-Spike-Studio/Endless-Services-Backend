@@ -16,15 +16,13 @@ import Banner from "@/images/NGProxy/Banner.png";
 import {isMobile, toURL} from "@/scripts/helpers";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
-import {PropType, ref} from "vue";
+import {ref} from "vue";
 import {NGProxy} from "@/scripts/types/backend";
 import CommonHome from "@/views/components/CommonHome.vue";
 
-defineProps({
-    song: {
-        type: Object as PropType<NGProxy.Song>
-    }
-});
+defineProps<{
+    song?: NGProxy.Song
+}>();
 
 const API = {
     info: {

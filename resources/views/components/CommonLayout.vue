@@ -3,6 +3,7 @@ import {
     darkTheme,
     GlobalTheme,
     lightTheme,
+    MenuOption,
     NButton,
     NConfigProvider,
     NDialogProvider,
@@ -30,27 +31,35 @@ import GlobalApiInjector from "@/views/components/GlobalApiInjector.vue";
 import {useGlobalStore} from "@/scripts/stores";
 
 const currentRoute = ref();
-const props = defineProps({
-    theme: {
-        type: String,
-        default: () => useOsTheme().value
-    },
-    menu: {
-        type: Object,
-        default: () => ({
+const props = withDefaults(
+    defineProps<{
+        theme: string,
+        menu: {
+            left: MenuOption[],
+            right: MenuOption[],
+            mobile: MenuOption[]
+        },
+        footer: {
+            short: string,
+            long: string
+        }
+    }>(),
+    {
+        theme: () => useOsTheme()
+                ?.value
+                ?.toString()
+            ?? 'light',
+        menu: () => ({
             left: [],
             right: [],
             mobile: []
-        })
-    },
-    footer: {
-        type: Object,
-        default: () => ({
-            long: 'Geometry Dash Chinese',
-            short: 'GDCN'
+        }),
+        footer: () => ({
+            short: 'GDCN',
+            long: 'Geometry Dash Chinese'
         })
     }
-});
+);
 
 const versions = getProp('versions', {
     php: 'Unknown',

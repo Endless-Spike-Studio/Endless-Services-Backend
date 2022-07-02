@@ -6,12 +6,9 @@ import {h} from "vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
 
-defineProps({
-    accesses: {
-        type: Array,
-        required: true
-    }
-});
+defineProps<{
+    accesses: GDCS.TempLevelUploadAccess[]
+}>();
 
 const columns = [
     {

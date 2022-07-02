@@ -1,13 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace} from "naive-ui";
 import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers";
+import {GDCS} from "@/scripts/types/backend";
 
-defineProps({
-    user: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    user: GDCS.User
+}>();
 </script>
 
 <template layout="GDCS">
@@ -21,7 +19,7 @@ defineProps({
                     {{ user.name }}
                 </n-descriptions-item>
                 <n-descriptions-item v-if="user.account" label="账号">
-                    <n-button @click="toRouteWithParams('gdcs.dashboard.account.info', user.account.id)" text>
+                    <n-button text @click="toRouteWithParams('gdcs.dashboard.account.info', user.account.id)">
                         {{ user.account.name }} [{{ user.account.id }}]
                     </n-button>
                 </n-descriptions-item>

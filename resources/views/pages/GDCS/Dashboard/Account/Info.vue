@@ -14,12 +14,9 @@ import {
 import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers";
 import {Base64} from "js-base64";
 
-defineProps({
-    account: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    account: GDCS.Account
+}>({);
 </script>
 
 <template layout="GDCS">

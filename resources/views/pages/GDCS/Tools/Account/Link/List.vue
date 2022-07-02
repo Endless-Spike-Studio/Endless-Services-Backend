@@ -8,12 +8,9 @@ import route from "@/scripts/route";
 import servers from "@/scripts/enums/servers";
 import {find} from "lodash-es";
 
-defineProps({
-    links: {
-        type: Array,
-        required: true
-    }
-});
+defineProps<{
+    links: GDCS.AccountLink[]
+}>();
 
 const columns = [
     {

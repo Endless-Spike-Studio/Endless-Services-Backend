@@ -1,19 +1,14 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSelect} from "naive-ui";
 import {ref, watchEffect} from "vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
+import {GDCS} from "@/scripts/types/backend";
 
-defineProps({
-    levels: {
-        type: Object,
-        required: true
-    },
-    links: {
-        type: Object,
-        required: true
-    }
-});
+defineProps<{
+    levels: GDCS.Level[],
+    links: GDCS.AccountLink[]
+}>();
 
 const el = ref<FormInst>();
 watchEffect(() => {
@@ -46,8 +41,8 @@ const form = useForm({
 </script>
 
 <template layout="GDCS">
-    <n-card title="关卡转移(出)" class="lg:w-1/3 mx-auto">
-        <n-form ref="el" :rules="rules" :model="form">
+    <n-card class="lg:w-1/3 mx-auto" title="关卡转移(出)">
+        <n-form ref="el" :model="form" :rules="rules">
             <n-form-item label="关卡" path="levelID">
                 <n-select v-model:value="form.levelID" :options="levels"/>
             </n-form-item>

@@ -5,12 +5,9 @@ import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
 import {GDCS} from "@/scripts/types/backend";
 
-defineProps({
-    logs: {
-        type: Array,
-        required: true
-    }
-});
+defineProps<{
+    logs: GDCS.AccountFailedLog[]
+}>();
 
 const columns = [
     {

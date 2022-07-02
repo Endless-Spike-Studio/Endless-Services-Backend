@@ -4,17 +4,17 @@ import {FormInst, NButton, NCard, NForm, NFormItem, NSelect} from "naive-ui";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
 import {Inertia} from "@inertiajs/inertia";
+import {GDCS} from "@/scripts/types/backend";
 
-defineProps({
-    links: {
-        type: Array,
-        required: true
-    },
-    levels: {
-        type: Array,
-        default: () => []
+withDefaults(
+    defineProps<{
+        links: GDCS.AccountLink[],
+        levels: GDCS.Level[]
+    }>(),
+    {
+        levels: () => []
     }
-});
+);
 
 const el = ref<FormInst>();
 watchEffect(() => {

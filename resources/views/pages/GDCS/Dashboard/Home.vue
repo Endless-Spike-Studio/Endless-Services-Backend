@@ -1,45 +1,19 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {NButton, NCard, NList, NListItem, NSpace, NStatistic, NTabPane, NTabs, NText, NThing} from "naive-ui";
 import {formatTime, toRouteWithParams} from "@/scripts/helpers";
+import {GDCS} from "@/scripts/types/backend";
 
-defineProps({
-    todayRegisteredAccountCount: {
-        type: Number,
-        required: true
-    },
-    todayUploadedLevelCount: {
-        type: Number,
-        required: true
-    },
-    todayRatedLevelCount: {
-        type: Number,
-        required: true
-    },
-    recentRegisteredAccounts: {
-        type: Array,
-        required: true
-    },
-    leaderboards: {
-        type: Array,
-        required: true
-    },
-    recentUploadedLevels: {
-        type: Array,
-        required: true
-    },
-    recentRatedLevels: {
-        type: Array,
-        required: true
-    },
-    recentFeaturedLevels: {
-        type: Array,
-        required: true
-    },
-    recentEpicLevels: {
-        type: Array,
-        required: true
-    },
-});
+defineProps<{
+    todayRegisteredAccountCount: number,
+    todayUploadedLevelCount: number,
+    todayRatedLevelCount: number,
+    recentRegisteredAccounts: GDCS.Account[],
+    leaderboards: GDCS.User[],
+    recentUploadedLevels: GDCS.Level[],
+    recentRatedLevels: GDCS.Level[],
+    recentFeaturedLevels: GDCS.Level[],
+    recentEpicLevels: GDCS.Level[]
+}>();
 </script>
 
 <template layout="GDCS">
@@ -68,8 +42,8 @@ defineProps({
                             <n-list-item v-for="account in recentRegisteredAccounts">
                                 <n-thing>
                                     <template #header>
-                                        <n-button @click="toRouteWithParams('gdcs.dashboard.account.info', account.id)"
-                                                  text>
+                                        <n-button text
+                                                  @click="toRouteWithParams('gdcs.dashboard.account.info', account.id)">
                                             {{ account.name }}
                                         </n-button>
                                     </template>
@@ -95,8 +69,8 @@ defineProps({
                             <n-list-item v-for="score in leaderboards">
                                 <n-thing>
                                     <template #header>
-                                        <n-button @click="toRouteWithParams('gdcs.dashboard.user.info', score.user.id)"
-                                                  text>
+                                        <n-button text
+                                                  @click="toRouteWithParams('gdcs.dashboard.user.info', score.user.id)">
                                             {{ score.user.name }}
                                         </n-button>
                                     </template>
@@ -126,8 +100,8 @@ defineProps({
                             <n-list-item v-for="level in recentUploadedLevels">
                                 <n-thing>
                                     <template #header>
-                                        <n-button @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)"
-                                                  text>
+                                        <n-button text
+                                                  @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)">
                                             {{ level.name }} [{{ level.id }}]
                                         </n-button>
                                     </template>
@@ -136,8 +110,8 @@ defineProps({
                                         <n-text :depth="3">
                                             <span>By </span>
                                             <n-button
-                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)"
-                                                text>
+                                                text
+                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)">
                                                 {{ level.user.name }}
                                             </n-button>
                                             <span>, </span>
@@ -161,8 +135,8 @@ defineProps({
                             <n-list-item v-for="level in recentRatedLevels">
                                 <n-thing>
                                     <template #header>
-                                        <n-button @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)"
-                                                  text>
+                                        <n-button text
+                                                  @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)">
                                             {{ level.name }} [{{ level.id }}]
                                         </n-button>
                                     </template>
@@ -171,8 +145,8 @@ defineProps({
                                         <n-text :depth="3">
                                             <span>By </span>
                                             <n-button
-                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)"
-                                                text>
+                                                text
+                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)">
                                                 {{ level.user.name }}
                                             </n-button>
                                             <span>, </span>
@@ -196,8 +170,8 @@ defineProps({
                             <n-list-item v-for="level in recentFeaturedLevels">
                                 <n-thing>
                                     <template #header>
-                                        <n-button @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)"
-                                                  text>
+                                        <n-button text
+                                                  @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)">
                                             {{ level.name }} [{{ level.id }}]
                                         </n-button>
                                     </template>
@@ -206,8 +180,8 @@ defineProps({
                                         <n-text :depth="3">
                                             <span>By </span>
                                             <n-button
-                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)"
-                                                text>
+                                                text
+                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)">
                                                 {{ level.user.name }}
                                             </n-button>
                                             <span>, </span>
@@ -231,8 +205,8 @@ defineProps({
                             <n-list-item v-for="level in recentEpicLevels">
                                 <n-thing>
                                     <template #header>
-                                        <n-button @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)"
-                                                  text>
+                                        <n-button text
+                                                  @click="toRouteWithParams('gdcs.dashboard.level.info', level.id)">
                                             {{ level.name }} [{{ level.id }}]
                                         </n-button>
                                     </template>
@@ -241,8 +215,8 @@ defineProps({
                                         <n-text :depth="3">
                                             <span>By </span>
                                             <n-button
-                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)"
-                                                text>
+                                                text
+                                                @click="toRouteWithParams('gdcs.dashboard.user.info', level.user.id)">
                                                 {{ level.user.name }}
                                             </n-button>
                                             <span>, </span>

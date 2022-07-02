@@ -7,16 +7,10 @@ import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
 
 const account = getProp<User>('gdcs.account');
-const props = defineProps({
-    songs: {
-        type: Array,
-        required: true
-    },
-    customSongOffset: {
-        type: Number,
-        required: true
-    }
-});
+const props = defineProps<{
+    songs: GDCS.Song[],
+    customSongOffset: number
+}>();
 
 const columns = [
     {
