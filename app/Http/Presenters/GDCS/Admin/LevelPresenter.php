@@ -11,7 +11,7 @@ class LevelPresenter
     public function renderRate(Level $level): Response
     {
         return Inertia::render('GDCS/Admin/Level/Rate', [
-            'level' => $level
+            'level' => $level->load('rating')
         ]);
     }
 }

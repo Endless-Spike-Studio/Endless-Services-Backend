@@ -21,7 +21,7 @@ import {map} from "lodash-es";
 import levelRatingDemonDifficulties from "@/scripts/enums/levelRatingDemonDifficulties";
 import route from "@/scripts/route";
 
-defineProps<{
+const props = defineProps<{
     level: GDCS.Level
 }>();
 
@@ -88,14 +88,14 @@ const demonDifficultyOptions = map(levelRatingDemonDifficulties, (difficulty: st
 });
 
 const form = useForm({
-    stars: 0,
-    difficulty: '0',
-    featured_score: 0,
-    epic: false,
-    coin_verified: false,
-    demon_difficulty: '0',
-    auto: false,
-    demon: false
+    stars: props.level.rating.stars,
+    difficulty: props.level.rating.difficulty.toString(),
+    featured_score: props.level.rating.featured_score,
+    epic: props.level.rating.epic,
+    coin_verified: props.level.rating.coin_verified,
+    demon_difficulty: props.level.rating.demon_difficulty.toString(),
+    auto: props.level.rating.auto,
+    demon: props.level.rating.demon
 });
 
 function applyPreset(name: string) {
