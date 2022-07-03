@@ -111,7 +111,7 @@ Route::group([
                     'middleware' => 'permission:RATE_LEVEL'
                 ], static function () {
                     Route::get('/{level}/rate', [LevelPresenter::class, 'renderRate'])->name('rate');
-                    Route::post('/{level}/rate', [LevelApiController::class, 'rate'])->name('rate');
+                    Route::post('/{level}/rate', [LevelApiController::class, 'rate'])->name('rate.api');
                 });
 
                 Route::group([

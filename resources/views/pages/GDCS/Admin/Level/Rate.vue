@@ -268,7 +268,8 @@ function applyPreset(name: string) {
                     </n-form-item>
                 </n-space>
 
-                <n-button class="w-full" @click="form.post( route('gdcs.admin.level.rate', level.id) )">保存</n-button>
+                <n-button class="w-full" @click="form.post( route('gdcs.admin.level.rate.api', level.id) )">保存
+                </n-button>
             </n-form>
         </n-card>
     </n-space>
