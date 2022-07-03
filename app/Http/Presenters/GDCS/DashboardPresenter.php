@@ -32,12 +32,14 @@ class DashboardPresenter
                     ->get(['user_id', 'stars'])
             ),
             'recentUploadedLevels' => Level::with('user:id,name')
+                ->whereNot('unlisted', true)
                 ->whereHas('user')
                 ->orderByDesc('created_at')
                 ->take($perPage)
                 ->get(['id', 'name', 'user_id', 'created_at']),
             'recentRatedLevels' => Inertia::lazy(
                 static fn() => Level::with('user:id,name')
+                    ->whereNot('unlisted', true)
                     ->whereHas('user')
                     ->whereHas('rating', static function ($query) {
                         $query->where('stars', '>', 0);
@@ -47,6 +49,7 @@ class DashboardPresenter
             ),
             'recentFeaturedLevels' => Inertia::lazy(
                 static fn() => Level::with('user:id,name')
+                    ->whereNot('unlisted', true)
                     ->whereHas('user')
                     ->whereHas('rating', static function ($query) {
                         $query->where('featured_score', '>', 0);
@@ -56,6 +59,7 @@ class DashboardPresenter
             ),
             'recentEpicLevels' => Inertia::lazy(
                 static fn() => Level::with('user:id,name')
+                    ->whereNot('unlisted', true)
                     ->whereHas('user')
                     ->whereHas('rating', static function ($query) {
                         $query->where('epic', true);
