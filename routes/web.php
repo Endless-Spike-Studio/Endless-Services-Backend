@@ -9,6 +9,7 @@ use App\Http\Controllers\GDCS\LevelApiController;
 use App\Http\Controllers\GDCS\LevelTempUploadAccessApiController;
 use App\Http\Controllers\GDCS\LevelTransferApiController;
 use App\Http\Presenters\GDCN\Dashboard\UserPresenter;
+use App\Http\Presenters\GDCS\Admin\LevelPresenter;
 use App\Http\Presenters\GDCS\Dashboard\AccountPresenter;
 use App\Http\Presenters\GDCS\Dashboard\InformationPresenter;
 use App\Http\Presenters\GDCS\DashboardPresenter;
@@ -106,6 +107,13 @@ Route::group([
                 'as' => 'level.',
                 'prefix' => 'level'
             ], static function () {
+                Route::group([
+                    'middleware' => 'permission:RATE_LEVEL'
+                ], static function () {
+                    Route::get('/{level}/rate', [LevelPresenter::class, 'renderRate'])->name('rate');
+                    Route::post('/{level}/rate', [LevelApiController::class, 'rate'])->name('rate');
+                });
+
                 Route::group([
                     'middleware' => 'permission:MARK_LEVEL'
                 ], static function () {

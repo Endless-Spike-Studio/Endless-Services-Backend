@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GDCS;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GDCS\LevelRateApiRequest;
 use App\Http\Requests\GDCS\LevelUpdateApiRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
@@ -15,6 +16,20 @@ use Illuminate\Support\Carbon;
 class LevelApiController extends Controller
 {
     use HasMessage;
+
+    public function rate(Level $level, LevelRateApiRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $level->rating()
+            ->updateOrCreate($data);
+
+        $this->pushSuccessMessage(
+            __('messages.rate_success')
+        );
+
+        return back();
+    }
 
     public function update(int $id, LevelUpdateApiRequest $request): RedirectResponse
     {

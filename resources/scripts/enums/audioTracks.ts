@@ -1,6 +1,4 @@
-import {map} from "lodash-es";
-
-const audioTracks = {
+export default {
     '-1': 'Practice: Stay Inside Me - OcularNebula',
     '0': 'Stereo Madness - Foreverbound',
     '1': 'Back on Track - DJVI',
@@ -41,11 +39,3 @@ const audioTracks = {
     '36': 'Nock Em - Bossfight',
     '37': 'Power Trip - Boom Kitty'
 };
-
-export default audioTracks;
-export const options = map(audioTracks, (value, index) => {
-    return {
-        label: value,
-        value: index
-    }
-});

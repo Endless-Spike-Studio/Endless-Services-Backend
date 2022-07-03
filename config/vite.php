@@ -52,7 +52,7 @@ return [
     | Commands
     |--------------------------------------------------------------------------
     | Before starting the development server or building the assets, you
-    | may need to run specific commands. With these options, you can
+    | may need to run specific commands. With these difficultyOptions, you can
     | define what to run, automatically.
     | https://laravel-vite.dev/configuration/laravel-package.html#commands
     */

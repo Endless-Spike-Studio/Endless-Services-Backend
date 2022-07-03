@@ -33,7 +33,7 @@ import {useGlobalStore} from "@/scripts/stores";
 const currentRoute = ref();
 const props = withDefaults(
     defineProps<{
-        theme: string,
+        theme?: string,
         menu: {
             left: MenuOption[],
             right: MenuOption[],
@@ -48,16 +48,7 @@ const props = withDefaults(
         theme: () => useOsTheme()
                 ?.value
                 ?.toString()
-            ?? 'light',
-        menu: () => ({
-            left: [],
-            right: [],
-            mobile: []
-        }),
-        footer: () => ({
-            short: 'GDCN',
-            long: 'Geometry Dash Chinese'
-        })
+            ?? 'light'
     }
 );
 

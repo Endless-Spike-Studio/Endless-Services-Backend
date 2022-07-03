@@ -137,7 +137,7 @@ return [
     |
     | While using Swoole, you may leverage the Octane cache, which is powered
     | by a Swoole table. You may set the maximum number of rows as well as
-    | the number of bytes per row using the configuration options below.
+    | the number of bytes per row using the configuration difficultyOptions below.
     |
     */
 

@@ -4,6 +4,7 @@ return [
     'add_success' => '添加成功!',
     'update_success' => '更新成功!',
     'register_success' => '注册成功!',
+    'rate_success' => '评分成功!',
     'login_failed' => '登录失败',
     'already_logged' => '您已经登录过了',
     'email_verified' => '邮箱验证成功!',

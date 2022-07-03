@@ -9,7 +9,7 @@ import {GDCS} from "@/scripts/types/backend";
 withDefaults(
     defineProps<{
         links: GDCS.AccountLink[],
-        levels: GDCS.Level[]
+        levels?: GDCS.Level[]
     }>(),
     {
         levels: () => []

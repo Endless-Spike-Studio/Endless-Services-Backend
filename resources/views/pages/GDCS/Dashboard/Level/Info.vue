@@ -23,11 +23,18 @@ import {Base64} from "js-base64";
 import {GDCS} from "@/scripts/types/backend";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/route";
-import {isEmpty, random} from "lodash-es";
-import audioTracks, {options as audioTrackOptions} from "@/scripts/enums/audioTracks";
+import {isEmpty, map, random} from "lodash-es";
 import levelLength from "@/scripts/enums/levelLength";
 import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties";
 import {computed, reactive} from "vue";
+import audioTracks from "@/scripts/enums/audioTracks";
+
+const options = map(audioTracks, (value, index) => {
+    return {
+        label: value,
+        value: index
+    }
+});
 
 const props = defineProps<{
     level: GDCS.Level,
@@ -176,7 +183,7 @@ function handleSongTypeUpdate(value: string) {
                                 @update:value="handleSongTypeUpdate"
                             >
                                 <n-tab-pane name="official" tab="官方歌曲">
-                                    <n-select v-model:value="levelUpdateForm.audio_track" :options="audioTrackOptions"/>
+                                    <n-select v-model:value="levelUpdateForm.audio_track" :options="options"/>
                                 </n-tab-pane>
 
                                 <n-tab-pane name="newgrounds" tab="NG歌曲">
@@ -272,7 +279,7 @@ function handleSongTypeUpdate(value: string) {
                     </n-button>
 
                     <n-button v-if="permission.rate"
-                              @click="toRouteWithParams('gdcs.dashboard.level.rate', level.id)">
+                              @click="toRouteWithParams('gdcs.admin.level.rate', level.id)">
                         评分
                     </n-button>
 
