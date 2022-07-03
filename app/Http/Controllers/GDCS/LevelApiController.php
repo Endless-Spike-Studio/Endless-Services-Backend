@@ -9,6 +9,7 @@ use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\DailyLevel;
 use App\Models\GDCS\Level;
+use App\Models\GDCS\LevelRating;
 use App\Models\GDCS\WeeklyLevel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
@@ -21,8 +22,9 @@ class LevelApiController extends Controller
     {
         $data = $request->validated();
 
-        $level->rating()
-            ->updateOrCreate($data);
+        LevelRating::updateOrCreate([
+            'level_id' => $level->id
+        ], $data);
 
         $this->pushSuccessMessage(
             __('messages.rate_success')
