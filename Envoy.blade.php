@@ -1,3 +1,5 @@
+@servers(['localhost' => '127.0.0.1'])
+
 @task('update')
 cd /app
 git pull
