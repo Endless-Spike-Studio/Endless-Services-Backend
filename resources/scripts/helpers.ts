@@ -41,7 +41,7 @@ export function toURL(url: string | null) {
     }
 }
 
-export function getProp<T>(key: string, defaultValue?: any): ComputedRef<T> {
+export function getProp<TValue>(key: string, defaultValue?: any): ComputedRef<TValue> {
     return computed(() => {
         const props = usePage().props.value;
         return get(props, key, defaultValue);

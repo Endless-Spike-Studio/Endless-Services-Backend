@@ -44,7 +44,7 @@ watchEffect(() => {
         Inertia.reload({
             data: {link: form.linkID},
             only: ['levels']
-        });
+        })
     }
 });
 </script>

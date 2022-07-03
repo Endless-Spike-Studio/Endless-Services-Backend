@@ -1,19 +1,49 @@
 <script lang="ts" setup>
 import {NButton, NCard, NList, NListItem, NSpace, NStatistic, NTabPane, NTabs, NText, NThing} from "naive-ui";
-import {formatTime, toRouteWithParams} from "@/scripts/helpers";
+import {formatTime, getProp, toRouteWithParams} from "@/scripts/helpers";
 import {GDCS} from "@/scripts/types/backend";
+import {Inertia} from "@inertiajs/inertia";
 
 defineProps<{
     todayRegisteredAccountCount: number,
     todayUploadedLevelCount: number,
     todayRatedLevelCount: number,
     recentRegisteredAccounts: GDCS.Account[],
-    leaderboards: GDCS.User[],
     recentUploadedLevels: GDCS.Level[],
-    recentRatedLevels: GDCS.Level[],
-    recentFeaturedLevels: GDCS.Level[],
-    recentEpicLevels: GDCS.Level[]
-}>();
+}>()
+
+const leaderboards = getProp<GDCS.User[]>('leaderboards');
+const recentRatedLevels = getProp<GDCS.Level[]>('recentRatedLevels');
+const recentFeaturedLevels = getProp<GDCS.Level[]>('recentFeaturedLevels');
+const recentEpicLevels = getProp<GDCS.Level[]>('recentEpicLevels');
+
+function handleAccountTabsUpdate(newTab: string) {
+    if (newTab === 'leaderboard') {
+        Inertia.reload({
+            only: ['leaderboards']
+        });
+    }
+}
+
+function handleLevelTabsUpdate(newTab: string) {
+    switch (newTab) {
+        case 'rated':
+            Inertia.reload({
+                only: ['recentRatedLevels']
+            });
+            break;
+        case 'featured':
+            Inertia.reload({
+                only: ['recentFeaturedLevels']
+            });
+            break;
+        case 'epic':
+            Inertia.reload({
+                only: ['recentEpicLevels']
+            });
+            break;
+    }
+}
 </script>
 
 <template layout="GDCS">
@@ -36,7 +66,8 @@ defineProps<{
 
         <n-space justify="space-evenly">
             <n-card class="w-[50rem]" title="账号">
-                <n-tabs default-value="recent" justify-content="space-evenly" type="line">
+                <n-tabs default-value="recent" justify-content="space-evenly" type="line"
+                        @update:value="handleAccountTabsUpdate">
                     <n-tab-pane name="recent" tab="最近注册">
                         <n-list>
                             <n-list-item v-for="account in recentRegisteredAccounts">
@@ -94,7 +125,8 @@ defineProps<{
             </n-card>
 
             <n-card class="w-[50rem]" title="关卡">
-                <n-tabs default-value="recent" justify-content="space-evenly" type="line">
+                <n-tabs default-value="recent" justify-content="space-evenly" type="line"
+                        @update:value="handleLevelTabsUpdate">
                     <n-tab-pane name="recent" tab="最近上传">
                         <n-list>
                             <n-list-item v-for="level in recentUploadedLevels">

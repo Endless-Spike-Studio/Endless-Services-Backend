@@ -24,37 +24,45 @@ class DashboardPresenter
             'recentRegisteredAccounts' => Account::orderByDesc('created_at')
                 ->take($perPage)
                 ->get(['id', 'name', 'created_at']),
-            'leaderboards' => UserScore::with('user:id,name')
-                ->whereHas('user')
-                ->orderByDesc('stars')
-                ->take($perPage)
-                ->get(['user_id', 'stars']),
+            'leaderboards' => Inertia::lazy(
+                static fn() => UserScore::with('user:id,name')
+                    ->whereHas('user')
+                    ->orderByDesc('stars')
+                    ->take($perPage)
+                    ->get(['user_id', 'stars'])
+            ),
             'recentUploadedLevels' => Level::with('user:id,name')
                 ->whereHas('user')
                 ->orderByDesc('created_at')
                 ->take($perPage)
                 ->get(['id', 'name', 'user_id', 'created_at']),
-            'recentRatedLevels' => Level::with('user:id,name')
-                ->whereHas('user')
-                ->whereHas('rating', static function ($query) {
-                    $query->where('stars', '>', 0);
-                })
-                ->take($perPage)
-                ->get(['id', 'name', 'user_id', 'created_at']),
-            'recentFeaturedLevels' => Level::with('user:id,name')
-                ->whereHas('user')
-                ->whereHas('rating', static function ($query) {
-                    $query->where('featured_score', '>', 0);
-                })
-                ->take($perPage)
-                ->get(['id', 'name', 'user_id', 'created_at']),
-            'recentEpicLevels' => Level::with('user:id,name')
-                ->whereHas('user')
-                ->whereHas('rating', static function ($query) {
-                    $query->where('epic', true);
-                })
-                ->take($perPage)
-                ->get(['id', 'name', 'user_id', 'created_at'])
+            'recentRatedLevels' => Inertia::lazy(
+                static fn() => Level::with('user:id,name')
+                    ->whereHas('user')
+                    ->whereHas('rating', static function ($query) {
+                        $query->where('stars', '>', 0);
+                    })
+                    ->take($perPage)
+                    ->get(['id', 'name', 'user_id', 'created_at'])
+            ),
+            'recentFeaturedLevels' => Inertia::lazy(
+                static fn() => Level::with('user:id,name')
+                    ->whereHas('user')
+                    ->whereHas('rating', static function ($query) {
+                        $query->where('featured_score', '>', 0);
+                    })
+                    ->take($perPage)
+                    ->get(['id', 'name', 'user_id', 'created_at'])
+            ),
+            'recentEpicLevels' => Inertia::lazy(
+                static fn() => Level::with('user:id,name')
+                    ->whereHas('user')
+                    ->whereHas('rating', static function ($query) {
+                        $query->where('epic', true);
+                    })
+                    ->take($perPage)
+                    ->get(['id', 'name', 'user_id', 'created_at'])
+            )
         ]);
     }
 }
