@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'HarmonyOS Sans SC Medium';
-    src: url(../fonts/HarmonyOS_Sans_SC_Medium.ttf) format('truetype');
+    font-family: 'HarmonyOS Sans SC';
+    src: local('HarmonyOS Sans SC'), url(../fonts/HarmonyOS_Sans_SC_Regular.ttf) format('truetype');
 }
 
 #app {
     @apply h-full;
-    font-family: 'HarmonyOS Sans SC Medium', sans-serif;
+    font-family: 'HarmonyOS Sans SC', sans-serif;
 }
