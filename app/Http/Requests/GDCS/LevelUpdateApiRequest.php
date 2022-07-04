@@ -19,16 +19,17 @@ class LevelUpdateApiRequest extends Request
                 Rule::unique(Level::class)->ignore($level)
             ],
             'desc' => [
-                'required',
+                'nullable',
                 'string',
                 Rule::unique(Level::class)->ignore($level)
             ],
             'audio_track' => [
-                'required',
+                'required_without:song_id',
                 'integer',
                 Rule::unique(Level::class)->ignore($level)
             ],
             'song_id' => [
+                'required_without:audio_track',
                 'required',
                 'integer',
                 Rule::unique(Level::class)->ignore($level)
