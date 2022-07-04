@@ -11,6 +11,7 @@ use App\Models\GDCS\DailyLevel;
 use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelRating;
 use App\Models\GDCS\WeeklyLevel;
+use Base64Url\Base64Url;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 
@@ -41,6 +42,10 @@ class LevelApiController extends Controller
         $account = $request->user('gdcs');
 
         if ($level->user_id === $account->user->id) {
+            if (!empty($data['desc'])) {
+                $data['desc'] = Base64Url::encode($data['desc'], true);
+            }
+
             $level->update($data);
         } else {
             abort(403);
