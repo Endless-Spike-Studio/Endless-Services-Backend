@@ -33,7 +33,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => Auth::guard('gdcs')
                     ->user()
                     ?->load('user:id,uuid,name')
-                    ->getRelation('user')
+                    ->getRelationValue('user')
             ],
             'messages' => Session::pull('messages', []),
             'versions' => [

@@ -15,8 +15,8 @@ class LevelTempUploadAccessPresenter
         $account = Auth::guard('gdcs')->user();
 
         return Inertia::render('GDCS/Tools/Level/TempUploadAccess/List', [
-            'accesses' => $account->load('tempLevelUploadAccesses:id,ip,created_at')
-                ->getRelation('tempLevelUploadAccesses')
+            'accesses' => $account->load('tempLevelUploadAccesses:id,account_id,ip,created_at')
+                ->getRelationValue('tempLevelUploadAccesses')
         ]);
     }
 }

@@ -18,7 +18,7 @@ class AccountPresenter
             'gdcs' => [
                 'account' => $account->only(['id', 'name', 'email', 'email_verified_at', 'created_at']),
                 'user' => $account->load('user:id,name,uuid,udid,created_at')
-                    ->getRelation('user')
+                    ->getRelationValue('user')
             ]
         ]);
     }
@@ -42,7 +42,7 @@ class AccountPresenter
 
         return Inertia::render('GDCS/Account/FailedLog', [
             'logs' => $account->load('failedLogs:id,account_id,content,ip,created_at')
-                ->getRelation('failedLogs')
+                ->getRelationValue('failedLogs')
         ]);
     }
 }

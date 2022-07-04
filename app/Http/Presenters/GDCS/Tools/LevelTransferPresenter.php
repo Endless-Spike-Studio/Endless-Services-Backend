@@ -37,8 +37,8 @@ class LevelTransferPresenter
         /** @var Account $account */
         $account = Auth::guard('gdcs')->user();
 
-        return $account->load('links:id,target_name,target_account_id,target_user_id')
-            ->getRelation('links')
+        return $account->load('links:id,account_id,target_name,target_account_id,target_user_id')
+            ->getRelationValue('links')
             ->map(fn(AccountLink $link) => [
                 'label' => $link->target_name . ' [' . $link->target_account_id . ', ' . $link->target_user_id . ']',
                 'value' => $link->id
@@ -59,7 +59,7 @@ class LevelTransferPresenter
         $account = Auth::guard('gdcs')->user();
 
         return $account->load('user:id')
-            ->getRelation('user')
+            ->getRelationValue('user')
             ->load('levels:id,name,user_id')
             ->getRelation('levels')
             ->map(fn(Level $level) => [
