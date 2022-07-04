@@ -17,10 +17,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: '[后端] 安装依赖'
+      - name: '[后端] 更新依赖'
         run: |
           rm composer.lock
-          composer install --no-interaction --no-ansi
+          composer update --no-interaction --no-ansi
 
       - name: '初始化项目'
         run: |
