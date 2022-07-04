@@ -5,15 +5,15 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     container:
-      image: kirschbaumdevelopment/laravel-test-runner:8.1
+      image: laradock/workspace:master-8.1
     services:
-      mysql:
+      database:
         image: mariadb
         env:
           MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
           MARIADB_DATABASE: gdcn
         ports:
-          - 33306:3306
+          - 3306:3306
     steps:
       - uses: actions/checkout@v3
       - name: Install composer dependencies
@@ -23,5 +23,7 @@ jobs:
         run: |
           cp .env.ci .env
           php artisan key:generate
-      - name: Run Testsuite
+      - name: Run test
         run: vendor/bin/phpunit tests/
+      - name: Post deploy request
+        run: curl -X POST -F 'secret=${{ secrets.APP_HOOK_SECRET }}' ${{ secrets.APP_HOOK_URL }}
