@@ -2,7 +2,7 @@ on: push
 name: '测试'
 
 jobs:
-  '测试':
+  test:
     runs-on: ubuntu-latest
     container:
       image: laradock/workspace:master-8.1
