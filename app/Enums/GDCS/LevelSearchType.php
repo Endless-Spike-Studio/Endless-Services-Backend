@@ -21,4 +21,6 @@ enum LevelSearchType: int
     case HALL_OF_FAME = 16;
     case ALSO_FEATURED = 17;
     case UNKNOWN = 18;
+    case DAILY_HISTORY = 21;
+    case WEEKLY_HISTORY = 22;
 }
