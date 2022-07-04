@@ -20,7 +20,15 @@ class Base64Cast implements CastsAttributes
         }
 
         try {
-            Base64Url::decode($value);
+            if (
+                $value ===
+                Base64Url::encode(
+                    Base64Url::decode($value)
+                )
+            ) {
+                throw new InvalidArgumentException('Invalid base64');
+            }
+
             return $value;
         } catch (InvalidArgumentException) {
             return Base64Url::encode($value, true);
