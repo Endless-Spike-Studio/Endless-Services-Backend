@@ -10,7 +10,8 @@ enum LevelRatingDifficulty: int
     case HARD = 30;
     case HARDER = 40;
     case INSANE = 50;
-    case DEMON = 60;
+    case AUTO_OR_DEMON = 60;
 
-    public const AUTO = LevelRatingDifficulty::DEMON;
+    public const AUTO = LevelRatingDifficulty::AUTO_OR_DEMON;
+    public const DEMON = LevelRatingDifficulty::AUTO_OR_DEMON;
 }
