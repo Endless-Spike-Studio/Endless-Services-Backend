@@ -108,14 +108,14 @@ Route::group([
                 'prefix' => 'level'
             ], static function () {
                 Route::group([
-                    'middleware' => 'permission:RATE_LEVEL'
+                    'middleware' => 'can:RATE_LEVEL'
                 ], static function () {
                     Route::get('/{level}/rate', [LevelPresenter::class, 'renderRate'])->name('rate');
                     Route::post('/{level}/rate', [LevelApiController::class, 'rate'])->name('rate.api');
                 });
 
                 Route::group([
-                    'middleware' => 'permission:MARK_LEVEL'
+                    'middleware' => 'can:MARK_LEVEL'
                 ], static function () {
                     Route::post('/{id}/mark:daily', [LevelApiController::class, 'markAsDaily'])->name('mark.daily');
                     Route::post('/{id}/mark:weekly', [LevelApiController::class, 'markAsWeekly'])->name('mark.weekly');

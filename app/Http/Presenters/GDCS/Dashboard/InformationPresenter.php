@@ -42,8 +42,8 @@ class InformationPresenter
                 ->load('daily:id,level_id,apply_at')
                 ->load('weekly:id,level_id,apply_at'),
             'permission' => [
-                'rate' => $account->hasPermissionTo('RATE_LEVEL'),
-                'mark' => $account->hasPermissionTo('MARK_LEVEL')
+                'rate' => $account->can('RATE_LEVEL'),
+                'mark' => $account->can('MARK_LEVEL')
             ]
         ]);
     }
