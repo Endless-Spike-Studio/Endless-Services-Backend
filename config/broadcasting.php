@@ -35,12 +35,12 @@ return [
             'key' => env('PUSHER_APP_KEY'),
             'secret' => env('PUSHER_APP_SECRET'),
             'app_id' => env('PUSHER_APP_ID'),
-            'difficultyOptions' => [
+            'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => true,
             ],
             'client_options' => [
-                // Guzzle client difficultyOptions: https://docs.guzzlephp.org/en/stable/request-options.html
+                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
             ],
         ],
 

@@ -10,7 +10,7 @@ trait HasMessage
     {
         Session::push('messages', [
             'content' => $content,
-            'difficultyOptions' => array_merge([
+            'options' => array_merge([
                 'type' => 'error'
             ], $options)
         ]);
@@ -20,7 +20,7 @@ trait HasMessage
     {
         Session::push('messages', [
             'content' => $content,
-            'difficultyOptions' => array_merge([
+            'options' => array_merge([
                 'type' => 'success'
             ], $options)
         ]);
@@ -30,7 +30,7 @@ trait HasMessage
     {
         Session::push('messages', [
             'content' => $content,
-            'difficultyOptions' => $options
+            'options' => $options
         ]);
     }
 }
