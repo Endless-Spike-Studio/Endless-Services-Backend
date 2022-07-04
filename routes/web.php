@@ -117,8 +117,8 @@ Route::group([
                 Route::group([
                     'middleware' => 'can:MARK_LEVEL'
                 ], static function () {
-                    Route::post('/{id}/mark:daily', [LevelApiController::class, 'markAsDaily'])->name('mark.daily');
-                    Route::post('/{id}/mark:weekly', [LevelApiController::class, 'markAsWeekly'])->name('mark.weekly');
+                    Route::post('/{level}/mark:daily', [LevelApiController::class, 'markAsDaily'])->name('mark.daily');
+                    Route::post('/{level}/mark:weekly', [LevelApiController::class, 'markAsWeekly'])->name('mark.weekly');
                 });
             });
         });
@@ -146,19 +146,19 @@ Route::group([
         ], static function () {
             Route::get('/', [DashboardPresenter::class, 'renderHome'])->name('home');
 
-            Route::get('/account/{id}', [InformationPresenter::class, 'renderAccount'])
+            Route::get('/account/{account}', [InformationPresenter::class, 'renderAccount'])
                 ->where('id', '\d+')
                 ->name('account.info');
 
-            Route::get('/level/{id}', [InformationPresenter::class, 'renderLevel'])
+            Route::get('/level/{level}', [InformationPresenter::class, 'renderLevel'])
                 ->where('id', '\d+')
                 ->name('level.info');
 
-            Route::patch('/level/{id}', [InformationPresenter::class, 'renderLevel'])
+            Route::patch('/level/{level}', [LevelApiController::class, 'update'])
                 ->where('id', '\d+')
                 ->name('level.update');
 
-            Route::get('/user/{id}', [InformationPresenter::class, 'renderUser'])
+            Route::get('/user/{user}', [InformationPresenter::class, 'renderUser'])
                 ->where('id', '\d+')
                 ->name('user.info');
         });
@@ -181,7 +181,7 @@ Route::group([
                     Route::inertia('/create', 'GDCS/Tools/Account/Link/Create')->name('create');
 
                     Route::post('/create', [AccountLinkApiController::class, 'create'])->name('create.api');
-                    Route::delete('/{id}', [AccountLinkApiController::class, 'delete'])
+                    Route::delete('/{link}', [AccountLinkApiController::class, 'delete'])
                         ->where('id', '\d+')
                         ->name('delete.api');
                 });
@@ -198,7 +198,7 @@ Route::group([
                     Route::get('/list', [LevelTempUploadAccessPresenter::class, 'list'])->name('list');
 
                     Route::get('/create', [LevelTempUploadAccessApiController::class, 'create'])->name('create.api');
-                    Route::delete('/{id}', [LevelTempUploadAccessApiController::class, 'delete'])
+                    Route::delete('/{access}', [LevelTempUploadAccessApiController::class, 'delete'])
                         ->where('id', '\d+')
                         ->name('delete.api');
                 });
@@ -233,7 +233,7 @@ Route::group([
                     Route::inertia('/create:netease', 'GDCS/Tools/Song/Custom/Create/Netease')->name('create.netease');
                     Route::post('/create:netease', [CustomSongApiController::class, 'createNetease'])->name('create.netease.api');
 
-                    Route::delete('/{id}', [CustomSongApiController::class, 'delete'])
+                    Route::delete('/{song}', [CustomSongApiController::class, 'delete'])
                         ->where('id', '\d+')
                         ->name('delete.api');
                 });

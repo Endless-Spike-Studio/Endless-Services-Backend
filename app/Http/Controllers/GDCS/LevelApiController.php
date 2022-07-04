@@ -33,10 +33,9 @@ class LevelApiController extends Controller
         return back();
     }
 
-    public function update(int $id, LevelUpdateApiRequest $request): RedirectResponse
+    public function update(Level $level, LevelUpdateApiRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $level = Level::findOrFail($id);
 
         /** @var Account $account */
         $account = $request->user('gdcs');
@@ -54,10 +53,10 @@ class LevelApiController extends Controller
         return back();
     }
 
-    public function markAsDaily(int $id): RedirectResponse
+    public function markAsDaily(Level $level): RedirectResponse
     {
         DailyLevel::firstOrCreate([
-            'level_id' => $id,
+            'level_id' => $level->id,
             'apply_at' => DailyLevel::latest()
                     ->value('apply_at')
                 ?? Carbon::parse('tomorrow')
@@ -70,10 +69,10 @@ class LevelApiController extends Controller
         return back();
     }
 
-    public function markAsWeekly(int $id): RedirectResponse
+    public function markAsWeekly(Level $level): RedirectResponse
     {
         WeeklyLevel::firstOrCreate([
-            'level_id' => $id,
+            'level_id' => $level->id,
             'apply_at' => WeeklyLevel::latest()
                     ->value('apply_at')
                 ?? Carbon::parse('next monday')

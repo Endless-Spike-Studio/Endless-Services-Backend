@@ -8,6 +8,7 @@ use App\Http\Controllers\HelperController;
 use App\Http\Requests\GDCS\AccountLinkCreateRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
+use App\Models\GDCS\AccountLink;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use Illuminate\Support\Str;
@@ -58,24 +59,19 @@ class AccountLinkApiController extends Controller
         return to_route('gdcs.tools.account.link.list');
     }
 
-    public function delete(int $id): RedirectResponse
+    public function delete(AccountLink $link): RedirectResponse
     {
         /** @var Account $account */
         $account = RequestFacade::user('gdcs');
 
-        $query = $account->links()
-            ->whereKey($id);
-
-        if (!$query->exists()) {
-            $this->pushErrorMessage(
-                __('messages.delete_failed')
-            );
-        } else {
+        if ($link->account_id === $account->id) {
             $this->pushSuccessMessage(
                 __('messages.deleted')
             );
 
-            $query->delete();
+            $link->delete();
+        } else {
+            abort(404);
         }
 
         return back();

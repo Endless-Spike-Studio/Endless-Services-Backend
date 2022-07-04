@@ -130,26 +130,20 @@ class CustomSongApiController extends Controller
         return to_route('gdcs.tools.song.custom.list');
     }
 
-    public function delete(int $id): RedirectResponse
+    public function delete(CustomSong $song): RedirectResponse
     {
         /** @var Account $account */
         $account = Request::user('gdcs');
 
-        $query = $account->uploadedCustomSongs()
-            ->whereKey($id);
-
-        if (!$query->exists()) {
-            $this->pushErrorMessage(
-                __('messages.custom_song.not_found')
+        if ($song->account_id === $account->id) {
+            $this->pushSuccessMessage(
+                __('messages.deleted')
             );
 
-            return back();
+            $song->delete();
+        } else {
+            abort(404);
         }
-
-        $query->delete();
-        $this->pushSuccessMessage(
-            __('messages.deleted')
-        );
 
         return back();
     }

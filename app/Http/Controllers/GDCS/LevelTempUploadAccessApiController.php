@@ -5,6 +5,7 @@ namespace App\Http\Controllers\GDCS;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
+use App\Models\GDCS\TempLevelUploadAccess;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Request as RequestFacade;
@@ -42,24 +43,19 @@ class LevelTempUploadAccessApiController extends Controller
         return back();
     }
 
-    public function delete(int $id): RedirectResponse
+    public function delete(TempLevelUploadAccess $access): RedirectResponse
     {
         /** @var Account $account */
         $account = RequestFacade::user('gdcs');
 
-        $query = $account->tempLevelUploadAccesses()
-            ->whereKey($id);
-
-        if (!$query->exists()) {
-            $this->pushErrorMessage(
-                __('messages.delete_failed')
-            );
-        } else {
+        if ($access->account_id === $account->id) {
             $this->pushSuccessMessage(
                 __('messages.deleted')
             );
 
-            $query->delete();
+            $access->delete();
+        } else {
+            abort(404);
         }
 
         return back();
