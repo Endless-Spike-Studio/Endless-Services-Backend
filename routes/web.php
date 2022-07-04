@@ -177,7 +177,7 @@ Route::group([
                     'prefix' => 'link',
                     'as' => 'link.'
                 ], static function () {
-                    Route::get('/list', [AccountLinkPresenter::class, 'list'])->name('list');
+                    Route::get('/list', [AccountLinkPresenter::class, 'renderList'])->name('list');
                     Route::inertia('/create', 'GDCS/Tools/Account/Link/Create')->name('create');
 
                     Route::post('/create', [AccountLinkApiController::class, 'create'])->name('create.api');
@@ -209,10 +209,10 @@ Route::group([
                 ], static function () {
                     Route::inertia('/', 'GDCS/Tools/Level/Transfer/Home')->name('home');
 
-                    Route::get('/in', [LevelTransferPresenter::class, 'in'])->name('in');
+                    Route::get('/in', [LevelTransferPresenter::class, 'renderTransferIn'])->name('in');
                     Route::post('/in', [LevelTransferApiController::class, 'transferIn'])->name('in.api');
 
-                    Route::get('/out', [LevelTransferPresenter::class, 'out'])->name('out');
+                    Route::get('/out', [LevelTransferPresenter::class, 'renderTransferOut'])->name('out');
                     Route::post('/out', [LevelTransferApiController::class, 'transferOut'])->name('out.api');
                 });
             });
@@ -225,7 +225,7 @@ Route::group([
                     'prefix' => 'custom',
                     'as' => 'custom.'
                 ], static function () {
-                    Route::get('/list', [CustomSongPresenter::class, 'list'])->name('list');
+                    Route::get('/list', [CustomSongPresenter::class, 'renderList'])->name('list');
 
                     Route::inertia('/create:link', 'GDCS/Tools/Song/Custom/Create/Link')->name('create.link');
                     Route::post('/create:link', [CustomSongApiController::class, 'createLink'])->name('create.link.api');
@@ -270,7 +270,7 @@ Route::group([
 ], static function () {
     Route::inertia('/', 'NGProxy/Home')->name('home');
 
-    Route::get('/{id}', [NGProxyPresenter::class, 'renderHome'])
+    Route::get('/{id}', [NGProxyPresenter::class, 'renderHomeWithSong'])
         ->where('id', '\d+')
         ->name('info');
 });

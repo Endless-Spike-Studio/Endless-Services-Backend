@@ -3,6 +3,7 @@
 namespace App\Http\Presenters\GDCS\Tools;
 
 use App\Http\Controllers\GDCS\LevelTransferApiController;
+use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountLink;
 use App\Models\GDCS\Level;
 use App\Repositories\GDCS\AccountLinkRepository;
@@ -13,12 +14,12 @@ use Inertia\Response;
 
 class LevelTransferPresenter
 {
-    public function in(): Response
+    public function renderTransferIn(): Response
     {
         return Inertia::render('GDCS/Tools/Level/Transfer/In', [
             'links' => $this->links(),
-            'levels' => Inertia::lazy(static function () {
-                return app(LevelTransferApiController::class)
+            'levels' => Inertia::lazy(
+                static fn() => app(LevelTransferApiController::class)
                     ->loadRemoteLevels(
                         app(AccountLinkRepository::class)
                             ->findByAccount(
@@ -26,16 +27,17 @@ class LevelTransferPresenter
                                     ->id(),
                                 Request::get('link', 0)
                             )->value('target_user_id')
-                    );
-            })
+                    )
+            )
         ]);
     }
 
     protected function links(): array
     {
-        return Auth::guard('gdcs')
-            ->user()
-            ->load('links:id,target_name,target_account_id,target_user_id')
+        /** @var Account $account */
+        $account = Auth::guard('gdcs')->user();
+
+        return $account->load('links:id,target_name,target_account_id,target_user_id')
             ->getRelation('links')
             ->map(fn(AccountLink $link) => [
                 'label' => $link->target_name . ' [' . $link->target_account_id . ', ' . $link->target_user_id . ']',
@@ -43,7 +45,7 @@ class LevelTransferPresenter
             ])->toArray();
     }
 
-    public function out(): Response
+    public function renderTransferOut(): Response
     {
         return Inertia::render('GDCS/Tools/Level/Transfer/Out', [
             'levels' => $this->levels(),
@@ -53,9 +55,10 @@ class LevelTransferPresenter
 
     protected function levels(): array
     {
-        return Auth::guard('gdcs')
-            ->user()
-            ->load('user:id')
+        /** @var Account $account */
+        $account = Auth::guard('gdcs')->user();
+
+        return $account->load('user:id')
             ->getRelation('user')
             ->load('levels:id,name,user_id')
             ->getRelation('levels')

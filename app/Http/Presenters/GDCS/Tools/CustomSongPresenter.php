@@ -8,11 +8,10 @@ use Inertia\Response;
 
 class CustomSongPresenter
 {
-    public function list(): Response
+    public function renderList(): Response
     {
         return Inertia::render('GDCS/Tools/Song/Custom/List', [
-            'songs' => CustomSong::all()
-                ?->load('account:id,name'),
+            'songs' => CustomSong::with('account:id,name')->get(),
             'customSongOffset' => config('gdcs.custom_song_offset')
         ]);
     }

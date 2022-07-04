@@ -14,7 +14,7 @@ class NGProxyPresenter
      * @throws SongDisabledException
      * @throws SongGetFailedException
      */
-    public function renderHome(int $id): InertiaResponse
+    public function renderHomeWithSong(int $id): InertiaResponse
     {
         return Inertia::render('NGProxy/Home', [
             'song' => app(NGProxyController::class)->info($id)
