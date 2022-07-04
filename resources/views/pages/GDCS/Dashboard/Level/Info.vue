@@ -23,11 +23,12 @@ import {Base64} from "js-base64"
 import {GDCS} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
-import {isEmpty, map, random} from "lodash-es"
+import {each, isEmpty, map, random} from "lodash-es"
 import levelLength from "@/scripts/enums/levelLength"
 import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties"
-import {computed, reactive} from "vue"
+import {computed, reactive, watch} from "vue"
 import audioTracks from "@/scripts/enums/audioTracks"
+import {useGlobalStore} from "@/scripts/stores"
 
 const options = map(audioTracks, (value, index) => {
     return {
@@ -52,6 +53,14 @@ const levelUpdateForm = useForm({
     password: props.level.password.toString(),
     requested_stars: props.level.requested_stars,
     unlisted: props.level.unlisted
+})
+
+watch(levelUpdateForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 
 const changing = reactive({
@@ -137,13 +146,12 @@ function handleSongTypeUpdate(value: string) {
 
                                 <n-space>
                                     <n-button
-                                        @click="levelUpdateForm.password = 0">
+                                        @click="(levelUpdateForm.password = '0')">
                                         禁止复制
                                     </n-button>
 
                                     <n-button
-                                        @click="
-                                        levelUpdateForm.password = 1">
+                                        @click="(levelUpdateForm.password = '1')">
                                         免费复制
                                     </n-button>
 
