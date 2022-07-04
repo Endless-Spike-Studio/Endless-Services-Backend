@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GDCN;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCN\ProjectUpdateRequest;
+use Illuminate\Support\Facades\Log;
 
 class ProjectApiController extends Controller
 {
@@ -24,8 +25,13 @@ class ProjectApiController extends Controller
             'php artisan octane:reload'
         ];
 
-        foreach ($commands as $command) {
-            exec($command);
-        }
+        $output = shell_exec(
+            implode(' && ', $commands)
+        );
+
+        Log::channel('daily')
+            ->notice('执行 Github 更新钩子', [
+                'output' => $output
+            ]);
     }
 }
