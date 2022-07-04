@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountBlockRequest;
 use App\Http\Requests\GDCS\AccountUnblockRequest;
@@ -22,7 +22,7 @@ class AccountBlockController extends Controller
 
         return $this->service->create($data['accountID'], $data['targetAccountID'])
             ? Response::ACCOUNT_BLOCK_SUCCESS->value
-            : Response::ACCOUNT_BLOCK_FAILED->value;
+            : \App\Enums\Response::ACCOUNT_BLOCK_FAILED->value;
     }
 
     public function unblock(AccountUnblockRequest $request): int
@@ -30,7 +30,7 @@ class AccountBlockController extends Controller
         $data = $request->validated();
 
         return $this->service->delete($data['accountID'], $data['targetAccountID'])
-            ? Response::ACCOUNT_UNBLOCK_SUCCESS->value
+            ? \App\Enums\Response::ACCOUNT_UNBLOCK_SUCCESS->value
             : Response::ACCOUNT_UNBLOCK_FAILED->value;
     }
 }

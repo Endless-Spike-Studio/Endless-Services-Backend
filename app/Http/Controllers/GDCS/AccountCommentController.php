@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Exceptions\GDCS\AccountCommentCreateException;
 use App\Exceptions\GDCS\AccountCommentNotFoundException;
 use App\Http\Controllers\Controller;
@@ -42,7 +42,7 @@ class AccountCommentController extends Controller
             $data = $request->validated();
             return $this->service->index($data['accountID'], $data['page']);
         } catch (AccountCommentNotFoundException) {
-            return Response::empty();
+            return \App\Enums\Response::empty();
         }
     }
 
@@ -51,7 +51,7 @@ class AccountCommentController extends Controller
         $data = $request->validated();
 
         return $this->service->delete($data['accountID'], $data['commentID'])
-            ? Response::ACCOUNT_COMMENT_DELETE_SUCCESS->value
-            : Response::ACCOUNT_COMMENT_DELETE_FAILED->value;
+            ? \App\Enums\Response::ACCOUNT_COMMENT_DELETE_SUCCESS->value
+            : \App\Enums\Response::ACCOUNT_COMMENT_DELETE_FAILED->value;
     }
 }

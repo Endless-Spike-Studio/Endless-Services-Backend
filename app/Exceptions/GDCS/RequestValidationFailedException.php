@@ -2,7 +2,6 @@
 
 namespace App\Exceptions\GDCS;
 
-use App\Enums\GDCS\Response;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
@@ -43,6 +42,6 @@ class RequestValidationFailedException extends Exception
             return $this->message;
         }
 
-        return Response::REQUEST_VALIDATION_FAILED->value;
+        return \App\Enums\Response::REQUEST_VALIDATION_FAILED->value;
     }
 }

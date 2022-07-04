@@ -2,7 +2,7 @@
 
 namespace App\Exceptions\NGProxy;
 
-use App\Enums\NGProxy\Response;
+use App\Enums\Response;
 use Exception;
 use Illuminate\Support\Facades\Request;
 

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\GDCS;
 
-use App\Enums\GDCS\Response;
 use App\Models\GDCS\Account;
 use App\Notifications\GDCS\EmailVerificationNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +27,7 @@ class AccountTest extends TestCase
 
         $request->assertOk();
         $this->assertEquals(
-            Response::ACCOUNT_REGISTER_SUCCESS->value,
+            \App\Enums\Response::ACCOUNT_REGISTER_SUCCESS->value,
             $request->getContent()
         );
 

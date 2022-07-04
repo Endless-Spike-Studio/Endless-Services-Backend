@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\LevelLeaderboardUploadAndFetchRequest;
 use App\Models\GDCS\LevelScore;
@@ -31,7 +30,7 @@ class LevelLeaderboardController extends Controller
                 $query->orderByDesc('percent');
                 break;
             default:
-                return Response::LEVEL_SCORE_FETCH_FAILED_INVALID_TYPE->value;
+                return \App\Enums\Response::LEVEL_SCORE_FETCH_FAILED_INVALID_TYPE->value;
         }
 
         $top = 0;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\ItemLikeRequest;
 use App\Http\Requests\GDCS\ItemRestoreRequest;
@@ -31,7 +31,7 @@ class ItemController extends Controller
                     ->findOrFail($data['itemID']);
                 break;
             default:
-                return Response::LIKE_FAILED_INVALID_TYPE->value;
+                return \App\Enums\Response::LIKE_FAILED_INVALID_TYPE->value;
         }
 
         $ip = $request->ip();
@@ -58,15 +58,15 @@ class ItemController extends Controller
             }
 
             $item->save();
-            return Response::LIKE_SUCCESS->value;
+            return \App\Enums\Response::LIKE_SUCCESS->value;
         }
 
         return Response::LIKE_FAILED->value;
     }
 
-    public function restore(ItemRestoreRequest $request): Response
+    public function restore(ItemRestoreRequest $request): \App\Enums\Response
     {
         $request->validated();
-        return Response::ITEM_RESTORE_FAILED;
+        return \App\Enums\Response::ITEM_RESTORE_FAILED;
     }
 }

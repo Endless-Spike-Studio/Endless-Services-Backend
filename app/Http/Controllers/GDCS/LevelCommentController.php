@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\LevelCommentCreateRequest;
 use App\Http\Requests\GDCS\LevelCommentDeleteRequest;
@@ -118,7 +118,7 @@ class LevelCommentController extends Controller
             ->comments()
             ->whereKey($data['commentID'])
             ->delete()
-            ? Response::LEVEL_COMMENT_DELETE_SUCCESS->value
+            ? \App\Enums\Response::LEVEL_COMMENT_DELETE_SUCCESS->value
             : Response::LEVEL_COMMENT_DELETE_FAILED->value;
     }
 }

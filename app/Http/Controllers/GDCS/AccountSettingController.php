@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountSettingUpdateRequest;
 

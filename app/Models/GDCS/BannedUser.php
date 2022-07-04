@@ -2,11 +2,8 @@
 
 namespace App\Models\GDCS;
 
-use App\Enums\GDCS\Response;
-use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
+use App\Enums\Response;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 class BannedUser extends Model
 {

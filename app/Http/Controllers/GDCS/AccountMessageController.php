@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\GDCS;
 
 use App\Enums\GDCS\AccountSettingMessageState;
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountMessageDeleteRequest;
 use App\Http\Requests\GDCS\AccountMessageDownloadRequest;
@@ -26,7 +26,7 @@ class AccountMessageController extends Controller
             ->find($data['toAccountID']);
 
         if (!$target) {
-            return Response::MESSAGE_UPDATE_FAILED_TARGET_NOT_FOUND->value;
+            return \App\Enums\Response::MESSAGE_UPDATE_FAILED_TARGET_NOT_FOUND->value;
         }
 
         if ($request->account->isBlock($data['toAccountID'])) {
@@ -34,7 +34,7 @@ class AccountMessageController extends Controller
         }
 
         if ($target->setting?->message_state === AccountSettingMessageState::FRIENDS && !AccountFriend::findBetween($request->account->id, $target->id)->exists()) {
-            return Response::MESSAGE_UPDATE_FAILED_TARGET_BLOCKED->value;
+            return \App\Enums\Response::MESSAGE_UPDATE_FAILED_TARGET_BLOCKED->value;
         }
 
         if ($target->setting?->message_state === AccountSettingMessageState::NONE) {
@@ -63,7 +63,7 @@ class AccountMessageController extends Controller
 
         $count = $query->count();
         if ($count <= 0) {
-            return Response::MESSAGE_FETCH_FAILED_EMPTY->value;
+            return \App\Enums\Response::MESSAGE_FETCH_FAILED_EMPTY->value;
         }
 
         return implode('#', [
@@ -101,7 +101,7 @@ class AccountMessageController extends Controller
             ->first();
 
         if (empty($message)) {
-            return Response::MESSAGE_DOWNLOAD_FAILED_MESSAGE_NOT_FOUND->value;
+            return \App\Enums\Response::MESSAGE_DOWNLOAD_FAILED_MESSAGE_NOT_FOUND->value;
         }
 
         $account = $isSender ? $message->target_account : $message->account;
@@ -135,7 +135,7 @@ class AccountMessageController extends Controller
             ->whereKey($messages)
             ->where($isSender ? 'account_id' : 'target_account_id', $data['accountID'])
             ->delete()
-            ? Response::MESSAGE_DELETE_SUCCESS->value
-            : Response::MESSAGE_DELETE_FAILED_MESSAGE_NOT_FOUND->value;
+            ? \App\Enums\Response::MESSAGE_DELETE_SUCCESS->value
+            : \App\Enums\Response::MESSAGE_DELETE_FAILED_MESSAGE_NOT_FOUND->value;
     }
 }

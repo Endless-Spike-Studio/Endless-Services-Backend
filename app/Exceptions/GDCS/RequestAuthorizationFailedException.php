@@ -2,7 +2,6 @@
 
 namespace App\Exceptions\GDCS;
 
-use App\Enums\GDCS\Response;
 use Exception;
 
 class RequestAuthorizationFailedException extends Exception
@@ -13,6 +12,6 @@ class RequestAuthorizationFailedException extends Exception
             return $this->message;
         }
 
-        return Response::REQUEST_AUTHORIZATION_FAILED->value;
+        return \App\Enums\Response::REQUEST_AUTHORIZATION_FAILED->value;
     }
 }

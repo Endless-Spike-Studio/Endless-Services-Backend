@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\UserFetchRequest;
 use App\Http\Requests\GDCS\UserSearchRequest;
@@ -68,11 +68,11 @@ class UserController extends Controller
                 $query = $request->account->blocks();
                 break;
             default:
-                return Response::USER_FETCH_FAILED_INVALID_TYPE->value;
+                return \App\Enums\Response::USER_FETCH_FAILED_INVALID_TYPE->value;
         }
 
         if ($query->count() <= 0) {
-            return Response::USER_FETCH_EMPTY_RESULT->value;
+            return \App\Enums\Response::USER_FETCH_EMPTY_RESULT->value;
         }
 
         return $query->get()

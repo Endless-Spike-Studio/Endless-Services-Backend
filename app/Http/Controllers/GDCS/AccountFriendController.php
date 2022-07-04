@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountFriendRemoveRequest;
 
@@ -18,7 +18,7 @@ class AccountFriendController extends Controller
             ->orWhere('friend_account_id', $data['targetAccountID'])
             ->delete()
             ? Response::ACCOUNT_FRIEND_REMOVE_SUCCESS->value
-            : Response::ACCOUNT_FRIEND_REMOVE_FAILED->value;
+            : \App\Enums\Response::ACCOUNT_FRIEND_REMOVE_FAILED->value;
 
     }
 }

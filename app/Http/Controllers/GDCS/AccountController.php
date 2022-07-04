@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\GDCS;
 
 use App\Enums\GDCS\FriendState;
-use App\Enums\GDCS\Response;
+use App\Enums\Response;
 use App\Events\GDCS\AccountRegistered;
 use App\Http\Requests\GDCS\AccountInfoFetchRequest;
 use App\Http\Requests\GDCS\AccountLoginRequest;
@@ -34,7 +34,7 @@ class AccountController extends Controller
         $account = Account::create($data);
         AccountRegistered::dispatch($account);
 
-        return Response::ACCOUNT_REGISTER_SUCCESS->value;
+        return \App\Enums\Response::ACCOUNT_REGISTER_SUCCESS->value;
     }
 
     /**
@@ -56,7 +56,7 @@ class AccountController extends Controller
 
         if ($requestAuth) {
             if ($block->check($target->id, $data['accountID'])) {
-                return Response::ACCOUNT_INFO_FETCH_FAILED_BLOCKED->value;
+                return \App\Enums\Response::ACCOUNT_INFO_FETCH_FAILED_BLOCKED->value;
             }
 
             if ($friend->check($target->id, $data['accountID'])) {
@@ -176,7 +176,7 @@ class AccountController extends Controller
         $user->save();
 
         if ($user->ban?->login_ban) {
-            return Response::ACCOUNT_LOGIN_FAILED_BANNED->value;
+            return \App\Enums\Response::ACCOUNT_LOGIN_FAILED_BANNED->value;
         }
 
         return implode(',', [
