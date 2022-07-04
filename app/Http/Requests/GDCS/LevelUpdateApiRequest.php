@@ -10,43 +10,43 @@ class LevelUpdateApiRequest extends Request
 {
     public function rules(): array
     {
-        $levelID = $this->route('id');
+        $level = $this->route('level');
 
         return [
             'name' => [
                 'required',
                 'string',
-                Rule::unique(Level::class)->ignore($levelID)
+                Rule::unique(Level::class)->ignore($level)
             ],
             'desc' => [
                 'required',
                 'string',
-                Rule::unique(Level::class)->ignore($levelID)
+                Rule::unique(Level::class)->ignore($level)
             ],
             'audio_track' => [
                 'required',
                 'integer',
-                Rule::unique(Level::class)->ignore($levelID)
+                Rule::unique(Level::class)->ignore($level)
             ],
             'song_id' => [
                 'required',
                 'integer',
-                Rule::unique(Level::class)->ignore($levelID)
+                Rule::unique(Level::class)->ignore($level)
             ],
             'password' => [
                 'required',
                 'integer',
-                Rule::unique(Level::class)->ignore($levelID)
+                Rule::unique(Level::class)->ignore($level)
             ],
             'requested_stars' => [
                 'required',
                 'integer',
-                Rule::unique(Level::class)->ignore($levelID)
+                Rule::unique(Level::class)->ignore($level)
             ],
             'unlisted' => [
                 'required',
                 'boolean',
-                Rule::unique(Level::class)->ignore($levelID)
+                Rule::unique(Level::class)->ignore($level)
             ]
         ];
     }
