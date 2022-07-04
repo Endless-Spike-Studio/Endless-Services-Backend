@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {NButton, NCard, NList, NListItem, NSpace, NStatistic, NTabPane, NTabs, NText, NThing} from "naive-ui"
-import {formatTime, getProp, toRouteWithParams} from "@/scripts/helpers"
+import {formatTime, getProp, isMobile, toRouteWithParams} from "@/scripts/helpers"
 import {GDCS} from "@/scripts/types/backend"
 import {Inertia} from "@inertiajs/inertia"
 
@@ -64,8 +64,8 @@ function handleLevelTabsUpdate(newTab: string) {
             </n-space>
         </n-card>
 
-        <n-space justify="space-evenly">
-            <n-card class="w-[50rem]" title="账号">
+        <n-space justify="center" :vertical="isMobile">
+            <n-card class="lg:w-[50rem]" title="账号">
                 <n-tabs default-value="recent" justify-content="space-evenly" type="line"
                         @update:value="handleAccountTabsUpdate">
                     <n-tab-pane name="recent" tab="最近注册">
@@ -124,7 +124,7 @@ function handleLevelTabsUpdate(newTab: string) {
                 </n-tabs>
             </n-card>
 
-            <n-card class="w-[50rem]" title="关卡">
+            <n-card class="lg:w-[50rem]" title="关卡">
                 <n-tabs default-value="recent" justify-content="space-evenly" type="line"
                         @update:value="handleLevelTabsUpdate">
                     <n-tab-pane name="recent" tab="最近上传">
