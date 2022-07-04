@@ -1,5 +1,5 @@
 on: push
-name: CI
+name: 测试
 
 jobs:
   testing:
@@ -16,14 +16,15 @@ jobs:
           - 3306:3306
     steps:
       - uses: actions/checkout@v3
-      - name: Install composer dependencies
+      - name: [后端] 安装依赖
         run: |
-          composer install
-      - name: Prepare Laravel Application
+          rm composer.lock
+          composer install --no-interaction --no-ansi
+      - name: 初始化项目
         run: |
           cp .env.ci .env
           php artisan key:generate
-      - name: Run test
+      - name: 跑测试
         run: vendor/bin/phpunit tests/
-      - name: Post deploy request
+      - name: 发送部署请求
         run: curl -X POST -F 'secret=${{ secrets.APP_HOOK_SECRET }}' ${{ secrets.APP_HOOK_URL }}
