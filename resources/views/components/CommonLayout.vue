@@ -20,17 +20,17 @@ import {
     NSpace,
     NThing,
     useOsTheme
-} from "naive-ui";
-import {ref, watch} from "vue";
-import {getProp, isMobile, toRoute, toURL} from "@/scripts/helpers";
-import route, {routes} from "@/scripts/route";
-import {Message} from "@/scripts/types/backend";
-import {each} from "lodash-es";
-import {BranchesOutlined} from "@vicons/antd";
-import GlobalApiInjector from "@/views/components/GlobalApiInjector.vue";
-import {useGlobalStore} from "@/scripts/stores";
+} from "naive-ui"
+import {ref, watch} from "vue"
+import {getProp, isMobile, toRoute, toURL} from "@/scripts/helpers"
+import route, {routes} from "@/scripts/route"
+import {Message} from "@/scripts/types/backend"
+import {each} from "lodash-es"
+import {BranchesOutlined} from "@vicons/antd"
+import GlobalApiInjector from "@/views/components/GlobalApiInjector.vue"
+import {useGlobalStore} from "@/scripts/stores"
 
-const currentRoute = ref();
+const currentRoute = ref()
 const props = withDefaults(
     defineProps<{
         theme?: string,
@@ -50,27 +50,27 @@ const props = withDefaults(
                 ?.toString()
             ?? 'light'
     }
-);
+)
 
 const versions = getProp('versions', {
     php: 'Unknown',
     laravel: 'Unknown',
     git: 'Unknown'
-});
+})
 
-const themeRef = ref<GlobalTheme>(props.theme === 'light' ? lightTheme : darkTheme);
+const themeRef = ref<GlobalTheme>(props.theme === 'light' ? lightTheme : darkTheme)
 
 watch(routes, () => {
-    currentRoute.value = route().current();
-});
+    currentRoute.value = route().current()
+})
 
 watch(getProp<Message[]>('messages', []), messages => {
-    const globalStore = useGlobalStore();
+    const globalStore = useGlobalStore()
 
     return each(messages, message => {
-        return globalStore.$message.create(message.content, message.options);
-    });
-});
+        return globalStore.$message.create(message.content, message.options)
+    })
+})
 </script>
 
 <template>
@@ -111,7 +111,7 @@ watch(getProp<Message[]>('messages', []), messages => {
                             <n-layout-footer class="lg:text-center p-5" position="absolute">
                                 <n-space justify="space-between">
                                     <n-thing>
-                                        <span>&copy; 2022 - {{ new Date().getFullYear() }}</span>
+                                        <span>&copy 2022 - {{ new Date().getFullYear() }}</span>
                                         <n-divider vertical/>
 
                                         <n-button text @click="toRoute('home')">

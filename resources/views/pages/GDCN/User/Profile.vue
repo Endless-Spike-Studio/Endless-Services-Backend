@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {formatTime, getProp, isMobile, toRoute} from "@/scripts/helpers";
-import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace} from "naive-ui";
-import {User} from "@/scripts/types/backend";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
+import {formatTime, getProp, isMobile, toRoute} from "@/scripts/helpers"
+import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace} from "naive-ui"
+import {User} from "@/scripts/types/backend"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
 
-const user = getProp<User>('gdcn.user');
-const resendEmailVerificationForm = useForm({});
+const user = getProp<User>('gdcn.user')
+const resendEmailVerificationForm = useForm({})
 </script>
 
 <template layout="GDCN">

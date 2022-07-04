@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {toURL} from "@/scripts/helpers";
-import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-ui";</script>
+import {toURL} from "@/scripts/helpers"
+import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-ui"</script>
 
 <template>
     <n-list bordered>
@@ -15,7 +15,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>MARK_LEVEL</n-text>
                 </template>
             </n-thing>
@@ -32,7 +32,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>MARK_LEVEL</n-text>
                 </template>
             </n-thing>
@@ -192,7 +192,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>RATE_LEVEL</n-text>
                 </template>
             </n-thing>
@@ -227,7 +227,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>RATE_LEVEL</n-text>
                 </template>
             </n-thing>
@@ -252,7 +252,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>RATE_LEVEL</n-text>
                 </template>
             </n-thing>
@@ -276,7 +276,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>RATE_LEVEL</n-text>
                 </template>
             </n-thing>
@@ -342,7 +342,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>RATE_LEVEL</n-text>
                 </template>
             </n-thing>
@@ -401,7 +401,7 @@ import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-
                 </template>
 
                 <template #footer>
-                    <n-text :depth="3">需要权限:&nbsp;</n-text>
+                    <n-text :depth="3">需要权限:&nbsp</n-text>
                     <n-text code>RATE_LEVEL</n-text>
                 </template>
             </n-thing>

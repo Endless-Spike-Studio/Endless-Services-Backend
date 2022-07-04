@@ -10,13 +10,13 @@ import {
     NSpace,
     NText,
     NThing
-} from "naive-ui";
-import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers";
-import {Base64} from "js-base64";
+} from "naive-ui"
+import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers"
+import {Base64} from "js-base64"
 
 defineProps<{
     account: GDCS.Account
-}>();
+}>()
 </script>
 
 <template layout="GDCS">

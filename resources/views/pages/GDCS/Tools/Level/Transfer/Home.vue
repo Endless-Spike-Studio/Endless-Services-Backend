@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {toRoute} from "@/scripts/helpers";
-import {NButton, NCard, NSpace} from "naive-ui";</script>
+import {toRoute} from "@/scripts/helpers"
+import {NButton, NCard, NSpace} from "naive-ui"</script>
 
 <template layout="GDCS">
     <n-card title="关卡转移" class="lg:w-1/3 mx-auto">

@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSpace} from "naive-ui";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import {toRoute} from "@/scripts/helpers";
+import {ref, watch, watchEffect} from "vue"
+import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSpace} from "naive-ui"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import {toRoute} from "@/scripts/helpers"
 
-const el = ref<FormInst>();
-watchEffect(() => {
-    el.value?.validate();
-});
+const el = ref<FormInst>()
+watch(el, element => {
+    if (element) {
+        element.validate()
+    }
+})
 
 const rules = {
     name: {
@@ -26,14 +28,14 @@ const rules = {
         type: 'string',
         validator: () => Promise.reject(form.errors.password)
     }
-};
+}
 
 const form = useForm({
     name: null,
     email: null,
     password: null,
     password_confirmation: null
-});
+})
 </script>
 
 <template layout="GDCS">

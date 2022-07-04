@@ -11,24 +11,26 @@ import {
     NSpace,
     NSwitch,
     NText
-} from "naive-ui";
-import {useForm} from "@inertiajs/inertia-vue3";
-import {GDCS} from "@/scripts/types/backend";
-import {isMobile, toRouteWithParams} from "@/scripts/helpers";
-import {ref, watchEffect} from "vue";
-import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties";
-import {map} from "lodash-es";
-import levelRatingDemonDifficulties from "@/scripts/enums/levelRatingDemonDifficulties";
-import route from "@/scripts/route";
+} from "naive-ui"
+import {useForm} from "@inertiajs/inertia-vue3"
+import {GDCS} from "@/scripts/types/backend"
+import {isMobile, toRouteWithParams} from "@/scripts/helpers"
+import {ref, watch, watchEffect} from "vue"
+import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties"
+import {map} from "lodash-es"
+import levelRatingDemonDifficulties from "@/scripts/enums/levelRatingDemonDifficulties"
+import route from "@/scripts/route"
 
 const props = defineProps<{
     level: GDCS.Level
-}>();
+}>()
 
-const el = ref<FormInst>();
-watchEffect(() => {
-    el.value?.validate();
-});
+const el = ref<FormInst>()
+watch(el, element => {
+    if (element) {
+        element.validate()
+    }
+})
 
 const rules = {
     stars: {
@@ -71,21 +73,21 @@ const rules = {
         required: true,
         validator: () => Promise.reject(form.errors.demon)
     }
-};
+}
 
 const difficultyOptions = map(levelRatingDifficulties, (difficulty: string, value: number) => {
     return {
         label: difficulty.toString(),
         value: value.toString()
     }
-});
+})
 
 const demonDifficultyOptions = map(levelRatingDemonDifficulties, (difficulty: string, value: number) => {
     return {
         label: difficulty.toString(),
         value: value.toString()
     }
-});
+})
 
 const form = useForm({
     stars: props.level.rating.stars,
@@ -96,93 +98,93 @@ const form = useForm({
     demon_difficulty: props.level.rating.demon_difficulty.toString(),
     auto: props.level.rating.auto,
     demon: props.level.rating.demon
-});
+})
 
 function applyPreset(name: string) {
     switch (name) {
         case 'un_rate':
-            form.reset();
-            break;
+            form.reset()
+            break
         case 'featured':
-            form.featured_score = 1;
-            break;
+            form.featured_score = 1
+            break
         case 'epic':
-            form.epic = true;
-            break;
+            form.epic = true
+            break
         case 'coin_verify':
-            form.coin_verified = true;
-            break;
+            form.coin_verified = true
+            break
         case 'auto':
-            form.stars = 1;
-            form.difficulty = '60';
-            form.auto = true;
-            form.demon = false;
-            break;
+            form.stars = 1
+            form.difficulty = '60'
+            form.auto = true
+            form.demon = false
+            break
         case 'easy':
-            form.stars = 2;
-            form.difficulty = '10';
-            form.auto = false;
-            form.demon = false;
-            break;
+            form.stars = 2
+            form.difficulty = '10'
+            form.auto = false
+            form.demon = false
+            break
         case 'normal':
-            form.stars = 3;
-            form.difficulty = '20';
-            form.auto = false;
-            form.demon = false;
-            break;
+            form.stars = 3
+            form.difficulty = '20'
+            form.auto = false
+            form.demon = false
+            break
         case 'hard':
-            form.stars = 4;
-            form.difficulty = '30';
-            form.auto = false;
-            form.demon = false;
-            break;
+            form.stars = 4
+            form.difficulty = '30'
+            form.auto = false
+            form.demon = false
+            break
         case 'harder':
-            form.stars = 6;
-            form.difficulty = '40';
-            form.auto = false;
-            form.demon = false;
-            break;
+            form.stars = 6
+            form.difficulty = '40'
+            form.auto = false
+            form.demon = false
+            break
         case 'insane':
-            form.stars = 8;
-            form.difficulty = '50';
-            form.auto = false;
-            form.demon = false;
-            break;
+            form.stars = 8
+            form.difficulty = '50'
+            form.auto = false
+            form.demon = false
+            break
         case 'easy_demon':
-            form.stars = 10;
-            form.difficulty = '60';
-            form.auto = false;
-            form.demon = true;
-            form.demon_difficulty = '3';
-            break;
+            form.stars = 10
+            form.difficulty = '60'
+            form.auto = false
+            form.demon = true
+            form.demon_difficulty = '3'
+            break
         case 'medium_demon':
-            form.stars = 10;
-            form.difficulty = '60';
-            form.auto = false;
-            form.demon = true;
-            form.demon_difficulty = '4';
-            break;
+            form.stars = 10
+            form.difficulty = '60'
+            form.auto = false
+            form.demon = true
+            form.demon_difficulty = '4'
+            break
         case 'hard_demon':
-            form.stars = 10;
-            form.difficulty = '60';
-            form.auto = false;
-            form.demon = true;
-            form.demon_difficulty = '0';
-            break;
+            form.stars = 10
+            form.difficulty = '60'
+            form.auto = false
+            form.demon = true
+            form.demon_difficulty = '0'
+            break
         case 'insane_demon':
-            form.stars = 10;
-            form.difficulty = '60';
-            form.auto = false;
-            form.demon = true;
-            form.demon_difficulty = '5';
-            break;
+            form.stars = 10
+            form.difficulty = '60'
+            form.auto = false
+            form.demon = true
+            form.demon_difficulty = '5'
+            break
         case 'extreme_demon':
-            form.stars = 10;
-            form.difficulty = '60';
-            form.auto = false;
-            form.demon = true;
-            form.demon_difficulty = '6';
-            break;
+            form.stars = 10
+            form.difficulty = '60'
+            form.auto = false
+            form.demon = true
+            form.demon_difficulty = '6'
+            break
     }
 }
 </script>

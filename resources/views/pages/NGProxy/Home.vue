@@ -11,18 +11,18 @@ import {
     NSpace,
     NTabPane,
     NTabs
-} from "naive-ui";
-import Banner from "@/images/NGProxy/Banner.png";
-import {isMobile, toURL} from "@/scripts/helpers";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import {ref} from "vue";
-import {NGProxy} from "@/scripts/types/backend";
-import CommonHome from "@/views/components/CommonHome.vue";
+} from "naive-ui"
+import Banner from "@/images/NGProxy/Banner.png"
+import {isMobile, toURL} from "@/scripts/helpers"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import {ref} from "vue"
+import {NGProxy} from "@/scripts/types/backend"
+import CommonHome from "@/views/components/CommonHome.vue"
 
 defineProps<{
     song?: NGProxy.Song
-}>();
+}>()
 
 const API = {
     info: {
@@ -40,8 +40,8 @@ const API = {
     object: '1~|~114514~|~2~|~Im Bad~|~3~|~10740~|~4~|~explode-a-tom~|~5~|~0.18~|~10~|~https://ng.geometrydashchinese.com/api/114514/download'
 }
 
-const songID = ref();
-const fetchSongForm = useForm({});
+const songID = ref()
+const fetchSongForm = useForm({})
 </script>
 
 <template layout="NGProxy">

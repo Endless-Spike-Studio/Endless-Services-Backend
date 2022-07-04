@@ -1,1 +1,1 @@
-export default ['Tiny', 'Medium', 'Long', 'XL'];
+export default ['Tiny', 'Medium', 'Long', 'XL']

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import {NButton, NDivider, NDropdown, NIcon, NSpace} from "naive-ui";
-import Banner from "@/images/GDProxy/Banner.png";
-import {AndroidFilled, AppleFilled, WindowsFilled} from "@vicons/antd";
-import {toURL} from "@/scripts/helpers";
-import CommonHome from "@/views/components/CommonHome.vue";
+import {NButton, NDivider, NDropdown, NIcon, NSpace} from "naive-ui"
+import Banner from "@/images/GDProxy/Banner.png"
+import {AndroidFilled, AppleFilled, WindowsFilled} from "@vicons/antd"
+import {toURL} from "@/scripts/helpers"
+import CommonHome from "@/views/components/CommonHome.vue"
 
 const windowsDownloadOptions = [
     {
@@ -14,10 +14,10 @@ const windowsDownloadOptions = [
         label: '带资源包',
         key: 'zip'
     }
-];
+]
 
 function handleWindowsDownload(suffix: string) {
-    toURL('https://cdn.geometrydashchinese.com/client/GDProxy.' + suffix);
+    toURL('https://cdn.geometrydashchinese.com/client/GDProxy.' + suffix)
 }
 </script>
 

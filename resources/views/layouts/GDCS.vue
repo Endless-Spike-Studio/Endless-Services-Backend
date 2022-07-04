@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, h} from "vue";
+import {computed, h} from "vue"
 import {
     BookTwotone,
     DashboardTwotone,
@@ -8,14 +8,14 @@ import {
     ProfileTwotone,
     ToolTwotone,
     UserOutlined
-} from "@vicons/antd";
-import Logo from "@/images/Logo.png";
-import {getProp, renderIcon} from "@/scripts/helpers";
-import {User} from "@/scripts/types/backend";
-import CommonLayout from "@/views/components/CommonLayout.vue";
-import {NImage} from "naive-ui";
+} from "@vicons/antd"
+import Logo from "@/images/Logo.png"
+import {getProp, renderIcon} from "@/scripts/helpers"
+import {User} from "@/scripts/types/backend"
+import CommonLayout from "@/views/components/CommonLayout.vue"
+import {NImage} from "naive-ui"
 
-const account = getProp<User>('gdcs.account');
+const account = getProp<User>('gdcs.account')
 
 const options = {
     logo: {
@@ -70,9 +70,9 @@ const options = {
             }
         ]
     }
-};
+}
 
-const auth = computed(() => account.value ? options.account : options.login);
+const auth = computed(() => account.value ? options.account : options.login)
 const menu = computed(
     () => ({
         mobile: [
@@ -95,7 +95,7 @@ const menu = computed(
         ],
         right: [auth.value]
     })
-);
+)
 
 const footer = {
     short: 'GDCS',

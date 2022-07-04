@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import {getProp} from "@/scripts/helpers";
-import {User} from "@/scripts/types/backend";
-import {useForm} from "@inertiajs/inertia-vue3";
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput} from "naive-ui";
-import {ref, watchEffect} from "vue";
-import route from "@/scripts/route";
+import {getProp} from "@/scripts/helpers"
+import {User} from "@/scripts/types/backend"
+import {useForm} from "@inertiajs/inertia-vue3"
+import {FormInst, NButton, NCard, NForm, NFormItem, NInput} from "naive-ui"
+import {ref, watch, watchEffect} from "vue"
+import route from "@/scripts/route"
 
-const el = ref<FormInst>();
-watchEffect(() => {
-    el.value?.validate();
-});
+const el = ref<FormInst>()
+watch(el, element => {
+    if (element) {
+        element.validate()
+    }
+})
 
 const rules = {
     name: {
@@ -27,15 +29,15 @@ const rules = {
         type: 'string',
         validator: () => Promise.reject(form.errors.password)
     }
-};
+}
 
-const account = getProp<User>('gdcs.account');
+const account = getProp<User>('gdcs.account')
 const form = useForm({
     name: account.value.name,
     email: account.value.email,
     password: null,
     password_confirmation: null
-});
+})
 </script>
 
 <template layout="GDCS">

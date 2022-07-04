@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {NButton, NCard, NList, NListItem, NSpace, NStatistic, NTabPane, NTabs, NText, NThing} from "naive-ui";
-import {formatTime, getProp, toRouteWithParams} from "@/scripts/helpers";
-import {GDCS} from "@/scripts/types/backend";
-import {Inertia} from "@inertiajs/inertia";
+import {NButton, NCard, NList, NListItem, NSpace, NStatistic, NTabPane, NTabs, NText, NThing} from "naive-ui"
+import {formatTime, getProp, toRouteWithParams} from "@/scripts/helpers"
+import {GDCS} from "@/scripts/types/backend"
+import {Inertia} from "@inertiajs/inertia"
 
 defineProps<{
     todayRegisteredAccountCount: number,
@@ -12,16 +12,16 @@ defineProps<{
     recentUploadedLevels: GDCS.Level[],
 }>()
 
-const leaderboards = getProp<GDCS.User[]>('leaderboards');
-const recentRatedLevels = getProp<GDCS.Level[]>('recentRatedLevels');
-const recentFeaturedLevels = getProp<GDCS.Level[]>('recentFeaturedLevels');
-const recentEpicLevels = getProp<GDCS.Level[]>('recentEpicLevels');
+const leaderboards = getProp<GDCS.User[]>('leaderboards')
+const recentRatedLevels = getProp<GDCS.Level[]>('recentRatedLevels')
+const recentFeaturedLevels = getProp<GDCS.Level[]>('recentFeaturedLevels')
+const recentEpicLevels = getProp<GDCS.Level[]>('recentEpicLevels')
 
 function handleAccountTabsUpdate(newTab: string) {
     if (newTab === 'leaderboard') {
         Inertia.reload({
             only: ['leaderboards']
-        });
+        })
     }
 }
 
@@ -30,18 +30,18 @@ function handleLevelTabsUpdate(newTab: string) {
         case 'rated':
             Inertia.reload({
                 only: ['recentRatedLevels']
-            });
-            break;
+            })
+            break
         case 'featured':
             Inertia.reload({
                 only: ['recentFeaturedLevels']
-            });
-            break;
+            })
+            break
         case 'epic':
             Inertia.reload({
                 only: ['recentEpicLevels']
-            });
-            break;
+            })
+            break
     }
 }
 </script>

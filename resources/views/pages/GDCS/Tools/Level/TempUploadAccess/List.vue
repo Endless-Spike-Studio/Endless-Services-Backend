@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
-import {formatTime, toRoute} from "@/scripts/helpers";
-import {GDCS} from "@/scripts/types/backend";
-import {h} from "vue";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
+import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui"
+import {formatTime, toRoute} from "@/scripts/helpers"
+import {GDCS} from "@/scripts/types/backend"
+import {h} from "vue"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
 
 defineProps<{
     accesses: GDCS.TempLevelUploadAccess[]
-}>();
+}>()
 
 const columns = [
     {
@@ -28,7 +28,7 @@ const columns = [
         title: '操作',
         key: 'action',
         render: (row: GDCS.TempLevelUploadAccess) => {
-            const form = useForm({});
+            const form = useForm({})
 
             return h(NPopconfirm, {
                 onPositiveClick: () => form.delete(
@@ -44,7 +44,7 @@ const columns = [
                 }, {
                     default: () => '删除'
                 })
-            });
+            })
         }
     }
 ]

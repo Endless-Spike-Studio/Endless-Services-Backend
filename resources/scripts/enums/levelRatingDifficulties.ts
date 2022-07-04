@@ -6,4 +6,4 @@ export default {
     40: 'Harder',
     50: 'Insane',
     60: 'Auto | Demon'
-};
+}

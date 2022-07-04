@@ -1,5 +1,5 @@
-import {defineStore} from "pinia";
-import {useDialog, useLoadingBar, useMessage, useNotification} from "naive-ui";
+import {defineStore} from "pinia"
+import {useDialog, useLoadingBar, useMessage, useNotification} from "naive-ui"
 
 export const useGlobalStore = defineStore('global', {
     state: () => ({
@@ -8,4 +8,4 @@ export const useGlobalStore = defineStore('global', {
         $notification: useNotification(),
         $loadingBar: useLoadingBar()
     })
-});
+})

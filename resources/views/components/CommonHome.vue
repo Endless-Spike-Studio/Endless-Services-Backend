@@ -10,16 +10,16 @@ import {
     NGridItem,
     NImage,
     NSpace
-} from "naive-ui";
-import {isMobile, toURL} from "@/scripts/helpers";
+} from "naive-ui"
+import {isMobile, toURL} from "@/scripts/helpers"
 
 defineProps<{
     banner: string,
     groupName: string,
     teamName: string
-}>();
+}>()
 
-const code_time_url = 'https://img.shields.io/endpoint?url=' + encodeURIComponent('https://codetime-api.datreks.com/badge/2270') + '&style=for-the-badge';
+const code_time_url = 'https://img.shields.io/endpoint?url=' + encodeURIComponent('https://codetime-api.datreks.com/badge/2270') + '&style=for-the-badge'
 </script>
 
 <template>

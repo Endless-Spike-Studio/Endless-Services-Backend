@@ -1,15 +1,17 @@
 <script lang="ts" setup>
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSelect, NTabPane, NTabs} from "naive-ui";
-import {ref, watchEffect} from "vue";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import servers from "@/scripts/enums/servers";
-import {map} from "lodash-es";
+import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSelect, NTabPane, NTabs} from "naive-ui"
+import {ref, watch, watchEffect} from "vue"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import servers from "@/scripts/enums/servers"
+import {map} from "lodash-es"
 
-const el = ref<FormInst>();
-watchEffect(() => {
-    el.value?.validate();
-});
+const el = ref<FormInst>()
+watch(el, element => {
+    if (element) {
+        element.validate()
+    }
+})
 
 const rules = {
     server: {
@@ -27,20 +29,20 @@ const rules = {
         required: true,
         validator: () => Promise.reject(form.errors.password)
     }
-};
+}
 
 const serverOptions = map(servers, server => {
     return {
         label: `${server.name} [${server.id}]`,
         value: server.host
     }
-});
+})
 
 const form = useForm({
     server: 'http://www.boomlings.com/database',
     name: null,
     password: null
-});
+})
 </script>
 
 <template layout="GDCS">

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import Banner from "@/images/GDCN/Banner.png";
-import {NButton, NCard, NGrid, NGridItem, NText} from "naive-ui";
-import {toRoute} from "@/scripts/helpers";
-import CommonHome from "@/views/components/CommonHome.vue";</script>
+import Banner from "@/images/GDCN/Banner.png"
+import {NButton, NCard, NGrid, NGridItem, NText} from "naive-ui"
+import {toRoute} from "@/scripts/helpers"
+import CommonHome from "@/views/components/CommonHome.vue"</script>
 
 <template layout="GDCN">
     <common-home :banner="Banner" group-name="GDCN 讨论群" team-name="GDCN 团队">

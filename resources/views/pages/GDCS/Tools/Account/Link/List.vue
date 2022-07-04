@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui";
-import {formatTime, toRoute} from "@/scripts/helpers";
-import {GDCS} from "@/scripts/types/backend";
-import {h} from "vue";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import servers from "@/scripts/enums/servers";
-import {find} from "lodash-es";
+import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui"
+import {formatTime, toRoute} from "@/scripts/helpers"
+import {GDCS} from "@/scripts/types/backend"
+import {h} from "vue"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import servers from "@/scripts/enums/servers"
+import {find} from "lodash-es"
 
 defineProps<{
     links: GDCS.AccountLink[]
-}>();
+}>()
 
 const columns = [
     {
@@ -36,7 +36,7 @@ const columns = [
         title: '操作',
         key: 'action',
         render: (row: GDCS.AccountLink) => {
-            const form = useForm({});
+            const form = useForm({})
 
             return h(NPopconfirm, {
                 onPositiveClick: () => form.delete(
@@ -52,21 +52,21 @@ const columns = [
                 }, {
                     default: () => '解绑'
                 })
-            });
+            })
         }
     }
-];
+]
 
 function guessServerName(server: string) {
     const item = find(servers, {
         host: server
-    });
+    })
 
     if (!item) {
-        return server;
+        return server
     }
 
-    return `${item.name} [${item.id}]`;
+    return `${item.name} [${item.id}]`
 }
 </script>
 

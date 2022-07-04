@@ -5,23 +5,23 @@ import {createPinia} from 'pinia'
 import {InertiaProgress} from '@inertiajs/progress'
 
 if (import.meta.env.PROD && location.protocol === 'http:') {
-    location.protocol = 'https:';
+    location.protocol = 'https:'
 }
 
-const components = import.meta.glob('../views/pages/**/*.vue');
-const pinia = createPinia();
+const components = import.meta.glob('../views/pages/**/*.vue')
+const pinia = createPinia()
 
 createInertiaApp({
     resolve: (name) => importPageComponent(name, components),
     setup({el, app, props, plugin}) {
         const _app = createApp({
             render: () => h(app, props)
-        });
+        })
 
-        _app.use(pinia);
-        _app.use(plugin);
-        _app.mount(el);
+        _app.use(pinia)
+        _app.use(plugin)
+        _app.mount(el)
     },
 }).then(() => {
-    InertiaProgress.init();
-});
+    InertiaProgress.init()
+})

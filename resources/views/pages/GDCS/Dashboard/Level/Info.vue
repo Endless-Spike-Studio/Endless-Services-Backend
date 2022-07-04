@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {formatTime, getProp, isMobile, toRouteWithParams} from "@/scripts/helpers";
+import {formatTime, getProp, isMobile, toRouteWithParams} from "@/scripts/helpers"
 import {
     NButton,
     NCard,
@@ -18,23 +18,23 @@ import {
     NTabs,
     NText,
     NThing
-} from "naive-ui";
-import {Base64} from "js-base64";
-import {GDCS} from "@/scripts/types/backend";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import {isEmpty, map, random} from "lodash-es";
-import levelLength from "@/scripts/enums/levelLength";
-import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties";
-import {computed, reactive} from "vue";
-import audioTracks from "@/scripts/enums/audioTracks";
+} from "naive-ui"
+import {Base64} from "js-base64"
+import {GDCS} from "@/scripts/types/backend"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import {isEmpty, map, random} from "lodash-es"
+import levelLength from "@/scripts/enums/levelLength"
+import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties"
+import {computed, reactive} from "vue"
+import audioTracks from "@/scripts/enums/audioTracks"
 
 const options = map(audioTracks, (value, index) => {
     return {
         label: value,
         value: index
     }
-});
+})
 
 const props = defineProps<{
     level: GDCS.Level,
@@ -42,7 +42,7 @@ const props = defineProps<{
         rate: boolean,
         mark: boolean
     }
-}>();
+}>()
 
 const levelUpdateForm = useForm({
     name: props.level.name,
@@ -52,7 +52,7 @@ const levelUpdateForm = useForm({
     password: props.level.password.toString(),
     requested_stars: props.level.requested_stars,
     unlisted: props.level.unlisted
-});
+})
 
 const changing = reactive({
     name: false,
@@ -60,21 +60,21 @@ const changing = reactive({
     password: false,
     song: false,
     requested_stars: false
-});
+})
 
-const markAsDailyForm = useForm({});
-const markAsWeeklyForm = useForm({});
-const isLevelOwner = computed(() => getProp('gdcs.user.id').value === props.level.user_id);
+const markAsDailyForm = useForm({})
+const markAsWeeklyForm = useForm({})
+const isLevelOwner = computed(() => getProp('gdcs.user.id').value === props.level.user_id)
 
 function handleSongTypeUpdate(value: string) {
     if (value === 'official') {
-        levelUpdateForm.audio_track = props.level.audio_track.toString();
-        levelUpdateForm.song_id = 0;
+        levelUpdateForm.audio_track = props.level.audio_track.toString()
+        levelUpdateForm.song_id = 0
     }
 
     if (value === 'newgrounds') {
-        levelUpdateForm.song_id = props.level.song_id;
-        levelUpdateForm.audio_track = '0';
+        levelUpdateForm.song_id = props.level.song_id
+        levelUpdateForm.audio_track = '0'
     }
 }
 </script>
@@ -137,17 +137,18 @@ function handleSongTypeUpdate(value: string) {
 
                                 <n-space>
                                     <n-button
-                                        @click="levelUpdateForm.password = 0;changing.password = !changing.password">
+                                        @click="levelUpdateForm.password = 0">
                                         禁止复制
                                     </n-button>
 
                                     <n-button
-                                        @click="levelUpdateForm.password = 1;changing.password = !changing.password">
+                                        @click="
+                                        levelUpdateForm.password = 1">
                                         免费复制
                                     </n-button>
 
                                     <n-button
-                                        @click="levelUpdateForm.password = random(0, 999999, false).toString();changing.password = !changing.password">
+                                        @click="levelUpdateForm.password = random(0, 999999, false).toString()">
                                         随机密码
                                     </n-button>
                                 </n-space>

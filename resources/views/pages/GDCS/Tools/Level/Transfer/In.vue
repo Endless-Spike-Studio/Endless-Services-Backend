@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {ref, watchEffect} from "vue";
-import {FormInst, NButton, NCard, NForm, NFormItem, NSelect} from "naive-ui";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import {Inertia} from "@inertiajs/inertia";
-import {GDCS} from "@/scripts/types/backend";
+import {ref, watch} from "vue"
+import {FormInst, NButton, NCard, NForm, NFormItem, NSelect} from "naive-ui"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import {Inertia} from "@inertiajs/inertia"
+import {GDCS} from "@/scripts/types/backend"
 
 withDefaults(
     defineProps<{
@@ -14,12 +14,14 @@ withDefaults(
     {
         levels: () => []
     }
-);
+)
 
-const el = ref<FormInst>();
-watchEffect(() => {
-    el.value?.validate();
-});
+const el = ref<FormInst>()
+watch(el, element => {
+    if (element) {
+        element.validate()
+    }
+})
 
 const rules = {
     linkID: {
@@ -37,16 +39,18 @@ const rules = {
 const form = useForm({
     linkID: null,
     levelID: null
-});
+})
 
-watchEffect(() => {
-    if (form.linkID) {
+watch(form, newForm => {
+    if (newForm.linkID) {
         Inertia.reload({
-            data: {link: form.linkID},
+            data: {
+                link: newForm.linkID
+            },
             only: ['levels']
         })
     }
-});
+})
 </script>
 
 <template layout="GDCS">

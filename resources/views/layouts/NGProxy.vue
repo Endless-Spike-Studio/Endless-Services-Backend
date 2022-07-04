@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import {computed, h} from "vue";
-import {HomeTwotone} from "@vicons/antd";
-import Logo from "@/images/Logo.png";
-import {renderIcon} from "@/scripts/helpers";
-import CommonLayout from "@/views/components/CommonLayout.vue";
-import {NImage} from "naive-ui";
+import {computed, h} from "vue"
+import {HomeTwotone} from "@vicons/antd"
+import Logo from "@/images/Logo.png"
+import {renderIcon} from "@/scripts/helpers"
+import CommonLayout from "@/views/components/CommonLayout.vue"
+import {NImage} from "naive-ui"
 
 const options = {
     logo: {
@@ -22,7 +22,7 @@ const options = {
         key: 'ngproxy.home',
         icon: renderIcon(HomeTwotone)
     }
-};
+}
 
 const menu = computed(
     () => ({
@@ -37,7 +37,7 @@ const menu = computed(
         ],
         right: []
     })
-);
+)
 
 const footer = {
     short: 'NGProxy',

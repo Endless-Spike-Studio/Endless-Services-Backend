@@ -38,4 +38,4 @@ export default {
     '35': 'Press Start - MDK',
     '36': 'Nock Em - Bossfight',
     '37': 'Power Trip - Boom Kitty'
-};
+}

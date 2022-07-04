@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import {computed, h} from "vue";
-import {DashboardTwotone, HomeTwotone, LoginOutlined, ProfileTwotone, ToolTwotone, UserOutlined} from "@vicons/antd";
-import Logo from "@/images/Logo.png";
-import {getProp, renderIcon} from "@/scripts/helpers";
-import {User} from "@/scripts/types/backend";
-import CommonLayout from "@/views/components/CommonLayout.vue";
-import {NImage} from "naive-ui";
+import {computed, h} from "vue"
+import {DashboardTwotone, HomeTwotone, LoginOutlined, ProfileTwotone, ToolTwotone, UserOutlined} from "@vicons/antd"
+import Logo from "@/images/Logo.png"
+import {getProp, renderIcon} from "@/scripts/helpers"
+import {User} from "@/scripts/types/backend"
+import CommonLayout from "@/views/components/CommonLayout.vue"
+import {NImage} from "naive-ui"
 
-const user = getProp<User>('gdcn.user');
+const user = getProp<User>('gdcn.user')
 
 const options = {
     logo: {
@@ -57,9 +57,9 @@ const options = {
             }
         ]
     }
-};
+}
 
-const auth = computed(() => user.value ? options.user : options.login);
+const auth = computed(() => user.value ? options.user : options.login)
 const menu = computed(
     () => ({
         mobile: [
@@ -80,7 +80,7 @@ const menu = computed(
         ],
         right: [auth.value]
     })
-);
+)
 </script>
 
 <template>

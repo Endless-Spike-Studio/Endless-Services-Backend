@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import {NButton, NCard, NDataTable, NPopconfirm} from "naive-ui";
-import {formatTime} from "@/scripts/helpers";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import {GDCS} from "@/scripts/types/backend";
+import {NButton, NCard, NDataTable, NPopconfirm} from "naive-ui"
+import {formatTime} from "@/scripts/helpers"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import {GDCS} from "@/scripts/types/backend"
 
 defineProps<{
     logs: GDCS.AccountFailedLog[]
-}>();
+}>()
 
 const columns = [
     {
@@ -27,9 +27,9 @@ const columns = [
         key: 'created_at',
         render: (row: GDCS.AccountFailedLog) => formatTime(row.created_at, '未知')
     }
-];
+]
 
-const clearForm = useForm({});
+const clearForm = useForm({})
 </script>
 
 <template layout="GDCS">

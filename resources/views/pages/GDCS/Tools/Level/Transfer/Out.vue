@@ -1,19 +1,21 @@
 <script lang="ts" setup>
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSelect} from "naive-ui";
-import {ref, watchEffect} from "vue";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/route";
-import {GDCS} from "@/scripts/types/backend";
+import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSelect} from "naive-ui"
+import {ref, watch, watchEffect} from "vue"
+import {useForm} from "@inertiajs/inertia-vue3"
+import route from "@/scripts/route"
+import {GDCS} from "@/scripts/types/backend"
 
 defineProps<{
     levels: GDCS.Level[],
     links: GDCS.AccountLink[]
-}>();
+}>()
 
-const el = ref<FormInst>();
-watchEffect(() => {
-    el.value?.validate();
-});
+const el = ref<FormInst>()
+watch(el, element => {
+    if (element) {
+        element.validate()
+    }
+})
 
 const rules = {
     levelID: {
@@ -37,7 +39,7 @@ const form = useForm({
     levelID: null,
     linkID: null,
     password: null
-});
+})
 </script>
 
 <template layout="GDCS">

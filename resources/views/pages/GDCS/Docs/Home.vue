@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {NButton, NCard, NSpace} from "naive-ui";
-import {toRoute} from "@/scripts/helpers";</script>
+import {NButton, NCard, NSpace} from "naive-ui"
+import {toRoute} from "@/scripts/helpers"</script>
 
 <template layout="GDCS">
     <n-card class="lg:w-1/2 mx-auto" title="命令">

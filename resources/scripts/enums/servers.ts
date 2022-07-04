@@ -4,4 +4,4 @@ export default [
         name: "官服",
         host: 'http://www.boomlings.com/database'
     }
-];
+]
