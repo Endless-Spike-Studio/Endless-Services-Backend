@@ -8,7 +8,6 @@ use App\Models\GDCS\User;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
-use Silber\Bouncer\BouncerFacade;
 use Silber\Bouncer\Database\Ability;
 use Silber\Bouncer\Database\Role;
 
@@ -52,6 +51,9 @@ class InformationPresenter
 
     public function renderAccount(Account $account): Response
     {
+        /** @var Account $currentAccount */
+        $currentAccount = Auth::guard('gdcs')->user();
+
         return Inertia::render('GDCS/Dashboard/Account/Info', [
             'account' => $account->load('comments:id,account_id,comment,likes,created_at')
                 ->load('user:id,name,uuid')
@@ -61,7 +63,7 @@ class InformationPresenter
             'abilities' => Ability::all(['id', 'name', 'title']),
             'roles' => Role::all(['id', 'name', 'title']),
             'permission' => [
-                'manage' => BouncerFacade::can('manage-permission')
+                'manage' => $currentAccount->can('manage-permission')
             ]
         ]);
     }
