@@ -19,6 +19,7 @@ import {Base64} from "js-base64"
 import {GDCS} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
 import {map} from "lodash-es"
+import {h} from "vue"
 
 const props = defineProps<{
     account: GDCS.Account,
@@ -30,13 +31,19 @@ const props = defineProps<{
 const updateForm = useForm({
     abilities: map(props.account.abilities, ability => {
         return {
-            label: ability.title,
+            label: h(NPopover, null, {
+                trigger: () => ability.title,
+                default: () => ability.name
+            }),
             value: ability.name
         }
     }),
     roles: map(props.account.roles, role => {
         return {
-            label: role.title,
+            label: h(NPopover, null, {
+                trigger: () => role.title,
+                default: () => role.name
+            }),
             value: role.name
         }
     })
