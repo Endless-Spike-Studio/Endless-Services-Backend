@@ -4,11 +4,11 @@ import {
     NCard,
     NDescriptions,
     NDescriptionsItem,
-    NDynamicTags,
     NEmpty,
     NList,
     NListItem,
     NPopover,
+    NSelect,
     NSpace,
     NTag,
     NText,
@@ -19,34 +19,45 @@ import {Base64} from "js-base64"
 import {GDCS} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
 import {map} from "lodash-es"
-import {h} from "vue"
+import {computed, h} from "vue"
+import route from "@/scripts/route"
 
 const props = defineProps<{
     account: GDCS.Account,
+    abilities: GDCS.Ability[],
+    roles: GDCS.Role[],
     permission: {
         manage: boolean
     }
 }>()
 
-const updateForm = useForm({
-    abilities: map(props.account.abilities, ability => {
+const abilityOptions = computed(() => {
+    return map(props.abilities, ability => {
         return {
-            label: h(NPopover, null, {
+            label: () => h(NPopover, null, {
                 trigger: () => ability.title,
                 default: () => ability.name
             }),
             value: ability.name
         }
-    }),
-    roles: map(props.account.roles, role => {
+    })
+})
+
+const roleOptions = computed(() => {
+    return map(props.roles, role => {
         return {
-            label: h(NPopover, null, {
+            label: () => h(NPopover, null, {
                 trigger: () => role.title,
                 default: () => role.name
             }),
             value: role.name
         }
     })
+})
+
+const updateForm = useForm({
+    abilities: map(props.account.abilities, 'name'),
+    roles: map(props.account.roles, 'name')
 })
 </script>
 
@@ -69,7 +80,8 @@ const updateForm = useForm({
                     {{ formatTime(account.created_at, '未知') }}
                 </n-descriptions-item>
                 <n-descriptions-item label="能力">
-                    <n-dynamic-tags v-if="permission.manage" v-model:value="updateForm.abilities"/>
+                    <n-select v-if="permission.manage" v-model:value="updateForm.abilities" :options="abilityOptions"
+                              filterable multiple tag/>
 
                     <n-space v-else>
                         <n-tag v-for="ability in account.abilities">
@@ -84,7 +96,8 @@ const updateForm = useForm({
                     </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="角色">
-                    <n-dynamic-tags v-if="permission.manage" v-model:value="updateForm.roles"/>
+                    <n-select v-if="permission.manage" v-model:value="updateForm.roles" :options="roleOptions"
+                              filterable multiple tag/>
 
                     <n-space v-else>
                         <n-tag v-for="role in account.roles">
@@ -99,6 +112,14 @@ const updateForm = useForm({
                     </n-space>
                 </n-descriptions-item>
             </n-descriptions>
+
+            <template #footer>
+                <n-button v-if="updateForm.isDirty"
+                          type="success"
+                          @click="updateForm.patch( route('gdcs.admin.account.permission.update.api', account.id) )">
+                    保存修改
+                </n-button>
+            </template>
         </n-card>
 
         <n-card class="lg:w-2/3 mx-auto" title="账号评论">

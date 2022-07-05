@@ -104,6 +104,17 @@ Route::group([
             'prefix' => 'admin'
         ], static function () {
             Route::group([
+                'as' => 'account.',
+                'prefix' => 'account'
+            ], static function() {
+                Route::group([
+                    'middleware' => 'can:manage-permission'
+                ], static function() {
+                    Route::patch('/{account}/permission', [AccountApiController::class, 'updatePermission'])->name('permission.update.api');
+                });
+            });
+
+            Route::group([
                 'as' => 'level.',
                 'prefix' => 'level'
             ], static function () {

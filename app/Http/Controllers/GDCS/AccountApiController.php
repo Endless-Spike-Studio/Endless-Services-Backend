@@ -7,6 +7,7 @@ use App\Events\GDCS\AccountPasswordChanged;
 use App\Events\GDCS\AccountRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountLoginApiRequest;
+use App\Http\Requests\GDCS\AccountPermissionUpdateApiRequest;
 use App\Http\Requests\GDCS\AccountRegisterApiRequest;
 use App\Http\Requests\GDCS\AccountSettingUpdateApiRequest;
 use App\Http\Requests\GDCS\AccountVerifyRequest;
@@ -20,10 +21,38 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Silber\Bouncer\BouncerFacade;
 
 class AccountApiController extends Controller
 {
     use HasMessage;
+
+    public function updatePermission(Account $account, AccountPermissionUpdateApiRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        $account->disallow(
+            $account->getAbilities()
+        );
+
+        foreach ($data['abilities'] as $ability) {
+            BouncerFacade::allow($account)->to($ability);
+        }
+
+        $account->retract(
+            $account->getRoles()
+        );
+
+        foreach ($data['roles'] as $role) {
+            BouncerFacade::assign($role)->to($account);
+        }
+
+        $this->pushSuccessMessage(
+            __('messages.update_success')
+        );
+
+        return back();
+    }
 
     public function register(AccountRegisterApiRequest $request): RedirectResponse
     {

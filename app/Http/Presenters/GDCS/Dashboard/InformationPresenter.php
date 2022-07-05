@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Silber\Bouncer\BouncerFacade;
+use Silber\Bouncer\Database\Ability;
+use Silber\Bouncer\Database\Role;
 
 class InformationPresenter
 {
@@ -56,6 +58,8 @@ class InformationPresenter
                 ->load('abilities:id,entity_id,entity_type,name,title')
                 ->load('roles:id,name,title')
                 ->only(['id', 'name', 'created_at', 'comments', 'user', 'abilities', 'roles']),
+            'abilities' => Ability::all(['id', 'name', 'title']),
+            'roles' => Role::all(['id', 'name', 'title']),
             'permission' => [
                 'manage' => BouncerFacade::can('manage-permission')
             ]

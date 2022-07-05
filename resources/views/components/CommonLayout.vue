@@ -39,7 +39,7 @@ const props = withDefaults(
             right: MenuOption[],
             mobile: MenuOption[]
         },
-        footer: {
+        footer?: {
             short: string,
             long: string
         }
@@ -48,7 +48,11 @@ const props = withDefaults(
         theme: () => useOsTheme()
                 ?.value
                 ?.toString()
-            ?? 'light'
+            ?? 'light',
+        footer: () => ({
+            short: 'GDCN',
+            long: 'Geometry Dash Chinese'
+        })
     }
 )
 
