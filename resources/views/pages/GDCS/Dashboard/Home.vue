@@ -64,7 +64,7 @@ function handleLevelTabsUpdate(newTab: string) {
             </n-space>
         </n-card>
 
-        <n-space justify="center" :vertical="isMobile">
+        <n-space :vertical="isMobile" justify="center">
             <n-card class="lg:w-[50rem]" title="账号">
                 <n-tabs default-value="recent" justify-content="space-evenly" type="line"
                         @update:value="handleAccountTabsUpdate">
@@ -125,7 +125,8 @@ function handleLevelTabsUpdate(newTab: string) {
             </n-card>
 
             <n-card class="lg:w-[50rem]" title="关卡">
-                <n-tabs default-value="recent" justify-content="space-evenly" type="line"
+                <n-tabs :justify-content="(isMobile ? 'space-between': 'space-evenly')" default-value="recent"
+                        type="line"
                         @update:value="handleLevelTabsUpdate">
                     <n-tab-pane name="recent" tab="最近上传">
                         <n-list>
