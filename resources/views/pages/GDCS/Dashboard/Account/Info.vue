@@ -1,22 +1,46 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import {
     NButton,
     NCard,
     NDescriptions,
     NDescriptionsItem,
+    NDynamicTags,
     NEmpty,
     NList,
     NListItem,
+    NPopover,
     NSpace,
+    NTag,
     NText,
     NThing
 } from "naive-ui"
 import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers"
 import {Base64} from "js-base64"
+import {GDCS} from "@/scripts/types/backend"
+import {useForm} from "@inertiajs/inertia-vue3"
+import {map} from "lodash-es"
 
-defineProps<{
-    account: GDCS.Account
+const props = defineProps<{
+    account: GDCS.Account,
+    permission: {
+        manage: boolean
+    }
 }>()
+
+const updateForm = useForm({
+    abilities: map(props.account.abilities, ability => {
+        return {
+            label: ability.title,
+            value: ability.name
+        }
+    }),
+    roles: map(props.account.roles, role => {
+        return {
+            label: role.title,
+            value: role.name
+        }
+    })
+})
 </script>
 
 <template layout="GDCS">
@@ -30,12 +54,42 @@ defineProps<{
                     {{ account.name }}
                 </n-descriptions-item>
                 <n-descriptions-item v-if="account.user.uuid" label="用户">
-                    <n-button @click="toRouteWithParams('gdcs.dashboard.user.info', account.user.id)" text>
+                    <n-button text @click="toRouteWithParams('gdcs.dashboard.user.info', account.user.id)">
                         {{ account.user.name }} [{{ account.user.id }}]
                     </n-button>
                 </n-descriptions-item>
                 <n-descriptions-item label="注册时间">
                     {{ formatTime(account.created_at, '未知') }}
+                </n-descriptions-item>
+                <n-descriptions-item label="能力">
+                    <n-dynamic-tags v-if="permission.manage" v-model:value="updateForm.abilities"/>
+
+                    <n-space v-else>
+                        <n-tag v-for="ability in account.abilities">
+                            <n-popover>
+                                <template #trigger>
+                                    {{ ability.title }}
+                                </template>
+
+                                {{ ability.name }}
+                            </n-popover>
+                        </n-tag>
+                    </n-space>
+                </n-descriptions-item>
+                <n-descriptions-item label="角色">
+                    <n-dynamic-tags v-if="permission.manage" v-model:value="updateForm.roles"/>
+
+                    <n-space v-else>
+                        <n-tag v-for="role in account.roles">
+                            <n-popover>
+                                <template #trigger>
+                                    {{ role.title }}
+                                </template>
+
+                                {{ role.name }}
+                            </n-popover>
+                        </n-tag>
+                    </n-space>
                 </n-descriptions-item>
             </n-descriptions>
         </n-card>
@@ -45,7 +99,7 @@ defineProps<{
                 <n-list-item v-for="comment in account.comments">
                     <n-thing>
                         <template #header>
-                            <n-button @click="toRouteWithParams('gdcs.dashboard.account.info', account.id)" text>
+                            <n-button text @click="toRouteWithParams('gdcs.dashboard.account.info', account.id)">
                                 {{ account.name }}:
                             </n-button>
 

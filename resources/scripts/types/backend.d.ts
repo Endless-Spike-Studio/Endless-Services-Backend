@@ -11,7 +11,34 @@ declare namespace GDCS {
         name: string
         email: string
         email_verified_at: string
-        failedLogs?: AccountFailedLog[]
+        user: GDCS.User
+        comments: GDCS.AccountComment[],
+        failedLogs: AccountFailedLog[]
+        abilities: GDCS.Ability[],
+        roles: GDCS.Role[]
+    }
+
+    export interface Ability extends Model {
+        name: string
+        title: string
+        entity_id: number
+        entity_type: string
+        only_owned: boolean
+        options: unknown
+        scope: number
+    }
+
+    export interface Role extends Model {
+        name: string
+        title: string
+        scope: number
+    }
+
+    export interface AccountComment extends Model {
+        account_id: number
+        comment: string
+        likes: number
+        span: boolean
     }
 
     export interface AccountLink extends Model {

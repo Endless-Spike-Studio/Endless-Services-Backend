@@ -8,6 +8,7 @@ use App\Models\GDCS\User;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
+use Silber\Bouncer\BouncerFacade;
 
 class InformationPresenter
 {
@@ -52,7 +53,12 @@ class InformationPresenter
         return Inertia::render('GDCS/Dashboard/Account/Info', [
             'account' => $account->load('comments:id,account_id,comment,likes,created_at')
                 ->load('user:id,name,uuid')
-                ->only(['id', 'name', 'created_at', 'comments', 'user'])
+                ->load('abilities:id,entity_id,entity_type,name,title')
+                ->load('roles:id,name,title')
+                ->only(['id', 'name', 'created_at', 'comments', 'user', 'abilities', 'roles']),
+            'permission' => [
+                'manage' => BouncerFacade::can('manage-permission')
+            ]
         ]);
     }
 }
