@@ -4,7 +4,7 @@ import {GDCS} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
 import {computed, h, reactive, watch} from "vue"
-import {NButton, NCard, NDescriptions, NDescriptionsItem, NPopover, NSpace, NText} from "naive-ui"
+import {NButton, NCard, NDescriptions, NDescriptionsItem, NPopover, NSelect, NSpace, NTag, NText} from "naive-ui"
 import {useGlobalStore} from "@/scripts/stores"
 import {each, map} from "lodash-es"
 
