@@ -20,7 +20,7 @@ const abilityUpdateForm = useForm({
 </script>
 
 <template layout="GDCS">
-    <n-card class="lg:w-2/3 mx-auto" title="角色信息">
+    <n-card class="lg:w-2/3 mx-auto" title="能力信息">
         <n-descriptions :bordered="true" :column="isMobile ? 1 : 3">
             <n-descriptions-item label="ID">
                 {{ ability.id }}
