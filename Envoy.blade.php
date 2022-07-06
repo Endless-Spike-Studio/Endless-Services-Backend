@@ -14,7 +14,7 @@ pnpm update
 composer update --no-dev
 @endtask
 
-@story('update-packages)
+@story('update-packages')
 pnpm update
 @endstory
 
