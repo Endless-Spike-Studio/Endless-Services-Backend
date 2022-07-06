@@ -13,7 +13,7 @@ class AccountMessageRepository
     {
     }
 
-    public function findNewByAccount(int $accountID): AccountMessage
+    public function findNewByAccount(int $accountID): Builder|AccountMessage
     {
         return $this->model
             ->where([
