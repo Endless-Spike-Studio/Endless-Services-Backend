@@ -29,6 +29,3 @@ jobs:
 
       - name: '跑测试'
         run: php artisan test
-
-      - name: '发送部署请求'
-        run: curl -X POST -F 'secret=${{ secrets.APP_HOOK_SECRET }}' ${{ secrets.APP_HOOK_URL }}
