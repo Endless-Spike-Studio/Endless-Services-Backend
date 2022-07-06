@@ -1,11 +1,19 @@
 on: push
-name: '静态代码检查'
+name: 'CI'
 
 jobs:
-  stan:
+  runner:
     runs-on: ubuntu-latest
     container:
       image: laradock/workspace:master-8.1
+    services:
+      database:
+        image: mariadb
+        env:
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MARIADB_DATABASE: gdcn
+        ports:
+          - 3306:3306
     steps:
       - uses: actions/checkout@v3
 
@@ -18,6 +26,9 @@ jobs:
         run: |
           cp .env.ci .env
           php artisan key:generate
+
+      - name: '跑测试'
+        run: php artisan test
 
       - name: '跑检查'
         run: vendor/bin/phpstan analyse
