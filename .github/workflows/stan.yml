@@ -2,7 +2,7 @@ on: push
 name: '静态代码检查'
 
 jobs:
-  test:
+  stan:
     runs-on: ubuntu-latest
     container:
       image: laradock/workspace:master-8.1
