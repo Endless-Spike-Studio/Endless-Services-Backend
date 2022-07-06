@@ -1,0 +1,13 @@
+on: push
+name: '静态代码检查'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: laradock/workspace:master-8.1
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: '跑检查'
+        run: vendor/bin/phpstan analyse
