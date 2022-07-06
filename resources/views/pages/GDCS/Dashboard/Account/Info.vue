@@ -14,7 +14,7 @@ import {
     NText,
     NThing
 } from "naive-ui"
-import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers"
+import {formatTime, isMobile, toRoute, toRouteWithParams} from "@/scripts/helpers"
 import {Base64} from "js-base64"
 import {GDCS} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
@@ -89,8 +89,11 @@ watch(updateForm, newForm => {
                     {{ formatTime(account.created_at, '未知') }}
                 </n-descriptions-item>
                 <n-descriptions-item label="能力">
-                    <n-select v-if="permission.manage" v-model:value="updateForm.abilities" :options="abilityOptions"
-                              filterable multiple tag/>
+                    <n-space v-if="permission.manage" vertical>
+                        <n-select v-model:value="updateForm.abilities" :options="abilityOptions" filterable multiple
+                                  tag/>
+                        <n-button @click="toRoute('gdcs.admin.account.ability.list')">能力管理</n-button>
+                    </n-space>
 
                     <n-space v-else>
                         <n-tag v-for="ability in account.abilities">
@@ -105,8 +108,10 @@ watch(updateForm, newForm => {
                     </n-space>
                 </n-descriptions-item>
                 <n-descriptions-item label="角色">
-                    <n-select v-if="permission.manage" v-model:value="updateForm.roles" :options="roleOptions"
-                              filterable multiple tag/>
+                    <n-space v-if="permission.manage" vertical>
+                        <n-select v-model:value="updateForm.roles" :options="roleOptions" filterable multiple tag/>
+                        <n-button @click="toRoute('gdcs.admin.account.role.list')">角色管理</n-button>
+                    </n-space>
 
                     <n-space v-else>
                         <n-tag v-for="role in account.roles">
