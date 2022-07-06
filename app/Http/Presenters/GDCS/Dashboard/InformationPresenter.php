@@ -43,8 +43,8 @@ class InformationPresenter
                 ->load('weekly:id,level_id,apply_at')
                 ->only(['id', 'user_id', 'name', 'desc', 'downloads', 'likes', 'version', 'length', 'password', 'audio_track', 'song_id', 'original_level_id', 'two_player', 'objects', 'coins', 'requested_stars', 'unlisted', 'ldm', 'created_at', 'updated_at', 'user', 'song', 'original', 'rating', 'comments', 'daily', 'weekly']),
             'permission' => [
-                'rate' => $account->can('RATE_LEVEL'),
-                'mark' => $account->can('MARK_LEVEL')
+                'rate' => $account->can('rate-level'),
+                'mark' => $account->can('mark-level')
             ]
         ]);
     }

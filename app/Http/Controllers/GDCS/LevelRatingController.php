@@ -38,7 +38,7 @@ class LevelRatingController extends Controller
 
         if (!$record->exists()) {
             foreach ($request->account->groups as $group) {
-                if ($group->can('DIRECT_CHANGE_FACE')) {
+                if ($group->can('direct-rate')) {
                     LevelStarSuggestion::query()
                         ->where('level_id', $data['levelID'])
                         ->delete();
@@ -113,7 +113,7 @@ class LevelRatingController extends Controller
             }
 
             foreach ($request->account->groups as $group) {
-                if ($group->can('DIRECT_CHANGE_DEMON_DIFF')) {
+                if ($group->can('direct-rate')) {
                     LevelDemonDifficultySuggestion::query()
                         ->where('level_id', $data['levelID'])
                         ->delete();
@@ -196,7 +196,7 @@ class LevelRatingController extends Controller
             ->findOrFail($data['levelID']);
 
         foreach ($request->account->groups as $group) {
-            if ($group->can('DIRECT_RATE')) {
+            if ($group->can('direct-rate')) {
                 LevelRatingSuggestion::query()
                     ->where('level_id', $level->id)
                     ->delete();

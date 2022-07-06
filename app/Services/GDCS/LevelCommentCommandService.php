@@ -21,7 +21,7 @@ class LevelCommentCommandService extends CommandService
 
     public function unRate(): string
     {
-        if (!$this->account->can('RATE_LEVEL')) {
+        if (!$this->account->can('rate-level')) {
             return __('messages.command.permission_denied');
         }
 
@@ -38,7 +38,7 @@ class LevelCommentCommandService extends CommandService
             return __('messages.command.invalid_parameters');
         }
 
-        if (!$this->account->can('RATE_LEVEL')) {
+        if (!$this->account->can('rate-level')) {
             return __('messages.command.permission_denied');
         }
 
@@ -86,7 +86,7 @@ class LevelCommentCommandService extends CommandService
 
         switch ($key) {
             case 'as':
-                if (!$this->account->can('MARK_LEVEL')) {
+                if (!$this->account->can('mark-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -161,7 +161,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'difficulty':
-                if (!$this->account->can('RATE_LEVEL')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -170,7 +170,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'demon-difficulty':
-                if (!$this->account->can('RATE_LEVEL')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -179,7 +179,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'stars':
-                if (!$this->account->can('RATE_LEVEL')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -194,7 +194,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'featured-score':
-                if (!$this->account->can('RATE_LEVEL')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -205,7 +205,7 @@ class LevelCommentCommandService extends CommandService
                 $this->level->rating->update(['featured_score' => $value]);
                 break;
             case 'epic':
-                if (!$this->account->can('RATE_LEVEL')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -214,7 +214,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'silver-coin':
-                if (!$this->account->can('RATE_LEVEL')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
