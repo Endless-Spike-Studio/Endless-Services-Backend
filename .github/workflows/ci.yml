@@ -35,6 +35,8 @@ jobs:
     container:
       image: laradock/workspace:master-8.1
     steps:
+      - uses: actions/checkout@v3
+
       - name: '安装依赖'
         run: |
           rm composer.lock
@@ -53,6 +55,8 @@ jobs:
     container:
       image: laradock/workspace:master-8.1
     steps:
+      - uses: actions/checkout@v3
+
       - name: '安装依赖'
         run: |
           rm composer.lock
