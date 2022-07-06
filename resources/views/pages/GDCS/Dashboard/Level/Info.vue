@@ -72,7 +72,23 @@ const changing = reactive({
 })
 
 const markAsDailyForm = useForm({})
+watch(markAsDailyForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
+})
+
 const markAsWeeklyForm = useForm({})
+watch(markAsWeeklyForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
+})
+
 const isLevelOwner = computed(() => getProp('gdcs.user.id').value === props.level.user_id)
 
 function handleSongTypeUpdate(value: string) {

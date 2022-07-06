@@ -2,9 +2,11 @@
 import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui"
 import {formatTime, toRoute} from "@/scripts/helpers"
 import {GDCS} from "@/scripts/types/backend"
-import {h} from "vue"
+import {h, watch} from "vue"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
+import {useGlobalStore} from "@/scripts/stores"
+import {each} from "lodash-es"
 
 defineProps<{
     accesses: GDCS.TempLevelUploadAccess[]
@@ -29,6 +31,14 @@ const columns = [
         key: 'action',
         render: (row: GDCS.TempLevelUploadAccess) => {
             const form = useForm({})
+
+            watch(form, newForm => {
+                const globalStore = useGlobalStore()
+
+                each(newForm.errors, (error, field) => {
+                    globalStore.$message.error(`[${field}] ${error}`)
+                })
+            })
 
             return h(NPopconfirm, {
                 onPositiveClick: () => form.delete(

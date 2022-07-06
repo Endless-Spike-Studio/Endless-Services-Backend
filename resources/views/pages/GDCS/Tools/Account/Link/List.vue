@@ -2,11 +2,12 @@
 import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui"
 import {formatTime, toRoute} from "@/scripts/helpers"
 import {GDCS} from "@/scripts/types/backend"
-import {h} from "vue"
+import {h, watch} from "vue"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
 import servers from "@/scripts/enums/servers"
-import {find} from "lodash-es"
+import {each, find} from "lodash-es"
+import {useGlobalStore} from "@/scripts/stores"
 
 defineProps<{
     links: GDCS.AccountLink[]
@@ -37,6 +38,14 @@ const columns = [
         key: 'action',
         render: (row: GDCS.AccountLink) => {
             const form = useForm({})
+
+            watch(form, newForm => {
+                const globalStore = useGlobalStore()
+
+                each(newForm.errors, (error, field) => {
+                    globalStore.$message.error(`[${field}] ${error}`)
+                })
+            })
 
             return h(NPopconfirm, {
                 onPositiveClick: () => form.delete(

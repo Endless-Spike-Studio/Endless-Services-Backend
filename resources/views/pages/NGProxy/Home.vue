@@ -16,9 +16,11 @@ import Banner from "@/images/NGProxy/Banner.png"
 import {isMobile, toURL} from "@/scripts/helpers"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
-import {ref} from "vue"
+import {ref, watch} from "vue"
 import {NGProxy} from "@/scripts/types/backend"
 import CommonHome from "@/views/components/CommonHome.vue"
+import {useGlobalStore} from "@/scripts/stores"
+import {each} from "lodash-es"
 
 defineProps<{
     song?: NGProxy.Song
@@ -42,6 +44,14 @@ const API = {
 
 const songID = ref()
 const fetchSongForm = useForm({})
+
+watch(fetchSongForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
+})
 </script>
 
 <template layout="NGProxy">

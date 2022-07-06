@@ -2,9 +2,11 @@
 import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui"
 import {getProp, toRoute, toURL} from "@/scripts/helpers"
 import {GDCS, User} from "@/scripts/types/backend"
-import {h} from "vue"
+import {h, watch} from "vue"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
+import {useGlobalStore} from "@/scripts/stores"
+import {each} from "lodash-es"
 
 const account = getProp<User>('gdcs.account')
 const props = defineProps<{
@@ -45,6 +47,14 @@ const columns = [
         key: 'action',
         render: (row: GDCS.CustomSong) => {
             const form = useForm({})
+
+            watch(form, newForm => {
+                const globalStore = useGlobalStore()
+
+                each(newForm.errors, (error, field) => {
+                    globalStore.$message.error(`[${field}] ${error}`)
+                })
+            })
 
             return h(NSpace, null, () => [
                 h(NButton, {

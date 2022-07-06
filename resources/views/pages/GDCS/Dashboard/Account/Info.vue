@@ -18,9 +18,10 @@ import {formatTime, isMobile, toRouteWithParams} from "@/scripts/helpers"
 import {Base64} from "js-base64"
 import {GDCS} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
-import {map} from "lodash-es"
-import {computed, h} from "vue"
+import {each, map} from "lodash-es"
+import {computed, h, watch} from "vue"
 import route from "@/scripts/route"
+import {useGlobalStore} from "@/scripts/stores"
 
 const props = defineProps<{
     account: GDCS.Account,
@@ -58,6 +59,14 @@ const roleOptions = computed(() => {
 const updateForm = useForm({
     abilities: map(props.account.abilities, 'name'),
     roles: map(props.account.roles, 'name')
+})
+
+watch(updateForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 </script>
 

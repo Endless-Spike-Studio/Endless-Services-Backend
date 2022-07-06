@@ -4,6 +4,9 @@ import {formatTime} from "@/scripts/helpers"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
 import {GDCS} from "@/scripts/types/backend"
+import {watch} from "vue"
+import {useGlobalStore} from "@/scripts/stores"
+import {each} from "lodash-es"
 
 defineProps<{
     logs: GDCS.AccountFailedLog[]
@@ -30,6 +33,14 @@ const columns = [
 ]
 
 const clearForm = useForm({})
+
+watch(clearForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
+})
 </script>
 
 <template layout="GDCS">

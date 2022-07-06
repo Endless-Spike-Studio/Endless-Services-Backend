@@ -3,12 +3,22 @@ import {formatTime, getProp, isMobile, toRoute} from "@/scripts/helpers"
 import {User} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
-import {reactive} from "vue"
+import {reactive, watch} from "vue"
 import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace, NText} from "naive-ui"
+import {useGlobalStore} from "@/scripts/stores"
+import {each} from "lodash-es"
 
 const account = getProp<User>('gdcs.account')
 const user = getProp<User>('gdcs.user')
 const resendEmailVerificationForm = useForm({})
+
+watch(resendEmailVerificationForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
+})
 
 const hidden = reactive({
     uuid: true,
