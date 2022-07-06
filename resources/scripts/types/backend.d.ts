@@ -38,7 +38,7 @@ declare namespace GDCS {
         account_id: number
         comment: string
         likes: number
-        span: boolean
+        spam: boolean
     }
 
     export interface AccountLink extends Model {
