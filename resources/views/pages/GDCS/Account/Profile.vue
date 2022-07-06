@@ -1,16 +1,24 @@
 <script lang="ts" setup>
 import {formatTime, getProp, isMobile, toRoute} from "@/scripts/helpers"
-import {User} from "@/scripts/types/backend"
+import {GDCS} from "@/scripts/types/backend"
 import {useForm} from "@inertiajs/inertia-vue3"
 import route from "@/scripts/route"
-import {reactive, watch} from "vue"
-import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace, NText} from "naive-ui"
+import {computed, h, reactive, watch} from "vue"
+import {NButton, NCard, NDescriptions, NDescriptionsItem, NPopover, NSpace, NText} from "naive-ui"
 import {useGlobalStore} from "@/scripts/stores"
-import {each} from "lodash-es"
+import {each, map} from "lodash-es"
 
-const account = getProp<User>('gdcs.account')
-const user = getProp<User>('gdcs.user')
+const account = getProp<GDCS.Account>('gdcs.account')
+const user = getProp<GDCS.User>('gdcs.user')
 const resendEmailVerificationForm = useForm({})
+
+const props = defineProps<{
+    abilities: GDCS.Ability[],
+    roles: GDCS.Role[],
+    permission: {
+        manage: boolean
+    }
+}>()
 
 watch(resendEmailVerificationForm, newForm => {
     const globalStore = useGlobalStore()
@@ -23,6 +31,43 @@ watch(resendEmailVerificationForm, newForm => {
 const hidden = reactive({
     uuid: true,
     udid: true
+})
+
+const abilityOptions = computed(() => {
+    return map(props.abilities, ability => {
+        return {
+            label: () => h(NPopover, null, {
+                trigger: () => ability.title,
+                default: () => ability.name
+            }),
+            value: ability.name
+        }
+    })
+})
+
+const roleOptions = computed(() => {
+    return map(props.roles, role => {
+        return {
+            label: () => h(NPopover, null, {
+                trigger: () => role.title,
+                default: () => role.name
+            }),
+            value: role.name
+        }
+    })
+})
+
+const permissionUpdateForm = useForm({
+    abilities: map(account.value.abilities, 'name'),
+    roles: map(account.value.roles, 'name')
+})
+
+watch(permissionUpdateForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 </script>
 
@@ -44,6 +89,46 @@ const hidden = reactive({
                 </n-descriptions-item>
                 <n-descriptions-item label="注册时间">
                     {{ formatTime(account.created_at, '未知') }}
+                </n-descriptions-item>
+                <n-descriptions-item label="能力">
+                    <n-space v-if="permission.manage" vertical>
+                        <n-select v-model:value="permissionUpdateForm.abilities" :options="abilityOptions" filterable
+                                  multiple tag/>
+
+                        <n-button @click="toRoute('gdcs.admin.account.ability.list')">能力管理</n-button>
+                    </n-space>
+
+                    <n-space v-else>
+                        <n-tag v-for="ability in account.abilities">
+                            <n-popover>
+                                <template #trigger>
+                                    {{ ability.title }}
+                                </template>
+
+                                {{ ability.name }}
+                            </n-popover>
+                        </n-tag>
+                    </n-space>
+                </n-descriptions-item>
+                <n-descriptions-item label="角色">
+                    <n-space v-if="permission.manage" vertical>
+                        <n-select v-model:value="permissionUpdateForm.roles" :options="roleOptions" filterable multiple
+                                  tag/>
+
+                        <n-button @click="toRoute('gdcs.admin.account.role.list')">角色管理</n-button>
+                    </n-space>
+
+                    <n-space v-else>
+                        <n-tag v-for="role in account.roles">
+                            <n-popover>
+                                <template #trigger>
+                                    {{ role.title }}
+                                </template>
+
+                                {{ role.name }}
+                            </n-popover>
+                        </n-tag>
+                    </n-space>
                 </n-descriptions-item>
             </n-descriptions>
 
