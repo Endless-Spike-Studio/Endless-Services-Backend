@@ -9,5 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: '更新依赖'
+        run: |
+          rm composer.lock
+          composer update --no-interaction --no-ansi
+
+      - name: '初始化项目'
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
       - name: '跑检查'
         run: vendor/bin/phpstan analyse
