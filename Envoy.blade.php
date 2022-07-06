@@ -15,7 +15,8 @@ composer update --no-dev
 @endtask
 
 @story('update-packages')
-pnpm update
+update-frontend-packages
+update-backend-packages
 @endstory
 
 @task('deploy-frontend')
@@ -35,21 +36,21 @@ php artisan octane:reload
 
 @story('deploy-frontend')
 update-code
-update-frontend-dependencies
+update-frontend-packages
 deploy-frontend
 restart-server
 @endstory
 
 @story('deploy-backend')
 update-code
-update-backend-dependencies
+update-backend-packages
 deploy-backend
 restart-server
 @endstory
 
 @story('deploy')
 update-code
-update-dependencies
+update-packages
 deploy-frontend
 deploy-backend
 restart-server
