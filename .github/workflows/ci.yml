@@ -1,0 +1,67 @@
+on: push
+name: '项目测试'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: laradock/workspace:master-8.1
+    services:
+      database:
+        image: mariadb
+        env:
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MARIADB_DATABASE: gdcn
+        ports:
+          - 3306:3306
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: '安装依赖'
+        run: |
+          rm composer.lock
+          composer update --no-interaction --no-ansi
+
+      - name: '初始化项目'
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: '开始测试'
+        run: php artisan test
+
+  stan:
+    runs-on: ubuntu-latest
+    container:
+      image: laradock/workspace:master-8.1
+    steps:
+      - name: '安装依赖'
+        run: |
+          rm composer.lock
+          composer update --no-interaction --no-ansi
+
+      - name: '初始化项目'
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: '开始检查'
+        run: vendor/bin/phpstan analyse
+
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: laradock/workspace:master-8.1
+    steps:
+      - name: '安装依赖'
+        run: |
+          rm composer.lock
+          composer update --no-interaction --no-ansi
+
+      - name: '初始化项目'
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: '开始检查'
+        run: vendor/bin/pint --test
