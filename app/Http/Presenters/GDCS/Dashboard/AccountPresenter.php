@@ -18,7 +18,9 @@ class AccountPresenter
 
         return Inertia::render('GDCS/Account/Profile', [
             'gdcs' => [
-                'account' => $account->only(['id', 'name', 'email', 'email_verified_at', 'created_at']),
+                'account' => $account->load('abilities:id,entity_id,entity_type,name,title')
+                    ->load('roles:id,name,title')
+                    ->only(['id', 'name', 'email', 'email_verified_at', 'created_at', 'abilities', 'roles']),
                 'user' => $account->load('user:id,name,uuid,udid,created_at')
                     ->getRelationValue('user'),
                 'abilities' => Ability::all(['id', 'name', 'title']),
