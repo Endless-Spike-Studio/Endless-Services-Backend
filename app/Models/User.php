@@ -16,12 +16,14 @@ class User extends Authenticatable implements MustVerifyEmailContract
     use HasApiTokens, HasFactory, Notifiable, MustVerifyEmail, HasRolesAndAbilities;
 
     protected $fillable = ['name', 'email', 'password'];
+
     protected $hidden = ['password', 'remember_token'];
+
     protected $dates = ['email_verified_at'];
 
     public function sendEmailVerificationNotification(): void
     {
-        if (!$this->hasVerifiedEmail()) {
+        if (! $this->hasVerifiedEmail()) {
             $this->notify(new EmailVerificationNotification);
         }
     }

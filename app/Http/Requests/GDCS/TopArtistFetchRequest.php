@@ -9,30 +9,30 @@ class TopArtistFetchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'page' => [
                 'required',
                 'integer',
-                'min:0'
+                'min:0',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
+                'in:Wmfd2893gb7',
             ],
             'total' => [
                 'required',
-                'integer'
-            ]
+                'integer',
+            ],
         ];
     }
 }

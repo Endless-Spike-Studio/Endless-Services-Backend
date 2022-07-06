@@ -16,39 +16,39 @@ class LevelUpdateApiRequest extends Request
             'name' => [
                 'required',
                 'string',
-                Rule::unique(Level::class)->ignore($level)
+                Rule::unique(Level::class)->ignore($level),
             ],
             'desc' => [
                 'nullable',
                 'string',
-                Rule::unique(Level::class)->ignore($level)
+                Rule::unique(Level::class)->ignore($level),
             ],
             'audio_track' => [
                 'required_without:song_id',
                 'integer',
-                Rule::unique(Level::class)->ignore($level)
+                Rule::unique(Level::class)->ignore($level),
             ],
             'song_id' => [
                 'required_without:audio_track',
                 'required',
                 'integer',
-                Rule::unique(Level::class)->ignore($level)
+                Rule::unique(Level::class)->ignore($level),
             ],
             'password' => [
                 'required',
                 'integer',
-                Rule::unique(Level::class)->ignore($level)
+                Rule::unique(Level::class)->ignore($level),
             ],
             'requested_stars' => [
                 'required',
                 'integer',
-                Rule::unique(Level::class)->ignore($level)
+                Rule::unique(Level::class)->ignore($level),
             ],
             'unlisted' => [
                 'required',
                 'boolean',
-                Rule::unique(Level::class)->ignore($level)
-            ]
+                Rule::unique(Level::class)->ignore($level),
+            ],
         ];
     }
 }

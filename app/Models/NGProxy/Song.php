@@ -3,12 +3,9 @@
 namespace App\Models\NGProxy;
 
 use Database\Factories\NGProxy\SongFactory;
-use Eloquent;
 use GDCN\GDObject\GDObject;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 class Song extends Model
 {
@@ -36,7 +33,7 @@ class Song extends Model
             3 => $this->artist_id,
             4 => $this->artist_name,
             5 => $this->size,
-            10 => $this->download_url
+            10 => $this->download_url,
         ], '~|~');
     }
 }

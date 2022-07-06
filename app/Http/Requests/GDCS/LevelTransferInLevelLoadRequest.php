@@ -14,8 +14,8 @@ class LevelTransferInLevelLoadRequest extends Request
             'link' => [
                 'sometimes',
                 'required',
-                Rule::in(AccountLink::class, 'id')
-            ]
+                Rule::in(AccountLink::class, 'id'),
+            ],
         ];
     }
 }

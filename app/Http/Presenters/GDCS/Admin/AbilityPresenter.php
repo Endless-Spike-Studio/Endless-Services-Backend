@@ -11,7 +11,7 @@ class AbilityPresenter
     public function renderList(): Response
     {
         return Inertia::render('GDCS/Admin/Permission/Ability/List', [
-            'abilities' => Ability::all()
+            'abilities' => Ability::all(),
         ]);
     }
 

@@ -22,7 +22,7 @@ return [
     'delete_failed_with_reason' => '删除失败, 原因: :reason',
 
     'temp_level_access' => [
-        'create_too_many' => '创建太多了, 请先使用或删除之前的'
+        'create_too_many' => '创建太多了, 请先使用或删除之前的',
     ],
 
     'custom_song' => [
@@ -30,7 +30,7 @@ return [
         'already_exist_with_id' => '歌曲已存在, ID: :id',
         'invalid_link' => '无效外链',
         'netease_link_found' => '检测到网易云音乐链接, 请使用 自定义歌曲上传(网易云专版) 上传',
-        'not_found' => '歌曲不存在'
+        'not_found' => '歌曲不存在',
     ],
 
     'level_transfer' => [
@@ -38,8 +38,8 @@ return [
         'success_with_id' => '关卡转移成功, ID: :id',
         'failed' => '关卡转移失败',
         'level_not_found' => '关卡不存在',
-        'creator_link_not_found' => '链接不存在, 请先链接 creator 的账号'
+        'creator_link_not_found' => '链接不存在, 请先链接 creator 的账号',
     ],
     'welcome_back' => '欢迎回来! :name',
-    'logout_success' => '登出成功'
+    'logout_success' => '登出成功',
 ];

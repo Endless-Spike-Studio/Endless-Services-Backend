@@ -17,18 +17,18 @@ class AccountSettingUpdateApiRequest extends Request
             'name' => [
                 'required',
                 'string',
-                Rule::unique(Account::class)->ignore($account->id)
+                Rule::unique(Account::class)->ignore($account->id),
             ],
             'email' => [
                 'required',
                 'email',
-                Rule::unique(Account::class)->ignore($account->id)
+                Rule::unique(Account::class)->ignore($account->id),
             ],
             'password' => [
                 'exclude_without:password',
                 'string',
-                'confirmed'
-            ]
+                'confirmed',
+            ],
         ];
     }
 }

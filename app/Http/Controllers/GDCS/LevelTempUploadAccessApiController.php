@@ -33,7 +33,7 @@ class LevelTempUploadAccessApiController extends Controller
 
         $account->tempLevelUploadAccesses()
             ->create([
-                'ip' => Request::ip()
+                'ip' => Request::ip(),
             ]);
 
         $this->pushSuccessMessage(

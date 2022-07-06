@@ -36,7 +36,7 @@ class Kernel extends HttpKernel
         PreventRequestsDuringMaintenance::class,
         ValidatePostSize::class,
         TrimStrings::class,
-        ConvertEmptyStringsToNull::class
+        ConvertEmptyStringsToNull::class,
     ];
 
     protected $middlewareGroups = [
@@ -48,16 +48,16 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
-            HandleInertiaRequests::class
+            HandleInertiaRequests::class,
         ],
 
         'api' => [
             EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
-            SubstituteBindings::class
+            SubstituteBindings::class,
         ],
 
-        'game' => []
+        'game' => [],
     ];
 
     protected $routeMiddleware = [
@@ -69,6 +69,6 @@ class Kernel extends HttpKernel
         'password.confirm' => RequirePassword::class,
         'signed' => ValidateSignature::class,
         'throttle' => ThrottleRequests::class,
-        'verified' => EnsureEmailIsVerified::class
+        'verified' => EnsureEmailIsVerified::class,
     ];
 }

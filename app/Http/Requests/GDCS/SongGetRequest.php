@@ -9,13 +9,13 @@ class SongGetRequest extends Request
         return [
             'songID' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

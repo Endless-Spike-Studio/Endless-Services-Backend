@@ -13,8 +13,6 @@ class AccountRegistered
 
     public function __construct(
         public Account $model
-    )
-    {
-
+    ) {
     }
 }

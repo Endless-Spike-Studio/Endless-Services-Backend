@@ -11,8 +11,6 @@ class UserEmailChanged
 
     public function __construct(
         public User $model
-    )
-    {
-
+    ) {
     }
 }

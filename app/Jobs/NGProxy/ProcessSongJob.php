@@ -14,21 +14,19 @@ class ProcessSongJob implements ShouldQueue, ShouldBeUnique
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(
-        protected int    $id,
+        protected int $id,
         protected string $url
-    )
-    {
-
+    ) {
     }
 
     public function handle(): void
     {
         $storage = app('storage:ngproxy.song_data');
 
-        if (!$storage->allExists($this->id)) {
+        if (! $storage->allExists($this->id)) {
             $data = app('proxy')
                 ->withOptions([
-                    'decode_content' => false
+                    'decode_content' => false,
                 ])
                 ->get(
                     urldecode($this->url)

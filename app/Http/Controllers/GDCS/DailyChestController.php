@@ -31,7 +31,7 @@ class DailyChestController extends Controller
         }
 
         $smallChestRemainTime = 0;
-        if (!empty($reward->small_time)) {
+        if (! empty($reward->small_time)) {
             $time = $reward->small_time->addSeconds($rewardConfig['small']['wait']);
 
             if ($time->isFuture()) {
@@ -52,7 +52,7 @@ class DailyChestController extends Controller
         }
 
         $bigChestRemainTime = 0;
-        if (!empty($reward->big_time)) {
+        if (! empty($reward->big_time)) {
             $time = $reward->big_time->addSeconds($rewardConfig['big']['wait']);
 
             if ($time->isFuture()) {
@@ -96,10 +96,11 @@ class DailyChestController extends Controller
             $bigChestRemainTime,
             $bigChestReward,
             $reward->big_count,
-            $data['rewardType']
+            $data['rewardType'],
         ]);
 
         $rewardString = GDAlgorithm::encode($reward, Keys::REWARD->value, sha1: false);
-        return Str::random(5) . $rewardString . '|' . sha1($rewardString . Salts::REWARD->value);
+
+        return Str::random(5).$rewardString.'|'.sha1($rewardString.Salts::REWARD->value);
     }
 }

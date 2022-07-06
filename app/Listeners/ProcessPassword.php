@@ -11,7 +11,7 @@ class ProcessPassword
     public function handle(AccountRegistered|UserRegistered $event): void
     {
         $event->model->update([
-            'password' => Hash::make($event->model->password)
+            'password' => Hash::make($event->model->password),
         ]);
     }
 }

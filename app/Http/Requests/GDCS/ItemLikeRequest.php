@@ -9,7 +9,7 @@ class ItemLikeRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->user);
+        return $this->auth() && ! empty($this->user);
     }
 
     public function rules(): array
@@ -17,66 +17,66 @@ class ItemLikeRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'uuid' => [
                 'required_without:accountID',
-                'integer'
+                'integer',
             ],
             'udid' => [
                 'required_with:uuid',
-                'string'
+                'string',
             ],
             'itemID' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'like' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'type' => [
                 'required',
                 'integer',
-                'between:1,3'
+                'between:1,3',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
+                'in:Wmfd2893gb7',
             ],
             'special' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'rs' => [
                 'required',
-                'string'
+                'string',
             ],
             'chk' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

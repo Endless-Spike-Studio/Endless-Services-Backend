@@ -46,7 +46,7 @@ return [
         'gdcs' => [
             'driver' => 'session',
             'provider' => 'gdcs',
-        ]
+        ],
     ],
 
     /*
@@ -74,8 +74,8 @@ return [
 
         'gdcs' => [
             'driver' => 'eloquent',
-            'model' => Account::class
-        ]
+            'model' => Account::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',

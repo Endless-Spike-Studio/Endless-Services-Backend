@@ -10,11 +10,15 @@ use Illuminate\Support\Facades\Storage;
 class StaticFilesUploadCommand extends Command
 {
     protected $signature = 'static:upload {--bases=build}';
+
     protected $description = 'Upload static files';
 
     protected string $disk = 'oss';
+
     protected string $prefix = '/static/gdcn';
+
     protected array $ignore = ['.', '..'];
+
     protected FilesystemAdapter|Filesystem $storage;
 
     public function handle(): int
@@ -24,7 +28,7 @@ class StaticFilesUploadCommand extends Command
         $bases = $this->option('bases');
         foreach (explode(',', $bases) as $base) {
             $this->storage->delete(
-                $this->prefix . '/' . $base
+                $this->prefix.'/'.$base
             );
 
             $this->uploadDir(
@@ -43,8 +47,8 @@ class StaticFilesUploadCommand extends Command
                 continue;
             }
 
-            $fullPath = $path . '/' . $file;
-            $relativePath = $base . '/' . $file;
+            $fullPath = $path.'/'.$file;
+            $relativePath = $base.'/'.$file;
 
             if (is_dir($fullPath)) {
                 $this->uploadDir($fullPath, $relativePath);
@@ -52,11 +56,11 @@ class StaticFilesUploadCommand extends Command
             }
 
             $this->storage->put(
-                $this->prefix . '/' . $relativePath,
+                $this->prefix.'/'.$relativePath,
                 file_get_contents($fullPath)
             );
 
-            $this->info($fullPath . ' => ' . $relativePath);
+            $this->info($fullPath.' => '.$relativePath);
         }
     }
 }

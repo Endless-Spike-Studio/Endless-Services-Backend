@@ -17,6 +17,6 @@ class AccountVerifyRequest extends Request
             )
         );
 
-        return $user->id === (int)$id && $user->getEmailForVerification() === $email;
+        return $user->id === (int) $id && $user->getEmailForVerification() === $email;
     }
 }

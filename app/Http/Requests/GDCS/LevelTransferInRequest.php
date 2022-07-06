@@ -14,12 +14,12 @@ class LevelTransferInRequest extends Request
             'linkID' => [
                 'required',
                 'integer',
-                Rule::exists(AccountLink::class, 'id')
+                Rule::exists(AccountLink::class, 'id'),
             ],
             'levelID' => [
                 'required',
-                'integer'
-            ]
+                'integer',
+            ],
         ];
     }
 }

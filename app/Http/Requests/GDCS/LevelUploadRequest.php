@@ -23,7 +23,7 @@ class LevelUploadRequest extends Request
             return true;
         }
 
-        return $this->auth() && !empty($this->user);
+        return $this->auth() && ! empty($this->user);
     }
 
     public function rules(): array
@@ -31,146 +31,146 @@ class LevelUploadRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 Rule::requiredIf(function () {
-                    return !TempLevelUploadAccess::query()
+                    return ! TempLevelUploadAccess::query()
                         ->where('ip', $this->ip())
                         ->exists();
                 }),
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'uuid' => [
                 'required_without:accountID',
-                'integer'
+                'integer',
             ],
             'udid' => [
                 'required_with:uuid',
-                'string'
+                'string',
             ],
             'levelID' => [
                 'exclude_if:levelID,0',
                 'required',
                 'integer',
-                Rule::exists(Level::class, 'id')
+                Rule::exists(Level::class, 'id'),
             ],
             'levelName' => [
                 'required',
-                'string'
+                'string',
             ],
             'levelDesc' => [
                 'present',
                 'nullable',
-                'string'
+                'string',
             ],
             'levelVersion' => [
                 'required',
                 'integer',
-                'min:0'
+                'min:0',
             ],
             'levelLength' => [
                 'required',
                 'integer',
-                'between:0,4'
+                'between:0,4',
             ],
             'audioTrack' => [
                 'required',
                 'integer',
-                'between:-1,37'
+                'between:-1,37',
             ],
             'auto' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'password' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'original' => [
                 'exclude_if:original,0',
                 'required',
                 'integer',
-                Rule::exists(Level::class, 'id')
+                Rule::exists(Level::class, 'id'),
             ],
             'twoPlayer' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'songID' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'objects' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'coins' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'requestedStars' => [
                 'required',
                 'integer',
-                'between:0,10'
+                'between:0,10',
             ],
             'unlisted' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'wt' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'wt2' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'ldm' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'extraString' => [
                 'required',
-                'string'
+                'string',
             ],
             'seed' => [
                 'required',
-                'string'
+                'string',
             ],
             'seed2' => [
                 'required',
-                'string'
+                'string',
             ],
             'levelString' => [
                 'required',
-                'string'
+                'string',
             ],
             'levelInfo' => [
                 'required',
-                'string'
+                'string',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

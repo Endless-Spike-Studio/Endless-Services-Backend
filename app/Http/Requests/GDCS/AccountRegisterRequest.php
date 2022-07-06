@@ -13,23 +13,23 @@ class AccountRegisterRequest extends Request
             'userName' => [
                 'required',
                 'string',
-                Rule::unique(Account::class, 'name')
+                Rule::unique(Account::class, 'name'),
             ],
             'password' => [
                 'required',
-                'string'
+                'string',
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
-                Rule::unique(Account::class)
+                Rule::unique(Account::class),
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfv3899gc9'
-            ]
+                'in:Wmfv3899gc9',
+            ],
         ];
     }
 
@@ -38,7 +38,7 @@ class AccountRegisterRequest extends Request
         return [
             'userName.unique' => \App\Enums\Response::ACCOUNT_REGISTER_USER_NAME_ALREADY_IN_USE->value,
             'email.unique' => \App\Enums\Response::ACCOUNT_REGISTER_EMAIL_ALREADY_IN_USE->value,
-            'email.email' => \App\Enums\Response::ACCOUNT_REGISTER_EMAIL_INVALID->value
+            'email.email' => \App\Enums\Response::ACCOUNT_REGISTER_EMAIL_INVALID->value,
         ];
     }
 }

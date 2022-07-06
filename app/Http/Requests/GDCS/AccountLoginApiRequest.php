@@ -14,12 +14,12 @@ class AccountLoginApiRequest extends Request
             'name' => [
                 'required',
                 'string',
-                Rule::exists(Account::class)
+                Rule::exists(Account::class),
             ],
             'password' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

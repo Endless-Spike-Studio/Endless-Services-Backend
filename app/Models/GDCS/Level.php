@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Level extends Model
 {
     protected $table = 'gdcs_levels';
+
     protected $fillable = ['user_id', 'game_version', 'name', 'desc', 'downloads', 'likes', 'version', 'length', 'audio_track', 'song_id', 'auto', 'password', 'original_level_id', 'two_player', 'objects', 'coins', 'requested_stars', 'unlisted', 'ldm', 'extra_string', 'level_info'];
 
     public function user(): BelongsTo
@@ -40,7 +41,7 @@ class Level extends Model
                 'stars' => $stars,
                 'difficulty' => $diff,
                 'auto' => $diff === LevelRatingDifficulty::AUTO,
-                'demon' => $diff === LevelRatingDifficulty::DEMON
+                'demon' => $diff === LevelRatingDifficulty::DEMON,
             ]);
     }
 
@@ -55,7 +56,7 @@ class Level extends Model
                 'coin_verified' => false,
                 'epic' => false,
                 'auto' => false,
-                'demon' => false
+                'demon' => false,
             ]);
     }
 

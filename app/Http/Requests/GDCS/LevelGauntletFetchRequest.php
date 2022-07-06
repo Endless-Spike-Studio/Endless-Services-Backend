@@ -9,21 +9,21 @@ class LevelGauntletFetchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

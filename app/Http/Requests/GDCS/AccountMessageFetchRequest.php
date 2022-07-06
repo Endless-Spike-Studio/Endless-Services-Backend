@@ -9,7 +9,7 @@ class AccountMessageFetchRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -17,44 +17,44 @@ class AccountMessageFetchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required',
-                'string'
+                'string',
             ],
             'page' => [
                 'required',
                 'integer',
-                'min:0'
+                'min:0',
             ],
             'total' => [
                 'required',
                 'integer',
-                'min:0'
+                'min:0',
             ],
             'getSent' => [
                 'sometimes',
-                'boolean'
+                'boolean',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

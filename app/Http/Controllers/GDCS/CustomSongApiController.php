@@ -31,7 +31,7 @@ class CustomSongApiController extends Controller
         if ($query->exists()) {
             $this->pushErrorMessage(
                 __('messages.custom_song.already_exist_with_id', [
-                    'id' => $query->getKey() + config('gdcs.custom_song_offset')
+                    'id' => $query->getKey() + config('gdcs.custom_song_offset'),
                 ])
             );
 
@@ -67,7 +67,7 @@ class CustomSongApiController extends Controller
                 'name' => $data['name'],
                 'artist_name' => $data['artist_name'],
                 'size' => $size,
-                'download_url' => $data['link']
+                'download_url' => $data['link'],
             ]);
 
         $this->pushSuccessMessage(
@@ -76,7 +76,6 @@ class CustomSongApiController extends Controller
 
         return to_route('gdcs.tools.song.custom.list');
     }
-
 
     public function createNetease(CustomSongNeteaseCreateRequest $request): RedirectResponse
     {
@@ -92,7 +91,7 @@ class CustomSongApiController extends Controller
         if ($query->exists()) {
             $this->pushErrorMessage(
                 __('messages.custom_song.already_exist_with_id', [
-                    'id' => $query->getKey() + config('gdcs.custom_song_offset')
+                    'id' => $query->getKey() + config('gdcs.custom_song_offset'),
                 ])
             );
 
@@ -120,7 +119,7 @@ class CustomSongApiController extends Controller
                     ->pluck('name')
                     ->implode(' / '),
                 'size' => sprintf('%.2f', $songInfo['lMusic']['size'] / 1024 / 1024),
-                'download_url' => $link
+                'download_url' => $link,
             ]);
 
         $this->pushSuccessMessage(

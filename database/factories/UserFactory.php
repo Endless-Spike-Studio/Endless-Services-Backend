@@ -13,21 +13,21 @@ class UserFactory extends Factory
             'name' => $this->faker->unique()->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => Hash::make(123456)
+            'password' => Hash::make(123456),
         ];
     }
 
     public function withPassword(string $password): UserFactory
     {
         return $this->state([
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
         ]);
     }
 
     public function unverified(): UserFactory
     {
         return $this->state([
-            'email_verified_at' => null
+            'email_verified_at' => null,
         ]);
     }
 }

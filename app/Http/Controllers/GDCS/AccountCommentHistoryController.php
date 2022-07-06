@@ -58,7 +58,7 @@ class AccountCommentHistoryController extends Controller
                                 ->diffForHumans(syntax: true),
                             10 => $comment->percent,
                             11 => $comment->account->mod_level->value,
-                            12 => $comment->account->comment_color
+                            12 => $comment->account->comment_color,
                         ], '~'),
                         GDObject::merge([
                             1 => $comment->account->name,
@@ -67,11 +67,11 @@ class AccountCommentHistoryController extends Controller
                             11 => $comment->account->user->score->color2,
                             14 => $comment->account->user->score->icon_type,
                             15 => $comment->account->user->score->acc_glow,
-                            16 => $comment->account->id
+                            16 => $comment->account->id,
                         ], '~'),
                     ]);
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $comments->count(), $perPage)
+            GDAlgorithm::genPage($data['page'], $comments->count(), $perPage),
         ]);
     }
 }

@@ -41,7 +41,7 @@ class UserApiController extends Controller
     {
         $data = $request->validated();
 
-        if (!Auth::attempt($data, true)) {
+        if (! Auth::attempt($data, true)) {
             $this->pushErrorMessage(
                 __('messages.login_failed')
             );
@@ -51,7 +51,7 @@ class UserApiController extends Controller
 
         $this->pushSuccessMessage(
             'messages.welcome_back', [
-                'name' => $data['name']
+                'name' => $data['name'],
             ]
         );
 
@@ -85,6 +85,7 @@ class UserApiController extends Controller
         );
 
         Auth::logoutCurrentDevice();
+
         return to_route('home');
     }
 
@@ -112,7 +113,7 @@ class UserApiController extends Controller
                 return true;
             }, 3600);
 
-        if (!$attempt) {
+        if (! $attempt) {
             $this->pushErrorMessage(
                 __('messages.too_fast')
             );
@@ -134,7 +135,7 @@ class UserApiController extends Controller
 
         if ($user->wasChanged('email')) {
             $user->update([
-                'email_verified_at' => null
+                'email_verified_at' => null,
             ]);
 
             UserEmailChanged::dispatch($user);

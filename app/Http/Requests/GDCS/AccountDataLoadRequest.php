@@ -9,7 +9,7 @@ class AccountDataLoadRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -17,30 +17,30 @@ class AccountDataLoadRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'userName' => [
                 'required',
                 'string',
-                Rule::exists(Account::class, 'name')
+                Rule::exists(Account::class, 'name'),
             ],
             'password' => [
                 'required',
-                'string'
+                'string',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfv3899gc9'
-            ]
+                'in:Wmfv3899gc9',
+            ],
         ];
     }
 }

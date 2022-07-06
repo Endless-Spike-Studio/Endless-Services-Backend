@@ -3,12 +3,9 @@
 namespace App\Models\GDProxy;
 
 use Database\Factories\GDProxy\CustomSongFactory;
-use Eloquent;
 use GDCN\GDObject\GDObject;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 class CustomSong extends Model
 {
@@ -29,7 +26,7 @@ class CustomSong extends Model
             3 => 8,
             4 => $this->artist_name,
             5 => $this->size,
-            10 => $this->download_url ?? route('api.gdproxy.customSong.download', ['id' => $this->id])
+            10 => $this->download_url ?? route('api.gdproxy.customSong.download', ['id' => $this->id]),
         ], '~|~');
     }
 }

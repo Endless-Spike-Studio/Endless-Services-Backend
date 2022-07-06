@@ -12,7 +12,7 @@ class CustomSongPresenter
     {
         return Inertia::render('GDCS/Tools/Song/Custom/List', [
             'songs' => CustomSong::with('account:id,name')->get(),
-            'customSongOffset' => config('gdcs.custom_song_offset')
+            'customSongOffset' => config('gdcs.custom_song_offset'),
         ]);
     }
 }

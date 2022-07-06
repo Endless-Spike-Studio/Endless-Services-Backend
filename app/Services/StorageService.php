@@ -18,7 +18,7 @@ class StorageService
     public function __construct(protected array $storages)
     {
         foreach ($this->storages as $storage) {
-            if (!Arr::has($storage, ['disk', 'format'])) {
+            if (! Arr::has($storage, ['disk', 'format'])) {
                 throw new InvalidStorageConfigException();
             }
         }
@@ -71,7 +71,7 @@ class StorageService
             $path = Str::replace('@', $value, $storage['format']);
             $disk = Storage::disk($storage['disk']);
 
-            if (!$disk->exists($path)) {
+            if (! $disk->exists($path)) {
                 return false;
             }
         }

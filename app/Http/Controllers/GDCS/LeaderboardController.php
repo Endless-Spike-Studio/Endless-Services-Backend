@@ -20,7 +20,7 @@ class LeaderboardController extends Controller
                 $query->orderByDesc('stars');
                 break;
             case 'friends':
-                if (!$request->auth()) {
+                if (! $request->auth()) {
                     return Response::LEADERBOARD_FETCH_FAILED_ACCOUNT_VALIDATE_FAILED->value;
                 }
 
@@ -50,6 +50,7 @@ class LeaderboardController extends Controller
         }
 
         $top ??= 0;
+
         return $query->take($data['count'])
             ->get()
             ->unique('user_id')
@@ -69,7 +70,7 @@ class LeaderboardController extends Controller
                     15 => $score->special,
                     16 => $score->user->uuid,
                     17 => $score->user_coins,
-                    46 => $score->demons
+                    46 => $score->demons,
                 ], ':');
             })->join('|');
     }

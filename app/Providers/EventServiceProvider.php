@@ -17,23 +17,23 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         AccountRegistered::class => [
             ProcessPassword::class,
-            SendVerificationEmail::class
+            SendVerificationEmail::class,
         ],
         AccountPasswordChanged::class => [
-            ProcessPassword::class
+            ProcessPassword::class,
         ],
         AccountEmailChanged::class => [
-            SendVerificationEmail::class
+            SendVerificationEmail::class,
         ],
         UserRegistered::class => [
             ProcessPassword::class,
-            SendVerificationEmail::class
+            SendVerificationEmail::class,
         ],
         UserPasswordChanged::class => [
-            ProcessPassword::class
+            ProcessPassword::class,
         ],
         UserEmailChanged::class => [
-            SendVerificationEmail::class
-        ]
+            SendVerificationEmail::class,
+        ],
     ];
 }

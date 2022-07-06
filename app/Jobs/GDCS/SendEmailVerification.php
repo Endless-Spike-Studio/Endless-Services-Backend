@@ -15,8 +15,7 @@ class SendEmailVerification implements ShouldQueue
 
     public function __construct(
         protected Account $account
-    )
-    {
+    ) {
     }
 
     public function handle(): void

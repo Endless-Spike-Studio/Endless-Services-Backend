@@ -15,17 +15,17 @@ class LevelTransferOutRequest extends Request
             'levelID' => [
                 'required',
                 'integer',
-                Rule::exists(Level::class, 'id')
+                Rule::exists(Level::class, 'id'),
             ],
             'linkID' => [
                 'required',
                 'integer',
-                Rule::exists(AccountLink::class, 'id')
+                Rule::exists(AccountLink::class, 'id'),
             ],
             'password' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

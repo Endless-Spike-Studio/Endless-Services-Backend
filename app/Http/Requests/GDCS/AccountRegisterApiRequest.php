@@ -14,19 +14,19 @@ class AccountRegisterApiRequest extends Request
             'name' => [
                 'required',
                 'string',
-                Rule::unique(Account::class)
+                Rule::unique(Account::class),
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
-                Rule::unique(Account::class)
+                Rule::unique(Account::class),
             ],
             'password' => [
                 'required',
                 'string',
-                'confirmed'
-            ]
+                'confirmed',
+            ],
         ];
     }
 }

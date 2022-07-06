@@ -12,13 +12,13 @@ class AccountCommentCreateRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account) && $this->validateChk();
+        return $this->auth() && ! empty($this->account) && $this->validateChk();
     }
 
     protected function validateChk(): bool
     {
         return hash_equals(
-            GDAlgorithm::encode($this->get('userName') . $this->get('comment') . $this->get('levelID', 0) . $this->get('percent', 0) . $this->get('cType') . Salts::COMMENT->value, Keys::COMMENT_CHK->value),
+            GDAlgorithm::encode($this->get('userName').$this->get('comment').$this->get('levelID', 0).$this->get('percent', 0).$this->get('cType').Salts::COMMENT->value, Keys::COMMENT_CHK->value),
             $this->get('chk')
         );
     }
@@ -28,47 +28,47 @@ class AccountCommentCreateRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required',
-                'string'
+                'string',
             ],
             'userName' => [
                 'required',
-                'string'
+                'string',
             ],
             'comment' => [
                 'required',
-                'string'
+                'string',
             ],
             'cType' => [
                 'required',
                 'integer',
-                'in:1'
+                'in:1',
             ],
             'chk' => [
                 'required',
-                'string'
+                'string',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

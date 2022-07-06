@@ -12,7 +12,7 @@ class LevelComment extends Model
 
     protected $casts = [
         'comment' => Base64Cast::class,
-        'spam' => 'boolean'
+        'spam' => 'boolean',
     ];
 
     public function account(): BelongsTo

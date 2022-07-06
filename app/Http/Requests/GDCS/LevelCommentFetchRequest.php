@@ -12,40 +12,40 @@ class LevelCommentFetchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'levelID' => [
                 'required',
                 'integer',
-                Rule::exists(Level::class, 'id')
+                Rule::exists(Level::class, 'id'),
             ],
             'page' => [
                 'required',
                 'integer',
-                'min:0'
+                'min:0',
             ],
             'total' => [
                 'required',
                 'integer',
-                'min:0'
+                'min:0',
             ],
             'mode' => [
                 'required',
-                'between:0,1'
+                'between:0,1',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

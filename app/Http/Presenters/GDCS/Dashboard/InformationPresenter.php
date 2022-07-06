@@ -13,13 +13,12 @@ use Silber\Bouncer\Database\Role;
 
 class InformationPresenter
 {
-
     public function renderUser(User $user): Response
     {
         return Inertia::render('GDCS/Dashboard/User/Info', [
             'user' => $user->load('account:id,name')
                 ->load('score:id,user_id,stars,demons,creator_points,coins,user_coins,updated_at')
-                ->only(['id', 'name', 'uuid', 'created_at', 'account', 'score'])
+                ->only(['id', 'name', 'uuid', 'created_at', 'account', 'score']),
         ]);
     }
 
@@ -44,8 +43,8 @@ class InformationPresenter
                 ->only(['id', 'user_id', 'name', 'desc', 'downloads', 'likes', 'version', 'length', 'password', 'audio_track', 'song_id', 'original_level_id', 'two_player', 'objects', 'coins', 'requested_stars', 'unlisted', 'ldm', 'created_at', 'updated_at', 'user', 'song', 'original', 'rating', 'comments', 'daily', 'weekly']),
             'permission' => [
                 'rate' => $account->can('rate-level'),
-                'mark' => $account->can('mark-level')
-            ]
+                'mark' => $account->can('mark-level'),
+            ],
         ]);
     }
 
@@ -63,8 +62,8 @@ class InformationPresenter
             'abilities' => Ability::all(['id', 'name', 'title']),
             'roles' => Role::all(['id', 'name', 'title']),
             'permission' => [
-                'manage' => $currentAccount->can('manage-permission')
-            ]
+                'manage' => $currentAccount->can('manage-permission'),
+            ],
         ]);
     }
 }

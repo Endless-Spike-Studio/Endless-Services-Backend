@@ -12,38 +12,38 @@ class LevelRateApiRequest extends Request
         return [
             'stars' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'difficulty' => [
                 'required',
                 'integer',
-                Rule::in([0, 10, 20, 30, 40, 50, 60])
+                Rule::in([0, 10, 20, 30, 40, 50, 60]),
             ],
             'featured_score' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'epic' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'coin_verified' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'demon_difficulty' => [
                 'required',
                 'integer',
-                Rule::in([3, 4, 0, 5, 6])
+                Rule::in([3, 4, 0, 5, 6]),
             ],
             'auto' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'demon' => [
                 'required',
-                'boolean'
-            ]
+                'boolean',
+            ],
         ];
     }
 }

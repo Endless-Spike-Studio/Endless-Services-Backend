@@ -13,13 +13,13 @@ class ItemRestoreRequest extends Request
             'udid' => [
                 'required',
                 'integer',
-                Rule::exists(User::class, 'udid')
+                Rule::exists(User::class, 'udid'),
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

@@ -9,7 +9,7 @@ class ChallengeFetchRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->user);
+        return $this->auth() && ! empty($this->user);
     }
 
     public function rules(): array
@@ -17,45 +17,45 @@ class ChallengeFetchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'uuid' => [
                 'required_without:accountID',
-                'integer'
+                'integer',
             ],
             'udid' => [
                 'required_with:uuid',
-                'string'
+                'string',
             ],
             'chk' => [
                 'required',
-                'string'
+                'string',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

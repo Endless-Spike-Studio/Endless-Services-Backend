@@ -15,12 +15,12 @@ class BannedUser extends Model
 
     public function getCommentBanInfoAttribute(): int|string|null
     {
-        if (!empty($this->comment_ban)) {
+        if (! empty($this->comment_ban)) {
             if (empty($this->expires_at)) {
                 return Response::COMMENT_CREATE_FAILED_BANNED->value;
             }
 
-            return sprintf("temp_%s_%s", $this->expires_at->diffInSeconds(), $this->reason);
+            return sprintf('temp_%s_%s', $this->expires_at->diffInSeconds(), $this->reason);
         }
 
         return null;

@@ -8,8 +8,7 @@ class AccountFriendRequestRepository
 {
     public function __construct(
         protected AccountFriendRequest $model
-    )
-    {
+    ) {
     }
 
     public function findNewByAccount(int $accountID): AccountFriendRequest
@@ -17,7 +16,7 @@ class AccountFriendRequestRepository
         return $this->model
             ->where([
                 'target_account_id' => $accountID,
-                'new' => true
+                'new' => true,
             ]);
     }
 }

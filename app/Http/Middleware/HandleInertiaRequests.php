@@ -24,7 +24,7 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'gdcn' => [
                 'user' => Auth::user()
-                    ?->only(['id', 'name'])
+                    ?->only(['id', 'name']),
             ],
             'gdcs' => [
                 'account' => Auth::guard('gdcs')
@@ -33,14 +33,14 @@ class HandleInertiaRequests extends Middleware
                 'user' => Auth::guard('gdcs')
                     ->user()
                     ?->load('user:id,uuid,name')
-                    ->getRelationValue('user')
+                    ->getRelationValue('user'),
             ],
             'messages' => Session::pull('messages', []),
             'versions' => [
                 'php' => PHP_VERSION,
                 'laravel' => App::version(),
-                'git' => $hash
-            ]
+                'git' => $hash,
+            ],
         ]);
     }
 

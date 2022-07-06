@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 class Request extends FormRequest
 {
     public Account $account;
+
     public User $user;
 
     public function rules(): array
@@ -26,7 +27,7 @@ class Request extends FormRequest
 
     protected function authAccount(): bool
     {
-        if (!$this->filled(['accountID', 'gjp'])) {
+        if (! $this->filled(['accountID', 'gjp'])) {
             return false;
         }
 
@@ -38,12 +39,13 @@ class Request extends FormRequest
                 ->findOrFail($accountID);
 
             $password = GDAlgorithm::decode($gjp, Keys::ACCOUNT_PASSWORD->value);
-            if (!Hash::check($password, $this->account->password)) {
+            if (! Hash::check($password, $this->account->password)) {
                 return false;
             }
 
             $this->user = $this->account->user ?? $this->newPlayer();
-            return !empty($this->user);
+
+            return ! empty($this->user);
         } catch (ModelNotFoundException) {
             return false;
         }
@@ -51,7 +53,7 @@ class Request extends FormRequest
 
     protected function authAccountUsingName(): bool
     {
-        if (!$this->filled(['userName', 'password'])) {
+        if (! $this->filled(['userName', 'password'])) {
             return false;
         }
 
@@ -63,12 +65,13 @@ class Request extends FormRequest
                 ->whereName($name)
                 ->firstOrFail();
 
-            if (!Hash::check($password, $this->account->password)) {
+            if (! Hash::check($password, $this->account->password)) {
                 return false;
             }
 
             $this->user = $this->account->user ?? $this->newPlayer();
-            return !empty($this->user);
+
+            return ! empty($this->user);
         } catch (ModelNotFoundException) {
             return false;
         }
@@ -76,7 +79,7 @@ class Request extends FormRequest
 
     protected function authUser(): bool
     {
-        if (!$this->filled(['uuid', 'udid'])) {
+        if (! $this->filled(['uuid', 'udid'])) {
             return false;
         }
 
@@ -91,14 +94,15 @@ class Request extends FormRequest
                 ->firstOrFail();
 
             $this->user = $user;
-            if (!empty($this->user->account)) {
+            if (! empty($this->user->account)) {
                 $this->account = $this->user->account;
             }
 
-            return !empty($this->user);
+            return ! empty($this->user);
         } catch (ModelNotFoundException) {
             $this->user = $this->newPlayer();
-            return !empty($this->user);
+
+            return ! empty($this->user);
         }
     }
 

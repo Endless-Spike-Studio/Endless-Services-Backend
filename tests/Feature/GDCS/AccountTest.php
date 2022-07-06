@@ -22,7 +22,7 @@ class AccountTest extends TestCase
             'userName' => $this->faker->userName(),
             'password' => $this->faker->password(),
             'email' => $this->faker->safeEmail(),
-            'secret' => 'Wmfv3899gc9'
+            'secret' => 'Wmfv3899gc9',
         ]);
 
         $request->assertOk();
@@ -49,7 +49,7 @@ class AccountTest extends TestCase
             'userName' => $account->name,
             'password' => $password,
             'udid' => $this->faker->uuid(),
-            'secret' => 'Wmfv3899gc9'
+            'secret' => 'Wmfv3899gc9',
         ]);
 
         $request->assertOk();

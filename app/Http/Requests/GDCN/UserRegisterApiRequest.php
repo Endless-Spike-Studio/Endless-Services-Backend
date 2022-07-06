@@ -14,19 +14,19 @@ class UserRegisterApiRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                Rule::unique(User::class)
+                Rule::unique(User::class),
             ],
             'email' => [
                 'required',
                 'string',
                 'email',
-                Rule::unique(User::class)
+                Rule::unique(User::class),
             ],
             'password' => [
                 'required',
                 'string',
-                'confirmed'
-            ]
+                'confirmed',
+            ],
         ];
     }
 }

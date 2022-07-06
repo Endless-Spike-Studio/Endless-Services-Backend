@@ -25,7 +25,7 @@ class DashboardPresenter
                 ->take($perPage)
                 ->get(['id', 'name', 'created_at']),
             'leaderboards' => Inertia::lazy(
-                static fn() => UserScore::with('user:id,name')
+                static fn () => UserScore::with('user:id,name')
                     ->whereHas('user')
                     ->orderByDesc('stars')
                     ->take($perPage)
@@ -38,7 +38,7 @@ class DashboardPresenter
                 ->take($perPage)
                 ->get(['id', 'name', 'user_id', 'created_at']),
             'recentRatedLevels' => Inertia::lazy(
-                static fn() => Level::with('user:id,name')
+                static fn () => Level::with('user:id,name')
                     ->whereNot('unlisted', true)
                     ->whereHas('user')
                     ->whereHas('rating', static function ($query) {
@@ -48,7 +48,7 @@ class DashboardPresenter
                     ->get(['id', 'name', 'user_id', 'created_at'])
             ),
             'recentFeaturedLevels' => Inertia::lazy(
-                static fn() => Level::with('user:id,name')
+                static fn () => Level::with('user:id,name')
                     ->whereNot('unlisted', true)
                     ->whereHas('user')
                     ->whereHas('rating', static function ($query) {
@@ -58,7 +58,7 @@ class DashboardPresenter
                     ->get(['id', 'name', 'user_id', 'created_at'])
             ),
             'recentEpicLevels' => Inertia::lazy(
-                static fn() => Level::with('user:id,name')
+                static fn () => Level::with('user:id,name')
                     ->whereNot('unlisted', true)
                     ->whereHas('user')
                     ->whereHas('rating', static function ($query) {
@@ -66,7 +66,7 @@ class DashboardPresenter
                     })
                     ->take($perPage)
                     ->get(['id', 'name', 'user_id', 'created_at'])
-            )
+            ),
         ]);
     }
 }

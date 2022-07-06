@@ -12,13 +12,13 @@ class UserScoreUpdateRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->user) && $this->validateSeed2();
+        return $this->auth() && ! empty($this->user) && $this->validateSeed2();
     }
 
     protected function validateSeed2(): bool
     {
         return hash_equals(
-            GDAlgorithm::encode($this->get('accountID', 0) . $this->get('userCoins') . $this->get('demons') . $this->get('stars') . $this->get('coins') . $this->get('iconType') . $this->get('icon') . $this->get('diamonds') . $this->get('accIcon') . $this->get('accShip') . $this->get('accBall') . $this->get('accBird') . $this->get('accDart') . $this->get('accRobot') . $this->get('accGlow') . $this->get('accSpider') . $this->get('accExplosion') . Salts::USER_PROFILE->value, Keys::USER_PROFILE->value),
+            GDAlgorithm::encode($this->get('accountID', 0).$this->get('userCoins').$this->get('demons').$this->get('stars').$this->get('coins').$this->get('iconType').$this->get('icon').$this->get('diamonds').$this->get('accIcon').$this->get('accShip').$this->get('accBall').$this->get('accBird').$this->get('accDart').$this->get('accRobot').$this->get('accGlow').$this->get('accSpider').$this->get('accExplosion').Salts::USER_PROFILE->value, Keys::USER_PROFILE->value),
             $this->get('seed2')
         );
     }
@@ -28,129 +28,129 @@ class UserScoreUpdateRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'uuid' => [
                 'required_without:accountID',
-                'integer'
+                'integer',
             ],
             'udid' => [
                 'required_with:uuid',
-                'string'
+                'string',
             ],
             'userName' => [
                 'required',
-                'string'
+                'string',
             ],
             'stars' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'demons' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'diamonds' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'icon' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'color1' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'color2' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'iconType' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'coins' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'userCoins' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'special' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
+                'in:Wmfd2893gb7',
             ],
             'accIcon' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accShip' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accBall' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accBird' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accDart' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accRobot' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accGlow' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accSpider' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'accExplosion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'seed' => [
                 'required',
-                'string'
+                'string',
             ],
             'seed2' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

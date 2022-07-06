@@ -28,7 +28,7 @@ class AccountController extends Controller
     public function register(AccountRegisterRequest $request): int
     {
         $data = Arr::rename($request->validated(), [
-            'userName' => 'name'
+            'userName' => 'name',
         ]);
 
         $account = Account::create($data);
@@ -42,10 +42,9 @@ class AccountController extends Controller
      */
     public function fetchInfo(
         AccountInfoFetchRequest $request,
-        AccountBlockService     $block,
-        AccountFriendService    $friend
-    ): int|string
-    {
+        AccountBlockService $block,
+        AccountFriendService $friend
+    ): int|string {
         $data = $request->validated();
 
         $target = Account::query()
@@ -66,7 +65,7 @@ class AccountController extends Controller
             $query = AccountFriendRequest::query()
                 ->where([
                     'account_id' => $data['accountID'],
-                    'target_account_id' => $target->id
+                    'target_account_id' => $target->id,
                 ]);
 
             if ($query->exists()) {
@@ -77,7 +76,7 @@ class AccountController extends Controller
             $query = AccountFriendRequest::query()
                 ->where([
                     'account_id' => $target->id,
-                    'target_account_id' => $data['accountID']
+                    'target_account_id' => $data['accountID'],
                 ]);
 
             if ($query->exists()) {
@@ -107,7 +106,7 @@ class AccountController extends Controller
             25 => $target->user->score->acc_dart,
             26 => $target->user->score->acc_robot,
             28 => $target->user->score->acc_glow,
-            29 => !empty($target),
+            29 => ! empty($target),
             30 => UserScore::query()
                 ->where('stars', '<=', $target->user->score->stars)
                 ->count(),
@@ -118,7 +117,7 @@ class AccountController extends Controller
             46 => $target->user->score->diamonds,
             48 => $target->user->score->acc_explosion,
             49 => $target->mod_level->value,
-            50 => $target->setting->comment_history_state->value
+            50 => $target->setting->comment_history_state->value,
         ];
 
         if ($requestAuth && $data['accountID'] === $data['targetAccountID']) {
@@ -135,7 +134,7 @@ class AccountController extends Controller
                 ->count();
         }
 
-        if (!empty($friendRequest)) {
+        if (! empty($friendRequest)) {
             $userInfo[32] = $friendRequest->id;
             $userInfo[35] = $friendRequest->comment;
             $userInfo[37] = $friendRequest->created_at
@@ -162,7 +161,7 @@ class AccountController extends Controller
         $data = $request->validated();
 
         $account = $request->account;
-        if (!$account->hasVerifiedEmail()) {
+        if (! $account->hasVerifiedEmail()) {
             return Response::ACCOUNT_LOGIN_FAILED_EMAIL_NOT_VERIFIED->value;
         }
 
@@ -181,7 +180,7 @@ class AccountController extends Controller
 
         return implode(',', [
             $account->id,
-            $user->id
+            $user->id,
         ]);
     }
 }

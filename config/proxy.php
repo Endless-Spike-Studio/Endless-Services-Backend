@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'url' => env('PROXY_URL')
+    'url' => env('PROXY_URL'),
 ];

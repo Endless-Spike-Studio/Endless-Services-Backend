@@ -24,9 +24,13 @@ class Account extends Authenticatable implements MustVerifyEmailContract
     use HasApiTokens, HasFactory, MustVerifyEmail, Notifiable, HasRolesAndAbilities;
 
     protected $table = 'gdcs_accounts';
+
     protected $fillable = ['name', 'email', 'password'];
+
     protected $hidden = ['password', 'remember_token'];
+
     protected $dates = ['email_verified_at'];
+
     protected $casts = ['mod_level' => ModLevel::class];
 
     protected static function newFactory(): AccountFactory
@@ -39,7 +43,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
         return $this->hasOne(User::class, 'uuid')
             ->withDefault([
                 'name' => $this->name,
-                'uuid' => $this->id
+                'uuid' => $this->id,
             ]);
     }
 
@@ -52,7 +56,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
                 'comment_history_state' => AccountSettingCommentHistoryState::ANY,
                 'youtube_channel' => null,
                 'twitch' => null,
-                'twitter' => null
+                'twitter' => null,
             ]);
     }
 
@@ -63,7 +67,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
 
     public function sendEmailVerificationNotification(): void
     {
-        if (!$this->hasVerifiedEmail()) {
+        if (! $this->hasVerifiedEmail()) {
             $this->notify(new EmailVerificationNotification);
         }
     }
@@ -88,7 +92,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
         return AccountFriend::query()
             ->orWhere([
                 'account_id' => $this->id,
-                'friend_account_id' => $this
+                'friend_account_id' => $this,
             ]);
     }
 

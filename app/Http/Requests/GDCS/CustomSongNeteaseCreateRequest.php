@@ -11,8 +11,8 @@ class CustomSongNeteaseCreateRequest extends Request
         return [
             'music_id' => [
                 'required',
-                'integer'
-            ]
+                'integer',
+            ],
         ];
     }
 }

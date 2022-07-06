@@ -11,7 +11,7 @@ class RolePresenter
     public function renderList(): Response
     {
         return Inertia::render('GDCS/Admin/Permission/Role/List', [
-            'roles' => Role::all()
+            'roles' => Role::all(),
         ]);
     }
 

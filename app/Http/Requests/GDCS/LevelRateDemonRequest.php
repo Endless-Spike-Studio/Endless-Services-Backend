@@ -10,7 +10,7 @@ class LevelRateDemonRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->user);
+        return $this->auth() && ! empty($this->user);
     }
 
     public function rules(): array
@@ -18,56 +18,56 @@ class LevelRateDemonRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'uuid' => [
                 'required_without:accountID',
-                'integer'
+                'integer',
             ],
             'udid' => [
                 'required_with:uuid',
-                'string'
+                'string',
             ],
             'mode' => [
                 'sometimes',
                 'required',
-                'in:1'
+                'in:1',
             ],
             'levelID' => [
                 'required',
                 'integer',
-                Rule::exists(Level::class, 'id')
+                Rule::exists(Level::class, 'id'),
             ],
             'rating' => [
                 'required',
                 'integer',
-                'between:1,5'
+                'between:1,5',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfp3879gc3'
-            ]
+                'in:Wmfp3879gc3',
+            ],
         ];
     }
 }

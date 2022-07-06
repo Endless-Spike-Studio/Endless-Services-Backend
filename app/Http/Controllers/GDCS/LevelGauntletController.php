@@ -24,20 +24,20 @@ class LevelGauntletController extends Controller
                         $gauntlet->level2_id,
                         $gauntlet->level3_id,
                         $gauntlet->level4_id,
-                        $gauntlet->level5_id
+                        $gauntlet->level5_id,
                     ]);
 
                     $hash .= implode(null, [
                         $gauntlet->id,
-                        $levels
+                        $levels,
                     ]);
 
                     return GDObject::merge([
                         1 => $gauntlet->id,
-                        3 => $levels
+                        3 => $levels,
                     ], ':');
                 })->join('|'),
-            sha1($hash . Salts::LEVEL->value)
+            sha1($hash.Salts::LEVEL->value),
         ]);
     }
 }

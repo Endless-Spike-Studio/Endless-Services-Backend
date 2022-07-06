@@ -24,7 +24,7 @@ class CustomSongFactory extends Factory
                 ->randomFloat(),
             'download_url' => $this->faker
                 ->unique()
-                ->url()
+                ->url(),
         ];
     }
 }

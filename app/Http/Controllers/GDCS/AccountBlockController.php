@@ -12,8 +12,7 @@ class AccountBlockController extends Controller
 {
     public function __construct(
         protected AccountBlockService $service
-    )
-    {
+    ) {
     }
 
     public function block(AccountBlockRequest $request): int

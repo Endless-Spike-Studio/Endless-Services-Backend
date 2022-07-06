@@ -9,7 +9,7 @@ class AccountLoginRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -18,26 +18,26 @@ class AccountLoginRequest extends Request
             'userName' => [
                 'required',
                 'string',
-                Rule::exists(Account::class, 'name')
+                Rule::exists(Account::class, 'name'),
             ],
             'password' => [
                 'required',
-                'string'
+                'string',
             ],
             'udid' => [
                 'required',
-                'string'
+                'string',
             ],
             'sID' => [
                 'sometimes',
                 'required',
-                'integer'
+                'integer',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfv3899gc9'
-            ]
+                'in:Wmfv3899gc9',
+            ],
         ];
     }
 }

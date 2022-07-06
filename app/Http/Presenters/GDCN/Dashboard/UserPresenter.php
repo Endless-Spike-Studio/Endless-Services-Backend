@@ -13,8 +13,8 @@ class UserPresenter
         return Inertia::render('GDCN/User/Profile', [
             'gdcn' => [
                 'user' => Auth::user()
-                    ?->only(['id', 'name', 'email', 'email_verified_at', 'created_at'])
-            ]
+                    ?->only(['id', 'name', 'email', 'email_verified_at', 'created_at']),
+            ],
         ]);
     }
 
@@ -23,8 +23,8 @@ class UserPresenter
         return Inertia::render('GDCN/User/Setting', [
             'gdcn' => [
                 'user' => Auth::user()
-                    ?->only(['id', 'name', 'email'])
-            ]
+                    ?->only(['id', 'name', 'email']),
+            ],
         ]);
     }
 }

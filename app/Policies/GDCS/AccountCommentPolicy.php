@@ -16,7 +16,7 @@ class AccountCommentPolicy
     public function create(User $user): Response
     {
         if ($user->ban->comment_ban) {
-            if (!empty($user->ban->expires_at) && !empty($user->ban->reason)) {
+            if (! empty($user->ban->expires_at) && ! empty($user->ban->reason)) {
                 return Response::deny($user->ban->reason);
             }
 

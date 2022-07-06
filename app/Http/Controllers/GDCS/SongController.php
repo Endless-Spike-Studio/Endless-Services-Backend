@@ -33,7 +33,7 @@ class SongController extends Controller
     public function fetchAllTopArtists(TopArtistFetchRequest $request): string
     {
         return app('proxy')
-            ->post(config('gdproxy.base_url') . '/getGJTopArtists.php', $request->all())
+            ->post(config('gdproxy.base_url').'/getGJTopArtists.php', $request->all())
             ->body();
     }
 }

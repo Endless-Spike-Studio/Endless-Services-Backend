@@ -8,7 +8,7 @@ return [
             [
                 'disk' => 'oss',
                 'format' => 'gdproxy/customSongData/@.mp3',
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

@@ -27,11 +27,11 @@ use App\Http\Controllers\NGProxyController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-    'as' => 'game.'
+    'as' => 'game.',
 ], static function () {
     Route::group([
         'domain' => 'gf.geometrydashchinese.com',
-        'as' => 'gdcs.'
+        'as' => 'gdcs.',
     ], static function () {
         Route::post('/accounts/registerGJAccount.php', [AccountController::class, 'register'])->name('account.register');
         Route::post('/accounts/loginGJAccount.php', [AccountController::class, 'login'])->name('account.login');
@@ -85,7 +85,7 @@ Route::group([
 
     Route::group([
         'domain' => 'dl.geometrydashchinese.com',
-        'as' => 'gdproxy.'
+        'as' => 'gdproxy.',
     ], static function () {
         Route::post('/{path}', [GDProxyController::class, 'process'])
             ->where('path', '.*')
@@ -94,7 +94,7 @@ Route::group([
 
     Route::group([
         'domain' => 'ng.geometrydashchinese.com',
-        'as' => 'ngproxy.'
+        'as' => 'ngproxy.',
     ], static function () {
         Route::post('/getGJSongInfo.php', [NGProxyController::class, 'objectForGD'])->name('object');
     });

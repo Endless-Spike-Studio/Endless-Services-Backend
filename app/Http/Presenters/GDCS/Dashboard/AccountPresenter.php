@@ -22,13 +22,13 @@ class AccountPresenter
                     ->load('roles:id,name,title')
                     ->only(['id', 'name', 'email', 'email_verified_at', 'created_at', 'abilities', 'roles']),
                 'user' => $account->load('user:id,name,uuid,udid,created_at')
-                    ->getRelationValue('user')
+                    ->getRelationValue('user'),
             ],
             'abilities' => Ability::all(['id', 'name', 'title']),
             'roles' => Role::all(['id', 'name', 'title']),
             'permission' => [
-                'manage' => $account->can('manage-permission')
-            ]
+                'manage' => $account->can('manage-permission'),
+            ],
         ]);
     }
 
@@ -39,8 +39,8 @@ class AccountPresenter
 
         return Inertia::render('GDCS/Account/Setting', [
             'gdcs' => [
-                'account' => $account->only(['id', 'name', 'email'])
-            ]
+                'account' => $account->only(['id', 'name', 'email']),
+            ],
         ]);
     }
 
@@ -51,7 +51,7 @@ class AccountPresenter
 
         return Inertia::render('GDCS/Account/FailedLog', [
             'logs' => $account->load('failedLogs:id,account_id,content,ip,created_at')
-                ->getRelationValue('failedLogs')
+                ->getRelationValue('failedLogs'),
         ]);
     }
 }

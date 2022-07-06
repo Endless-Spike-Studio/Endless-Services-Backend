@@ -16,11 +16,12 @@ class Base64Cast implements CastsAttributes
     protected function cast(?string $value): string
     {
         if (empty($value)) {
-            return (string)$value;
+            return (string) $value;
         }
 
         try {
             Base64Url::decode($value);
+
             return $value;
         } catch (InvalidArgumentException) {
             return Base64Url::encode($value, true);

@@ -11,17 +11,17 @@ class CustomSongLinkCreateRequest extends Request
         return [
             'name' => [
                 'required',
-                'string'
+                'string',
             ],
             'artist_name' => [
                 'required',
-                'string'
+                'string',
             ],
             'link' => [
                 'required',
                 'string',
-                'active_url'
-            ]
+                'active_url',
+            ],
         ];
     }
 }

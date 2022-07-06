@@ -9,7 +9,7 @@ class LevelLeaderboardUploadAndFetchRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -17,92 +17,92 @@ class LevelLeaderboardUploadAndFetchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required',
-                'string'
+                'string',
             ],
             'levelID' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'percent' => [
                 'required',
                 'integer',
-                'between:0,100'
+                'between:0,100',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
+                'in:Wmfd2893gb7',
             ],
             'type' => [
                 'required',
                 'integer',
-                'between:0,2'
+                'between:0,2',
             ],
             's1' => [
                 'required',
                 'integer',
-                'min:8354'
+                'min:8354',
             ],
             's2' => [
                 'required',
                 'integer',
-                'min:3991'
+                'min:3991',
             ],
             's3' => [
                 'required',
                 'integer',
-                'min:4085'
+                'min:4085',
             ],
             's4' => [
                 'required',
-                'integer'
+                'integer',
             ],
             's5' => [
                 'required',
-                'integer'
+                'integer',
             ],
             's6' => [
                 'nullable',
-                'string'
+                'string',
             ],
             's7' => [
                 'required',
-                'string'
+                'string',
             ],
             's8' => [
                 'required',
-                'integer'
+                'integer',
             ],
             's9' => [
                 'required',
                 'integer',
-                'min:5819'
+                'min:5819',
             ],
             's10' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'chk' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

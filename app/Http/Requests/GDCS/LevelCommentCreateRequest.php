@@ -10,7 +10,7 @@ class LevelCommentCreateRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -18,52 +18,52 @@ class LevelCommentCreateRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required',
-                'string'
+                'string',
             ],
             'userName' => [
                 'required',
-                'string'
+                'string',
             ],
             'comment' => [
                 'required',
-                'string'
+                'string',
             ],
             'chk' => [
                 'required',
-                'string'
+                'string',
             ],
             'levelID' => [
                 'required',
                 'integer',
-                Rule::exists(Level::class, 'id')
+                Rule::exists(Level::class, 'id'),
             ],
             'percent' => [
                 'sometimes',
                 'required',
-                'integer'
+                'integer',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

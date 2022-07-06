@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AccountFriendRequest extends Model
 {
     protected $table = 'gdcs_account_friend_requests';
+
     protected $fillable = ['account_id', 'target_account_id', 'comment', 'new'];
 
     protected $casts = [
-        'comment' => Base64Cast::class
+        'comment' => Base64Cast::class,
     ];
 
     public function account(): BelongsTo

@@ -16,14 +16,13 @@ class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
     protected function verificationUrl($notifiable): string
     {
         /** @var Account $notifiable */
-
         $hash = implode('|', [
             $notifiable->getkey(),
-            $notifiable->getEmailForVerification()
+            $notifiable->getEmailForVerification(),
         ]);
 
         return URL::signedRoute('gdcs.account.verify', [
-            '_' => Crypt::encryptString($hash)
+            '_' => Crypt::encryptString($hash),
         ]);
     }
 }

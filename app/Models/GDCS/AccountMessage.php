@@ -13,7 +13,7 @@ class AccountMessage extends Model
 
     protected $casts = [
         'subject' => Base64Cast::class,
-        'body' => Base64Cast::class
+        'body' => Base64Cast::class,
     ];
 
     public function account(): BelongsTo

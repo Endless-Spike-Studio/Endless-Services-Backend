@@ -17,7 +17,7 @@ class UserFactory extends Factory
 
         return $this->state([
             'uuid' => $uuid,
-            'udid' => $uuid
+            'udid' => $uuid,
         ]);
     }
 
@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name(),
             'udid' => Account::factory(),
             'uuid' => $this->faker->unique()
-                ->uuid()
+                ->uuid(),
         ];
     }
 }

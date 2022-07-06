@@ -26,7 +26,7 @@ class LevelPackController extends Controller
                         substr($pack->id, 0, 1),
                         substr($pack->id, -1, 1),
                         $pack->stars,
-                        $pack->coins
+                        $pack->coins,
                     ]);
 
                     return GDObject::merge([
@@ -37,12 +37,12 @@ class LevelPackController extends Controller
                         5 => $pack->coins,
                         6 => $pack->difficulty->value,
                         7 => $pack->text_color,
-                        8 => $pack->bar_color
+                        8 => $pack->bar_color,
                     ], ':');
                 })->join('|'),
             GDAlgorithm::genPage($data['page'], LevelPack::query()
                 ->count(), $perPage),
-            sha1($hash . Salts::LEVEL->value)
+            sha1($hash.Salts::LEVEL->value),
         ]);
     }
 }

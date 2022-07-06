@@ -14,6 +14,7 @@ class RequestValidationFailedException extends Exception
     public function setValidator(Validator $validator): RequestValidationFailedException
     {
         $this->validator = $validator;
+
         return $this;
     }
 
@@ -25,7 +26,7 @@ class RequestValidationFailedException extends Exception
 
         Log::error(__('messages.gdcs_request_validate_failed'), [
             'errors' => $errors,
-            'path' => Request::fullUrl()
+            'path' => Request::fullUrl(),
         ]);
     }
 

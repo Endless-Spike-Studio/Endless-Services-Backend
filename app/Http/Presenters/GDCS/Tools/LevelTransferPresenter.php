@@ -19,7 +19,7 @@ class LevelTransferPresenter
         return Inertia::render('GDCS/Tools/Level/Transfer/In', [
             'links' => $this->links(),
             'levels' => Inertia::lazy(
-                static fn() => app(LevelTransferApiController::class)
+                static fn () => app(LevelTransferApiController::class)
                     ->loadRemoteLevels(
                         app(AccountLinkRepository::class)
                             ->findByAccount(
@@ -28,7 +28,7 @@ class LevelTransferPresenter
                                 Request::get('link', 0)
                             )->value('target_user_id')
                     )
-            )
+            ),
         ]);
     }
 
@@ -39,9 +39,9 @@ class LevelTransferPresenter
 
         return $account->load('links:id,account_id,target_name,target_account_id,target_user_id')
             ->getRelationValue('links')
-            ->map(fn(AccountLink $link) => [
-                'label' => $link->target_name . ' [' . $link->target_account_id . ', ' . $link->target_user_id . ']',
-                'value' => $link->id
+            ->map(fn (AccountLink $link) => [
+                'label' => $link->target_name.' ['.$link->target_account_id.', '.$link->target_user_id.']',
+                'value' => $link->id,
             ])->toArray();
     }
 
@@ -49,7 +49,7 @@ class LevelTransferPresenter
     {
         return Inertia::render('GDCS/Tools/Level/Transfer/Out', [
             'levels' => $this->levels(),
-            'links' => $this->links()
+            'links' => $this->links(),
         ]);
     }
 
@@ -62,9 +62,9 @@ class LevelTransferPresenter
             ->getRelationValue('user')
             ->load('levels:id,name,user_id')
             ->getRelation('levels')
-            ->map(fn(Level $level) => [
+            ->map(fn (Level $level) => [
                 'label' => "$level->name [$level->id]",
-                'value' => $level->id
+                'value' => $level->id,
             ])->toArray();
     }
 }

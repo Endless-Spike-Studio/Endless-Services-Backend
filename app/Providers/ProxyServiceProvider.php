@@ -12,7 +12,7 @@ class ProxyServiceProvider extends ServiceProvider
         $this->app->bind('proxy', function () {
             return Http::asForm()
                 ->withOptions([
-                    'proxy' => config('proxy.url')
+                    'proxy' => config('proxy.url'),
                 ])->withUserAgent(null);
         });
     }

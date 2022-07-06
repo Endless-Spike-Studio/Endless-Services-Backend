@@ -14,12 +14,12 @@ class UserLoginApiRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                Rule::exists(User::class)
+                Rule::exists(User::class),
             ],
             'password' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

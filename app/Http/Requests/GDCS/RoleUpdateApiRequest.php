@@ -11,8 +11,8 @@ class RoleUpdateApiRequest extends Request
         return [
             'title' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

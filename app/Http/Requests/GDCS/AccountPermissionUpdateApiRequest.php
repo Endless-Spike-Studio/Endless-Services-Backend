@@ -3,9 +3,6 @@
 namespace App\Http\Requests\GDCS;
 
 use App\Http\Requests\Request;
-use Illuminate\Validation\Rule;
-use Silber\Bouncer\Database\Ability;
-use Silber\Bouncer\Database\Role;
 
 class AccountPermissionUpdateApiRequest extends Request
 {
@@ -14,12 +11,12 @@ class AccountPermissionUpdateApiRequest extends Request
         return [
             'abilities' => [
                 'nullable',
-                'array'
+                'array',
             ],
             'roles' => [
                 'nullable',
-                'array'
-            ]
+                'array',
+            ],
         ];
     }
 }

@@ -39,7 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL') . '/storage',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -65,7 +65,7 @@ return [
             'internal' => env('OSS_INTERNAL'),
             'domain' => env('OSS_DOMAIN'),
             'use_ssl' => env('OSS_SSL', true),
-            'reverse_proxy' => env('OSS_REVERSE_PROXY', false)
+            'reverse_proxy' => env('OSS_REVERSE_PROXY', false),
         ],
 
     ],

@@ -24,7 +24,7 @@ class GDProxyController extends Controller
                 $request,
                 app('proxy')
                     ->post(
-                        config('gdproxy.base_url') . $request->getRequestUri(),
+                        config('gdproxy.base_url').$request->getRequestUri(),
                         $request->all()
                     )->body()
             );
@@ -95,7 +95,7 @@ class GDProxyController extends Controller
                 ->where('level_id', $levelObject[1])
                 ->first();
 
-            if (!empty($replace)) {
+            if (! empty($replace)) {
                 $levelObject[12] = 0;
                 $levelObject[35] = $replace->song_id;
 
@@ -126,11 +126,11 @@ class GDProxyController extends Controller
             ->where('level_id', $levelObject[1])
             ->first();
 
-        if (!empty($replace)) {
+        if (! empty($replace)) {
             $levelObject[12] = 0;
             $levelObject[35] = $replace->song_id;
 
-            if (!empty($replace->offset)) {
+            if (! empty($replace->offset)) {
                 $levelObject[4] = $this->processLevelStringSongReplace($levelObject[4], $replace->offset);
                 $responseParts[1] = GDAlgorithm::genLevelDivided($levelObject[4], 40, 39);
             }
@@ -138,7 +138,7 @@ class GDProxyController extends Controller
 
         $hash = $this->generateLevelHashString($levelObject);
         $responseParts[0] = GDObject::merge($levelObject, ':');
-        $responseParts[2] = sha1($hash . Salts::LEVEL->value);
+        $responseParts[2] = sha1($hash.Salts::LEVEL->value);
 
         return implode('#', $responseParts);
     }
@@ -163,14 +163,14 @@ class GDProxyController extends Controller
     protected function generateLevelHashString(array $levelObject, int $password = 1): string
     {
         return implode(',', [
-            !empty($levelObject[6]) ? $levelObject[6] : 0,
-            !empty($levelObject[18]) ? $levelObject[18] : 0,
-            !empty($levelObject[17]) ? $levelObject[17] : 0,
-            !empty($levelObject[1]) ? $levelObject[1] : 0,
-            !empty($levelObject[38]) ? $levelObject[38] : 0,
-            !empty($levelObject[19]) ? $levelObject[19] : 0,
+            ! empty($levelObject[6]) ? $levelObject[6] : 0,
+            ! empty($levelObject[18]) ? $levelObject[18] : 0,
+            ! empty($levelObject[17]) ? $levelObject[17] : 0,
+            ! empty($levelObject[1]) ? $levelObject[1] : 0,
+            ! empty($levelObject[38]) ? $levelObject[38] : 0,
+            ! empty($levelObject[19]) ? $levelObject[19] : 0,
             $password,
-            !empty($levelObject[41]) ? $levelObject[41] : 0
+            ! empty($levelObject[41]) ? $levelObject[41] : 0,
         ]);
     }
 }

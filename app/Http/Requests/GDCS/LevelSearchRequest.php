@@ -13,136 +13,136 @@ class LevelSearchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'type' => [
                 'required_without:gauntlet',
                 'integer',
-                'between:0,18'
+                'between:0,18',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'gauntlet' => [
                 'sometimes',
                 'required',
                 'integer',
-                Rule::exists(LevelGauntlet::class, 'id')
+                Rule::exists(LevelGauntlet::class, 'id'),
             ],
             'str' => [
                 Rule::requiredIf(function () {
-                    return !$this->has('gauntlet') && $this->filled('str');
+                    return ! $this->has('gauntlet') && $this->filled('str');
                 }),
                 'nullable',
-                'string'
+                'string',
             ],
             'diff' => [
                 'exclude_if:diff,-',
                 'required_without:gauntlet',
                 'integer',
-                'between:-2,5'
+                'between:-2,5',
             ],
             'len' => [
                 'exclude_if:len,-',
                 'required_without:gauntlet',
                 'integer',
-                'between:0,4'
+                'between:0,4',
             ],
             'page' => [
                 'required_without:gauntlet',
-                'integer'
+                'integer',
             ],
             'total' => [
                 'required_without:gauntlet',
-                'integer'
+                'integer',
             ],
             'uncompleted' => [
                 'required_without:gauntlet',
-                'boolean'
+                'boolean',
             ],
             'onlyCompleted' => [
                 'required_without:gauntlet',
-                'boolean'
+                'boolean',
             ],
             'completedLevels' => [
                 'sometimes',
                 'required',
-                'string'
+                'string',
             ],
             'featured' => [
                 'required_without:gauntlet',
-                'boolean'
+                'boolean',
             ],
             'original' => [
                 'required_without:gauntlet',
-                'boolean'
+                'boolean',
             ],
             'twoPlayer' => [
                 'required_without:gauntlet',
-                'boolean'
+                'boolean',
             ],
             'coins' => [
                 'required_without:gauntlet',
-                'boolean'
+                'boolean',
             ],
             'epic' => [
                 'sometimes',
                 'required',
-                'boolean'
+                'boolean',
             ],
             'noStar' => [
                 'sometimes',
                 'required',
-                'boolean'
+                'boolean',
             ],
             'star' => [
                 'sometimes',
                 'required',
-                'boolean'
+                'boolean',
             ],
             'song' => [
                 'sometimes',
                 'required',
-                'integer'
+                'integer',
             ],
             'customSong' => [
                 'sometimes',
                 'required',
-                'boolean'
+                'boolean',
             ],
             'followed' => [
                 'sometimes',
                 'nullable',
-                'string'
+                'string',
             ],
             'demonFilter' => [
                 'sometimes',
                 'required_if:diff,-2',
                 'integer',
-                'between:1,5'
+                'between:1,5',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

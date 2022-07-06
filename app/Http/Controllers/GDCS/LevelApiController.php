@@ -24,7 +24,7 @@ class LevelApiController extends Controller
         $data = $request->validated();
 
         LevelRating::updateOrCreate([
-            'level_id' => $level->id
+            'level_id' => $level->id,
         ], $data);
 
         $this->pushSuccessMessage(
@@ -42,7 +42,7 @@ class LevelApiController extends Controller
         $account = $request->user('gdcs');
 
         if ($level->user_id === $account->user->id) {
-            if (!empty($data['desc'])) {
+            if (! empty($data['desc'])) {
                 $data['desc'] = Base64Url::encode($data['desc'], true);
             }
 
@@ -64,7 +64,7 @@ class LevelApiController extends Controller
             'level_id' => $level->id,
             'apply_at' => DailyLevel::latest()
                     ->value('apply_at')
-                ?? Carbon::parse('tomorrow')
+                ?? Carbon::parse('tomorrow'),
         ]);
 
         $this->pushSuccessMessage(
@@ -80,7 +80,7 @@ class LevelApiController extends Controller
             'level_id' => $level->id,
             'apply_at' => WeeklyLevel::latest()
                     ->value('apply_at')
-                ?? Carbon::parse('next monday')
+                ?? Carbon::parse('next monday'),
         ]);
 
         $this->pushSuccessMessage(

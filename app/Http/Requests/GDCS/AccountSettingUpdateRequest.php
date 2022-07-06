@@ -9,7 +9,7 @@ class AccountSettingUpdateRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -18,44 +18,44 @@ class AccountSettingUpdateRequest extends Request
             'accountID' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required',
-                'string'
+                'string',
             ],
             'mS' => [
                 'required',
                 'integer',
-                'between:0,2'
+                'between:0,2',
             ],
             'frS' => [
                 'required',
                 'integer',
-                'in:0,1'
+                'in:0,1',
             ],
             'cS' => [
                 'required',
                 'integer',
-                'between:0,2'
+                'between:0,2',
             ],
             'yt' => [
                 'present',
-                'nullable'
+                'nullable',
             ],
             'twitter' => [
                 'present',
-                'nullable'
+                'nullable',
             ],
             'twitch' => [
                 'present',
-                'nullable'
+                'nullable',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfv3899gc9'
-            ]
+                'in:Wmfv3899gc9',
+            ],
         ];
     }
 }

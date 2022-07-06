@@ -3,21 +3,18 @@
 namespace App\Models\GDCS;
 
 use Database\Factories\GDCS\UserFactory;
-use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Carbon;
 
 class User extends Authenticatable
 {
     use HasFactory;
 
     protected $table = 'gdcs_users';
+
     protected $fillable = ['name', 'uuid', 'udid'];
 
     protected static function newFactory(): UserFactory
@@ -32,7 +29,7 @@ class User extends Authenticatable
                 'login_ban' => false,
                 'comment_ban' => false,
                 'expires_at' => now(),
-                'reason' => null
+                'reason' => null,
             ]);
     }
 
@@ -63,7 +60,7 @@ class User extends Authenticatable
                 'acc_ball' => 0,
                 'acc_bird' => 0,
                 'acc_dart' => 0,
-                'acc_robot' => 0
+                'acc_robot' => 0,
             ]);
     }
 
@@ -72,7 +69,7 @@ class User extends Authenticatable
         return $this->hasOne(UserDailyChest::class)
             ->withDefault([
                 'small_count' => 0,
-                'big_count' => 0
+                'big_count' => 0,
             ]);
     }
 

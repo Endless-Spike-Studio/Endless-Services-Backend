@@ -34,6 +34,7 @@ class LevelLeaderboardController extends Controller
         }
 
         $top = 0;
+
         return $query->get()
             ->map(function (LevelScore $score) use (&$top) {
                 return GDObject::merge([
@@ -50,7 +51,7 @@ class LevelLeaderboardController extends Controller
                     16 => $score->account->id,
                     42 => $score->created_at
                         ?->locale('en')
-                        ->diffForHumans(syntax: true)
+                        ->diffForHumans(syntax: true),
                 ], ':');
             })->join('|');
     }
@@ -66,7 +67,7 @@ class LevelLeaderboardController extends Controller
         $score = LevelScore::query()
             ->where([
                 'account_id' => $data['accountID'],
-                'level_id' => $data['levelID']
+                'level_id' => $data['levelID'],
             ])->firstOrNew();
 
         $score->account_id = $data['accountID'];
@@ -74,6 +75,7 @@ class LevelLeaderboardController extends Controller
         $score->attempts = $data['s8'];
         $score->percent = $data['percent'];
         $score->coins = $data['s9'] - 5819;
+
         return $score->save();
     }
 }

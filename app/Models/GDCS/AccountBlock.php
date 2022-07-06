@@ -2,15 +2,13 @@
 
 namespace App\Models\GDCS;
 
-use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 
 class AccountBlock extends Model
 {
     protected $table = 'gdcs_account_blocks';
+
     protected $fillable = ['account_id', 'target_account_id'];
 
     public function account(): BelongsTo

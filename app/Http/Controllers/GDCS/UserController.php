@@ -21,7 +21,7 @@ class UserController extends Controller
         $perPage = config('gdcs.perPage', 10);
         $query = User::query()
             ->whereKey($data['str'])
-            ->orWhere('name', 'LIKE', $data['str'] . '%');
+            ->orWhere('name', 'LIKE', $data['str'].'%');
 
         $count = $query->count();
         if ($count <= 0) {
@@ -49,10 +49,10 @@ class UserController extends Controller
                         14 => $user->score->icon_type,
                         15 => $user->score->special,
                         16 => $user->uuid,
-                        17 => $user->score->user_coins
+                        17 => $user->score->user_coins,
                     ], ':');
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $count, $perPage)
+            GDAlgorithm::genPage($data['page'], $count, $perPage),
         ]);
     }
 
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         return $query->get()
             ->map(function (AccountFriend|AccountBlock $item) use ($data) {
-                $accountID = (int)$data['accountID'];
+                $accountID = (int) $data['accountID'];
 
                 if ($item instanceof AccountFriend) {
                     if ($item->account_id === $accountID) {
@@ -106,7 +106,7 @@ class UserController extends Controller
                     15 => $account->user->score->special,
                     16 => $account->user->uuid,
                     18 => $account->setting->message_state,
-                    41 => $isNew
+                    41 => $isNew,
                 ], ':');
             })->join('|');
     }

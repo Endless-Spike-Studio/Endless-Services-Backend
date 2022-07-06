@@ -11,9 +11,9 @@ class AccountFriendRequestService
     {
         return AccountFriendRequest::query()
             ->create([
-            'account_id' => $accountID,
-            'target_account_id' => $targetAccountID,
-            'comment' => $comment
-        ]);
+                'account_id' => $accountID,
+                'target_account_id' => $targetAccountID,
+                'comment' => $comment,
+            ]);
     }
 }

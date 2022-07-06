@@ -9,7 +9,7 @@ class DailyChestFetchRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->user);
+        return $this->auth() && ! empty($this->user);
     }
 
     public function rules(): array
@@ -17,58 +17,58 @@ class DailyChestFetchRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'uuid' => [
                 'required_without:accountID',
-                'integer'
+                'integer',
             ],
             'udid' => [
                 'required_with:uuid',
-                'string'
+                'string',
             ],
             'rewardType' => [
                 'required',
                 'integer',
-                'between:0,2'
+                'between:0,2',
             ],
             'r1' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'r2' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'chk' => [
                 'required',
-                'string'
+                'string',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

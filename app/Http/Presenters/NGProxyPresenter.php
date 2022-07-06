@@ -17,7 +17,7 @@ class NGProxyPresenter
     public function renderHomeWithSong(int $id): InertiaResponse
     {
         return Inertia::render('NGProxy/Home', [
-            'song' => app(NGProxyController::class)->info($id)
+            'song' => app(NGProxyController::class)->info($id),
         ]);
     }
 }

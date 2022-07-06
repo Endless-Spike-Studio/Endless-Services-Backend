@@ -39,7 +39,7 @@ class LevelController extends Controller
         $level = Level::query()
             ->updateOrCreate([
                 'id' => $data['levelID'] ?? 0,
-                'user_id' => $request->user->id
+                'user_id' => $request->user->id,
             ], [
                 'game_version' => $data['gameVersion'],
                 'user_id' => $request->user->id,
@@ -59,10 +59,11 @@ class LevelController extends Controller
                 'unlisted' => $data['unlisted'],
                 'ldm' => $data['ldm'],
                 'extra_string' => $data['extraString'],
-                'level_info' => $data['levelInfo']
+                'level_info' => $data['levelInfo'],
             ]);
 
         app('storage:gdcs.level_data')->put($level->id, $data['levelString']);
+
         return $level->id;
     }
 
@@ -72,7 +73,7 @@ class LevelController extends Controller
             $data = $request->validated();
             $query = Level::query();
 
-            if (!empty($data['gauntlet'])) {
+            if (! empty($data['gauntlet'])) {
                 $this->processSearchGauntlet($request, $query);
             } else {
                 $this->processSearchType($request, $query);
@@ -94,10 +95,10 @@ class LevelController extends Controller
                         $users[] = implode(':', [
                             $user->id,
                             $user->name,
-                            $user->uuid
+                            $user->uuid,
                         ]);
 
-                        if (!empty($level->song)) {
+                        if (! empty($level->song)) {
                             $songs[$level->song_id] = $level->song->object;
                         }
 
@@ -105,7 +106,7 @@ class LevelController extends Controller
                             substr($level->id, 0, 1),
                             substr($level->id, -1, 1),
                             $level->rating->stars,
-                            (int)$level->rating->coin_verified
+                            (int) $level->rating->coin_verified,
                         ]);
 
                         return GDObject::merge([
@@ -134,13 +135,13 @@ class LevelController extends Controller
                             42 => $level->rating->epic,
                             43 => $level->rating->demon_difficulty->value,
                             44 => $data['gauntlet'] ?? 0,
-                            45 => max($level->objects, 65535)
+                            45 => max($level->objects, 65535),
                         ], ':');
                     })->join('|'),
                 implode('|', $users),
                 implode('~:~', $songs),
                 GDAlgorithm::genPage($data['page'], $query->count(), $perPage),
-                sha1($hash . Salts::LEVEL->value)
+                sha1($hash.Salts::LEVEL->value),
             ]);
         } catch (LevelSearchNotSupportedTypeException) {
             return Response::LEVEL_SEARCH_FAILED_NOT_SUPPORT_TYPE->value;
@@ -169,7 +170,7 @@ class LevelController extends Controller
         switch ($data['type']) {
             case LevelSearchType::SEARCH->value:
                 $query->whereKey($data['str']);
-                $query->orWhere('name', 'LIKE', $data['str'] . '%');
+                $query->orWhere('name', 'LIKE', $data['str'].'%');
                 $query->orderByDesc('likes');
                 break;
             case LevelSearchType::MOST_DOWNLOADED->value:
@@ -209,7 +210,7 @@ class LevelController extends Controller
                 $query->whereIn('user_id', $data['followed']);
                 break;
             case LevelSearchType::FRIENDS->value:
-                if (!$request->auth()) {
+                if (! $request->auth()) {
                     throw new LevelSearchAuthFailedException();
                 }
 
@@ -231,54 +232,54 @@ class LevelController extends Controller
     protected function processSearchAdvancedOptions(LevelSearchRequest $request, Builder|Level $query): void
     {
         $data = $request->validated();
-        $type = (int)$data['type'];
+        $type = (int) $data['type'];
 
         if (
             $type !== LevelSearchType::USER->value ||
-            (!is_numeric($data['str']) && $type === LevelSearchType::SEARCH->value)
+            (! is_numeric($data['str']) && $type === LevelSearchType::SEARCH->value)
         ) {
             $query->whereNot('unlisted', true);
         }
 
-        if (!empty($data['uncompleted'])) {
+        if (! empty($data['uncompleted'])) {
             $query->whereKeyNot($data['completedLevels']);
         }
 
-        if (!empty($data['onlyCompleted'])) {
+        if (! empty($data['onlyCompleted'])) {
             $query->whereKey($data['completedLevels']);
         }
 
-        if (!empty($data['featured'])) {
+        if (! empty($data['featured'])) {
             $query->whereHas('rating', function ($query) {
                 $query->where('featured_score', '>', 0);
             });
         }
 
-        if (!empty($data['original'])) {
+        if (! empty($data['original'])) {
             $query->whereNot('original_level_id', 0);
         }
 
-        if (!empty($data['epic'])) {
+        if (! empty($data['epic'])) {
             $query->whereHas('rating', function ($query) {
                 $query->where('epic', true);
             });
         }
 
-        if (!empty($data['song'])) {
-            $query->where(!empty($data['customSong']) ? 'song_id' : 'audio_track', $data['song']);
+        if (! empty($data['song'])) {
+            $query->where(! empty($data['customSong']) ? 'song_id' : 'audio_track', $data['song']);
         }
 
-        if (!empty($data['noStar'])) {
+        if (! empty($data['noStar'])) {
             $query->whereHas('rating', function ($query) {
                 $query->where('stars', 0);
             });
         }
 
-        if (!empty($data['coins'])) {
+        if (! empty($data['coins'])) {
             $query->where('coins', '>', 0);
         }
 
-        if (!empty($data['twoPlayer'])) {
+        if (! empty($data['twoPlayer'])) {
             $query->where('two_player', true);
         }
     }
@@ -321,12 +322,12 @@ class LevelController extends Controller
             $hash = implode(',', [
                 $level->user_id,
                 $level->rating->stars,
-                (int)$level->rating->demon,
+                (int) $level->rating->demon,
                 $level->id,
-                (int)$level->rating->coin_verified,
+                (int) $level->rating->coin_verified,
                 $level->rating->featured_score,
                 $level->password,
-                $specialID
+                $specialID,
             ]);
 
             $request->auth();
@@ -337,7 +338,7 @@ class LevelController extends Controller
                 ->firstOrCreate([
                     'level_id' => $level->id,
                     'user_id' => $userID,
-                    'ip' => $ip
+                    'ip' => $ip,
                 ]);
 
             if ($record->wasRecentlyCreated) {
@@ -377,11 +378,11 @@ class LevelController extends Controller
                     41 => $specialID,
                     42 => $level->rating->epic,
                     43 => $level->rating->demon_difficulty->value,
-                    45 => min($level->objects, 65535)
+                    45 => min($level->objects, 65535),
                 ], ':'),
                 GDAlgorithm::genLevelDivided($levelString, 40, 39),
-                sha1($hash . Salts::LEVEL->value),
-                !empty($specialID) ? implode(':', [$level->user->id, $level->user->name, $level->user->uuid]) : 'GDCS'
+                sha1($hash.Salts::LEVEL->value),
+                ! empty($specialID) ? implode(':', [$level->user->id, $level->user->name, $level->user->uuid]) : 'GDCS',
             ]);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
             return Response::LEVEL_DOWNLOAD_FAILED_DATA_MISSING->value;
@@ -402,6 +403,7 @@ class LevelController extends Controller
             }
 
             $level->delete();
+
             return Response::LEVEL_DELETE_SUCCESS->value;
         }
 
@@ -413,7 +415,7 @@ class LevelController extends Controller
         $data = $request->validated();
 
         $now = Carbon::now();
-        if (!empty($data['weekly'])) {
+        if (! empty($data['weekly'])) {
             $item = WeeklyLevel::query()
                 ->where('apply_at', '<=', $now)
                 ->orderBy('apply_at', 'desc')
@@ -431,7 +433,7 @@ class LevelController extends Controller
 
         return implode('|', [
             $item->id ?? Response::DAILY_OR_WEEKLY_LEVEL_FETCH_FAILED_NOT_FOUND->value,
-            $leftTime
+            $leftTime,
         ]);
     }
 
@@ -443,6 +445,7 @@ class LevelController extends Controller
 
         if ($level->user_id === $request->user->id) {
             $level->desc = $data['levelDesc'];
+
             return Response::LEVEL_DESC_UPDATE_SUCCESS->value;
         }
 

@@ -13,18 +13,18 @@ class AccountDataServerAddressGetRequest extends Request
             'accountID' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'type' => [
                 'required',
                 'integer',
-                'between:1,2'
+                'between:1,2',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

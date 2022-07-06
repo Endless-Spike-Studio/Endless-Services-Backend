@@ -17,7 +17,7 @@ class LevelSongReplaceFactory extends Factory
             'user_id' => User::factory(),
             'level_id' => 63996127, // cold sweat #21
             'song_id' => CustomSong::factory(),
-            'offset' => $this->faker->randomFloat()
+            'offset' => $this->faker->randomFloat(),
         ];
     }
 }

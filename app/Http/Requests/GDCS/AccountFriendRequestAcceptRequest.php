@@ -10,7 +10,7 @@ class AccountFriendRequestAcceptRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -18,43 +18,43 @@ class AccountFriendRequestAcceptRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'required',
                 'integer',
                 Rule::exists(Account::class, 'id'),
-                Rule::exists(AccountFriendRequest::class, 'target_account_id')
+                Rule::exists(AccountFriendRequest::class, 'target_account_id'),
             ],
             'gjp' => [
                 'required',
-                'string'
+                'string',
             ],
             'targetAccountID' => [
                 'different:accountID',
                 'required',
                 'integer',
                 Rule::exists(Account::class, 'id'),
-                Rule::exists(AccountFriendRequest::class, 'account_id')
+                Rule::exists(AccountFriendRequest::class, 'account_id'),
             ],
             'requestID' => [
                 'required',
                 'integer',
-                Rule::exists(AccountFriendRequest::class, 'id')
+                Rule::exists(AccountFriendRequest::class, 'id'),
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
-            ]
+                'in:Wmfd2893gb7',
+            ],
         ];
     }
 }

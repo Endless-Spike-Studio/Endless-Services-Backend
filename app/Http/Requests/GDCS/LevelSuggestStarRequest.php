@@ -10,7 +10,7 @@ class LevelSuggestStarRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account);
+        return $this->auth() && ! empty($this->account);
     }
 
     public function rules(): array
@@ -18,44 +18,44 @@ class LevelSuggestStarRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required',
-                'string'
+                'string',
             ],
             'levelID' => [
                 'required',
                 'integer',
-                Rule::exists(Level::class, 'id')
+                Rule::exists(Level::class, 'id'),
             ],
             'stars' => [
                 'required',
                 'integer',
-                'between:1,10'
+                'between:1,10',
             ],
             'feature' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfp3879gc3'
-            ]
+                'in:Wmfp3879gc3',
+            ],
         ];
     }
 }

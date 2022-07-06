@@ -64,7 +64,7 @@ return [
     'listeners' => [
         WorkerStarting::class => [
             EnsureUploadedFilesAreValid::class,
-            EnsureUploadedFilesCanBeMoved::class
+            EnsureUploadedFilesCanBeMoved::class,
         ],
 
         RequestReceived::class => [
@@ -77,11 +77,11 @@ return [
         ],
 
         RequestTerminated::class => [
-            FlushUploadedFiles::class
+            FlushUploadedFiles::class,
         ],
 
         TaskReceived::class => [
-            ...Octane::prepareApplicationForNextOperation()
+            ...Octane::prepareApplicationForNextOperation(),
         ],
 
         TaskTerminated::class => [
@@ -89,7 +89,7 @@ return [
         ],
 
         TickReceived::class => [
-            ...Octane::prepareApplicationForNextOperation()
+            ...Octane::prepareApplicationForNextOperation(),
         ],
 
         TickTerminated::class => [
@@ -98,12 +98,12 @@ return [
 
         OperationTerminated::class => [
             FlushTemporaryContainerInstances::class,
-            CollectGarbage::class
+            CollectGarbage::class,
         ],
 
         WorkerErrorOccurred::class => [
             ReportException::class,
-            StopWorkerIfNecessary::class
+            StopWorkerIfNecessary::class,
         ],
 
         WorkerStopping::class => [
@@ -123,7 +123,7 @@ return [
     */
 
     'warm' => [
-        ...Octane::defaultServicesToWarm()
+        ...Octane::defaultServicesToWarm(),
     ],
 
     'flush' => [
@@ -143,7 +143,7 @@ return [
 
     'cache' => [
         'rows' => 1000,
-        'bytes' => 10000
+        'bytes' => 10000,
     ],
 
     /*
@@ -160,8 +160,8 @@ return [
     'tables' => [
         'example:1000' => [
             'name' => 'string:1000',
-            'votes' => 'int'
-        ]
+            'votes' => 'int',
+        ],
     ],
 
     /*
@@ -184,7 +184,7 @@ return [
         'resources/**/*.php',
         'routes',
         'composer.lock',
-        '.env'
+        '.env',
     ],
 
     /*

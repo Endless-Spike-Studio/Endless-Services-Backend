@@ -9,7 +9,7 @@ class SendVerificationEmail
 {
     public function handle(AccountRegistered|UserRegistered $event): void
     {
-        if (!$event->model->hasVerifiedEmail()) {
+        if (! $event->model->hasVerifiedEmail()) {
             $event->model->sendEmailVerificationNotification();
         }
     }

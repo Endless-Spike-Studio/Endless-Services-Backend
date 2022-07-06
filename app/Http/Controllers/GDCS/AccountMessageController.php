@@ -25,7 +25,7 @@ class AccountMessageController extends Controller
         $target = Account::query()
             ->find($data['toAccountID']);
 
-        if (!$target) {
+        if (! $target) {
             return \App\Enums\Response::MESSAGE_UPDATE_FAILED_TARGET_NOT_FOUND->value;
         }
 
@@ -33,7 +33,7 @@ class AccountMessageController extends Controller
             return Response::MESSAGE_UPDATE_FAILED_TARGET_BLOCKED->value;
         }
 
-        if ($target->setting?->message_state === AccountSettingMessageState::FRIENDS && !AccountFriend::findBetween($request->account->id, $target->id)->exists()) {
+        if ($target->setting?->message_state === AccountSettingMessageState::FRIENDS && ! AccountFriend::findBetween($request->account->id, $target->id)->exists()) {
             return \App\Enums\Response::MESSAGE_UPDATE_FAILED_TARGET_BLOCKED->value;
         }
 
@@ -55,7 +55,7 @@ class AccountMessageController extends Controller
     {
         $data = $request->validated();
         $perPage = config('gdcs.perPage', 10);
-        $isSender = !empty($data['getSent']);
+        $isSender = ! empty($data['getSent']);
 
         $query = AccountMessage::query()
             ->with(['account', 'target_account'])
@@ -82,18 +82,18 @@ class AccountMessageController extends Controller
                         4 => $message->subject,
                         6 => $account->name,
                         7 => $message->created_at?->locale('en')->diffForHumans(syntax: true),
-                        8 => !$message->new,
-                        9 => $isSender
+                        8 => ! $message->new,
+                        9 => $isSender,
                     ], ':');
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $count, $perPage)
+            GDAlgorithm::genPage($data['page'], $count, $perPage),
         ]);
     }
 
     public function fetch(AccountMessageDownloadRequest $request): int|string
     {
         $data = $request->validated();
-        $isSender = !empty($data['isSender']);
+        $isSender = ! empty($data['isSender']);
 
         $message = AccountMessage::query()
             ->whereKey($data['messageID'])
@@ -107,7 +107,7 @@ class AccountMessageController extends Controller
         $account = $isSender ? $message->target_account : $message->account;
         $new = $message->new;
 
-        if (!$isSender) {
+        if (! $isSender) {
             $message->new = false;
             $message->save();
         }
@@ -120,17 +120,18 @@ class AccountMessageController extends Controller
             5 => $message->body,
             6 => $account->name,
             7 => $message->created_at?->locale('en')->diffForHumans(syntax: true),
-            8 => !$new,
-            9 => $isSender
+            8 => ! $new,
+            9 => $isSender,
         ], ':');
     }
 
     public function delete(AccountMessageDeleteRequest $request): int
     {
         $data = $request->validated();
-        $isSender = !empty($data['isSender']);
+        $isSender = ! empty($data['isSender']);
 
-        $messages = !empty($data['messages']) ? explode(',', $data['messages']) : Arr::wrap($data['messageID']);
+        $messages = ! empty($data['messages']) ? explode(',', $data['messages']) : Arr::wrap($data['messageID']);
+
         return AccountMessage::query()
             ->whereKey($messages)
             ->where($isSender ? 'account_id' : 'target_account_id', $data['accountID'])

@@ -59,11 +59,12 @@ class ChallengeController extends Controller
             app(Carbon::class)->secondsUntilEndOfDay(),
             $this->generateChallengeInfo($challenges[0]),
             $this->generateChallengeInfo($challenges[1]),
-            $this->generateChallengeInfo($challenges[2])
+            $this->generateChallengeInfo($challenges[2]),
         ]);
 
         $challengeString = GDAlgorithm::encode($challenge, Keys::CHALLENGES->value, sha1: false);
-        return Str::random(5) . $challengeString . '|' . sha1($challengeString . Salts::CHALLENGE->value);
+
+        return Str::random(5).$challengeString.'|'.sha1($challengeString.Salts::CHALLENGE->value);
     }
 
     protected function generateChallengeInfo(Challenge $challenge): string
@@ -73,7 +74,7 @@ class ChallengeController extends Controller
             $challenge->type,
             $challenge->collect,
             $challenge->reward,
-            $challenge->name
+            $challenge->name,
         ]);
     }
 }

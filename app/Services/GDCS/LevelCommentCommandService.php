@@ -21,7 +21,7 @@ class LevelCommentCommandService extends CommandService
 
     public function unRate(): string
     {
-        if (!$this->account->can('rate-level')) {
+        if (! $this->account->can('rate-level')) {
             return __('messages.command.permission_denied');
         }
 
@@ -34,29 +34,29 @@ class LevelCommentCommandService extends CommandService
 
     public function rate(): string
     {
-        if (!Arr::has($this->parameters, [0])) {
+        if (! Arr::has($this->parameters, [0])) {
             return __('messages.command.invalid_parameters');
         }
 
-        if (!$this->account->can('rate-level')) {
+        if (! $this->account->can('rate-level')) {
             return __('messages.command.permission_denied');
         }
 
         $stars = Arr::get($this->parameters, 0);
-        if (!is_int($stars) || $stars < 1 || $stars > 10) {
+        if (! is_int($stars) || $stars < 1 || $stars > 10) {
             return __('messages.command.invalid_parameters');
         }
 
         $this->level->rate($stars);
         $featuredScore = Arr::get($this->arguments, 'featured-score');
-        if (!empty($featuredScore)) {
+        if (! empty($featuredScore)) {
             $this->level->rating->update(['featured_score' => $featuredScore]);
         }
 
         $demonDifficulty = Arr::get($this->arguments, 'demon-difficulty');
-        if (!empty($demonDifficulty)) {
+        if (! empty($demonDifficulty)) {
             $this->level->rating->update([
-                'demon_difficulty' => HelperController::guessLevelRatingDemonDifficultyFromName($demonDifficulty)
+                'demon_difficulty' => HelperController::guessLevelRatingDemonDifficultyFromName($demonDifficulty),
             ]);
         }
 
@@ -73,11 +73,11 @@ class LevelCommentCommandService extends CommandService
 
     public function set(): string
     {
-        if (!Arr::has($this->parameters, [0, 1])) {
+        if (! Arr::has($this->parameters, [0, 1])) {
             return __('messages.command.invalid_parameters');
         }
 
-        if (!$this->checkLevelOwner()) {
+        if (! $this->checkLevelOwner()) {
             return __('messages.command.permission_denied');
         }
 
@@ -86,7 +86,7 @@ class LevelCommentCommandService extends CommandService
 
         switch ($key) {
             case 'as':
-                if (!$this->account->can('mark-level')) {
+                if (! $this->account->can('mark-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -99,7 +99,7 @@ class LevelCommentCommandService extends CommandService
                         DailyLevel::query()
                             ->create([
                                 'level_id' => $this->level->id,
-                                'apply_at' => !$daily ? Carbon::parse('tomorrow') : $daily->apply_at->addWeek()
+                                'apply_at' => ! $daily ? Carbon::parse('tomorrow') : $daily->apply_at->addWeek(),
                             ]);
                         break;
                     case 'weekly':
@@ -110,7 +110,7 @@ class LevelCommentCommandService extends CommandService
                         WeeklyLevel::query()
                             ->create([
                                 'level_id' => $this->level->id,
-                                'apply_at' => !$weekly ? Carbon::parse('next monday') : $weekly->apply_at->addWeek()
+                                'apply_at' => ! $weekly ? Carbon::parse('next monday') : $weekly->apply_at->addWeek(),
                             ]);
                         break;
                     default:
@@ -122,7 +122,7 @@ class LevelCommentCommandService extends CommandService
                 break;
             case 'desc':
                 $this->level->update([
-                    'desc' => Base64Url::encode($value, true)
+                    'desc' => Base64Url::encode($value, true),
                 ]);
                 break;
             case 'password':
@@ -136,7 +136,7 @@ class LevelCommentCommandService extends CommandService
                     case 'random':
                         try {
                             $this->level->update([
-                                'password' => random_int(1000, 999999)
+                                'password' => random_int(1000, 999999),
                             ]);
 
                             return __('messages.command.level_password_change_success_with_password', ['password' => $this->level->password]);
@@ -151,80 +151,80 @@ class LevelCommentCommandService extends CommandService
             case 'audio-track':
                 $this->level->update([
                     'song_id' => 0,
-                    'audio_track' => $value
+                    'audio_track' => $value,
                 ]);
                 break;
             case 'song':
                 $this->level->update([
                     'audio_track' => 0,
-                    'song_id' => $value
+                    'song_id' => $value,
                 ]);
                 break;
             case 'difficulty':
-                if (!$this->account->can('rate-level')) {
+                if (! $this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
                 $this->level->rating->update([
-                    'difficulty' => HelperController::guessLevelRatingDifficultyFromName($value)
+                    'difficulty' => HelperController::guessLevelRatingDifficultyFromName($value),
                 ]);
                 break;
             case 'demon-difficulty':
-                if (!$this->account->can('rate-level')) {
+                if (! $this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
                 $this->level->rating->update([
-                    'demon-difficulty' => HelperController::guessLevelRatingDemonDifficultyFromName($value)
+                    'demon-difficulty' => HelperController::guessLevelRatingDemonDifficultyFromName($value),
                 ]);
                 break;
             case 'stars':
-                if (!$this->account->can('rate-level')) {
+                if (! $this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
-                if (!is_int($value) || $value < 1 || $value > 10) {
+                if (! is_int($value) || $value < 1 || $value > 10) {
                     return __('messages.command.invalid_parameters');
                 }
 
                 $this->level->rating->update([
                     'stars' => $value,
                     'auto' => $value === 1,
-                    'demon' => $value === 10
+                    'demon' => $value === 10,
                 ]);
                 break;
             case 'featured-score':
-                if (!$this->account->can('rate-level')) {
+                if (! $this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
-                if (!is_int($value)) {
+                if (! is_int($value)) {
                     return __('messages.command.invalid_parameters');
                 }
 
                 $this->level->rating->update(['featured_score' => $value]);
                 break;
             case 'epic':
-                if (!$this->account->can('rate-level')) {
+                if (! $this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
                 $this->level->rating->update([
-                    'epic' => $this->booleanMapper[$value]
+                    'epic' => $this->booleanMapper[$value],
                 ]);
                 break;
             case 'silver-coin':
-                if (!$this->account->can('rate-level')) {
+                if (! $this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
                 $this->level->rating->update([
-                    'coin_verified' => $this->booleanMapper[$value]
+                    'coin_verified' => $this->booleanMapper[$value],
                 ]);
                 break;
             case 'unlisted':
                 $this->level->update([
-                    'unlisted' => $this->booleanMapper[$value]
+                    'unlisted' => $this->booleanMapper[$value],
                 ]);
                 break;
             default:
@@ -241,11 +241,11 @@ class LevelCommentCommandService extends CommandService
 
     public function transfer_to(): string
     {
-        if (!Arr::has($this->parameters, [0, 1])) {
+        if (! Arr::has($this->parameters, [0, 1])) {
             return __('messages.command.invalid_parameters');
         }
 
-        if (!$this->checkLevelOwner()) {
+        if (! $this->checkLevelOwner()) {
             return __('messages.command.permission_denied');
         }
 
@@ -265,7 +265,7 @@ class LevelCommentCommandService extends CommandService
 
                 $this->level
                     ->update([
-                        'user_id' => $user->id
+                        'user_id' => $user->id,
                     ]);
                 break;
             case 'account':
@@ -280,7 +280,7 @@ class LevelCommentCommandService extends CommandService
                 }
 
                 $this->level->update([
-                    'user_id' => $account->user->id
+                    'user_id' => $account->user->id,
                 ]);
                 break;
             default:

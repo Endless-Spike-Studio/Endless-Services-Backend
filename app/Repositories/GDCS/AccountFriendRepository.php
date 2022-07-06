@@ -8,8 +8,7 @@ class AccountFriendRepository
 {
     public function __construct(
         protected AccountFriend $model
-    )
-    {
+    ) {
     }
 
     public function findNewByAccount(int $accountID): AccountFriend
@@ -17,13 +16,13 @@ class AccountFriendRepository
         return $this->model
             ->where([
                 'account_id' => $accountID,
-                'new' => true
+                'new' => true,
             ])
             ->union(
                 AccountFriend::query()
                     ->where([
                         'friend_account_id' => $accountID,
-                        'friend_new' => true
+                        'friend_new' => true,
                     ])->toBase()
             );
     }

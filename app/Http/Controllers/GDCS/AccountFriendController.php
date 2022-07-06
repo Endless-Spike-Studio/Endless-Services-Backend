@@ -19,6 +19,5 @@ class AccountFriendController extends Controller
             ->delete()
             ? Response::ACCOUNT_FRIEND_REMOVE_SUCCESS->value
             : \App\Enums\Response::ACCOUNT_FRIEND_REMOVE_FAILED->value;
-
     }
 }

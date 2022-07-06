@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use function app;
 use App\Exceptions\InvalidResponseException;
 use App\Exceptions\NGProxy\SongDisabledException;
 use App\Exceptions\NGProxy\SongGetFailedException;
@@ -11,12 +12,11 @@ use App\Http\Requests\NGProxy\SongGetRequest;
 use App\Jobs\NGProxy\ProcessSongJob;
 use App\Models\NGProxy\Song;
 use App\Services\StorageService;
+use function config;
 use GDCN\GDObject\GDObject;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use function app;
-use function config;
 
 class NGProxyController extends Controller
 {
@@ -30,7 +30,7 @@ class NGProxyController extends Controller
 
         return [
             ...$song->toArray(),
-            'download_url' => $song->download_url
+            'download_url' => $song->download_url,
         ];
     }
 
@@ -53,10 +53,11 @@ class NGProxyController extends Controller
                     'artist_name' => $songObject[4],
                     'size' => $songObject[5],
                     'disabled' => false,
-                    'original_download_url' => $songObject[10]
+                    'original_download_url' => $songObject[10],
                 ]);
 
             ProcessSongJob::dispatchSync($songID, $songObject[10]);
+
             return $song;
         }
     }
@@ -72,7 +73,7 @@ class NGProxyController extends Controller
             ->where('song_id', $id)
             ->first();
 
-        if (!empty($song)) {
+        if (! empty($song)) {
             if ($song->disabled) {
                 throw new SongDisabledException();
             }
@@ -110,15 +111,16 @@ class NGProxyController extends Controller
     {
         try {
             $response = app('proxy')
-                ->post(config('gdproxy.base_url') . '/getGJSongInfo.php', [
+                ->post(config('gdproxy.base_url').'/getGJSongInfo.php', [
                     'songID' => $songID,
-                    'secret' => 'Wmfd2893gb7'
+                    'secret' => 'Wmfd2893gb7',
                 ])->body();
 
             HelperController::checkResponse($response);
+
             return GDObject::split($response, '~|~');
         } catch (InvalidResponseException $e) {
-            if (!empty($response) && $response === '-2') {
+            if (! empty($response) && $response === '-2') {
                 throw new SongDisabledException();
             }
 
@@ -132,13 +134,14 @@ class NGProxyController extends Controller
     protected function tryGetFromGDLevelAPI(int $id): array
     {
         $response = app('proxy')
-            ->post(config('gdproxy.base_url') . '/getGJLevels21.php', [
+            ->post(config('gdproxy.base_url').'/getGJLevels21.php', [
                 'song' => $id,
                 'customSong' => true,
-                'secret' => 'Wmfd2893gb7'
+                'secret' => 'Wmfd2893gb7',
             ])->body();
 
         HelperController::checkResponse($response);
+
         return GDObject::split(Arr::get(explode('#', $response), 2), '~|~');
     }
 
@@ -149,6 +152,7 @@ class NGProxyController extends Controller
     public function objectForGD(SongGetRequest $request): int|string
     {
         $data = $request->validated();
+
         return $this->object($data['songID']);
     }
 
@@ -169,6 +173,7 @@ class NGProxyController extends Controller
         try {
             /** @var StorageService $storage */
             $storage = app('storage:ngproxy.song_data');
+
             return $storage->download($id);
         } catch (StorageContentMissingException) {
             $songDownloadUrl = Arr::get($this->tryGetFromGDAPI($id), 10);

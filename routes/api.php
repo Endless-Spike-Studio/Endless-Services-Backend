@@ -18,17 +18,17 @@ use Tightenco\Ziggy\Ziggy;
 */
 
 Route::group([
-    'as' => 'api.'
+    'as' => 'api.',
 ], static function () {
     Route::group([
-        'domain' => 'fw.geometrydashchinese.com'
+        'domain' => 'fw.geometrydashchinese.com',
     ], static function () {
         Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
     });
 
     Route::group([
         'domain' => 'gf.geometrydashchinese.com',
-        'as' => 'gdcs.'
+        'as' => 'gdcs.',
     ], static function () {
         Route::get('/customSong/{id}/download', [GDCS_CustomSongController::class, 'download'])
             ->where('id', '\d+')
@@ -37,7 +37,7 @@ Route::group([
 
     Route::group([
         'domain' => 'dl.geometrydashchinese.com',
-        'as' => 'gdproxy.'
+        'as' => 'gdproxy.',
     ], static function () {
         Route::get('/customSong/{id}/download', [GDProxy_CustomSongController::class, 'download'])
             ->where('id', '\d+')
@@ -46,7 +46,7 @@ Route::group([
 
     Route::group([
         'domain' => 'ng.geometrydashchinese.com',
-        'as' => 'ngproxy.'
+        'as' => 'ngproxy.',
     ], static function () {
         Route::get('/{id}/info', [NGProxyController::class, 'info'])
             ->where('id', '\d+')

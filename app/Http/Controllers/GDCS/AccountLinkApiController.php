@@ -23,12 +23,12 @@ class AccountLinkApiController extends Controller
 
         try {
             $response = app('proxy')
-                ->post($data['server'] . '/accounts/loginGJAccount.php', [
+                ->post($data['server'].'/accounts/loginGJAccount.php', [
                     'userName' => $data['name'],
                     'password' => $data['password'],
                     'udid' => Str::uuid()
                         ->toString(),
-                    'secret' => 'Wmfv3899gc9'
+                    'secret' => 'Wmfv3899gc9',
                 ])->body();
 
             HelperController::checkResponse($response);
@@ -49,7 +49,7 @@ class AccountLinkApiController extends Controller
                 'server' => $data['server'],
                 'target_name' => $data['name'],
                 'target_account_id' => $accountID,
-                'target_user_id' => $userID
+                'target_user_id' => $userID,
             ]);
 
         $this->pushSuccessMessage(

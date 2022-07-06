@@ -12,16 +12,16 @@ class AccountLinkCreateRequest extends Request
             'server' => [
                 'required',
                 'string',
-                'active_url'
+                'active_url',
             ],
             'name' => [
                 'required',
-                'string'
+                'string',
             ],
             'password' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

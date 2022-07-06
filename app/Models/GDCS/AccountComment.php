@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AccountComment extends Model
 {
     protected $table = 'gdcs_account_comments';
+
     protected $fillable = ['comment'];
 
     protected $casts = [
         'comment' => Base64Cast::class,
-        'spam' => 'boolean'
+        'spam' => 'boolean',
     ];
 
     public function account(): BelongsTo

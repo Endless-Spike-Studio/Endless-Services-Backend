@@ -102,7 +102,7 @@ class AccountApiController extends Controller
         $data = $request->validated();
         $auth = Auth::guard('gdcs');
 
-        if (!$auth->attempt($data, true)) {
+        if (! $auth->attempt($data, true)) {
             $this->pushErrorMessage(
                 __('messages.login_failed')
             );
@@ -118,7 +118,7 @@ class AccountApiController extends Controller
 
         $this->pushSuccessMessage(
             __('messages.welcome_back', [
-                'name' => $account->name
+                'name' => $account->name,
             ])
         );
 
@@ -146,7 +146,7 @@ class AccountApiController extends Controller
                 }
             }, 3600);
 
-        if (!$attempt) {
+        if (! $attempt) {
             $this->pushErrorMessage(
                 __('messages.too_fast')
             );
@@ -173,7 +173,7 @@ class AccountApiController extends Controller
         /** @var Account $account */
         $account = $request->user('gdcs');
 
-        if (!$account->hasVerifiedEmail()) {
+        if (! $account->hasVerifiedEmail()) {
             $account->markEmailAsVerified();
 
             $this->pushSuccessMessage(
@@ -203,7 +203,7 @@ class AccountApiController extends Controller
 
         if ($account->wasChanged('email')) {
             $account->update([
-                'email_verified_at' => null
+                'email_verified_at' => null,
             ]);
 
             AccountEmailChanged::dispatch($account);

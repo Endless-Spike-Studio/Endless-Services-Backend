@@ -13,7 +13,7 @@ class SongDisabledException extends Exception
         if (Request::expectsJson()) {
             return [
                 'status' => false,
-                'message' => 'Song is disabled'
+                'message' => 'Song is disabled',
             ];
         }
 

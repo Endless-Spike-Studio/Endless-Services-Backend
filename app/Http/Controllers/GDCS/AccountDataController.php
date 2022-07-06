@@ -35,12 +35,12 @@ class AccountDataController extends Controller
             $fileName = str_replace('@', $request->account->id, $storage['format']);
             $saveData = Storage::disk($storage['disk'])->get($fileName);
 
-            if (!empty($saveData)) {
+            if (! empty($saveData)) {
                 return implode(';', [
                     $saveData,
                     $data['gameVersion'],
                     $data['binaryVersion'],
-                    $saveData
+                    $saveData,
                 ]);
             }
         }

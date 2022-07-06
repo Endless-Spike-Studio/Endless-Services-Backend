@@ -34,12 +34,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([
-    'domain' => 'fw.geometrydashchinese.com'
+    'domain' => 'fw.geometrydashchinese.com',
 ], static function () {
     Route::inertia('/', 'GDCN/Home')->name('home');
 
     Route::group([
-        'middleware' => 'guest'
+        'middleware' => 'guest',
     ], static function () {
         Route::inertia('/register', 'GDCN/Auth/Register')->name('register');
         Route::post('/register', [UserApiController::class, 'register'])->name('register.api');
@@ -49,7 +49,7 @@ Route::group([
     });
 
     Route::group([
-        'middleware' => 'auth'
+        'middleware' => 'auth',
     ], static function () {
         Route::get('/verify/{_}', [UserApiController::class, 'verify'])
             ->middleware('signed')
@@ -57,7 +57,7 @@ Route::group([
 
         Route::group([
             'prefix' => 'user',
-            'as' => 'user.'
+            'as' => 'user.',
         ], static function () {
             Route::get('/profile', [UserPresenter::class, 'renderProfile'])->name('profile');
             Route::post('/resend:email_verification', [UserApiController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
@@ -68,14 +68,14 @@ Route::group([
 
         Route::group([
             'prefix' => 'dashboard',
-            'as' => 'dashboard.'
+            'as' => 'dashboard.',
         ], static function () {
             Route::inertia('/', 'GDCN/Dashboard/Home')->name('home');
         });
 
         Route::group([
             'prefix' => 'tools',
-            'as' => 'tools.'
+            'as' => 'tools.',
         ], static function () {
             Route::inertia('/', 'GDCN/Tools/Home')->name('home');
         });
@@ -84,12 +84,12 @@ Route::group([
 
 Route::group([
     'domain' => 'gf.geometrydashchinese.com',
-    'as' => 'gdcs.'
+    'as' => 'gdcs.',
 ], static function () {
     Route::inertia('/', 'GDCS/Home')->name('home');
 
     Route::group([
-        'middleware' => 'guest:gdcs'
+        'middleware' => 'guest:gdcs',
     ], static function () {
         Route::inertia('/register', 'GDCS/Auth/Register')->name('register');
         Route::post('/register', [AccountApiController::class, 'register'])->name('register.api');
@@ -99,18 +99,18 @@ Route::group([
     });
 
     Route::group([
-        'middleware' => 'auth:gdcs'
+        'middleware' => 'auth:gdcs',
     ], static function () {
         Route::group([
             'as' => 'admin.',
-            'prefix' => 'admin'
+            'prefix' => 'admin',
         ], static function () {
             Route::group([
                 'as' => 'account.',
-                'prefix' => 'account'
+                'prefix' => 'account',
             ], static function () {
                 Route::group([
-                    'middleware' => 'can:manage-permission'
+                    'middleware' => 'can:manage-permission',
                 ], static function () {
                     Route::get('/ability', [AbilityPresenter::class, 'renderList'])->name('ability.list');
                     Route::get('/ability/{ability}', [AbilityPresenter::class, 'renderInfo'])->name('ability.info');
@@ -126,17 +126,17 @@ Route::group([
 
             Route::group([
                 'as' => 'level.',
-                'prefix' => 'level'
+                'prefix' => 'level',
             ], static function () {
                 Route::group([
-                    'middleware' => 'can:rate-level'
+                    'middleware' => 'can:rate-level',
                 ], static function () {
                     Route::get('/{level}/rate', [LevelPresenter::class, 'renderRate'])->name('rate');
                     Route::post('/{level}/rate', [LevelApiController::class, 'rate'])->name('rate.api');
                 });
 
                 Route::group([
-                    'middleware' => 'can:mark-level'
+                    'middleware' => 'can:mark-level',
                 ], static function () {
                     Route::post('/{level}/mark:daily', [LevelApiController::class, 'markAsDaily'])->name('mark.daily');
                     Route::post('/{level}/mark:weekly', [LevelApiController::class, 'markAsWeekly'])->name('mark.weekly');
@@ -146,7 +146,7 @@ Route::group([
 
         Route::group([
             'prefix' => 'account',
-            'as' => 'account.'
+            'as' => 'account.',
         ], static function () {
             Route::get('/verify', [AccountApiController::class, 'verify'])
                 ->middleware('signed')
@@ -163,7 +163,7 @@ Route::group([
 
         Route::group([
             'prefix' => 'dashboard',
-            'as' => 'dashboard.'
+            'as' => 'dashboard.',
         ], static function () {
             Route::get('/', [DashboardPresenter::class, 'renderHome'])->name('home');
 
@@ -186,17 +186,17 @@ Route::group([
 
         Route::group([
             'prefix' => 'tools',
-            'as' => 'tools.'
+            'as' => 'tools.',
         ], static function () {
             Route::inertia('/', 'GDCS/Tools/Home')->name('home');
 
             Route::group([
                 'prefix' => 'account',
-                'as' => 'account.'
+                'as' => 'account.',
             ], static function () {
                 Route::group([
                     'prefix' => 'link',
-                    'as' => 'link.'
+                    'as' => 'link.',
                 ], static function () {
                     Route::get('/', [AccountLinkPresenter::class, 'renderList'])->name('list');
                     Route::inertia('/create', 'GDCS/Tools/Account/Link/Create')->name('create');
@@ -210,11 +210,11 @@ Route::group([
 
             Route::group([
                 'prefix' => 'level',
-                'as' => 'level.'
+                'as' => 'level.',
             ], static function () {
                 Route::group([
                     'prefix' => 'tempUploadAccess',
-                    'as' => 'temp_upload_access.'
+                    'as' => 'temp_upload_access.',
                 ], static function () {
                     Route::get('/', [LevelTempUploadAccessPresenter::class, 'list'])->name('list');
 
@@ -226,7 +226,7 @@ Route::group([
 
                 Route::group([
                     'prefix' => 'transfer',
-                    'as' => 'transfer.'
+                    'as' => 'transfer.',
                 ], static function () {
                     Route::inertia('/', 'GDCS/Tools/Level/Transfer/Home')->name('home');
 
@@ -240,11 +240,11 @@ Route::group([
 
             Route::group([
                 'prefix' => 'song',
-                'as' => 'song.'
+                'as' => 'song.',
             ], static function () {
                 Route::group([
                     'prefix' => 'custom',
-                    'as' => 'custom.'
+                    'as' => 'custom.',
                 ], static function () {
                     Route::get('/', [CustomSongPresenter::class, 'renderList'])->name('list');
 
@@ -264,13 +264,13 @@ Route::group([
 
     Route::group([
         'as' => 'docs.',
-        'prefix' => 'docs'
+        'prefix' => 'docs',
     ], static function () {
         Route::inertia('/', 'GDCS/Docs/Home')->name('home');
 
         Route::group([
             'as' => 'command.',
-            'prefix' => 'command'
+            'prefix' => 'command',
         ], static function () {
             Route::inertia('/account', 'GDCS/Docs/Command/Account')->name('account');
             Route::inertia('/level', 'GDCS/Docs/Command/Level')->name('level');
@@ -280,14 +280,14 @@ Route::group([
 
 Route::group([
     'domain' => 'dl.geometrydashchinese.com',
-    'as' => 'gdproxy.'
+    'as' => 'gdproxy.',
 ], static function () {
     Route::inertia('/', 'GDProxy/Home')->name('home');
 });
 
 Route::group([
     'domain' => 'ng.geometrydashchinese.com',
-    'as' => 'ngproxy.'
+    'as' => 'ngproxy.',
 ], static function () {
     Route::inertia('/', 'NGProxy/Home')->name('home');
 

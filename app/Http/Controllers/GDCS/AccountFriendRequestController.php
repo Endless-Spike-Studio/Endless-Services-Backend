@@ -39,7 +39,7 @@ class AccountFriendRequestController extends Controller
         $perPage = config('gdcs.perPage', 10);
 
         $query = AccountFriendRequest::query()
-            ->where(!empty($data['getSent']) ? 'account_id' : 'target_account_id', $data['accountID']);
+            ->where(! empty($data['getSent']) ? 'account_id' : 'target_account_id', $data['accountID']);
 
         $count = $query->count();
         if ($count <= 0) {
@@ -48,10 +48,10 @@ class AccountFriendRequestController extends Controller
 
         return implode('#', [
             $query->forPage(++$data['page'], $perPage)
-                ->with(!empty($data['getSent']) ? 'target_account.user.score' : 'account.user.score')
+                ->with(! empty($data['getSent']) ? 'target_account.user.score' : 'account.user.score')
                 ->get()
                 ->map(function (AccountFriendRequest $friendRequest) use ($data) {
-                    if (!$target = !empty($data['getSent']) ? $friendRequest->target_account : $friendRequest->account) {
+                    if (! $target = ! empty($data['getSent']) ? $friendRequest->target_account : $friendRequest->account) {
                         return null;
                     }
 
@@ -67,10 +67,10 @@ class AccountFriendRequestController extends Controller
                         32 => $friendRequest->id,
                         35 => $friendRequest->comment,
                         37 => $friendRequest->created_at?->locale('en')->diffForHumans(syntax: true),
-                        41 => $friendRequest->new
+                        41 => $friendRequest->new,
                     ], ':');
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $query->count(), $perPage)
+            GDAlgorithm::genPage($data['page'], $query->count(), $perPage),
         ]);
     }
 
@@ -78,10 +78,11 @@ class AccountFriendRequestController extends Controller
     {
         $data = $request->validated();
 
-        $accounts = !empty($data['accounts']) ? explode(',', $data['accounts']) : Arr::wrap($data['targetAccountID']);
+        $accounts = ! empty($data['accounts']) ? explode(',', $data['accounts']) : Arr::wrap($data['targetAccountID']);
+
         return AccountFriendRequest::query()
-            ->where(!empty($data['isSender']) ? 'account_id' : 'target_account_id', $data['accountID'])
-            ->whereIn(!empty($data['isSender']) ? 'target_account_id' : 'account_id', $accounts)
+            ->where(! empty($data['isSender']) ? 'account_id' : 'target_account_id', $data['accountID'])
+            ->whereIn(! empty($data['isSender']) ? 'target_account_id' : 'account_id', $accounts)
             ->delete()
             ? Response::ACCOUNT_FRIEND_REQUEST_DELETE_SUCCESS->value
             : Response::ACCOUNT_FRIEND_REQUEST_DELETE_FAILED->value;

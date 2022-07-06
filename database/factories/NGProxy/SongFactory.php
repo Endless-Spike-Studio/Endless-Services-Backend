@@ -18,7 +18,7 @@ class SongFactory extends Factory
             'artist_name' => $this->faker->name(),
             'size' => $this->faker->randomFloat(),
             'disabled' => false,
-            'original_download_url' => $this->faker->url()
+            'original_download_url' => $this->faker->url(),
         ];
     }
 }

@@ -12,9 +12,9 @@ class AccountFriendService
     {
         return AccountFriend::query()
             ->create([
-            'account_id' => $accountID,
-            'friend_account_id' => $targetAccountID,
-        ]);
+                'account_id' => $accountID,
+                'friend_account_id' => $targetAccountID,
+            ]);
     }
 
     public function check(int $accountID, int $targetAccountID): bool

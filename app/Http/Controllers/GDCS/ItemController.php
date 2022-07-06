@@ -43,7 +43,7 @@ class ItemController extends Controller
             ->where('ip', $ip)
             ->where('user_id', $userID);
 
-        if (!$record->exists()) {
+        if (! $record->exists()) {
             $record = new LikeRecord();
             $record->type = $data['type'];
             $record->item_id = $data['itemID'];
@@ -51,22 +51,24 @@ class ItemController extends Controller
             $record->user_id = $userID;
             $record->save();
 
-            if (!empty($data['like'])) {
+            if (! empty($data['like'])) {
                 $item->likes++;
             } else {
                 $item->likes--;
             }
 
             $item->save();
+
             return \App\Enums\Response::LIKE_SUCCESS->value;
         }
 
         return Response::LIKE_FAILED->value;
     }
 
-    public function restore(ItemRestoreRequest $request): \App\Enums\Response
+    public function restore(ItemRestoreRequest $request): Response
     {
         $request->validated();
+
         return \App\Enums\Response::ITEM_RESTORE_FAILED;
     }
 }

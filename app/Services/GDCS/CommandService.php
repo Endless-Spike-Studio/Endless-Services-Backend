@@ -10,9 +10,13 @@ use Illuminate\Support\Str;
 class CommandService
 {
     protected string $name;
+
     protected array $parameters = [];
+
     protected array $arguments = [];
+
     protected array $options = [];
+
     protected array $disabledCommands = [];
 
     protected array $booleanMapper = [
@@ -23,15 +27,14 @@ class CommandService
         'off' => false,
         'on' => true,
         '0' => false,
-        '1' => true
+        '1' => true,
     ];
 
     public function __construct(
-        protected string  $token,
+        protected string $token,
         protected Account $account,
-        protected ?Level  $level = null
-    )
-    {
+        protected ?Level $level = null
+    ) {
         if ($this->isValid()) {
             $this->parse();
         }
@@ -50,7 +53,7 @@ class CommandService
 
         foreach ($parts as $part) {
             if (Str::startsWith($part, $argumentStart)) {
-                if (!Str::contains($part, $argumentDelimiter)) {
+                if (! Str::contains($part, $argumentDelimiter)) {
                     $this->options[] = Str::replace($argumentStart, '', $part);
                     continue;
                 }
@@ -77,6 +80,7 @@ class CommandService
     public function execute(): string
     {
         $unavailableCommands = array_merge(['__construct'], $this->disabledCommands);
-        return 'temp_98978399_' . (!Str::contains($this->name, $unavailableCommands) && method_exists($this, $this->name) ? App::call([$this, $this->name]) : 'Command not found');
+
+        return 'temp_98978399_'.(! Str::contains($this->name, $unavailableCommands) && method_exists($this, $this->name) ? App::call([$this, $this->name]) : 'Command not found');
     }
 }

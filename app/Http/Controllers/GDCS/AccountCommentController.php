@@ -16,8 +16,7 @@ class AccountCommentController extends Controller
 {
     public function __construct(
         protected AccountCommentService $service
-    )
-    {
+    ) {
     }
 
     public function create(AccountCommentCreateRequest $request): int|string
@@ -40,6 +39,7 @@ class AccountCommentController extends Controller
     {
         try {
             $data = $request->validated();
+
             return $this->service->index($data['accountID'], $data['page']);
         } catch (AccountCommentNotFoundException) {
             return \App\Enums\Response::empty();

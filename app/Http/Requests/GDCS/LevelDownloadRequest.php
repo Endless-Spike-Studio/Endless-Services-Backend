@@ -12,66 +12,66 @@ class LevelDownloadRequest extends Request
         return [
             'gameVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'binaryVersion' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'gdw' => [
                 'required',
-                'boolean'
+                'boolean',
             ],
             'accountID' => [
                 'sometimes',
                 'exclude_if:accountID,0',
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id')
+                Rule::exists(Account::class, 'id'),
             ],
             'gjp' => [
                 'required_with:accountID',
                 'nullable',
-                'string'
+                'string',
             ],
             'uuid' => [
                 'sometimes',
                 'required_without:accountID',
-                'integer'
+                'integer',
             ],
             'udid' => [
                 'required_with:uuid',
-                'string'
+                'string',
             ],
             'levelID' => [
                 'required',
-                'integer'
+                'integer',
             ],
             'inc' => [
                 'sometimes',
                 'required',
-                'boolean'
+                'boolean',
             ],
             'extras' => [
                 'sometimes',
                 'required',
-                'boolean'
+                'boolean',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7'
+                'in:Wmfd2893gb7',
             ],
             'rs' => [
                 'sometimes',
                 'required',
-                'string'
+                'string',
             ],
             'chk' => [
                 'sometimes',
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }

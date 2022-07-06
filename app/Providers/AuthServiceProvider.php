@@ -9,7 +9,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 class AuthServiceProvider extends ServiceProvider
 {
     protected $policies = [
-        AccountComment::class => AccountCommentPolicy::class
+        AccountComment::class => AccountCommentPolicy::class,
     ];
 
     public function boot(): void

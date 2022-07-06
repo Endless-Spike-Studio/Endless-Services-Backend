@@ -9,8 +9,7 @@ class AccountMessageRepository
 {
     public function __construct(
         protected AccountMessage $model
-    )
-    {
+    ) {
     }
 
     public function findNewByAccount(int $accountID): Builder|AccountMessage
@@ -18,7 +17,7 @@ class AccountMessageRepository
         return $this->model
             ->where([
                 'target_account_id' => $accountID,
-                'new' => true
+                'new' => true,
             ]);
     }
 
@@ -27,12 +26,12 @@ class AccountMessageRepository
         return $this->model
             ->where([
                 'account_id' => $accountID,
-                'target_account_id' => $targetAccountID
+                'target_account_id' => $targetAccountID,
             ])
             ->orWhere(function (Builder $query) use ($accountID, $targetAccountID) {
                 $query->where([
                     'target_account_id' => $accountID,
-                    'account_id' => $targetAccountID
+                    'account_id' => $targetAccountID,
                 ]);
             });
     }

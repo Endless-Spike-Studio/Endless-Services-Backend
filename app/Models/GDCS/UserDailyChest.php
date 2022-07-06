@@ -2,11 +2,8 @@
 
 namespace App\Models\GDCS;
 
-use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 
 class UserDailyChest extends Model
 {
@@ -14,7 +11,7 @@ class UserDailyChest extends Model
 
     protected $casts = [
         'small_time' => 'datetime',
-        'big_time' => 'datetime'
+        'big_time' => 'datetime',
     ];
 
     public function user(): BelongsTo

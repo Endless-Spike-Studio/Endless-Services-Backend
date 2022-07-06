@@ -24,7 +24,7 @@ class LevelRatingController extends Controller
         $level = Level::query()
             ->findOrFail($data['levelID']);
 
-        if (!empty($level->rating)) {
+        if (! empty($level->rating)) {
             return Response::LEVEL_RATE_FAILED_ALREADY_RATED->value;
         }
 
@@ -36,14 +36,14 @@ class LevelRatingController extends Controller
             ->where('ip', $ip)
             ->where('user_id', $userID);
 
-        if (!$record->exists()) {
+        if (! $record->exists()) {
             foreach ($request->account->groups as $group) {
                 if ($group->can('direct-rate')) {
                     LevelStarSuggestion::query()
                         ->where('level_id', $data['levelID'])
                         ->delete();
 
-                    if (!$this->rateNoStars($level, $data['stars'])) {
+                    if (! $this->rateNoStars($level, $data['stars'])) {
                         return \App\Enums\Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
                     }
 
@@ -68,7 +68,7 @@ class LevelRatingController extends Controller
                 }
 
                 $query->delete();
-                if (!$this->rateNoStars($level, $data['stars'])) {
+                if (! $this->rateNoStars($level, $data['stars'])) {
                     return \App\Enums\Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
                 }
 
@@ -83,7 +83,7 @@ class LevelRatingController extends Controller
 
     protected function rateNoStars(Level $level, int $stars): bool
     {
-        if (!empty($level->rating)) {
+        if (! empty($level->rating)) {
             return false;
         }
 
@@ -93,6 +93,7 @@ class LevelRatingController extends Controller
         $rating->difficulty = HelperController::guessLevelRatingDifficultyFromStars($stars);
         $rating->auto = $rating->difficulty === LevelRatingDifficulty::AUTO;
         $rating->demon = $rating->difficulty === LevelRatingDifficulty::DEMON;
+
         return $rating->save();
     }
 
@@ -107,7 +108,7 @@ class LevelRatingController extends Controller
             return Response::LEVEL_RATE_DEMON_FAILED_NOT_RATED->value;
         }
 
-        if (!empty($data['mode'])) {
+        if (! empty($data['mode'])) {
             if ($request->account->mod_level->value <= 0) {
                 return \App\Enums\Response::LEVEL_RATE_DEMON_FAILED_NO_PERMISSION->value;
             }
@@ -118,7 +119,7 @@ class LevelRatingController extends Controller
                         ->where('level_id', $data['levelID'])
                         ->delete();
 
-                    if (!$this->rateDemonDiff($level, $data['rating'])) {
+                    if (! $this->rateDemonDiff($level, $data['rating'])) {
                         return \App\Enums\Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
                     }
 
@@ -135,7 +136,7 @@ class LevelRatingController extends Controller
             ->where('ip', $ip)
             ->where('user_id', $userID);
 
-        if (!$record->exists()) {
+        if (! $record->exists()) {
             $record = new LevelDemonDifficultySuggestion();
             $record->level_id = $data['levelID'];
             $record->demon_diff = $data['rating'];
@@ -152,11 +153,12 @@ class LevelRatingController extends Controller
                     return \App\Enums\Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
                 }
 
-                if (!$this->rateDemonDiff($level, $avgRating)) {
+                if (! $this->rateDemonDiff($level, $avgRating)) {
                     return Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
                 }
 
                 $query->delete();
+
                 return \App\Enums\Response::LEVEL_RATE_DEMON_SUCCESS->value;
             }
 
@@ -174,6 +176,7 @@ class LevelRatingController extends Controller
 
         $rt = $level->rating;
         $rt->demon_difficulty = $this->guessDemonDifficultyFromRating($rating);
+
         return $rt->save();
     }
 
@@ -201,7 +204,7 @@ class LevelRatingController extends Controller
                     ->where('level_id', $level->id)
                     ->delete();
 
-                if (!$this->rate($level, $data['stars'])) {
+                if (! $this->rate($level, $data['stars'])) {
                     return \App\Enums\Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
                 }
 
@@ -217,10 +220,10 @@ class LevelRatingController extends Controller
                 'account_id' => $request->account->id,
                 'level_id' => $level->id,
                 'rating' => $data['stars'],
-                'featured' => $data['feature']
+                'featured' => $data['feature'],
             ]);
 
-        if (!$record->exists()) {
+        if (! $record->exists()) {
             $record = new LevelRatingSuggestion();
             $record->account_id = $request->account->id;
             $record->level_id = $data['levelID'];
@@ -236,7 +239,7 @@ class LevelRatingController extends Controller
 
     protected function rate(Level $level, int $stars): bool
     {
-        if (!empty($level->rating)) {
+        if (! empty($level->rating)) {
             return false;
         }
 
@@ -246,6 +249,7 @@ class LevelRatingController extends Controller
         $rating->difficulty = HelperController::guessLevelRatingDifficultyFromStars($stars);
         $rating->auto = $rating->difficulty === LevelRatingDifficulty::AUTO;
         $rating->demon = $rating->difficulty === LevelRatingDifficulty::DEMON;
+
         return $rating->save();
     }
 }

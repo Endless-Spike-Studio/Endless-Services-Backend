@@ -14,9 +14,9 @@ class ProjectUpdateRequest extends Request
                 'required',
                 'string',
                 Rule::in([
-                    config('project.secret')
-                ])
-            ]
+                    config('project.secret'),
+                ]),
+            ],
         ];
     }
 }

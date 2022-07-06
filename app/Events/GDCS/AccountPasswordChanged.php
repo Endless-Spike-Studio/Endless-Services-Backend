@@ -11,8 +11,6 @@ class AccountPasswordChanged
 
     public function __construct(
         public Account $model
-    )
-    {
-
+    ) {
     }
 }

@@ -28,7 +28,7 @@ class AccountCommentService
         } catch (AccountCommentCommandExecuteException) {
             return $account->comments()
                 ->create([
-                    'comment' => $content
+                    'comment' => $content,
                 ]);
         }
     }
@@ -50,7 +50,7 @@ class AccountCommentService
     {
         $command = app(AccountCommentCommandService::class, [
             'token' => Base64Url::decode($comment),
-            'account' => $account
+            'account' => $account,
         ]);
 
         if ($command->isValid()) {
@@ -88,10 +88,10 @@ class AccountCommentService
                         7 => $comment->spam,
                         9 => $comment->created_at
                             ?->locale('en')
-                            ->diffForHumans(syntax: true)
+                            ->diffForHumans(syntax: true),
                     ], '~');
                 })->join('|'),
-            GDAlgorithm::genPage($page, $account->comments_count, config('gdcs.perPage', 10))
+            GDAlgorithm::genPage($page, $account->comments_count, config('gdcs.perPage', 10)),
         ]);
     }
 
@@ -102,6 +102,5 @@ class AccountCommentService
             ?->comments()
             ->whereKey($commentID)
             ->delete();
-
     }
 }

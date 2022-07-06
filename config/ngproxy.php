@@ -6,7 +6,7 @@ return [
             [
                 'disk' => 'oss',
                 'format' => 'ngproxy/songData/@.mp3',
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

@@ -11,8 +11,8 @@ class AbilityUpdateApiRequest extends Request
         return [
             'title' => [
                 'required',
-                'string'
-            ]
+                'string',
+            ],
         ];
     }
 }
