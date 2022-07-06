@@ -14,11 +14,6 @@ pnpm update
 composer update --no-dev
 @endtask
 
-@story('update-packages')
-update-frontend-packages
-update-backend-packages
-@endstory
-
 @task('deploy-frontend')
 pnpm run build
 php artisan static:upload
@@ -50,8 +45,9 @@ restart-server
 
 @story('deploy')
 update-code
-update-packages
+update-frontend-packages
 deploy-frontend
+update-backend-packages
 deploy-backend
 restart-server
 @endstory
