@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import {NButton, NCard, NDescriptions, NDescriptionsItem, NGrid, NGridItem, NPopover, NText} from "naive-ui"
-import {isMobile} from "@/scripts/helpers"
-import {useGlobalStore} from "@/scripts/stores"
-import {h} from "vue"
+import { NButton, NCard, NDescriptions, NDescriptionsItem, NGrid, NGridItem, NPopover, NText } from 'naive-ui'
+import { isMobile } from '@/scripts/helpers'
+import { useGlobalStore } from '@/scripts/stores'
+import { h } from 'vue'
 
 const globalStore = useGlobalStore()
 
-async function renderOptions(type: string) {
-    const component = await import('./Options/' + type + '.vue')
+async function renderOptions (type: string) {
+  const component = await import('./Options/' + type + '.vue')
 
-    globalStore.$dialog.info({
-        title: '命令参数',
-        showIcon: false,
-        content: () => h(component.default)
-    })
+  globalStore.$dialog.info({
+    title: '命令参数',
+    showIcon: false,
+    content: () => h(component.default)
+  })
 }
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {NCard, NDescriptions, NDescriptionsItem, NGrid, NGridItem, NText} from "naive-ui"
-import {isMobile} from "@/scripts/helpers"</script>
+import { NCard, NDescriptions, NDescriptionsItem, NGrid, NGridItem, NText } from 'naive-ui'
+import { isMobile } from '@/scripts/helpers'</script>
 
 <template layout="GDCS">
     <n-card class="lg:w-2/3 mx-auto" title="账号命令">

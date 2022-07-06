@@ -1,38 +1,38 @@
 <script lang="ts" setup>
 import {
-    darkTheme,
-    GlobalTheme,
-    lightTheme,
-    MenuOption,
-    NButton,
-    NConfigProvider,
-    NDialogProvider,
-    NDivider,
-    NIcon,
-    NLayout,
-    NLayoutContent,
-    NLayoutFooter,
-    NLayoutHeader,
-    NLoadingBarProvider,
-    NMenu,
-    NMessageProvider,
-    NNotificationProvider,
-    NSpace,
-    NThing,
-    useOsTheme
-} from "naive-ui"
-import {ref, watch} from "vue"
-import {getProp, isMobile, toRoute, toURL} from "@/scripts/helpers"
-import route, {routes} from "@/scripts/route"
-import {Message} from "@/scripts/types/backend"
-import {each} from "lodash-es"
-import {BranchesOutlined} from "@vicons/antd"
-import GlobalApiInjector from "@/views/components/GlobalApiInjector.vue"
-import {useGlobalStore} from "@/scripts/stores"
+  darkTheme,
+  GlobalTheme,
+  lightTheme,
+  MenuOption,
+  NButton,
+  NConfigProvider,
+  NDialogProvider,
+  NDivider,
+  NIcon,
+  NLayout,
+  NLayoutContent,
+  NLayoutFooter,
+  NLayoutHeader,
+  NLoadingBarProvider,
+  NMenu,
+  NMessageProvider,
+  NNotificationProvider,
+  NSpace,
+  NThing,
+  useOsTheme
+} from 'naive-ui'
+import { ref, watch } from 'vue'
+import { getProp, isMobile, toRoute, toURL } from '@/scripts/helpers'
+import route, { routes } from '@/scripts/route'
+import { Message } from '@/scripts/types/backend'
+import { each } from 'lodash-es'
+import { BranchesOutlined } from '@vicons/antd'
+import GlobalApiInjector from '@/views/components/GlobalApiInjector.vue'
+import { useGlobalStore } from '@/scripts/stores'
 
 const currentRoute = ref()
 const props = withDefaults(
-    defineProps<{
+  defineProps<{
         theme?: string,
         menu: {
             left: MenuOption[],
@@ -44,36 +44,36 @@ const props = withDefaults(
             long: string
         }
     }>(),
-    {
-        theme: () => useOsTheme()
-                ?.value
-                ?.toString()
-            ?? 'light',
-        footer: () => ({
-            short: 'GDCN',
-            long: 'Geometry Dash Chinese'
-        })
-    }
+  {
+    theme: () => useOsTheme()
+      ?.value
+      ?.toString() ??
+            'light',
+    footer: () => ({
+      short: 'GDCN',
+      long: 'Geometry Dash Chinese'
+    })
+  }
 )
 
 const versions = getProp('versions', {
-    php: 'Unknown',
-    laravel: 'Unknown',
-    git: 'Unknown'
+  php: 'Unknown',
+  laravel: 'Unknown',
+  git: 'Unknown'
 })
 
 const themeRef = ref<GlobalTheme>(props.theme === 'light' ? lightTheme : darkTheme)
 
 watch(routes, () => {
-    currentRoute.value = route().current()
+  currentRoute.value = route().current()
 })
 
 watch(getProp<Message[]>('messages', []), messages => {
-    const globalStore = useGlobalStore()
+  const globalStore = useGlobalStore()
 
-    return each(messages, message => {
-        return globalStore.$message.create(message.content, message.options)
-    })
+  return each(messages, message => {
+    return globalStore.$message.create(message.content, message.options)
+  })
 })
 </script>
 

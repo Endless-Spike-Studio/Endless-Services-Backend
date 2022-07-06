@@ -1,62 +1,62 @@
 <script lang="ts" setup>
-import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui"
-import {formatTime, toRoute} from "@/scripts/helpers"
-import {GDCS} from "@/scripts/types/backend"
-import {h, watch} from "vue"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
-import {useGlobalStore} from "@/scripts/stores"
-import {each} from "lodash-es"
+import { NButton, NCard, NDataTable, NPopconfirm, NSpace } from 'naive-ui'
+import { formatTime, toRoute } from '@/scripts/helpers'
+import { GDCS } from '@/scripts/types/backend'
+import { h, watch } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
+import { useGlobalStore } from '@/scripts/stores'
+import { each } from 'lodash-es'
 
 defineProps<{
     accesses: GDCS.TempLevelUploadAccess[]
 }>()
 
 const columns = [
-    {
-        title: 'ID',
-        key: 'id'
-    },
-    {
-        title: '绑定IP',
-        key: 'ip'
-    },
-    {
-        title: '创建时间',
-        key: 'created_at',
-        render: (row: GDCS.TempLevelUploadAccess) => formatTime(row.created_at, '未知')
-    },
-    {
-        title: '操作',
-        key: 'action',
-        render: (row: GDCS.TempLevelUploadAccess) => {
-            const form = useForm({})
+  {
+    title: 'ID',
+    key: 'id'
+  },
+  {
+    title: '绑定IP',
+    key: 'ip'
+  },
+  {
+    title: '创建时间',
+    key: 'created_at',
+    render: (row: GDCS.TempLevelUploadAccess) => formatTime(row.created_at, '未知')
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render: (row: GDCS.TempLevelUploadAccess) => {
+      const form = useForm({})
 
-            watch(form, newForm => {
-                const globalStore = useGlobalStore()
+      watch(form, newForm => {
+        const globalStore = useGlobalStore()
 
-                each(newForm.errors, (error, field) => {
-                    globalStore.$message.error(`[${field}] ${error}`)
-                })
-            })
+        each(newForm.errors, (error, field) => {
+          globalStore.$message.error(`[${field}] ${error}`)
+        })
+      })
 
-            return h(NPopconfirm, {
-                onPositiveClick: () => form.delete(
-                    route('gdcs.tools.level.temp_upload_access.delete.api', {
-                        id: row.id
-                    })
-                )
-            }, {
-                default: () => '确认删除 ?',
-                trigger: () => h(NButton, {
-                    type: 'error',
-                    disabled: form.processing
-                }, {
-                    default: () => '删除'
-                })
-            })
-        }
+      return h(NPopconfirm, {
+        onPositiveClick: () => form.delete(
+          route('gdcs.tools.level.temp_upload_access.delete.api', {
+            id: row.id
+          })
+        )
+      }, {
+        default: () => '确认删除 ?',
+        trigger: () => h(NButton, {
+          type: 'error',
+          disabled: form.processing
+        }, {
+          default: () => '删除'
+        })
+      })
     }
+  }
 ]
 </script>
 

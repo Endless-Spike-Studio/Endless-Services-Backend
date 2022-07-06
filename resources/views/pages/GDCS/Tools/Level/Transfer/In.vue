@@ -1,55 +1,55 @@
 <script lang="ts" setup>
-import {ref, watch} from "vue"
-import {FormInst, NButton, NCard, NForm, NFormItem, NSelect} from "naive-ui"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
-import {Inertia} from "@inertiajs/inertia"
-import {GDCS} from "@/scripts/types/backend"
+import { ref, watch } from 'vue'
+import { FormInst, NButton, NCard, NForm, NFormItem, NSelect } from 'naive-ui'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
+import { Inertia } from '@inertiajs/inertia'
+import { GDCS } from '@/scripts/types/backend'
 
 withDefaults(
-    defineProps<{
+  defineProps<{
         links: GDCS.AccountLink[],
         levels?: GDCS.Level[]
     }>(),
-    {
-        levels: () => []
-    }
+  {
+    levels: () => []
+  }
 )
 
 const el = ref<FormInst>()
 watch(el, element => {
-    if (element) {
-        element.validate()
-    }
+  if (element) {
+    element.validate()
+  }
 })
 
 const rules = {
-    linkID: {
-        type: 'string',
-        required: true,
-        validator: () => Promise.reject(form.errors.linkID)
-    },
-    levelID: {
-        type: 'number',
-        required: true,
-        validator: () => Promise.reject(form.errors.levelID)
-    }
+  linkID: {
+    type: 'string',
+    required: true,
+    validator: () => Promise.reject(form.errors.linkID)
+  },
+  levelID: {
+    type: 'number',
+    required: true,
+    validator: () => Promise.reject(form.errors.levelID)
+  }
 }
 
 const form = useForm({
-    linkID: null,
-    levelID: null
+  linkID: null,
+  levelID: null
 })
 
 watch(form, newForm => {
-    if (newForm.linkID) {
-        Inertia.reload({
-            data: {
-                link: newForm.linkID
-            },
-            only: ['levels']
-        })
-    }
+  if (newForm.linkID) {
+    Inertia.reload({
+      data: {
+        link: newForm.linkID
+      },
+      only: ['levels']
+    })
+  }
 })
 </script>
 

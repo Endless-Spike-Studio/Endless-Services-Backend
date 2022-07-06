@@ -1,4 +1,4 @@
-import {MessageOptions} from "naive-ui"
+import { MessageOptions } from 'naive-ui'
 
 export interface Model {
     id: number

@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput} from "naive-ui"
-import {ref, watch, watchEffect} from "vue"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
+import { FormInst, NButton, NCard, NForm, NFormItem, NInput } from 'naive-ui'
+import { ref, watch, watchEffect } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
 
 const el = ref<FormInst>()
 watch(el, element => {
-    if (element) {
-        element.validate()
-    }
+  if (element) {
+    element.validate()
+  }
 })
 
 const rules = {
-    name: {
-        type: 'string',
-        required: true,
-        validator: () => Promise.reject(form.errors.name)
-    },
-    artist_name: {
-        type: 'string',
-        required: true,
-        validator: () => Promise.reject(form.errors.artist_name)
-    },
-    link: {
-        type: 'string',
-        required: true,
-        validator: () => Promise.reject(form.errors.link)
-    }
+  name: {
+    type: 'string',
+    required: true,
+    validator: () => Promise.reject(form.errors.name)
+  },
+  artist_name: {
+    type: 'string',
+    required: true,
+    validator: () => Promise.reject(form.errors.artist_name)
+  },
+  link: {
+    type: 'string',
+    required: true,
+    validator: () => Promise.reject(form.errors.link)
+  }
 }
 
 const form = useForm({
-    name: null,
-    artist_name: null,
-    link: null
+  name: null,
+  artist_name: null,
+  link: null
 })
 </script>
 

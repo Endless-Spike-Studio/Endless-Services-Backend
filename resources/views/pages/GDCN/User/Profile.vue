@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import {formatTime, getProp, isMobile, toRoute} from "@/scripts/helpers"
-import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace} from "naive-ui"
-import {User} from "@/scripts/types/backend"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
-import {watch} from "vue"
-import {useGlobalStore} from "@/scripts/stores"
-import {each} from "lodash-es"
+import { formatTime, getProp, isMobile, toRoute } from '@/scripts/helpers'
+import { NButton, NCard, NDescriptions, NDescriptionsItem, NSpace } from 'naive-ui'
+import { User } from '@/scripts/types/backend'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
+import { watch } from 'vue'
+import { useGlobalStore } from '@/scripts/stores'
+import { each } from 'lodash-es'
 
 const user = getProp<User>('gdcn.user')
 const resendEmailVerificationForm = useForm({})
 
 watch(resendEmailVerificationForm, newForm => {
-    const globalStore = useGlobalStore()
+  const globalStore = useGlobalStore()
 
-    each(newForm.errors, (error, field) => {
-        globalStore.$message.error(`[${field}] ${error}`)
-    })
+  each(newForm.errors, (error, field) => {
+    globalStore.$message.error(`[${field}] ${error}`)
+  })
 })
 </script>
 

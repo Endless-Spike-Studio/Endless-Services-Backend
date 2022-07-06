@@ -1,42 +1,42 @@
 <script lang="ts" setup>
-import {getProp} from "@/scripts/helpers"
-import {User} from "@/scripts/types/backend"
-import {useForm} from "@inertiajs/inertia-vue3"
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput} from "naive-ui"
-import {ref, watch, watchEffect} from "vue"
-import route from "@/scripts/route"
+import { getProp } from '@/scripts/helpers'
+import { User } from '@/scripts/types/backend'
+import { useForm } from '@inertiajs/inertia-vue3'
+import { FormInst, NButton, NCard, NForm, NFormItem, NInput } from 'naive-ui'
+import { ref, watch, watchEffect } from 'vue'
+import route from '@/scripts/route'
 
 const el = ref<FormInst>()
 watch(el, element => {
-    if (element) {
-        element.validate()
-    }
+  if (element) {
+    element.validate()
+  }
 })
 
 const rules = {
-    name: {
-        required: true,
-        type: 'string',
-        validator: () => Promise.reject(form.errors.name)
-    },
-    email: {
-        required: true,
-        type: 'email',
-        validator: () => Promise.reject(form.errors.email)
-    },
-    password: {
-        required: true,
-        type: 'string',
-        validator: () => Promise.reject(form.errors.password)
-    }
+  name: {
+    required: true,
+    type: 'string',
+    validator: () => Promise.reject(form.errors.name)
+  },
+  email: {
+    required: true,
+    type: 'email',
+    validator: () => Promise.reject(form.errors.email)
+  },
+  password: {
+    required: true,
+    type: 'string',
+    validator: () => Promise.reject(form.errors.password)
+  }
 }
 
 const account = getProp<User>('gdcs.account')
 const form = useForm({
-    name: account.value.name,
-    email: account.value.email,
-    password: null,
-    password_confirmation: null
+  name: account.value.name,
+  email: account.value.email,
+  password: null,
+  password_confirmation: null
 })
 </script>
 

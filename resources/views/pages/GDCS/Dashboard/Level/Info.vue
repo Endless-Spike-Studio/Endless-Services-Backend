@@ -1,40 +1,40 @@
 <script lang="ts" setup>
-import {formatTime, getProp, isMobile, toRouteWithParams} from "@/scripts/helpers"
+import { formatTime, getProp, isMobile, toRouteWithParams } from '@/scripts/helpers'
 import {
-    NButton,
-    NCard,
-    NDescriptions,
-    NDescriptionsItem,
-    NEmpty,
-    NInput,
-    NInputNumber,
-    NList,
-    NListItem,
-    NPopover,
-    NSelect,
-    NSpace,
-    NSwitch,
-    NTabPane,
-    NTabs,
-    NText,
-    NThing
-} from "naive-ui"
-import {Base64} from "js-base64"
-import {GDCS} from "@/scripts/types/backend"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
-import {each, isEmpty, map, random} from "lodash-es"
-import levelLength from "@/scripts/enums/levelLength"
-import levelRatingDifficulties from "@/scripts/enums/levelRatingDifficulties"
-import {computed, reactive, watch} from "vue"
-import audioTracks from "@/scripts/enums/audioTracks"
-import {useGlobalStore} from "@/scripts/stores"
+  NButton,
+  NCard,
+  NDescriptions,
+  NDescriptionsItem,
+  NEmpty,
+  NInput,
+  NInputNumber,
+  NList,
+  NListItem,
+  NPopover,
+  NSelect,
+  NSpace,
+  NSwitch,
+  NTabPane,
+  NTabs,
+  NText,
+  NThing
+} from 'naive-ui'
+import { Base64 } from 'js-base64'
+import { GDCS } from '@/scripts/types/backend'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
+import { each, isEmpty, map, random } from 'lodash-es'
+import levelLength from '@/scripts/enums/levelLength'
+import levelRatingDifficulties from '@/scripts/enums/levelRatingDifficulties'
+import { computed, reactive, watch } from 'vue'
+import audioTracks from '@/scripts/enums/audioTracks'
+import { useGlobalStore } from '@/scripts/stores'
 
 const options = map(audioTracks, (value, index) => {
-    return {
-        label: value,
-        value: index
-    }
+  return {
+    label: value,
+    value: index
+  }
 })
 
 const props = defineProps<{
@@ -46,61 +46,61 @@ const props = defineProps<{
 }>()
 
 const levelUpdateForm = useForm({
-    name: props.level.name,
-    desc: Base64.decode(props.level.desc ?? 'KE5vIGRlc2NyaXB0aW9uIHByb3ZpZGVkKQ=='),
-    audio_track: props.level.audio_track.toString(),
-    song_id: props.level.song_id,
-    password: props.level.password.toString(),
-    requested_stars: props.level.requested_stars,
-    unlisted: props.level.unlisted
+  name: props.level.name,
+  desc: Base64.decode(props.level.desc ?? 'KE5vIGRlc2NyaXB0aW9uIHByb3ZpZGVkKQ=='),
+  audio_track: props.level.audio_track.toString(),
+  song_id: props.level.song_id,
+  password: props.level.password.toString(),
+  requested_stars: props.level.requested_stars,
+  unlisted: props.level.unlisted
 })
 
 watch(levelUpdateForm, newForm => {
-    const globalStore = useGlobalStore()
+  const globalStore = useGlobalStore()
 
-    each(newForm.errors, (error, field) => {
-        globalStore.$message.error(`[${field}] ${error}`)
-    })
+  each(newForm.errors, (error, field) => {
+    globalStore.$message.error(`[${field}] ${error}`)
+  })
 })
 
 const changing = reactive({
-    name: false,
-    desc: false,
-    password: false,
-    song: false,
-    requested_stars: false
+  name: false,
+  desc: false,
+  password: false,
+  song: false,
+  requested_stars: false
 })
 
 const markAsDailyForm = useForm({})
 watch(markAsDailyForm, newForm => {
-    const globalStore = useGlobalStore()
+  const globalStore = useGlobalStore()
 
-    each(newForm.errors, (error, field) => {
-        globalStore.$message.error(`[${field}] ${error}`)
-    })
+  each(newForm.errors, (error, field) => {
+    globalStore.$message.error(`[${field}] ${error}`)
+  })
 })
 
 const markAsWeeklyForm = useForm({})
 watch(markAsWeeklyForm, newForm => {
-    const globalStore = useGlobalStore()
+  const globalStore = useGlobalStore()
 
-    each(newForm.errors, (error, field) => {
-        globalStore.$message.error(`[${field}] ${error}`)
-    })
+  each(newForm.errors, (error, field) => {
+    globalStore.$message.error(`[${field}] ${error}`)
+  })
 })
 
 const isLevelOwner = computed(() => getProp('gdcs.user.id').value === props.level.user_id)
 
-function handleSongTypeUpdate(value: string) {
-    if (value === 'official') {
-        levelUpdateForm.audio_track = props.level.audio_track.toString()
-        levelUpdateForm.song_id = 0
-    }
+function handleSongTypeUpdate (value: string) {
+  if (value === 'official') {
+    levelUpdateForm.audio_track = props.level.audio_track.toString()
+    levelUpdateForm.song_id = 0
+  }
 
-    if (value === 'newgrounds') {
-        levelUpdateForm.song_id = props.level.song_id
-        levelUpdateForm.audio_track = '0'
-    }
+  if (value === 'newgrounds') {
+    levelUpdateForm.song_id = props.level.song_id
+    levelUpdateForm.audio_track = '0'
+  }
 }
 </script>
 

@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSpace} from "naive-ui"
-import {ref, watch, watchEffect} from "vue"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
+import { FormInst, NButton, NCard, NForm, NFormItem, NInput, NSpace } from 'naive-ui'
+import { ref, watch, watchEffect } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
 
 const el = ref<FormInst>()
 watch(el, element => {
-    if (element) {
-        element.validate()
-    }
+  if (element) {
+    element.validate()
+  }
 })
 
 const rules = {
-    music_id: {
-        type: 'string',
-        required: true,
-        validator: () => Promise.reject(form.errors.music_id)
-    }
+  music_id: {
+    type: 'string',
+    required: true,
+    validator: () => Promise.reject(form.errors.music_id)
+  }
 }
 
 const form = useForm({
-    music_id: 0
+  music_id: 0
 })
 
 const link = ref()
 watch(link, newLink => {
-    try {
-        const url = new URL(newLink)
-        const musicID = url.searchParams.get('id')
-        form.music_id = Number(musicID)
-    } catch (e) {
-        form.music_id = Number(newLink)
-    }
+  try {
+    const url = new URL(newLink)
+    const musicID = url.searchParams.get('id')
+    form.music_id = Number(musicID)
+  } catch (e) {
+    form.music_id = Number(newLink)
+  }
 })
 </script>
 

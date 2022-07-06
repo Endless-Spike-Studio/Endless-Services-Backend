@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import {NButton, NCard, NDataTable, NPopconfirm, NSpace} from "naive-ui"
-import {getProp, toRoute, toURL} from "@/scripts/helpers"
-import {GDCS, User} from "@/scripts/types/backend"
-import {h, watch} from "vue"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
-import {useGlobalStore} from "@/scripts/stores"
-import {each} from "lodash-es"
+import { NButton, NCard, NDataTable, NPopconfirm, NSpace } from 'naive-ui'
+import { getProp, toRoute, toURL } from '@/scripts/helpers'
+import { GDCS, User } from '@/scripts/types/backend'
+import { h, watch } from 'vue'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
+import { useGlobalStore } from '@/scripts/stores'
+import { each } from 'lodash-es'
 
 const account = getProp<User>('gdcs.account')
 const props = defineProps<{
@@ -15,72 +15,72 @@ const props = defineProps<{
 }>()
 
 const columns = [
-    {
-        title: 'ID',
-        key: 'id'
-    },
-    {
-        title: '歌曲ID',
-        key: 'song_id',
-        render: (row: GDCS.CustomSong) => row.id + props.customSongOffset
-    },
-    {
-        title: '上传者',
-        key: 'uploader',
-        render: (row: GDCS.CustomSong) => row.account?.name
-    },
-    {
-        title: '歌曲名',
-        key: 'name'
-    },
-    {
-        title: '歌手名',
-        key: 'artist_name'
-    },
-    {
-        title: '大小',
-        key: 'size',
-        render: (row: GDCS.CustomSong) => row.size + ' MB'
-    },
-    {
-        title: '操作',
-        key: 'action',
-        render: (row: GDCS.CustomSong) => {
-            const form = useForm({})
+  {
+    title: 'ID',
+    key: 'id'
+  },
+  {
+    title: '歌曲ID',
+    key: 'song_id',
+    render: (row: GDCS.CustomSong) => row.id + props.customSongOffset
+  },
+  {
+    title: '上传者',
+    key: 'uploader',
+    render: (row: GDCS.CustomSong) => row.account?.name
+  },
+  {
+    title: '歌曲名',
+    key: 'name'
+  },
+  {
+    title: '歌手名',
+    key: 'artist_name'
+  },
+  {
+    title: '大小',
+    key: 'size',
+    render: (row: GDCS.CustomSong) => row.size + ' MB'
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render: (row: GDCS.CustomSong) => {
+      const form = useForm({})
 
-            watch(form, newForm => {
-                const globalStore = useGlobalStore()
+      watch(form, newForm => {
+        const globalStore = useGlobalStore()
 
-                each(newForm.errors, (error, field) => {
-                    globalStore.$message.error(`[${field}] ${error}`)
-                })
+        each(newForm.errors, (error, field) => {
+          globalStore.$message.error(`[${field}] ${error}`)
+        })
+      })
+
+      return h(NSpace, null, () => [
+        h(NButton, {
+          disabled: form.processing,
+          onClick: () => toURL(row.download_url)
+        }, {
+          default: () => '试听'
+        }),
+        h(NPopconfirm, {
+          onPositiveClick: () => form.delete(
+            route('gdcs.tools.song.custom.delete.api', {
+              id: row.id
             })
-
-            return h(NSpace, null, () => [
-                h(NButton, {
-                    disabled: form.processing,
-                    onClick: () => toURL(row.download_url)
-                }, {
-                    default: () => '试听'
-                }),
-                h(NPopconfirm, {
-                    onPositiveClick: () => form.delete(
-                        route('gdcs.tools.song.custom.delete.api', {
-                            id: row.id
-                        })
-                    )
-                }, {
-                    default: () => '确认删除 ?',
-                    trigger: () => h(NButton, {
-                        type: 'error',
-                        disabled: row.account?.id !== account.value.id || form.processing
-                    }, {
-                        default: () => '删除'
-                    })
-                })
-            ])
-        }
+          )
+        }, {
+          default: () => '确认删除 ?',
+          trigger: () => h(NButton, {
+            type: 'error',
+            disabled: row.account?.id !== account.value.id || form.processing
+          }, {
+            default: () => '删除'
+          })
+        })
+      ])
     }
+  }
 ]
 </script>
 

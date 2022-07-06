@@ -8,20 +8,20 @@ const TEMPLATE_LAYOUT_REGEX = /<template +layout(?: *= *['"](?:(?:(\w+):)?(\w+))
  * It must be used before the Vue plugin.
  */
 export default (layouts: string = '@/views/layouts/'): Plugin => ({
-	name: PLUGIN_NAME,
-	transform: (code: string) => {
-		if (!TEMPLATE_LAYOUT_REGEX.test(code)) {
-			return
-		}
+  name: PLUGIN_NAME,
+  transform: (code: string) => {
+    if (!TEMPLATE_LAYOUT_REGEX.test(code)) {
+      return
+    }
 
-		const isTypeScript = /lang=['"]ts['"]/.test(code)
+    const isTypeScript = /lang=['"]ts['"]/.test(code)
 
-		return code.replace(TEMPLATE_LAYOUT_REGEX, (_, __, layoutName) => `
+    return code.replace(TEMPLATE_LAYOUT_REGEX, (_, __, layoutName) => `
 			<script${isTypeScript ? ' lang="ts"' : ''}>
 			import layout from '${layouts}${layoutName ?? 'default'}.vue'
 			export default { layout }
 			</script>
 			<template>
 		`)
-	},
+  }
 })

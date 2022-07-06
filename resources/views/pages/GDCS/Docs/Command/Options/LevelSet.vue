@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {toURL} from "@/scripts/helpers"
-import {NButton, NList, NListItem, NPopover, NSpace, NText, NThing} from "naive-ui"</script>
+import { toURL } from '@/scripts/helpers'
+import { NButton, NList, NListItem, NPopover, NSpace, NText, NThing } from 'naive-ui'</script>
 
 <template>
     <n-list bordered>
