@@ -49,6 +49,7 @@ jobs:
 
       - name: '开始检查'
         run: vendor/bin/phpstan analyse
+        continue-on-error: true
 
   lint:
     runs-on: ubuntu-latest
@@ -69,3 +70,28 @@ jobs:
 
       - name: '开始检查'
         run: vendor/bin/pint --test
+        continue-on-error: true
+
+  frontend-lint:
+    runs-on: ubuntu-latest
+    container:
+      image: node:alpine
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: '安装包管理工具'
+        run: npm install --global pnpm
+
+      - name: '安装依赖'
+        run: |
+          rm package.lock
+          pnpm update
+
+      - name: '初始化项目'
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: '开始检查'
+        run: npx eslint resources/**
+        continue-on-error: true
