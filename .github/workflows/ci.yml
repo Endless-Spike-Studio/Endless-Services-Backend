@@ -19,7 +19,7 @@ jobs:
 
       - name: '安装依赖'
         run: |
-          rm composer.lock
+          rm -f composer.lock
           composer update --no-interaction --no-ansi
 
       - name: '初始化项目'
@@ -39,7 +39,7 @@ jobs:
 
       - name: '安装依赖'
         run: |
-          rm composer.lock
+          rm -f composer.lock
           composer update --no-interaction --no-ansi
 
       - name: '初始化项目'
@@ -60,7 +60,7 @@ jobs:
 
       - name: '安装依赖'
         run: |
-          rm composer.lock
+          rm -f composer.lock
           composer update --no-interaction --no-ansi
 
       - name: '初始化项目'
@@ -84,7 +84,7 @@ jobs:
 
       - name: '安装依赖'
         run: |
-          rm package.lock
+          rm -f pnpm-lock.yaml
           pnpm update
 
       - name: '初始化项目'
