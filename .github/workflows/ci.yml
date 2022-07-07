@@ -87,11 +87,6 @@ jobs:
           rm -f pnpm-lock.yaml
           pnpm update
 
-      - name: '初始化项目'
-        run: |
-          cp .env.ci .env
-          php artisan key:generate
-
       - name: '开始检查'
         run: npx eslint resources/**
         continue-on-error: true
