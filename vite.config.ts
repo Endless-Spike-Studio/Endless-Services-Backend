@@ -27,7 +27,7 @@ export default defineConfig({
             ]
         }),
         eslintPlugin({
-            fix: true
+            exclude: '**'
         })
     ]
 });
