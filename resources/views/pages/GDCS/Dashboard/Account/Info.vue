@@ -56,18 +56,24 @@ const roleOptions = computed(() => {
   })
 })
 
-const updateForm = useForm({
+const permissionUpdateForm = useForm({
   abilities: map(props.account.abilities, 'name'),
   roles: map(props.account.roles, 'name')
 })
 
-watch(updateForm, newForm => {
+watch(permissionUpdateForm, newForm => {
   const globalStore = useGlobalStore()
 
   each(newForm.errors, (error, field) => {
     globalStore.$message.error(`[${field}] ${error}`)
   })
 })
+
+function updatePermission () {
+  permissionUpdateForm.patch(
+    route('gdcs.admin.account.permission.update.api', [props.account.id])
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -90,8 +96,9 @@ watch(updateForm, newForm => {
                 </n-descriptions-item>
                 <n-descriptions-item label="能力">
                     <n-space v-if="permission.manage" vertical>
-                        <n-select v-model:value="updateForm.abilities" :options="abilityOptions" filterable multiple
-                                  tag/>
+                        <n-select v-model:value="permissionUpdateForm.abilities" :options="abilityOptions" filterable
+                                  multiple tag/>
+
                         <n-button @click="toRoute('gdcs.admin.account.ability.list')">能力管理</n-button>
                     </n-space>
 
@@ -109,7 +116,8 @@ watch(updateForm, newForm => {
                 </n-descriptions-item>
                 <n-descriptions-item label="角色">
                     <n-space v-if="permission.manage" vertical>
-                        <n-select v-model:value="updateForm.roles" :options="roleOptions" filterable multiple tag/>
+                        <n-select v-model:value="permissionUpdateForm.roles" :options="roleOptions" filterable multiple
+                                  tag/>
                         <n-button @click="toRoute('gdcs.admin.account.role.list')">角色管理</n-button>
                     </n-space>
 
@@ -128,9 +136,7 @@ watch(updateForm, newForm => {
             </n-descriptions>
 
             <template #footer>
-                <n-button v-if="updateForm.isDirty"
-                          type="success"
-                          @click="updateForm.patch( route('gdcs.admin.account.permission.update.api', account.id) )">
+                <n-button v-if="permissionUpdateForm.isDirty" type="success" @click="updatePermission">
                     保存修改
                 </n-button>
             </template>

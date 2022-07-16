@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { FormInst, NButton, NCard, NForm, NFormItem, NSelect } from 'naive-ui'
+import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NSelect } from 'naive-ui'
 import { useForm } from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
 import { Inertia } from '@inertiajs/inertia'
@@ -17,10 +17,9 @@ withDefaults(
 )
 
 const el = ref<FormInst>()
-watch(el, element => {
-  if (element) {
-    element.validate()
-  }
+const form = useForm({
+  linkID: null,
+  levelID: null
 })
 
 const rules = {
@@ -34,12 +33,7 @@ const rules = {
     required: true,
     validator: () => Promise.reject(form.errors.levelID)
   }
-}
-
-const form = useForm({
-  linkID: null,
-  levelID: null
-})
+} as FormRules
 
 watch(form, newForm => {
   if (newForm.linkID) {
@@ -51,6 +45,18 @@ watch(form, newForm => {
     })
   }
 })
+
+watch([el, form], () => {
+  if (el.value) {
+    el.value.validate()
+  }
+})
+
+function submit () {
+  form.post(
+    route('gdcs.tools.level.transfer.in.api')
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -64,7 +70,7 @@ watch(form, newForm => {
                 <n-select v-model:value="form.levelID" :options="levels"/>
             </n-form-item>
 
-            <n-button :disabled="form.processing" @click="form.post( route('gdcs.tools.level.transfer.in.api') )">
+            <n-button :disabled="form.processing" @click="submit">
                 提交
             </n-button>
         </n-form>

@@ -1,14 +1,12 @@
-<script setup lang="ts">
-import { FormInst, NButton, NCard, NForm, NFormItem, NInput, NSpace } from 'naive-ui'
-import { ref, watch, watchEffect } from 'vue'
+<script lang="ts" setup>
+import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSpace } from 'naive-ui'
+import { ref, watch } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
 
 const el = ref<FormInst>()
-watch(el, element => {
-  if (element) {
-    element.validate()
-  }
+const form = useForm({
+  music_id: 0
 })
 
 const rules = {
@@ -17,11 +15,7 @@ const rules = {
     required: true,
     validator: () => Promise.reject(form.errors.music_id)
   }
-}
-
-const form = useForm({
-  music_id: 0
-})
+} as FormRules
 
 const link = ref()
 watch(link, newLink => {
@@ -33,11 +27,23 @@ watch(link, newLink => {
     form.music_id = Number(newLink)
   }
 })
+
+watch([el, form], () => {
+  if (el.value) {
+    el.value.validate()
+  }
+})
+
+function submit () {
+  form.post(
+    route('gdcs.tools.song.custom.create.netease.api')
+  )
+}
 </script>
 
 <template layout="GDCS">
-    <n-card title="自定义歌曲上传 (网易云)" class="lg:w-1/3 mx-auto">
-        <n-form ref="el" :rules="rules" :model="form">
+    <n-card class="lg:w-1/3 mx-auto" title="自定义歌曲上传 (网易云)">
+        <n-form ref="el" :model="form" :rules="rules">
             <n-form-item label="音乐ID | 分享链接 (自动解析)" path="music_id">
                 <n-space class="w-full" vertical>
                     <n-input v-model:value="link"/>
@@ -45,7 +51,7 @@ watch(link, newLink => {
                 </n-space>
             </n-form-item>
 
-            <n-button :disabled="form.processing" @click="form.post( route('gdcs.tools.song.custom.create.netease.api') )">
+            <n-button :disabled="form.processing" @click="submit">
                 提交
             </n-button>
         </n-form>

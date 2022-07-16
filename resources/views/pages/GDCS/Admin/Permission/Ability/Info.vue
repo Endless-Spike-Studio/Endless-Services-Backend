@@ -17,6 +17,12 @@ const changing = reactive({
 const abilityUpdateForm = useForm({
   title: props.ability.title
 })
+
+function updateAbility () {
+  abilityUpdateForm.patch(
+    route('gdcs.admin.account.ability.update.api', [props.ability.id])
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -56,11 +62,8 @@ const abilityUpdateForm = useForm({
 
         <template #footer>
             <n-space>
-                <n-button v-if="abilityUpdateForm.isDirty"
-                          :disabled="abilityUpdateForm.processing"
-                          :loading="abilityUpdateForm.processing"
-                          type="success"
-                          @click="abilityUpdateForm.patch( route('gdcs.admin.account.ability.update.api', ability.id) )">
+                <n-button v-if="abilityUpdateForm.isDirty" :disabled="abilityUpdateForm.processing"
+                          :loading="abilityUpdateForm.processing" type="success" @click="updateAbility">
                     保存修改
                 </n-button>
             </n-space>

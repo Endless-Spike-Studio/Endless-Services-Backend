@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { FormInst, NButton, NCard, NForm, NFormItem, NInput, NSelect } from 'naive-ui'
-import { ref, watch, watchEffect } from 'vue'
+import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSelect } from 'naive-ui'
+import { ref, watch } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
 import { GDCS } from '@/scripts/types/backend'
@@ -11,10 +11,10 @@ defineProps<{
 }>()
 
 const el = ref<FormInst>()
-watch(el, element => {
-  if (element) {
-    element.validate()
-  }
+const form = useForm({
+  levelID: null,
+  linkID: null,
+  password: null
 })
 
 const rules = {
@@ -33,13 +33,19 @@ const rules = {
     required: true,
     validator: () => Promise.reject(form.errors.password)
   }
-}
+} as FormRules
 
-const form = useForm({
-  levelID: null,
-  linkID: null,
-  password: null
+watch([el, form], () => {
+  if (el.value) {
+    el.value.validate()
+  }
 })
+
+function submit () {
+  form.post(
+    route('gdcs.tools.level.transfer.out.api')
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -57,7 +63,7 @@ const form = useForm({
                 <n-input v-model:value="form.password" type="password"/>
             </n-form-item>
 
-            <n-button :disabled="form.processing" @click="form.post( route('gdcs.tools.level.transfer.out.api') )">
+            <n-button :disabled="form.processing" @click="submit">
                 提交
             </n-button>
         </n-form>

@@ -2,15 +2,18 @@
 import { getProp } from '@/scripts/helpers'
 import { User } from '@/scripts/types/backend'
 import { useForm } from '@inertiajs/inertia-vue3'
-import { FormInst, NButton, NCard, NForm, NFormItem, NInput } from 'naive-ui'
-import { ref, watch, watchEffect } from 'vue'
+import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput } from 'naive-ui'
+import { ref, watch } from 'vue'
 import route from '@/scripts/route'
 
 const el = ref<FormInst>()
-watch(el, element => {
-  if (element) {
-    element.validate()
-  }
+const account = getProp<User>('gdcs.account')
+
+const form = useForm({
+  name: account.value.name,
+  email: account.value.email,
+  password: null,
+  password_confirmation: null
 })
 
 const rules = {
@@ -29,15 +32,19 @@ const rules = {
     type: 'string',
     validator: () => Promise.reject(form.errors.password)
   }
-}
+} as FormRules
 
-const account = getProp<User>('gdcs.account')
-const form = useForm({
-  name: account.value.name,
-  email: account.value.email,
-  password: null,
-  password_confirmation: null
+watch([el, form], () => {
+  if (el.value) {
+    el.value.validate()
+  }
 })
+
+function submit () {
+  form.patch(
+    route('gdcs.account.setting.update.api')
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -62,7 +69,7 @@ const form = useForm({
             <n-form-item>
                 <n-button
                     :disabled="!form.isDirty || form.processing || (form.password !== '' && form.password !== form.password_confirmation)"
-                    @click="form.patch( route('gdcs.account.setting.update.api') )">
+                    @click="submit">
                     修改
                 </n-button>
             </n-form-item>

@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { FormInst, NButton, NCard, NForm, NFormItem, NInput, NSelect, NTabPane, NTabs } from 'naive-ui'
-import { ref, watch, watchEffect } from 'vue'
+import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSelect, NTabPane, NTabs } from 'naive-ui'
+import { ref, watch } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
 import servers from '@/scripts/enums/servers'
 import { map } from 'lodash-es'
 
 const el = ref<FormInst>()
-watch(el, element => {
-  if (element) {
-    element.validate()
-  }
+const form = useForm({
+  server: 'http://www.boomlings.com/database',
+  name: null,
+  password: null
 })
 
 const rules = {
@@ -29,7 +29,7 @@ const rules = {
     required: true,
     validator: () => Promise.reject(form.errors.password)
   }
-}
+} as FormRules
 
 const serverOptions = map(servers, server => {
   return {
@@ -38,11 +38,17 @@ const serverOptions = map(servers, server => {
   }
 })
 
-const form = useForm({
-  server: 'http://www.boomlings.com/database',
-  name: null,
-  password: null
+watch([el, form], () => {
+  if (el.value) {
+    el.value.validate()
+  }
 })
+
+function submit () {
+  form.post(
+    route('gdcs.tools.account.link.create.api')
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -69,7 +75,7 @@ const form = useForm({
                 <n-input v-model:value="form.password" type="password"/>
             </n-form-item>
 
-            <n-button :disabled="form.processing" @click="form.post( route('gdcs.tools.account.link.create.api') )">
+            <n-button :disabled="form.processing" @click="submit">
                 提交
             </n-button>
         </n-form>

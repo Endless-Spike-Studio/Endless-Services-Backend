@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {
   FormInst,
+  FormRules,
   NButton,
   NButtonGroup,
   NCard,
@@ -15,7 +16,7 @@ import {
 import { useForm } from '@inertiajs/inertia-vue3'
 import { GDCS } from '@/scripts/types/backend'
 import { isMobile, toRouteWithParams } from '@/scripts/helpers'
-import { ref, watch, watchEffect } from 'vue'
+import { ref, watch } from 'vue'
 import levelRatingDifficulties from '@/scripts/enums/levelRatingDifficulties'
 import { map } from 'lodash-es'
 import levelRatingDemonDifficulties from '@/scripts/enums/levelRatingDemonDifficulties'
@@ -26,10 +27,15 @@ const props = defineProps<{
 }>()
 
 const el = ref<FormInst>()
-watch(el, element => {
-  if (element) {
-    element.validate()
-  }
+const form = useForm({
+  stars: props.level.rating.stars,
+  difficulty: props.level.rating.difficulty.toString(),
+  featured_score: props.level.rating.featured_score,
+  epic: props.level.rating.epic,
+  coin_verified: props.level.rating.coin_verified,
+  demon_difficulty: props.level.rating.demon_difficulty.toString(),
+  auto: props.level.rating.auto,
+  demon: props.level.rating.demon
 })
 
 const rules = {
@@ -73,7 +79,7 @@ const rules = {
     required: true,
     validator: () => Promise.reject(form.errors.demon)
   }
-}
+} as FormRules
 
 const difficultyOptions = map(levelRatingDifficulties, (difficulty: string, value: number) => {
   return {
@@ -89,15 +95,10 @@ const demonDifficultyOptions = map(levelRatingDemonDifficulties, (difficulty: st
   }
 })
 
-const form = useForm({
-  stars: props.level.rating.stars,
-  difficulty: props.level.rating.difficulty.toString(),
-  featured_score: props.level.rating.featured_score,
-  epic: props.level.rating.epic,
-  coin_verified: props.level.rating.coin_verified,
-  demon_difficulty: props.level.rating.demon_difficulty.toString(),
-  auto: props.level.rating.auto,
-  demon: props.level.rating.demon
+watch([el, form], () => {
+  if (el.value) {
+    el.value.validate()
+  }
 })
 
 function applyPreset (name: string) {
@@ -187,6 +188,12 @@ function applyPreset (name: string) {
       break
   }
 }
+
+function submit () {
+  form.post(
+    route('gdcs.admin.level.rate.api', [props.level.id])
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -270,7 +277,7 @@ function applyPreset (name: string) {
                     </n-form-item>
                 </n-space>
 
-                <n-button class="w-full" @click="form.post( route('gdcs.admin.level.rate.api', level.id) )">保存
+                <n-button class="w-full" @click="submit">保存
                 </n-button>
             </n-form>
         </n-card>

@@ -18,6 +18,12 @@ watch(resendEmailVerificationForm, newForm => {
     globalStore.$message.error(`[${field}] ${error}`)
   })
 })
+
+function resendEmailVerification () {
+  resendEmailVerificationForm.post(
+    route('user.resendEmailVerification.api')
+  )
+}
 </script>
 
 <template layout="GDCN">
@@ -42,9 +48,8 @@ watch(resendEmailVerificationForm, newForm => {
 
         <template #footer>
             <n-space>
-                <n-button v-if="!user.email_verified_at"
-                          :disabled="resendEmailVerificationForm.processing"
-                          @click="resendEmailVerificationForm.post( route('user.resendEmailVerification.api') )">
+                <n-button v-if="!user.email_verified_at" :disabled="resendEmailVerificationForm.processing"
+                          @click="resendEmailVerification">
                     重发验证邮件
                 </n-button>
 

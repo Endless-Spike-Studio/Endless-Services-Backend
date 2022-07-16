@@ -1,41 +1,47 @@
 <script lang="ts" setup>
-import {ref, watch, watchEffect} from "vue"
-import {FormInst, NButton, NCard, NForm, NFormItem, NInput, NSpace} from "naive-ui"
-import {useForm} from "@inertiajs/inertia-vue3"
-import route from "@/scripts/route"
-import {toRoute} from "@/scripts/helpers"
+import { ref, watch } from 'vue'
+import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSpace } from 'naive-ui'
+import { useForm } from '@inertiajs/inertia-vue3'
+import route from '@/scripts/route'
+import { toRoute } from '@/scripts/helpers'
 
 const el = ref<FormInst>()
-watch(el, element => {
-    if (element) {
-        element.validate()
-    }
+const form = useForm({
+  name: null,
+  email: null,
+  password: null,
+  password_confirmation: null
 })
 
 const rules = {
-    name: {
-        required: true,
-        type: 'string',
-        validator: () => Promise.reject(form.errors.name)
-    },
-    email: {
-        required: true,
-        type: 'email',
-        validator: () => Promise.reject(form.errors.email)
-    },
-    password: {
-        required: true,
-        type: 'string',
-        validator: () => Promise.reject(form.errors.password)
-    }
-}
+  name: {
+    required: true,
+    type: 'string',
+    validator: () => Promise.reject(form.errors.name)
+  },
+  email: {
+    required: true,
+    type: 'email',
+    validator: () => Promise.reject(form.errors.email)
+  },
+  password: {
+    required: true,
+    type: 'string',
+    validator: () => Promise.reject(form.errors.password)
+  }
+} as FormRules
 
-const form = useForm({
-    name: null,
-    email: null,
-    password: null,
-    password_confirmation: null
+watch([el, form], () => {
+  if (el.value) {
+    el.value.validate()
+  }
 })
+
+function submit () {
+  form.post(
+    route('register.api')
+  )
+}
 </script>
 
 <template layout="GDCN">
@@ -58,8 +64,7 @@ const form = useForm({
             </n-form-item>
 
             <n-space justify="space-between">
-                <n-button :disabled="form.processing || form.password !== form.password_confirmation"
-                          @click="form.post( route('register.api') )">
+                <n-button :disabled="form.processing || form.password !== form.password_confirmation" @click="submit">
                     注册
                 </n-button>
 

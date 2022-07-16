@@ -17,6 +17,12 @@ const changing = reactive({
 const roleUpdateForm = useForm({
   title: props.role.title
 })
+
+function updateRole () {
+  roleUpdateForm.patch(
+    route('gdcs.admin.account.role.update.api', [props.role.id])
+  )
+}
 </script>
 
 <template layout="GDCS">
@@ -51,11 +57,8 @@ const roleUpdateForm = useForm({
 
         <template #footer>
             <n-space>
-                <n-button v-if="roleUpdateForm.isDirty"
-                          :disabled="roleUpdateForm.processing"
-                          :loading="roleUpdateForm.processing"
-                          type="success"
-                          @click="roleUpdateForm.patch( route('gdcs.admin.account.role.update.api', role.id) )">
+                <n-button v-if="roleUpdateForm.isDirty" :disabled="roleUpdateForm.processing"
+                          :loading="roleUpdateForm.processing" type="success" @click="updateRole">
                     保存修改
                 </n-button>
             </n-space>

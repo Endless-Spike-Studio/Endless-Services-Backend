@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import {NButton, NDivider, NDropdown, NIcon, NSpace} from "naive-ui"
-import {AndroidFilled, AppleFilled, WindowsFilled} from "@vicons/antd"
-import {toURL} from "@/scripts/helpers"
-import CommonHome from "@/views/components/CommonHome.vue"
-import Banner from "@/images/GDCS/Banner.png"
+import { NButton, NDivider, NDropdown, NIcon, NSpace } from 'naive-ui'
+import { AndroidFilled, AppleFilled, WindowsFilled } from '@vicons/antd'
+import { toURL } from '@/scripts/helpers'
+import CommonHome from '@/views/components/CommonHome.vue'
+import Banner from '@/images/GDCS/Banner.png'
 
 const windowsDownloadOptions = [
-    {
-        label: '无资源包 (exe)',
-        key: 'exe'
-    },
-    {
-        label: '带资源包',
-        key: 'zip'
-    }
+  {
+    label: '无资源包 (exe)',
+    key: 'exe'
+  },
+  {
+    label: '带资源包',
+    key: 'zip'
+  }
 ]
 
-function handleWindowsDownload(suffix: string) {
-    toURL('https://cdn.geometrydashchinese.com/client/GDCS.' + suffix)
+function handleWindowsDownload (suffix: string) {
+  toURL('https://cdn.geometrydashchinese.com/client/GDCS.' + suffix)
 }
 </script>
 
@@ -49,7 +49,7 @@ function handleWindowsDownload(suffix: string) {
                     </n-button>
                 </n-dropdown>
 
-                <n-button title="下次一定!" disabled @click="toURL('https://cdn.geometrydashchinese.com/client/GDCS.ipa')">
+                <n-button disabled title="下次一定!" @click="toURL('https://cdn.geometrydashchinese.com/client/GDCS.ipa')">
                     <template #icon>
                         <n-icon>
                             <apple-filled/>
