@@ -42,4 +42,6 @@ return [
     ],
     'welcome_back' => '欢迎回来! :name',
     'logout_success' => '登出成功',
+    'song_process_failed' => '歌曲处理失败',
+    'song_disabled' => '歌曲已禁用'
 ];

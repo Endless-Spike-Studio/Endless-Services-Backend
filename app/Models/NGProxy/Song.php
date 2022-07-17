@@ -2,10 +2,13 @@
 
 namespace App\Models\NGProxy;
 
+use App\Exceptions\StorageContentMissingException;
+use App\Services\StorageService;
 use Database\Factories\NGProxy\SongFactory;
 use GDCN\GDObject\GDObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Song extends Model
 {
@@ -18,6 +21,14 @@ class Song extends Model
     protected static function newFactory(): SongFactory
     {
         return new SongFactory();
+    }
+
+    public function toArray(): array
+    {
+        return [
+            ...parent::toArray(),
+            'download_url' => $this->download_url
+        ];
     }
 
     public function getDownloadUrlAttribute(): string
@@ -35,5 +46,15 @@ class Song extends Model
             5 => $this->size,
             10 => $this->download_url,
         ], '~|~');
+    }
+
+    /**
+     * @throws StorageContentMissingException
+     */
+    public function download(): StreamedResponse
+    {
+        /** @var StorageService $storage */
+        $storage = app('storage:ngproxy.song_data');
+        return $storage->download($this->song_id);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Exceptions\NGProxy;
 
 use Exception;
 
-class SongGetFailedException extends Exception
+class SongFetchException extends Exception
 {
     public function render(): void
     {

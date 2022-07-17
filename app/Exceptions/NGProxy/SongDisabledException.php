@@ -10,13 +10,10 @@ class SongDisabledException extends Exception
 {
     public function render(): int|array
     {
-        if (Request::expectsJson()) {
-            return [
-                'status' => false,
-                'message' => 'Song is disabled',
-            ];
-        }
+        return Request::expectsJson() ? [
+            'status' => false,
+            'message' => __('messages.song_disabled'),
+        ] : Response::SONG_DISABLED->value;
 
-        return Response::SONG_DISABLED->value;
     }
 }
