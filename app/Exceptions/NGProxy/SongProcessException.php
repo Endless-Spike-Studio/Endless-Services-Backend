@@ -2,14 +2,17 @@
 
 namespace App\Exceptions\NGProxy;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Throwable;
 
 class SongProcessException extends HttpException
 {
-    public function __construct(int $statusCode = 500, string $message = null, Throwable $previous = null, array $headers = [], int $code = 0)
+    public static function failed(...$params): SongProcessException
     {
-        $message ??= __('messages.song_process_failed');
-        parent::__construct($statusCode, $message, $previous, $headers, $code);
+        return new static(
+            Response::HTTP_INTERNAL_SERVER_ERROR,
+            __('messages.song_process_failed'),
+            $params
+        );
     }
 }

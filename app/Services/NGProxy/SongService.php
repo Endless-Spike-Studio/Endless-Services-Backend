@@ -41,7 +41,7 @@ class SongService
 
 
             if (!$this->processSong($song)) {
-                throw new SongProcessException();
+                throw SongProcessException::failed();
             }
 
             return $song;
@@ -65,7 +65,7 @@ class SongService
             }
 
             if (!$this->processSong($song)) {
-                throw new SongProcessException();
+                throw SongProcessException::failed();
             }
 
             return $song;
