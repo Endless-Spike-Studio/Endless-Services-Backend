@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\NGProxy;
 
 use App\Exceptions\NGProxy\SongDisabledException;
 use App\Exceptions\NGProxy\SongFetchException;
@@ -11,10 +11,10 @@ use App\Services\NGProxy\SongService;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class NGProxyController extends Controller
+class SongController extends Controller
 {
     public function __construct(
-        protected SongService $songService
+        protected SongService $service
     )
     {
     }
@@ -26,8 +26,8 @@ class NGProxyController extends Controller
      */
     public function info(int $id): array
     {
-        return $this->songService
-            ->fetchSong($id)
+        return $this->service
+            ->find($id)
             ->toArray();
     }
 
@@ -40,8 +40,8 @@ class NGProxyController extends Controller
     {
         $data = $request->validated();
 
-        return $this->songService
-            ->fetchSong($data['songID'])
+        return $this->service
+            ->find($data['songID'])
             ->object;
     }
 
@@ -52,8 +52,8 @@ class NGProxyController extends Controller
      */
     public function object(int $id): int|string
     {
-        return $this->songService
-            ->fetchSong($id)
+        return $this->service
+            ->find($id)
             ->object;
     }
 
@@ -65,8 +65,8 @@ class NGProxyController extends Controller
      */
     public function download(int $id): StreamedResponse
     {
-        return $this->songService
-            ->fetchSong($id)
+        return $this->service
+            ->find($id)
             ->download();
     }
 }

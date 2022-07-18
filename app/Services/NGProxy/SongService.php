@@ -21,7 +21,7 @@ class SongService
      * @throws SongFetchException
      * @throws SongProcessException
      */
-    public function fetchSong(int $id): Song
+    public function find(int $id): Song
     {
         try {
             return $this->tryGetFromDatabase($id);

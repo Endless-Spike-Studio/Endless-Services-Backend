@@ -4,7 +4,7 @@ namespace App\Http\Presenters;
 
 use App\Exceptions\NGProxy\SongDisabledException;
 use App\Exceptions\NGProxy\SongFetchException;
-use App\Http\Controllers\NGProxyController;
+use App\Http\Controllers\NGProxy\SongController;
 use App\Http\Traits\HasMessage;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -18,7 +18,7 @@ class NGProxyPresenter
     {
         try {
             return Inertia::render('NGProxy/Home', [
-                'song' => app(NGProxyController::class)->info($id),
+                'song' => app(SongController::class)->info($id),
             ]);
         } catch (SongFetchException) {
             $this->pushErrorMessage(
