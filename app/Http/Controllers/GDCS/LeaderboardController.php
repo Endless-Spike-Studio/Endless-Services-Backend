@@ -6,7 +6,7 @@ use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\LeaderboardFetchRequest;
 use App\Models\GDCS\UserScore;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashObject;
 
 class LeaderboardController extends Controller
 {
@@ -20,7 +20,7 @@ class LeaderboardController extends Controller
                 $query->orderByDesc('stars');
                 break;
             case 'friends':
-                if (! $request->auth()) {
+                if (!$request->auth()) {
                     return Response::LEADERBOARD_FETCH_FAILED_ACCOUNT_VALIDATE_FAILED->value;
                 }
 
@@ -55,7 +55,7 @@ class LeaderboardController extends Controller
             ->get()
             ->unique('user_id')
             ->map(function (UserScore $score) use (&$top) {
-                return GDObject::merge([
+                return GeometryDashObject::merge([
                     1 => $score->user->name,
                     2 => $score->user->id,
                     3 => $score->stars,

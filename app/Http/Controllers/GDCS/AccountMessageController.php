@@ -12,8 +12,8 @@ use App\Http\Requests\GDCS\AccountMessageSendRequest;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\AccountMessage;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Support\Arr;
 
 class AccountMessageController extends Controller
@@ -25,16 +25,16 @@ class AccountMessageController extends Controller
         $target = Account::query()
             ->find($data['toAccountID']);
 
-        if (! $target) {
-            return \App\Enums\Response::MESSAGE_UPDATE_FAILED_TARGET_NOT_FOUND->value;
+        if (!$target) {
+            return Response::MESSAGE_UPDATE_FAILED_TARGET_NOT_FOUND->value;
         }
 
         if ($request->account->isBlock($data['toAccountID'])) {
             return Response::MESSAGE_UPDATE_FAILED_TARGET_BLOCKED->value;
         }
 
-        if ($target->setting?->message_state === AccountSettingMessageState::FRIENDS && ! AccountFriend::findBetween($request->account->id, $target->id)->exists()) {
-            return \App\Enums\Response::MESSAGE_UPDATE_FAILED_TARGET_BLOCKED->value;
+        if ($target->setting?->message_state === AccountSettingMessageState::FRIENDS && !AccountFriend::findBetween($request->account->id, $target->id)->exists()) {
+            return Response::MESSAGE_UPDATE_FAILED_TARGET_BLOCKED->value;
         }
 
         if ($target->setting?->message_state === AccountSettingMessageState::NONE) {
@@ -55,7 +55,7 @@ class AccountMessageController extends Controller
     {
         $data = $request->validated();
         $perPage = config('gdcs.perPage', 10);
-        $isSender = ! empty($data['getSent']);
+        $isSender = !empty($data['getSent']);
 
         $query = AccountMessage::query()
             ->with(['account', 'target_account'])
@@ -63,7 +63,7 @@ class AccountMessageController extends Controller
 
         $count = $query->count();
         if ($count <= 0) {
-            return \App\Enums\Response::MESSAGE_FETCH_FAILED_EMPTY->value;
+            return Response::MESSAGE_FETCH_FAILED_EMPTY->value;
         }
 
         return implode('#', [
@@ -75,25 +75,25 @@ class AccountMessageController extends Controller
                         return [];
                     }
 
-                    return GDObject::merge([
+                    return GeometryDashObject::merge([
                         1 => $message->id,
                         2 => $account->id,
                         3 => $account->user->id,
                         4 => $message->subject,
                         6 => $account->name,
                         7 => $message->created_at?->locale('en')->diffForHumans(syntax: true),
-                        8 => ! $message->new,
+                        8 => !$message->new,
                         9 => $isSender,
                     ], ':');
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $count, $perPage),
+            GeometryDashAlgorithm::genPage($data['page'], $count, $perPage),
         ]);
     }
 
     public function fetch(AccountMessageDownloadRequest $request): int|string
     {
         $data = $request->validated();
-        $isSender = ! empty($data['isSender']);
+        $isSender = !empty($data['isSender']);
 
         $message = AccountMessage::query()
             ->whereKey($data['messageID'])
@@ -101,18 +101,18 @@ class AccountMessageController extends Controller
             ->first();
 
         if (empty($message)) {
-            return \App\Enums\Response::MESSAGE_DOWNLOAD_FAILED_MESSAGE_NOT_FOUND->value;
+            return Response::MESSAGE_DOWNLOAD_FAILED_MESSAGE_NOT_FOUND->value;
         }
 
         $account = $isSender ? $message->target_account : $message->account;
         $new = $message->new;
 
-        if (! $isSender) {
+        if (!$isSender) {
             $message->new = false;
             $message->save();
         }
 
-        return GDObject::merge([
+        return GeometryDashObject::merge([
             1 => $message->id,
             2 => $account->id,
             3 => $account->user->id,
@@ -120,7 +120,7 @@ class AccountMessageController extends Controller
             5 => $message->body,
             6 => $account->name,
             7 => $message->created_at?->locale('en')->diffForHumans(syntax: true),
-            8 => ! $new,
+            8 => !$new,
             9 => $isSender,
         ], ':');
     }
@@ -128,15 +128,15 @@ class AccountMessageController extends Controller
     public function delete(AccountMessageDeleteRequest $request): int
     {
         $data = $request->validated();
-        $isSender = ! empty($data['isSender']);
+        $isSender = !empty($data['isSender']);
 
-        $messages = ! empty($data['messages']) ? explode(',', $data['messages']) : Arr::wrap($data['messageID']);
+        $messages = !empty($data['messages']) ? explode(',', $data['messages']) : Arr::wrap($data['messageID']);
 
         return AccountMessage::query()
             ->whereKey($messages)
             ->where($isSender ? 'account_id' : 'target_account_id', $data['accountID'])
             ->delete()
-            ? \App\Enums\Response::MESSAGE_DELETE_SUCCESS->value
-            : \App\Enums\Response::MESSAGE_DELETE_FAILED_MESSAGE_NOT_FOUND->value;
+            ? Response::MESSAGE_DELETE_SUCCESS->value
+            : Response::MESSAGE_DELETE_FAILED_MESSAGE_NOT_FOUND->value;
     }
 }

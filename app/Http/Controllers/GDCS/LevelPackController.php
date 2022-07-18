@@ -5,9 +5,9 @@ namespace App\Http\Controllers\GDCS;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\LevelPackFetchRequest;
 use App\Models\GDCS\LevelPack;
-use GDCN\GDAlgorithm\enums\Salts;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\enums\Salts;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 
 class LevelPackController extends Controller
 {
@@ -29,7 +29,7 @@ class LevelPackController extends Controller
                         $pack->coins,
                     ]);
 
-                    return GDObject::merge([
+                    return GeometryDashObject::merge([
                         1 => $pack->id,
                         2 => $pack->name,
                         3 => $pack->levels,
@@ -40,9 +40,9 @@ class LevelPackController extends Controller
                         8 => $pack->bar_color,
                     ], ':');
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], LevelPack::query()
+            GeometryDashAlgorithm::genPage($data['page'], LevelPack::query()
                 ->count(), $perPage),
-            sha1($hash.Salts::LEVEL->value),
+            sha1($hash . Salts::LEVEL->value),
         ]);
     }
 }

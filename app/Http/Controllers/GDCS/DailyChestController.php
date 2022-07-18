@@ -5,9 +5,9 @@ namespace App\Http\Controllers\GDCS;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\DailyChestFetchRequest;
 use Exception;
-use GDCN\GDAlgorithm\enums\Keys;
-use GDCN\GDAlgorithm\enums\Salts;
-use GDCN\GDAlgorithm\GDAlgorithm;
+use GeometryDashChinese\enums\Keys;
+use GeometryDashChinese\enums\Salts;
+use GeometryDashChinese\GeometryDashAlgorithm;
 use Illuminate\Support\Str;
 
 class DailyChestController extends Controller
@@ -31,7 +31,7 @@ class DailyChestController extends Controller
         }
 
         $smallChestRemainTime = 0;
-        if (! empty($reward->small_time)) {
+        if (!empty($reward->small_time)) {
             $time = $reward->small_time->addSeconds($rewardConfig['small']['wait']);
 
             if ($time->isFuture()) {
@@ -52,7 +52,7 @@ class DailyChestController extends Controller
         }
 
         $bigChestRemainTime = 0;
-        if (! empty($reward->big_time)) {
+        if (!empty($reward->big_time)) {
             $time = $reward->big_time->addSeconds($rewardConfig['big']['wait']);
 
             if ($time->isFuture()) {
@@ -87,7 +87,7 @@ class DailyChestController extends Controller
         $reward = implode(':', [
             Str::random(5),
             $request->user->id,
-            GDAlgorithm::decode(substr($data['chk'], 5), Keys::REWARD->value),
+            GeometryDashAlgorithm::decode(substr($data['chk'], 5), Keys::REWARD->value),
             $data['udid'],
             $data['accountID'] ?? 0,
             $smallChestRemainTime,
@@ -99,8 +99,8 @@ class DailyChestController extends Controller
             $data['rewardType'],
         ]);
 
-        $rewardString = GDAlgorithm::encode($reward, Keys::REWARD->value, sha1: false);
+        $rewardString = GeometryDashAlgorithm::encode($reward, Keys::REWARD->value, sha1: false);
 
-        return Str::random(5).$rewardString.'|'.sha1($rewardString.Salts::REWARD->value);
+        return Str::random(5) . $rewardString . '|' . sha1($rewardString . Salts::REWARD->value);
     }
 }

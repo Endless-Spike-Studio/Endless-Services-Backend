@@ -18,7 +18,7 @@ use App\Repositories\GDCS\AccountFriendRequestRepository;
 use App\Repositories\GDCS\AccountMessageRepository;
 use App\Services\GDCS\AccountBlockService;
 use App\Services\GDCS\AccountFriendService;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
@@ -34,7 +34,7 @@ class AccountController extends Controller
         $account = Account::create($data);
         AccountRegistered::dispatch($account);
 
-        return \App\Enums\Response::ACCOUNT_REGISTER_SUCCESS->value;
+        return Response::ACCOUNT_REGISTER_SUCCESS->value;
     }
 
     /**
@@ -42,9 +42,10 @@ class AccountController extends Controller
      */
     public function fetchInfo(
         AccountInfoFetchRequest $request,
-        AccountBlockService $block,
-        AccountFriendService $friend
-    ): int|string {
+        AccountBlockService     $block,
+        AccountFriendService    $friend
+    ): int|string
+    {
         $data = $request->validated();
 
         $target = Account::query()
@@ -55,7 +56,7 @@ class AccountController extends Controller
 
         if ($requestAuth) {
             if ($block->check($target->id, $data['accountID'])) {
-                return \App\Enums\Response::ACCOUNT_INFO_FETCH_FAILED_BLOCKED->value;
+                return Response::ACCOUNT_INFO_FETCH_FAILED_BLOCKED->value;
             }
 
             if ($friend->check($target->id, $data['accountID'])) {
@@ -106,7 +107,7 @@ class AccountController extends Controller
             25 => $target->user->score->acc_dart,
             26 => $target->user->score->acc_robot,
             28 => $target->user->score->acc_glow,
-            29 => ! empty($target),
+            29 => !empty($target),
             30 => UserScore::query()
                 ->where('stars', '<=', $target->user->score->stars)
                 ->count(),
@@ -134,7 +135,7 @@ class AccountController extends Controller
                 ->count();
         }
 
-        if (! empty($friendRequest)) {
+        if (!empty($friendRequest)) {
             $userInfo[32] = $friendRequest->id;
             $userInfo[35] = $friendRequest->comment;
             $userInfo[37] = $friendRequest->created_at
@@ -142,7 +143,7 @@ class AccountController extends Controller
                 ->diffForHumans(syntax: true);
         }
 
-        return GDObject::merge($userInfo, ':');
+        return GeometryDashObject::merge($userInfo, ':');
     }
 
     public function requestModAccess(AccountModAccessRequest $request): int
@@ -161,7 +162,7 @@ class AccountController extends Controller
         $data = $request->validated();
 
         $account = $request->account;
-        if (! $account->hasVerifiedEmail()) {
+        if (!$account->hasVerifiedEmail()) {
             return Response::ACCOUNT_LOGIN_FAILED_EMAIL_NOT_VERIFIED->value;
         }
 
@@ -175,7 +176,7 @@ class AccountController extends Controller
         $user->save();
 
         if ($user->ban?->login_ban) {
-            return \App\Enums\Response::ACCOUNT_LOGIN_FAILED_BANNED->value;
+            return Response::ACCOUNT_LOGIN_FAILED_BANNED->value;
         }
 
         return implode(',', [

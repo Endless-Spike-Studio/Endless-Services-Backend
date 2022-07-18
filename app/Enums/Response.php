@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
+use GeometryDashChinese\GeometryDashAlgorithm;
 use function config;
-use GDCN\GDAlgorithm\GDAlgorithm;
 
 enum Response: int
 {
@@ -166,6 +166,6 @@ enum Response: int
     {
         $perPage = config('gdcs.perPage', 10);
 
-        return '#'.GDAlgorithm::genPage(1, 0, $perPage);
+        return '#' . GeometryDashAlgorithm::genPage(1, 0, $perPage);
     }
 }

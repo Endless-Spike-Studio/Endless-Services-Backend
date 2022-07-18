@@ -5,8 +5,8 @@ namespace App\Http\Controllers\GDCS;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\LevelGauntletFetchRequest;
 use App\Models\GDCS\LevelGauntlet;
-use GDCN\GDAlgorithm\enums\Salts;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\enums\Salts;
+use GeometryDashChinese\GeometryDashObject;
 
 class LevelGauntletController extends Controller
 {
@@ -32,12 +32,12 @@ class LevelGauntletController extends Controller
                         $levels,
                     ]);
 
-                    return GDObject::merge([
+                    return GeometryDashObject::merge([
                         1 => $gauntlet->id,
                         3 => $levels,
                     ], ':');
                 })->join('|'),
-            sha1($hash.Salts::LEVEL->value),
+            sha1($hash . Salts::LEVEL->value),
         ]);
     }
 }

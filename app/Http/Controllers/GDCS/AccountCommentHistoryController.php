@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountCommentHistoryFetchRequest;
 use App\Models\GDCS\LevelComment;
 use App\Models\GDCS\User;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 
 class AccountCommentHistoryController extends Controller
 {
@@ -46,7 +46,7 @@ class AccountCommentHistoryController extends Controller
                 ->get()
                 ->map(function (LevelComment $comment) {
                     return implode(':', [
-                        GDObject::merge([
+                        GeometryDashObject::merge([
                             1 => $comment->level_id,
                             2 => $comment->comment,
                             3 => $comment->account->user->id,
@@ -60,7 +60,7 @@ class AccountCommentHistoryController extends Controller
                             11 => $comment->account->mod_level->value,
                             12 => $comment->account->comment_color,
                         ], '~'),
-                        GDObject::merge([
+                        GeometryDashObject::merge([
                             1 => $comment->account->name,
                             9 => $comment->account->user->score->icon,
                             10 => $comment->account->user->score->color1,
@@ -71,7 +71,7 @@ class AccountCommentHistoryController extends Controller
                         ], '~'),
                     ]);
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $comments->count(), $perPage),
+            GeometryDashAlgorithm::genPage($data['page'], $comments->count(), $perPage),
         ]);
     }
 }

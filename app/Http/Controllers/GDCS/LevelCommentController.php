@@ -11,8 +11,8 @@ use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelComment;
 use App\Services\GDCS\LevelCommentCommandService;
 use Base64Url\Base64Url;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 
 class LevelCommentController extends Controller
 {
@@ -80,7 +80,7 @@ class LevelCommentController extends Controller
                 ->get()
                 ->map(function (LevelComment $comment) {
                     return implode(':', [
-                        GDObject::merge([
+                        GeometryDashObject::merge([
                             2 => $comment->comment,
                             3 => $comment->account->user->id,
                             4 => $comment->likes,
@@ -93,7 +93,7 @@ class LevelCommentController extends Controller
                             11 => $comment->account->mod_level->value,
                             12 => $comment->account->comment_color,
                         ], '~'),
-                        GDObject::merge([
+                        GeometryDashObject::merge([
                             1 => $comment->account->name,
                             9 => $comment->account->user->score->icon,
                             10 => $comment->account->user->score->color1,
@@ -104,7 +104,7 @@ class LevelCommentController extends Controller
                         ], '~'),
                     ]);
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $level->comments->count(), $perPage),
+            GeometryDashAlgorithm::genPage($data['page'], $level->comments->count(), $perPage),
         ]);
     }
 
@@ -118,7 +118,7 @@ class LevelCommentController extends Controller
             ->comments()
             ->whereKey($data['commentID'])
             ->delete()
-            ? \App\Enums\Response::LEVEL_COMMENT_DELETE_SUCCESS->value
+            ? Response::LEVEL_COMMENT_DELETE_SUCCESS->value
             : Response::LEVEL_COMMENT_DELETE_FAILED->value;
     }
 }

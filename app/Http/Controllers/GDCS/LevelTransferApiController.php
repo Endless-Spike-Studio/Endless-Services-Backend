@@ -15,9 +15,9 @@ use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountLink;
 use App\Models\GDCS\Level;
-use GDCN\GDAlgorithm\enums\Keys;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\enums\Keys;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
@@ -45,19 +45,19 @@ class LevelTransferApiController extends Controller
             }
 
             $response = app('proxy')
-                ->post($link->server.'/downloadGJLevel22.php', [
+                ->post($link->server . '/downloadGJLevel22.php', [
                     'levelID' => $data['levelID'],
                     'secret' => 'Wmfd2893gb7',
                 ])->body();
 
             HelperController::checkResponse($response);
-            $levelObject = GDObject::split(explode('#', $response)[0], ':');
+            $levelObject = GeometryDashObject::split(explode('#', $response)[0], ':');
 
-            if ($levelObject[6] !== (string) $link->target_user_id) {
+            if ($levelObject[6] !== (string)$link->target_user_id) {
                 throw new LevelTransferTargetLinkNotFoundException();
             }
 
-            $levelInfo = 'transfer:'.$link->server.'|'.$levelObject[1];
+            $levelInfo = 'transfer:' . $link->server . '|' . $levelObject[1];
 
             $level = Level::query()
                 ->create([
@@ -70,7 +70,7 @@ class LevelTransferApiController extends Controller
                     'audio_track' => $levelObject[12],
                     'song_id' => $levelObject[35],
                     'auto' => false,
-                    'password' => ! is_numeric($levelObject[27]) ? GDAlgorithm::decode($levelObject[27], Keys::LEVEL_PASSWORD->value) : $levelObject[27],
+                    'password' => !is_numeric($levelObject[27]) ? GeometryDashAlgorithm::decode($levelObject[27], Keys::LEVEL_PASSWORD->value) : $levelObject[27],
                     'original_level_id' => $levelObject[30],
                     'two_player' => $levelObject[31],
                     'objects' => $levelObject[45],
@@ -113,7 +113,7 @@ class LevelTransferApiController extends Controller
     public function loadRemoteLevels(int $userID): array|RedirectResponse
     {
         $response = app('proxy')
-            ->post(config('gdproxy.base_url').'/getGJLevels21.php', [
+            ->post(config('gdproxy.base_url') . '/getGJLevels21.php', [
                 'type' => LevelSearchType::USER->value,
                 'str' => $userID,
                 'secret' => 'Wmfd2893gb7',
@@ -141,10 +141,10 @@ class LevelTransferApiController extends Controller
         return collect(
             explode('|', $levelData)
         )->map(function (string $level) {
-            $levelObject = GDObject::split($level, ':');
+            $levelObject = GeometryDashObject::split($level, ':');
 
             return [
-                'label' => $levelObject[2].' ['.$levelObject[1].']',
+                'label' => $levelObject[2] . ' [' . $levelObject[1] . ']',
                 'value' => $levelObject[1],
             ];
         })->toArray();
@@ -173,12 +173,12 @@ class LevelTransferApiController extends Controller
             $levelString = $storage->get($level->id);
 
             $response = app('proxy')
-                ->post($link->server.'/uploadGJLevel21.php', [
+                ->post($link->server . '/uploadGJLevel21.php', [
                     'gameVersion' => $level->game_version,
                     'binaryVersion' => 35,
                     'gdw' => false,
                     'accountID' => $link->target_account_id,
-                    'gjp' => GDAlgorithm::encode($data['password'], Keys::ACCOUNT_PASSWORD->value, sha1: false),
+                    'gjp' => GeometryDashAlgorithm::encode($data['password'], Keys::ACCOUNT_PASSWORD->value, sha1: false),
                     'userName' => $link->target_name,
                     'levelID' => 0,
                     'levelName' => $level->name,
@@ -200,7 +200,7 @@ class LevelTransferApiController extends Controller
                     'wt' => 0,
                     'wt2' => 0,
                     'seed' => Str::random(),
-                    'seed2' => GDAlgorithm::encode(GDAlgorithm::genLevelDivided($levelString, 50, 49), Keys::LEVEL_SEED->value, sha1: false),
+                    'seed2' => GeometryDashAlgorithm::encode(GeometryDashAlgorithm::genLevelDivided($levelString, 50, 49), Keys::LEVEL_SEED->value, sha1: false),
                     'extraString' => $level->extra_string,
                     'levelInfo' => $level->level_info,
                     'secret' => 'Wmfd2893gb7',

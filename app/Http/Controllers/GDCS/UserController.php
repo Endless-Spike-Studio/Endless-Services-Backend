@@ -10,8 +10,8 @@ use App\Models\GDCS\AccountBlock;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\User;
 use App\Models\GDCS\UserScore;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 
 class UserController extends Controller
 {
@@ -21,7 +21,7 @@ class UserController extends Controller
         $perPage = config('gdcs.perPage', 10);
         $query = User::query()
             ->whereKey($data['str'])
-            ->orWhere('name', 'LIKE', $data['str'].'%');
+            ->orWhere('name', 'LIKE', $data['str'] . '%');
 
         $count = $query->count();
         if ($count <= 0) {
@@ -33,7 +33,7 @@ class UserController extends Controller
                 ->with('score', 'account')
                 ->get()
                 ->map(function (User $user) {
-                    return GDObject::merge([
+                    return GeometryDashObject::merge([
                         1 => $user->name,
                         2 => $user->id,
                         3 => $user->score->stars,
@@ -52,7 +52,7 @@ class UserController extends Controller
                         17 => $user->score->user_coins,
                     ], ':');
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $count, $perPage),
+            GeometryDashAlgorithm::genPage($data['page'], $count, $perPage),
         ]);
     }
 
@@ -68,16 +68,16 @@ class UserController extends Controller
                 $query = $request->account->blocks();
                 break;
             default:
-                return \App\Enums\Response::USER_FETCH_FAILED_INVALID_TYPE->value;
+                return Response::USER_FETCH_FAILED_INVALID_TYPE->value;
         }
 
         if ($query->count() <= 0) {
-            return \App\Enums\Response::USER_FETCH_EMPTY_RESULT->value;
+            return Response::USER_FETCH_EMPTY_RESULT->value;
         }
 
         return $query->get()
             ->map(function (AccountFriend|AccountBlock $item) use ($data) {
-                $accountID = (int) $data['accountID'];
+                $accountID = (int)$data['accountID'];
 
                 if ($item instanceof AccountFriend) {
                     if ($item->account_id === $accountID) {
@@ -96,7 +96,7 @@ class UserController extends Controller
                     $account = $item->account_id === $accountID ? $item->target_account : $item->account;
                 }
 
-                return GDObject::merge([
+                return GeometryDashObject::merge([
                     1 => $account->user->name,
                     2 => $account->user->id,
                     9 => $account->user->score->icon,

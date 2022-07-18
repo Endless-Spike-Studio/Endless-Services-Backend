@@ -10,8 +10,8 @@ use App\Http\Requests\GDCS\AccountFriendRequestFetchRequest;
 use App\Http\Requests\GDCS\AccountFriendRequestSendRequest;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\AccountFriendRequest;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Support\Arr;
 
 class AccountFriendRequestController extends Controller
@@ -39,7 +39,7 @@ class AccountFriendRequestController extends Controller
         $perPage = config('gdcs.perPage', 10);
 
         $query = AccountFriendRequest::query()
-            ->where(! empty($data['getSent']) ? 'account_id' : 'target_account_id', $data['accountID']);
+            ->where(!empty($data['getSent']) ? 'account_id' : 'target_account_id', $data['accountID']);
 
         $count = $query->count();
         if ($count <= 0) {
@@ -48,14 +48,14 @@ class AccountFriendRequestController extends Controller
 
         return implode('#', [
             $query->forPage(++$data['page'], $perPage)
-                ->with(! empty($data['getSent']) ? 'target_account.user.score' : 'account.user.score')
+                ->with(!empty($data['getSent']) ? 'target_account.user.score' : 'account.user.score')
                 ->get()
                 ->map(function (AccountFriendRequest $friendRequest) use ($data) {
-                    if (! $target = ! empty($data['getSent']) ? $friendRequest->target_account : $friendRequest->account) {
+                    if (!$target = !empty($data['getSent']) ? $friendRequest->target_account : $friendRequest->account) {
                         return null;
                     }
 
-                    return GDObject::merge([
+                    return GeometryDashObject::merge([
                         1 => $target->name,
                         2 => $target->user->id,
                         9 => $target->user->score->icon,
@@ -70,22 +70,8 @@ class AccountFriendRequestController extends Controller
                         41 => $friendRequest->new,
                     ], ':');
                 })->join('|'),
-            GDAlgorithm::genPage($data['page'], $query->count(), $perPage),
+            GeometryDashAlgorithm::genPage($data['page'], $query->count(), $perPage),
         ]);
-    }
-
-    public function delete(AccountFriendRequestDeleteRequest $request): int
-    {
-        $data = $request->validated();
-
-        $accounts = ! empty($data['accounts']) ? explode(',', $data['accounts']) : Arr::wrap($data['targetAccountID']);
-
-        return AccountFriendRequest::query()
-            ->where(! empty($data['isSender']) ? 'account_id' : 'target_account_id', $data['accountID'])
-            ->whereIn(! empty($data['isSender']) ? 'target_account_id' : 'account_id', $accounts)
-            ->delete()
-            ? Response::ACCOUNT_FRIEND_REQUEST_DELETE_SUCCESS->value
-            : Response::ACCOUNT_FRIEND_REQUEST_DELETE_FAILED->value;
     }
 
     public function accept(AccountFriendRequestAcceptRequest $request): int
@@ -105,5 +91,19 @@ class AccountFriendRequestController extends Controller
         return $query->delete()
             ? Response::ACCOUNT_FRIEND_REQUEST_ACCEPT_SUCCESS->value
             : Response::ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED->value;
+    }
+
+    public function delete(AccountFriendRequestDeleteRequest $request): int
+    {
+        $data = $request->validated();
+
+        $accounts = !empty($data['accounts']) ? explode(',', $data['accounts']) : Arr::wrap($data['targetAccountID']);
+
+        return AccountFriendRequest::query()
+            ->where(!empty($data['isSender']) ? 'account_id' : 'target_account_id', $data['accountID'])
+            ->whereIn(!empty($data['isSender']) ? 'target_account_id' : 'account_id', $accounts)
+            ->delete()
+            ? Response::ACCOUNT_FRIEND_REQUEST_DELETE_SUCCESS->value
+            : Response::ACCOUNT_FRIEND_REQUEST_DELETE_FAILED->value;
     }
 }

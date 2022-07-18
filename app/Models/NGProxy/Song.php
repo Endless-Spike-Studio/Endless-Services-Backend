@@ -5,7 +5,7 @@ namespace App\Models\NGProxy;
 use App\Exceptions\StorageContentMissingException;
 use App\Services\StorageService;
 use Database\Factories\NGProxy\SongFactory;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -38,7 +38,7 @@ class Song extends Model
 
     public function getObjectAttribute(): string
     {
-        return GDObject::merge([
+        return GeometryDashObject::merge([
             1 => $this->song_id,
             2 => $this->name,
             3 => $this->artist_id,

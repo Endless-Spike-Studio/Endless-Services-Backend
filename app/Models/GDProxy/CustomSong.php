@@ -3,7 +3,7 @@
 namespace App\Models\GDProxy;
 
 use Database\Factories\GDProxy\CustomSongFactory;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +20,7 @@ class CustomSong extends Model
 
     public function getObjectAttribute(): string
     {
-        return GDObject::merge([
+        return GeometryDashObject::merge([
             1 => $this->id + config('gdproxy.custom_song_offset', 10000000),
             2 => $this->name,
             3 => 8,

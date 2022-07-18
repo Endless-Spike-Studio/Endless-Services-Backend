@@ -3,22 +3,22 @@
 namespace App\Http\Requests\GDCS;
 
 use App\Models\GDCS\Account;
-use GDCN\GDAlgorithm\enums\Keys;
-use GDCN\GDAlgorithm\enums\Salts;
-use GDCN\GDAlgorithm\GDAlgorithm;
+use GeometryDashChinese\enums\Keys;
+use GeometryDashChinese\enums\Salts;
+use GeometryDashChinese\GeometryDashAlgorithm;
 use Illuminate\Validation\Rule;
 
 class UserScoreUpdateRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->user) && $this->validateSeed2();
+        return $this->auth() && !empty($this->user) && $this->validateSeed2();
     }
 
     protected function validateSeed2(): bool
     {
         return hash_equals(
-            GDAlgorithm::encode($this->get('accountID', 0).$this->get('userCoins').$this->get('demons').$this->get('stars').$this->get('coins').$this->get('iconType').$this->get('icon').$this->get('diamonds').$this->get('accIcon').$this->get('accShip').$this->get('accBall').$this->get('accBird').$this->get('accDart').$this->get('accRobot').$this->get('accGlow').$this->get('accSpider').$this->get('accExplosion').Salts::USER_PROFILE->value, Keys::USER_PROFILE->value),
+            GeometryDashAlgorithm::encode($this->get('accountID', 0) . $this->get('userCoins') . $this->get('demons') . $this->get('stars') . $this->get('coins') . $this->get('iconType') . $this->get('icon') . $this->get('diamonds') . $this->get('accIcon') . $this->get('accShip') . $this->get('accBall') . $this->get('accBird') . $this->get('accDart') . $this->get('accRobot') . $this->get('accGlow') . $this->get('accSpider') . $this->get('accExplosion') . Salts::USER_PROFILE->value, Keys::USER_PROFILE->value),
             $this->get('seed2')
         );
     }

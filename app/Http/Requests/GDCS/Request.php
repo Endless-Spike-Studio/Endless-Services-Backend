@@ -6,8 +6,8 @@ use App\Exceptions\GDCS\RequestAuthorizationFailedException;
 use App\Exceptions\GDCS\RequestValidationFailedException;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\User;
-use GDCN\GDAlgorithm\enums\Keys;
-use GDCN\GDAlgorithm\GDAlgorithm;
+use GeometryDashChinese\enums\Keys;
+use GeometryDashChinese\GeometryDashAlgorithm;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,9 +25,16 @@ class Request extends FormRequest
         return [];
     }
 
+    public function auth(): bool
+    {
+        return $this->authAccount()
+            || $this->authAccountUsingName()
+            || $this->authUser();
+    }
+
     protected function authAccount(): bool
     {
-        if (! $this->filled(['accountID', 'gjp'])) {
+        if (!$this->filled(['accountID', 'gjp'])) {
             return false;
         }
 
@@ -38,22 +45,35 @@ class Request extends FormRequest
             $this->account = Account::query()
                 ->findOrFail($accountID);
 
-            $password = GDAlgorithm::decode($gjp, Keys::ACCOUNT_PASSWORD->value);
-            if (! Hash::check($password, $this->account->password)) {
+            $password = GeometryDashAlgorithm::decode($gjp, Keys::ACCOUNT_PASSWORD->value);
+            if (!Hash::check($password, $this->account->password)) {
                 return false;
             }
 
             $this->user = $this->account->user ?? $this->newPlayer();
 
-            return ! empty($this->user);
+            return !empty($this->user);
         } catch (ModelNotFoundException) {
             return false;
         }
     }
 
+    public function newPlayer(): ?User
+    {
+        $randomUUID = Str::uuid()
+            ->toString();
+
+        $udid = $this->get('udid', $randomUUID);
+        $uuid = $this->account->id ?? $udid;
+        $name = $this->get('userName', $this->account->name ?? 'Player');
+
+        return User::query()
+            ->firstOrCreate(['uuid' => $uuid], ['name' => $name, 'udid' => $udid]);
+    }
+
     protected function authAccountUsingName(): bool
     {
-        if (! $this->filled(['userName', 'password'])) {
+        if (!$this->filled(['userName', 'password'])) {
             return false;
         }
 
@@ -65,13 +85,13 @@ class Request extends FormRequest
                 ->whereName($name)
                 ->firstOrFail();
 
-            if (! Hash::check($password, $this->account->password)) {
+            if (!Hash::check($password, $this->account->password)) {
                 return false;
             }
 
             $this->user = $this->account->user ?? $this->newPlayer();
 
-            return ! empty($this->user);
+            return !empty($this->user);
         } catch (ModelNotFoundException) {
             return false;
         }
@@ -79,7 +99,7 @@ class Request extends FormRequest
 
     protected function authUser(): bool
     {
-        if (! $this->filled(['uuid', 'udid'])) {
+        if (!$this->filled(['uuid', 'udid'])) {
             return false;
         }
 
@@ -94,36 +114,16 @@ class Request extends FormRequest
                 ->firstOrFail();
 
             $this->user = $user;
-            if (! empty($this->user->account)) {
+            if (!empty($this->user->account)) {
                 $this->account = $this->user->account;
             }
 
-            return ! empty($this->user);
+            return !empty($this->user);
         } catch (ModelNotFoundException) {
             $this->user = $this->newPlayer();
 
-            return ! empty($this->user);
+            return !empty($this->user);
         }
-    }
-
-    public function auth(): bool
-    {
-        return $this->authAccount()
-            || $this->authAccountUsingName()
-            || $this->authUser();
-    }
-
-    public function newPlayer(): ?User
-    {
-        $randomUUID = Str::uuid()
-            ->toString();
-
-        $udid = $this->get('udid', $randomUUID);
-        $uuid = $this->account->id ?? $udid;
-        $name = $this->get('userName', $this->account->name ?? 'Player');
-
-        return User::query()
-            ->firstOrCreate(['uuid' => $uuid], ['name' => $name, 'udid' => $udid]);
     }
 
     /**

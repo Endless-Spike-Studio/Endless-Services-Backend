@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\GDCS;
 
+use App\Enums\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\LevelLeaderboardUploadAndFetchRequest;
 use App\Models\GDCS\LevelScore;
 use Carbon\Carbon;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashObject;
 
 class LevelLeaderboardController extends Controller
 {
@@ -30,14 +31,14 @@ class LevelLeaderboardController extends Controller
                 $query->orderByDesc('percent');
                 break;
             default:
-                return \App\Enums\Response::LEVEL_SCORE_FETCH_FAILED_INVALID_TYPE->value;
+                return Response::LEVEL_SCORE_FETCH_FAILED_INVALID_TYPE->value;
         }
 
         $top = 0;
 
         return $query->get()
             ->map(function (LevelScore $score) use (&$top) {
-                return GDObject::merge([
+                return GeometryDashObject::merge([
                     1 => $score->account->name,
                     2 => $score->account->user->id,
                     3 => $score->percent,

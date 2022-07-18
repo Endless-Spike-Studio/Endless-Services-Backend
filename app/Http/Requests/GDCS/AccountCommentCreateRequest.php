@@ -3,22 +3,22 @@
 namespace App\Http\Requests\GDCS;
 
 use App\Models\GDCS\Account;
-use GDCN\GDAlgorithm\enums\Keys;
-use GDCN\GDAlgorithm\enums\Salts;
-use GDCN\GDAlgorithm\GDAlgorithm;
+use GeometryDashChinese\enums\Keys;
+use GeometryDashChinese\enums\Salts;
+use GeometryDashChinese\GeometryDashAlgorithm;
 use Illuminate\Validation\Rule;
 
 class AccountCommentCreateRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->account) && $this->validateChk();
+        return $this->auth() && !empty($this->account) && $this->validateChk();
     }
 
     protected function validateChk(): bool
     {
         return hash_equals(
-            GDAlgorithm::encode($this->get('userName').$this->get('comment').$this->get('levelID', 0).$this->get('percent', 0).$this->get('cType').Salts::COMMENT->value, Keys::COMMENT_CHK->value),
+            GeometryDashAlgorithm::encode($this->get('userName') . $this->get('comment') . $this->get('levelID', 0) . $this->get('percent', 0) . $this->get('cType') . Salts::COMMENT->value, Keys::COMMENT_CHK->value),
             $this->get('chk')
         );
     }

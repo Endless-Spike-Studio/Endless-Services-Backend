@@ -10,7 +10,7 @@ use App\Exceptions\NGProxy\SongProcessException;
 use App\Http\Controllers\HelperController;
 use App\Models\NGProxy\Song;
 use App\Services\StorageService;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashObject;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
 
@@ -132,7 +132,7 @@ class SongService
                 ])->body();
 
             HelperController::checkResponse($response);
-            return GDObject::split($response, '~|~');
+            return GeometryDashObject::split($response, '~|~');
         } catch (InvalidResponseException $e) {
             if (!empty($response) && $response === '-2') {
                 throw new SongDisabledException();
@@ -155,6 +155,6 @@ class SongService
             ])->body();
 
         HelperController::checkResponse($response);
-        return GDObject::split(Arr::get(explode('#', $response), 2), '~|~');
+        return GeometryDashObject::split(Arr::get(explode('#', $response), 2), '~|~');
     }
 }

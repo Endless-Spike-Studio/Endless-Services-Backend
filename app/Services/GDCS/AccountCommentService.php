@@ -8,8 +8,8 @@ use App\Exceptions\GDCS\AccountCommentNotFoundException;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountComment;
 use Base64Url\Base64Url;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 
 class AccountCommentService
 {
@@ -81,7 +81,7 @@ class AccountCommentService
                 )
                 ->get()
                 ->map(function (AccountComment $comment) {
-                    return GDObject::merge([
+                    return GeometryDashObject::merge([
                         2 => $comment->comment,
                         4 => $comment->likes,
                         6 => $comment->id,
@@ -91,7 +91,7 @@ class AccountCommentService
                             ->diffForHumans(syntax: true),
                     ], '~');
                 })->join('|'),
-            GDAlgorithm::genPage($page, $account->comments_count, config('gdcs.perPage', 10)),
+            GeometryDashAlgorithm::genPage($page, $account->comments_count, config('gdcs.perPage', 10)),
         ]);
     }
 

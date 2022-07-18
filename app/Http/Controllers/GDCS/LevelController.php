@@ -20,10 +20,10 @@ use App\Models\GDCS\LevelDownloadRecord;
 use App\Models\GDCS\LevelGauntlet;
 use App\Models\GDCS\WeeklyLevel;
 use Carbon\Carbon;
-use GDCN\GDAlgorithm\enums\Keys;
-use GDCN\GDAlgorithm\enums\Salts;
-use GDCN\GDAlgorithm\GDAlgorithm;
-use GDCN\GDObject\GDObject;
+use GeometryDashChinese\enums\Keys;
+use GeometryDashChinese\enums\Salts;
+use GeometryDashChinese\GeometryDashAlgorithm;
+use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
@@ -73,7 +73,7 @@ class LevelController extends Controller
             $data = $request->validated();
             $query = Level::query();
 
-            if (! empty($data['gauntlet'])) {
+            if (!empty($data['gauntlet'])) {
                 $this->processSearchGauntlet($request, $query);
             } else {
                 $this->processSearchType($request, $query);
@@ -98,7 +98,7 @@ class LevelController extends Controller
                             $user->uuid,
                         ]);
 
-                        if (! empty($level->song)) {
+                        if (!empty($level->song)) {
                             $songs[$level->song_id] = $level->song->object;
                         }
 
@@ -106,10 +106,10 @@ class LevelController extends Controller
                             substr($level->id, 0, 1),
                             substr($level->id, -1, 1),
                             $level->rating->stars,
-                            (int) $level->rating->coin_verified,
+                            (int)$level->rating->coin_verified,
                         ]);
 
-                        return GDObject::merge([
+                        return GeometryDashObject::merge([
                             1 => $level->id,
                             2 => $level->name,
                             3 => $level->desc,
@@ -140,8 +140,8 @@ class LevelController extends Controller
                     })->join('|'),
                 implode('|', $users),
                 implode('~:~', $songs),
-                GDAlgorithm::genPage($data['page'], $query->count(), $perPage),
-                sha1($hash.Salts::LEVEL->value),
+                GeometryDashAlgorithm::genPage($data['page'], $query->count(), $perPage),
+                sha1($hash . Salts::LEVEL->value),
             ]);
         } catch (LevelSearchNotSupportedTypeException) {
             return Response::LEVEL_SEARCH_FAILED_NOT_SUPPORT_TYPE->value;
@@ -170,7 +170,7 @@ class LevelController extends Controller
         switch ($data['type']) {
             case LevelSearchType::SEARCH->value:
                 $query->whereKey($data['str']);
-                $query->orWhere('name', 'LIKE', $data['str'].'%');
+                $query->orWhere('name', 'LIKE', $data['str'] . '%');
                 $query->orderByDesc('likes');
                 break;
             case LevelSearchType::MOST_DOWNLOADED->value:
@@ -210,7 +210,7 @@ class LevelController extends Controller
                 $query->whereIn('user_id', $data['followed']);
                 break;
             case LevelSearchType::FRIENDS->value:
-                if (! $request->auth()) {
+                if (!$request->auth()) {
                     throw new LevelSearchAuthFailedException();
                 }
 
@@ -232,54 +232,54 @@ class LevelController extends Controller
     protected function processSearchAdvancedOptions(LevelSearchRequest $request, Builder|Level $query): void
     {
         $data = $request->validated();
-        $type = (int) $data['type'];
+        $type = (int)$data['type'];
 
         if (
             $type !== LevelSearchType::USER->value ||
-            (! is_numeric($data['str']) && $type === LevelSearchType::SEARCH->value)
+            (!is_numeric($data['str']) && $type === LevelSearchType::SEARCH->value)
         ) {
             $query->whereNot('unlisted', true);
         }
 
-        if (! empty($data['uncompleted'])) {
+        if (!empty($data['uncompleted'])) {
             $query->whereKeyNot($data['completedLevels']);
         }
 
-        if (! empty($data['onlyCompleted'])) {
+        if (!empty($data['onlyCompleted'])) {
             $query->whereKey($data['completedLevels']);
         }
 
-        if (! empty($data['featured'])) {
+        if (!empty($data['featured'])) {
             $query->whereHas('rating', function ($query) {
                 $query->where('featured_score', '>', 0);
             });
         }
 
-        if (! empty($data['original'])) {
+        if (!empty($data['original'])) {
             $query->whereNot('original_level_id', 0);
         }
 
-        if (! empty($data['epic'])) {
+        if (!empty($data['epic'])) {
             $query->whereHas('rating', function ($query) {
                 $query->where('epic', true);
             });
         }
 
-        if (! empty($data['song'])) {
-            $query->where(! empty($data['customSong']) ? 'song_id' : 'audio_track', $data['song']);
+        if (!empty($data['song'])) {
+            $query->where(!empty($data['customSong']) ? 'song_id' : 'audio_track', $data['song']);
         }
 
-        if (! empty($data['noStar'])) {
+        if (!empty($data['noStar'])) {
             $query->whereHas('rating', function ($query) {
                 $query->where('stars', 0);
             });
         }
 
-        if (! empty($data['coins'])) {
+        if (!empty($data['coins'])) {
             $query->where('coins', '>', 0);
         }
 
-        if (! empty($data['twoPlayer'])) {
+        if (!empty($data['twoPlayer'])) {
             $query->where('two_player', true);
         }
     }
@@ -322,9 +322,9 @@ class LevelController extends Controller
             $hash = implode(',', [
                 $level->user_id,
                 $level->rating->stars,
-                (int) $level->rating->demon,
+                (int)$level->rating->demon,
                 $level->id,
-                (int) $level->rating->coin_verified,
+                (int)$level->rating->coin_verified,
                 $level->rating->featured_score,
                 $level->password,
                 $specialID,
@@ -347,7 +347,7 @@ class LevelController extends Controller
             }
 
             return implode('#', [
-                GDObject::merge([
+                GeometryDashObject::merge([
                     1 => $level->id,
                     2 => $level->name,
                     3 => $level->desc,
@@ -365,7 +365,7 @@ class LevelController extends Controller
                     18 => $level->rating->stars,
                     19 => $level->rating->featured_score,
                     25 => $level->rating->auto,
-                    27 => GDAlgorithm::encode($level->password, Keys::LEVEL_PASSWORD->value, sha1: false),
+                    27 => GeometryDashAlgorithm::encode($level->password, Keys::LEVEL_PASSWORD->value, sha1: false),
                     28 => $level->created_at?->locale('en')->diffForHumans(syntax: true),
                     29 => $level->updated_at?->locale('en')->diffForHumans(syntax: true),
                     30 => $level->original_level_id,
@@ -380,9 +380,9 @@ class LevelController extends Controller
                     43 => $level->rating->demon_difficulty->value,
                     45 => min($level->objects, 65535),
                 ], ':'),
-                GDAlgorithm::genLevelDivided($levelString, 40, 39),
-                sha1($hash.Salts::LEVEL->value),
-                ! empty($specialID) ? implode(':', [$level->user->id, $level->user->name, $level->user->uuid]) : 'GDCS',
+                GeometryDashAlgorithm::genLevelDivided($levelString, 40, 39),
+                sha1($hash . Salts::LEVEL->value),
+                !empty($specialID) ? implode(':', [$level->user->id, $level->user->name, $level->user->uuid]) : 'GDCS',
             ]);
         } catch (NotFoundExceptionInterface|ContainerExceptionInterface) {
             return Response::LEVEL_DOWNLOAD_FAILED_DATA_MISSING->value;
@@ -415,7 +415,7 @@ class LevelController extends Controller
         $data = $request->validated();
 
         $now = Carbon::now();
-        if (! empty($data['weekly'])) {
+        if (!empty($data['weekly'])) {
             $item = WeeklyLevel::query()
                 ->where('apply_at', '<=', $now)
                 ->orderBy('apply_at', 'desc')
