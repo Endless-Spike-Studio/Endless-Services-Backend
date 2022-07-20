@@ -9,12 +9,14 @@ class AccountMessageRepository
 {
     public function __construct(
         protected AccountMessage $model
-    ) {
+    )
+    {
     }
 
     public function findNewByAccount(int $accountID): Builder|AccountMessage
     {
         return $this->model
+            ->query()
             ->where([
                 'target_account_id' => $accountID,
                 'new' => true,
