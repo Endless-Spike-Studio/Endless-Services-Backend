@@ -41,7 +41,7 @@ class UserApiController extends Controller
     {
         $data = $request->validated();
 
-        if (! Auth::attempt($data, true)) {
+        if (!Auth::attempt($data, true)) {
             $this->pushErrorMessage(
                 __('messages.login_failed')
             );
@@ -50,9 +50,9 @@ class UserApiController extends Controller
         }
 
         $this->pushSuccessMessage(
-            'messages.welcome_back', [
+            __('messages.welcome_back', [
                 'name' => $data['name'],
-            ]
+            ])
         );
 
         return Redirect::intended();
@@ -113,7 +113,7 @@ class UserApiController extends Controller
                 return true;
             }, 3600);
 
-        if (! $attempt) {
+        if (!$attempt) {
             $this->pushErrorMessage(
                 __('messages.too_fast')
             );
