@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\GDCS\CustomSongApiController as GDCS_CustomSongController;
 use App\Http\Controllers\GDProxy\CustomSongController as GDProxy_CustomSongController;
-use App\Http\Controllers\NGProxy\SongController;
+use App\Http\Controllers\NGProxy\SongController as NGProxySongController;
 use Illuminate\Support\Facades\Route;
 use Tightenco\Ziggy\Ziggy;
 
@@ -48,15 +48,15 @@ Route::group([
         'domain' => 'ng.geometrydashchinese.com',
         'as' => 'ngproxy.',
     ], static function () {
-        Route::get('/{id}/info', [SongController::class, 'info'])
+        Route::get('/{id}/info', [NGProxySongController::class, 'info'])
             ->where('id', '\d+')
             ->name('info');
 
-        Route::get('/{id}/object', [SongController::class, 'object'])
+        Route::get('/{id}/object', [NGProxySongController::class, 'object'])
             ->where('id', '\d+')
             ->name('object');
 
-        Route::get('/{id}/download', [SongController::class, 'download'])
+        Route::get('/{id}/download', [NGProxySongController::class, 'download'])
             ->where('id', '\d+')
             ->name('download');
     });

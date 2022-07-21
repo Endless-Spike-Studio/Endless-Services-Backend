@@ -19,10 +19,11 @@ use App\Http\Controllers\GDCS\LevelGauntletController;
 use App\Http\Controllers\GDCS\LevelLeaderboardController;
 use App\Http\Controllers\GDCS\LevelPackController;
 use App\Http\Controllers\GDCS\LevelRatingController;
+use App\Http\Controllers\GDCS\SongController;
 use App\Http\Controllers\GDCS\UserController;
 use App\Http\Controllers\GDCS\UserScoreController;
 use App\Http\Controllers\GDProxyController;
-use App\Http\Controllers\NGProxy\SongController;
+use App\Http\Controllers\NGProxy\SongController as NGProxySongController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -95,6 +96,6 @@ Route::group([
         'domain' => 'ng.geometrydashchinese.com',
         'as' => 'ngproxy.',
     ], static function () {
-        Route::post('/getGJSongInfo.php', [SongController::class, 'objectForGD'])->name('object');
+        Route::post('/getGJSongInfo.php', [NGProxySongController::class, 'objectForGD'])->name('object');
     });
 });
