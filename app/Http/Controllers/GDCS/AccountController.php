@@ -54,7 +54,7 @@ class AccountController extends Controller
         $friendState = FriendState::NONE->value;
         $requestAuth = $request->auth();
 
-        if ($requestAuth) {
+        if (!empty($data['accountID']) && $requestAuth) {
             if ($block->check($target->id, $data['accountID'])) {
                 return Response::ACCOUNT_INFO_FETCH_FAILED_BLOCKED->value;
             }
