@@ -41,7 +41,7 @@ class SongService
 
 
             if (!$this->processSong($song)) {
-                throw SongProcessException::failed();
+                throw new SongProcessException();
             }
 
             return $song;
@@ -52,6 +52,7 @@ class SongService
      * @throws SongNotFoundException
      * @throws SongDisabledException
      * @throws SongFetchException
+     * @throws SongProcessException
      */
     protected function tryGetFromDatabase(int $id): Song
     {
@@ -65,7 +66,7 @@ class SongService
             }
 
             if (!$this->processSong($song)) {
-                throw SongProcessException::failed();
+                throw new SongProcessException();
             }
 
             return $song;
