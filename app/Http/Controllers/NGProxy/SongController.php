@@ -8,6 +8,7 @@ use App\Exceptions\NGProxy\SongProcessException;
 use App\Exceptions\StorageContentMissingException;
 use App\Http\Requests\NGProxy\SongGetRequest;
 use App\Http\Traits\HasMessage;
+use App\Models\NGProxy\Song;
 use App\Services\NGProxy\SongService;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -27,13 +28,14 @@ class SongController extends Controller
      */
     public function info(int $id): array
     {
-        return $this->fetch($id)->toArray();
+        return $this->fetch($id)
+            ?->toArray();
     }
 
     /**
      * @throws SongDisabledException
      */
-    protected function fetch(int $id)
+    protected function fetch(int $id): ?Song
     {
         try {
             return $this->service->find($id);
@@ -43,7 +45,9 @@ class SongController extends Controller
             );
         }
 
-        return back();
+        abort(
+            back()
+        );
     }
 
     /**
@@ -60,7 +64,8 @@ class SongController extends Controller
      */
     public function object(int $id): int|string
     {
-        return $this->fetch($id)->object;
+        return $this->fetch($id)
+            ?->object;
     }
 
     /**
@@ -69,6 +74,7 @@ class SongController extends Controller
      */
     public function download(int $id): StreamedResponse
     {
-        return $this->fetch($id)->download();
+        return $this->fetch($id)
+            ?->download();
     }
 }
