@@ -7,12 +7,15 @@ use App\Exceptions\NGProxy\SongFetchException;
 use App\Exceptions\NGProxy\SongProcessException;
 use App\Exceptions\StorageContentMissingException;
 use App\Http\Requests\NGProxy\SongGetRequest;
+use App\Http\Traits\HasMessage;
 use App\Services\NGProxy\SongService;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SongController extends Controller
 {
+    use HasMessage;
+
     public function __construct(
         protected SongService $service
     )
@@ -21,52 +24,51 @@ class SongController extends Controller
 
     /**
      * @throws SongDisabledException
-     * @throws SongProcessException
-     * @throws SongFetchException
      */
     public function info(int $id): array
     {
-        return $this->service
-            ->find($id)
-            ->toArray();
+        return $this->fetch($id)->toArray();
     }
 
     /**
      * @throws SongDisabledException
-     * @throws SongProcessException
-     * @throws SongFetchException
+     */
+    protected function fetch(int $id)
+    {
+        try {
+            return $this->service->find($id);
+        } catch (SongFetchException|SongProcessException) {
+            $this->pushErrorMessage(
+                __('messages.song_fetch_failed')
+            );
+        }
+
+        return back();
+    }
+
+    /**
+     * @throws SongDisabledException
      */
     public function objectForGD(SongGetRequest $request): int|string
     {
         $data = $request->validated();
-
-        return $this->service
-            ->find($data['songID'])
-            ->object;
+        return $this->object($data['songID']);
     }
 
     /**
      * @throws SongDisabledException
-     * @throws SongProcessException
-     * @throws SongFetchException
      */
     public function object(int $id): int|string
     {
-        return $this->service
-            ->find($id)
-            ->object;
+        return $this->fetch($id)->object;
     }
 
     /**
      * @throws SongDisabledException
-     * @throws SongProcessException
-     * @throws SongFetchException
      * @throws StorageContentMissingException
      */
     public function download(int $id): StreamedResponse
     {
-        return $this->service
-            ->find($id)
-            ->download();
+        return $this->fetch($id)->download();
     }
 }
