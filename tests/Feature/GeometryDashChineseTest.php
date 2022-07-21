@@ -1,9 +1,11 @@
 <?php
 
+use App\Events\UserEmailChanged;
+use App\Events\UserPasswordChanged;
 use App\Models\User;
 use App\Notifications\EmailVerificationNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertAuthenticatedAs;
@@ -261,8 +263,8 @@ test('重发验证邮件限流', function () {
 });
 
 test('更新设置', function () {
-    Notification::fake();
-    Notification::assertNothingSent();
+    Event::fake();
+    Event::assertNothingDispatched();
 
     $faker = fake();
     $password = $faker->password();
@@ -289,12 +291,6 @@ test('更新设置', function () {
     ])->assertRedirect();
 
     $user->fresh();
-    Notification::assertSentTo(
-        $user,
-        EmailVerificationNotification::class
-    );
-
-    assertTrue(
-        Hash::check($password, $user->password)
-    );
+    Event::assertDispatched(UserEmailChanged::class);
+    Event::assertDispatched(UserPasswordChanged::class);
 });
