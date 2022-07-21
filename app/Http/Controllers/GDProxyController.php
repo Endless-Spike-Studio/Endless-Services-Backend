@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Response;
 use App\Exceptions\InvalidResponseException;
 use App\Models\GDProxy\CustomSong;
 use App\Models\GDProxy\LevelSongReplace;
@@ -14,20 +15,21 @@ use Illuminate\Http\Request;
 
 class GDProxyController extends Controller
 {
-    /**
-     * @throws InvalidResponseException
-     */
     public function process(Request $request): string
     {
-        return $this->preProcessRequest($request)
-            ?? $this->processResponse(
-                $request,
-                app('proxy')
-                    ->post(
-                        config('gdproxy.base_url') . $request->getRequestUri(),
-                        $request->all()
-                    )->body()
-            );
+        try {
+            return $this->preProcessRequest($request)
+                ?? $this->processResponse(
+                    $request,
+                    app('proxy')
+                        ->post(
+                            config('gdproxy.base_url') . $request->getRequestUri(),
+                            $request->all()
+                        )->body()
+                );
+        } catch (InvalidResponseException) {
+            return Response::INVALID_RESPONSE->value;
+        }
     }
 
     public function preProcessRequest(Request $request): ?string
