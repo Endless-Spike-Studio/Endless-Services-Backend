@@ -13,7 +13,7 @@ class AccountMessageRepository
     {
     }
 
-    public function findNewByAccount(int $accountID): Builder|AccountMessage
+    public function findNewByAccount(int $accountID): AccountMessage|Builder
     {
         return $this->model
             ->query()
@@ -23,9 +23,10 @@ class AccountMessageRepository
             ]);
     }
 
-    public function whereBetween(int $accountID, int $targetAccountID): Builder|AccountMessage
+    public function whereBetween(int $accountID, int $targetAccountID): AccountMessage|Builder
     {
         return $this->model
+            ->query()
             ->where([
                 'account_id' => $accountID,
                 'target_account_id' => $targetAccountID,
