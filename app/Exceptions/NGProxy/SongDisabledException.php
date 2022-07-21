@@ -14,6 +14,5 @@ class SongDisabledException extends Exception
             'status' => false,
             'message' => __('messages.song_disabled'),
         ] : Response::SONG_DISABLED->value;
-
     }
 }
