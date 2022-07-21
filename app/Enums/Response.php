@@ -162,6 +162,8 @@ enum Response: int
 
     public const SONG_DISABLED = Response::SPECIAL_FAILED;
 
+    public const SONG_FETCH_FAILED = Response::FAILED;
+
     public static function empty(): string
     {
         $perPage = config('gdcs.perPage', 10);

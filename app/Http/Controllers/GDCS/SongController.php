@@ -5,6 +5,7 @@ namespace App\Http\Controllers\GDCS;
 use App\Enums\Response;
 use App\Exceptions\NGProxy\SongDisabledException;
 use App\Exceptions\NGProxy\SongFetchException;
+use App\Exceptions\NGProxy\SongProcessException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\SongGetRequest;
 use App\Http\Requests\GDCS\TopArtistFetchRequest;
@@ -15,7 +16,6 @@ class SongController extends Controller
 {
     /**
      * @throws SongDisabledException
-     * @throws SongFetchException
      */
     public function fetch(SongGetRequest $request): int|string
     {
@@ -34,9 +34,13 @@ class SongController extends Controller
             return $song->object;
         }
 
-        return app(SongService::class)
-            ->find($data['songID'])
-            ->object;
+        try {
+            return app(SongService::class)
+                ->find($data['songID'])
+                ->object;
+        } catch (SongFetchException|SongProcessException) {
+            return Response::SONG_FETCH_FAILED->value;
+        }
     }
 
     public function fetchAllTopArtists(TopArtistFetchRequest $request): string
