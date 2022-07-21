@@ -9,7 +9,7 @@ class DailyChestFetchRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->user);
+        return $this->auth() && !empty($this->user);
     }
 
     public function rules(): array
@@ -53,11 +53,11 @@ class DailyChestFetchRequest extends Request
                 'between:0,2',
             ],
             'r1' => [
-                'required',
+                'sometimes',
                 'integer',
             ],
             'r2' => [
-                'required',
+                'sometimes',
                 'integer',
             ],
             'chk' => [
