@@ -1,7 +1,7 @@
 @servers(['web' => 'localhost'])
 
 @before
-Artisan::call('down')
+Artisan::call('down');
 @endbefore
 
 @task('update-code')
@@ -57,5 +57,5 @@ restart-server
 @endstory
 
 @after
-Artisan::call('up')
+Artisan::call('up');
 @endafter
