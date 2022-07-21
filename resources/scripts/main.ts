@@ -3,6 +3,8 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { importPageComponent } from '@/scripts/vite/import-page-component'
 import { createPinia } from 'pinia'
 import { InertiaProgress } from '@inertiajs/progress'
+import axios from 'axios'
+import { getProp } from '@/scripts/helpers'
 
 if (import.meta.env.PROD && location.protocol === 'http:') {
   location.protocol = 'https:'
@@ -13,7 +15,12 @@ const pinia = createPinia()
 
 createInertiaApp({
   resolve: (name) => importPageComponent(name, components),
-  setup ({ el, app, props, plugin }) {
+  setup ({
+    el,
+    app,
+    props,
+    plugin
+  }) {
     const _app = createApp({
       render: () => h(app, props)
     })
@@ -24,4 +31,9 @@ createInertiaApp({
   }
 }).then(() => {
   InertiaProgress.init()
+
+  axios.defaults.headers.common = {
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRF-TOKEN': getProp<string>('csrf_token').value
+  }
 })
