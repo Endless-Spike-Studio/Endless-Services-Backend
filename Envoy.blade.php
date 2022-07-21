@@ -1,8 +1,8 @@
 @servers(['web' => 'localhost'])
 
 @setup
-require('vendor/autoload.php')
-require('bootstrap/app.php')
+require_once 'vendor/autoload.php';
+require_once 'bootstrap/app.php';
 @endsetup
 
 @before
