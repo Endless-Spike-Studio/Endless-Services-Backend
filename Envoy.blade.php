@@ -1,5 +1,9 @@
 @servers(['web' => 'localhost'])
 
+@before
+Artisan::call('down')
+@endbefore
+
 @task('update-code')
 git fetch --all
 git reset --hard origin/main
@@ -52,3 +56,6 @@ deploy-backend
 restart-server
 @endstory
 
+@after
+Artisan::call('up')
+@endafter
