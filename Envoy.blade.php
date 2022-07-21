@@ -1,5 +1,10 @@
 @servers(['web' => 'localhost'])
 
+@setup
+require('vendor/autoload.php')
+require('bootstrap/app.php')
+@endsetup
+
 @before
 Artisan::call('down');
 @endbefore
