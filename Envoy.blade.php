@@ -1,8 +1,13 @@
 @servers(['web' => 'localhost'])
 
+@include('vendor/autoload.php')
+
 @setup
-require_once 'vendor/autoload.php';
-require_once 'bootstrap/app.php';
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Artisan;
+
+$app = require __DIR__ . '/bootstrap/app.php';
+$app->make(Kernel::class)->bootstrap();
 @endsetup
 
 @before
