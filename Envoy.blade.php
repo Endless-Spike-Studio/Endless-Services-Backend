@@ -28,12 +28,12 @@ pnpm update
 composer update --no-dev
 @endtask
 
-@task('deploy-frontend')
+@task('update-frontend')
 pnpm run build
 php artisan static:upload
 @endtask
 
-@task('deploy-backend')
+@task('update-backend')
 php artisan migrate
 php artisan optimize:clear
 php artisan optimize
@@ -46,23 +46,23 @@ php artisan octane:reload
 @story('deploy-frontend')
 update-code
 update-frontend-packages
-deploy-frontend
+update-frontend
 restart-server
 @endstory
 
 @story('deploy-backend')
 update-code
 update-backend-packages
-deploy-backend
+update-backend
 restart-server
 @endstory
 
 @story('deploy')
 update-code
 update-frontend-packages
-deploy-frontend
 update-backend-packages
-deploy-backend
+update-frontend
+update-backend
 restart-server
 @endstory
 
