@@ -4,31 +4,23 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 
-class StaticFilesUploadCommand extends Command
+class FrontendResourceUploadCommand extends Command
 {
-    protected $signature = 'static:upload {--bases=build}';
-
-    protected $description = 'Upload static files';
-
-    protected string $disk = 'oss';
-
+    protected $signature = 'frontend:upload-resources';
+    protected $description = '上传前端文件到 oss';
     protected string $prefix = '/static/gdcn';
-
-    protected array $ignore = ['.', '..'];
-
-    protected FilesystemAdapter|Filesystem $storage;
+    protected Filesystem $storage;
 
     public function handle(): int
     {
-        $this->storage = Storage::disk($this->disk);
+        $this->storage = Storage::disk('oss');
 
         $bases = $this->option('bases');
         foreach (explode(',', $bases) as $base) {
             $this->storage->delete(
-                $this->prefix.'/'.$base
+                $this->prefix . '/' . $base
             );
 
             $this->uploadDir(
@@ -40,15 +32,15 @@ class StaticFilesUploadCommand extends Command
         return 0;
     }
 
-    protected function uploadDir(string $path, string $base): void
+    protected function uploadDir(string $path, string $prefix): void
     {
         foreach (scandir($path) as $file) {
-            if (in_array($file, $this->ignore, true)) {
+            if (in_array($file, ['.', '..'], true)) {
                 continue;
             }
 
-            $fullPath = $path.'/'.$file;
-            $relativePath = $base.'/'.$file;
+            $fullPath = $path . '/' . $file;
+            $relativePath = $prefix . '/' . $file;
 
             if (is_dir($fullPath)) {
                 $this->uploadDir($fullPath, $relativePath);
@@ -56,11 +48,11 @@ class StaticFilesUploadCommand extends Command
             }
 
             $this->storage->put(
-                $this->prefix.'/'.$relativePath,
+                $this->prefix . '/' . $relativePath,
                 file_get_contents($fullPath)
             );
 
-            $this->info($fullPath.' => '.$relativePath);
+            $this->info($fullPath . ' => ' . $relativePath);
         }
     }
 }

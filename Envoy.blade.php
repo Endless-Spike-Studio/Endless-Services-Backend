@@ -30,7 +30,7 @@ composer update --no-dev
 
 @task('update-frontend')
 pnpm run build
-php artisan static:upload
+php artisan frontend:upload-resources
 @endtask
 
 @task('update-backend')
