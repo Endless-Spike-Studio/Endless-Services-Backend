@@ -134,11 +134,11 @@ function showJoinGroupDialog (id: number, key: string) {
                                     <template #header>
                                         <n-thing>
                                             <template #header>
-                                                Geometry Dash Proxy
+                                                Geometry Dash Chinese
                                             </template>
 
                                             <template #description>
-                                                <n-text>GDProxy</n-text>
+                                                <n-text>GDCN</n-text>
                                             </template>
                                         </n-thing>
                                     </template>
