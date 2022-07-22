@@ -11,6 +11,7 @@ use Base64Url\Base64Url;
 use GeometryDashChinese\enums\Salts;
 use GeometryDashChinese\GeometryDashAlgorithm;
 use GeometryDashChinese\GeometryDashObject;
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 
 class GDProxyController extends Controller
@@ -29,6 +30,8 @@ class GDProxyController extends Controller
                 );
         } catch (InvalidResponseException) {
             return Response::INVALID_RESPONSE->value;
+        } catch (GuzzleException) {
+            return Response::PROXY_FAILED->value;
         }
     }
 
