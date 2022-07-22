@@ -50,9 +50,21 @@ update-frontend
 restart-server
 @endstory
 
+@story('deploy-frontend-without-package-update')
+update-code
+update-frontend
+restart-server
+@endstory
+
 @story('deploy-backend')
 update-code
 update-backend-packages
+update-backend
+restart-server
+@endstory
+
+@story('deploy-backend-without-package-update')
+update-code
 update-backend
 restart-server
 @endstory
