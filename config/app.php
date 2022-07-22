@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -177,8 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ProxyServiceProvider::class,
-        App\Providers\StorageServiceProvider::class,
-        App\Providers\MacroServiceProvider::class,
+        App\Providers\StorageServiceProvider::class
     ],
 
     /*
