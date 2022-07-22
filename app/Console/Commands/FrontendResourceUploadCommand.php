@@ -20,17 +20,15 @@ class FrontendResourceUploadCommand extends Command
     {
         $this->storage = Storage::disk('oss');
 
-        $bases = $this->option('bases');
-        foreach (explode(',', $bases) as $base) {
-            $this->storage->delete(
-                $this->prefix . '/' . $base
-            );
+        $base = 'build';
+        $this->storage->delete(
+            $this->prefix . '/' . $base
+        );
 
-            $this->uploadDir(
-                public_path($base),
-                $base
-            );
-        }
+        $this->uploadDir(
+            public_path($base),
+            $base
+        );
 
         return 0;
     }
