@@ -12,7 +12,7 @@ class AccountComment extends Model
     protected $fillable = ['comment'];
 
     protected $casts = [
-        'spam' => 'boolean'
+        'spam' => 'boolean',
     ];
 
     public function account(): BelongsTo

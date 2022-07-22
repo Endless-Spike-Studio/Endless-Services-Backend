@@ -42,7 +42,7 @@ class LevelApiController extends Controller
         $account = $request->user('gdcs');
 
         if ($level->user_id === $account->user->id) {
-            if (! empty($data['desc'])) {
+            if (!empty($data['desc'])) {
                 $data['desc'] = Base64Url::encode($data['desc'], true);
             }
 

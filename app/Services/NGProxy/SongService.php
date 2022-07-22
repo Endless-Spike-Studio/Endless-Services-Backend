@@ -39,7 +39,6 @@ class SongService
                     'original_download_url' => $songObject[10],
                 ]);
 
-
             if (!$this->processSong($song)) {
                 throw new SongProcessException();
             }
@@ -133,6 +132,7 @@ class SongService
                 ])->body();
 
             HelperController::checkResponse($response);
+
             return GeometryDashObject::split($response, '~|~');
         } catch (InvalidResponseException $e) {
             if (!empty($response) && $response === '-2') {
@@ -156,6 +156,7 @@ class SongService
             ])->body();
 
         HelperController::checkResponse($response);
+
         return GeometryDashObject::split(Arr::get(explode('#', $response), 2), '~|~');
     }
 }

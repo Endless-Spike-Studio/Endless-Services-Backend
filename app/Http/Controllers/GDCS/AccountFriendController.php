@@ -18,6 +18,6 @@ class AccountFriendController extends Controller
             ->orWhere('friend_account_id', $data['targetAccountID'])
             ->delete()
             ? Response::ACCOUNT_FRIEND_REMOVE_SUCCESS->value
-            : \App\Enums\Response::ACCOUNT_FRIEND_REMOVE_FAILED->value;
+            : Response::ACCOUNT_FRIEND_REMOVE_FAILED->value;
     }
 }

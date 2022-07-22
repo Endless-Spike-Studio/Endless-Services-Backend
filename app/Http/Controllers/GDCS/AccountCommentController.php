@@ -16,7 +16,8 @@ class AccountCommentController extends Controller
 {
     public function __construct(
         protected AccountCommentService $service
-    ) {
+    )
+    {
     }
 
     public function create(AccountCommentCreateRequest $request): int|string
@@ -42,7 +43,7 @@ class AccountCommentController extends Controller
 
             return $this->service->index($data['accountID'], $data['page']);
         } catch (AccountCommentNotFoundException) {
-            return \App\Enums\Response::empty();
+            return Response::empty();
         }
     }
 
@@ -51,7 +52,7 @@ class AccountCommentController extends Controller
         $data = $request->validated();
 
         return $this->service->delete($data['accountID'], $data['commentID'])
-            ? \App\Enums\Response::ACCOUNT_COMMENT_DELETE_SUCCESS->value
-            : \App\Enums\Response::ACCOUNT_COMMENT_DELETE_FAILED->value;
+            ? Response::ACCOUNT_COMMENT_DELETE_SUCCESS->value
+            : Response::ACCOUNT_COMMENT_DELETE_FAILED->value;
     }
 }

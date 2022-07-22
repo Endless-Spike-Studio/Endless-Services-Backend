@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\GDCS;
 
+use App\Enums\Response;
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
@@ -36,9 +37,9 @@ class AccountRegisterRequest extends Request
     public function messages(): array
     {
         return [
-            'userName.unique' => \App\Enums\Response::ACCOUNT_REGISTER_USER_NAME_ALREADY_IN_USE->value,
-            'email.unique' => \App\Enums\Response::ACCOUNT_REGISTER_EMAIL_ALREADY_IN_USE->value,
-            'email.email' => \App\Enums\Response::ACCOUNT_REGISTER_EMAIL_INVALID->value,
+            'userName.unique' => Response::ACCOUNT_REGISTER_USER_NAME_ALREADY_IN_USE->value,
+            'email.unique' => Response::ACCOUNT_REGISTER_EMAIL_ALREADY_IN_USE->value,
+            'email.email' => Response::ACCOUNT_REGISTER_EMAIL_INVALID->value,
         ];
     }
 }

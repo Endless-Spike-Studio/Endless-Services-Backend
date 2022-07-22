@@ -18,14 +18,6 @@ class AccountBlockService
         return $this->removeMessagesBetween($accountID, $targetAccountID) && $block->wasRecentlyCreated;
     }
 
-    public function check(int $accountID, int $targetAccountID): bool
-    {
-        return AccountBlock::query()
-            ->where('account_id', $accountID)
-            ->where('target_account_id', $targetAccountID)
-            ->exists();
-    }
-
     protected function removeMessagesBetween(int $accountID, int $targetAccountID): bool
     {
         return app(AccountMessageRepository::class)
@@ -39,5 +31,13 @@ class AccountBlockService
             ->where('account_id', $accountID)
             ->where('target_account_id', $targetAccountID)
             ->delete();
+    }
+
+    public function check(int $accountID, int $targetAccountID): bool
+    {
+        return AccountBlock::query()
+            ->where('account_id', $accountID)
+            ->where('target_account_id', $targetAccountID)
+            ->exists();
     }
 }

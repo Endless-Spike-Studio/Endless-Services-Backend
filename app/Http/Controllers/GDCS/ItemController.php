@@ -31,7 +31,7 @@ class ItemController extends Controller
                     ->findOrFail($data['itemID']);
                 break;
             default:
-                return \App\Enums\Response::LIKE_FAILED_INVALID_TYPE->value;
+                return Response::LIKE_FAILED_INVALID_TYPE->value;
         }
 
         $ip = $request->ip();
@@ -43,7 +43,7 @@ class ItemController extends Controller
             ->where('ip', $ip)
             ->where('user_id', $userID);
 
-        if (! $record->exists()) {
+        if (!$record->exists()) {
             $record = new LikeRecord();
             $record->type = $data['type'];
             $record->item_id = $data['itemID'];
@@ -51,7 +51,7 @@ class ItemController extends Controller
             $record->user_id = $userID;
             $record->save();
 
-            if (! empty($data['like'])) {
+            if (!empty($data['like'])) {
                 $item->likes++;
             } else {
                 $item->likes--;
@@ -59,7 +59,7 @@ class ItemController extends Controller
 
             $item->save();
 
-            return \App\Enums\Response::LIKE_SUCCESS->value;
+            return Response::LIKE_SUCCESS->value;
         }
 
         return Response::LIKE_FAILED->value;
@@ -69,6 +69,6 @@ class ItemController extends Controller
     {
         $request->validated();
 
-        return \App\Enums\Response::ITEM_RESTORE_FAILED;
+        return Response::ITEM_RESTORE_FAILED;
     }
 }

@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
                 'laravel' => App::version(),
                 'git' => $hash,
             ],
-            'csrf_token' => Session::token()
+            'csrf_token' => Session::token(),
         ]);
     }
 

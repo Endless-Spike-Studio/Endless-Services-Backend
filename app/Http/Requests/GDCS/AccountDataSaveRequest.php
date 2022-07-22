@@ -9,7 +9,7 @@ class AccountDataSaveRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->account);
+        return $this->auth() && !empty($this->account);
     }
 
     public function rules(): array

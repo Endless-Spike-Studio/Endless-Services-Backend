@@ -31,10 +31,11 @@ class AccountController extends Controller
 
         $account = Account::create($data);
         $account->update([
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
         ]);
 
         $account->sendEmailVerificationNotification();
+
         return Response::ACCOUNT_REGISTER_SUCCESS->value;
     }
 

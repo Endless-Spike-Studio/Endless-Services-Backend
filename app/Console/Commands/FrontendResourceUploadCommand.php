@@ -9,8 +9,11 @@ use Illuminate\Support\Facades\Storage;
 class FrontendResourceUploadCommand extends Command
 {
     protected $signature = 'frontend:upload-resources';
+
     protected $description = '上传前端文件到 oss';
+
     protected string $prefix = '/static/gdcn';
+
     protected Filesystem $storage;
 
     public function handle(): int

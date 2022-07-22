@@ -89,7 +89,7 @@ class AccountApiController extends Controller
             ->login($account, true);
 
         $account->update([
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
         ]);
 
         $this->pushSuccessMessage(
@@ -97,6 +97,7 @@ class AccountApiController extends Controller
         );
 
         $account->sendEmailVerificationNotification();
+
         return to_route('home');
     }
 
@@ -202,7 +203,7 @@ class AccountApiController extends Controller
 
         if ($account->wasChanged('password')) {
             $account->update([
-                'password' => $data['password']
+                'password' => $data['password'],
             ]);
         }
 

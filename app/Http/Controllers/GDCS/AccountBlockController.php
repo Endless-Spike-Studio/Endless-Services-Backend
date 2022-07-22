@@ -12,7 +12,8 @@ class AccountBlockController extends Controller
 {
     public function __construct(
         protected AccountBlockService $service
-    ) {
+    )
+    {
     }
 
     public function block(AccountBlockRequest $request): int
@@ -21,7 +22,7 @@ class AccountBlockController extends Controller
 
         return $this->service->create($data['accountID'], $data['targetAccountID'])
             ? Response::ACCOUNT_BLOCK_SUCCESS->value
-            : \App\Enums\Response::ACCOUNT_BLOCK_FAILED->value;
+            : Response::ACCOUNT_BLOCK_FAILED->value;
     }
 
     public function unblock(AccountUnblockRequest $request): int
@@ -29,7 +30,7 @@ class AccountBlockController extends Controller
         $data = $request->validated();
 
         return $this->service->delete($data['accountID'], $data['targetAccountID'])
-            ? \App\Enums\Response::ACCOUNT_UNBLOCK_SUCCESS->value
+            ? Response::ACCOUNT_UNBLOCK_SUCCESS->value
             : Response::ACCOUNT_UNBLOCK_FAILED->value;
     }
 }

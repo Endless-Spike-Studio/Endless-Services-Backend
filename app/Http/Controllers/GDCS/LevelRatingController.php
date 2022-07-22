@@ -24,7 +24,7 @@ class LevelRatingController extends Controller
         $level = Level::query()
             ->findOrFail($data['levelID']);
 
-        if (! empty($level->rating)) {
+        if (!empty($level->rating)) {
             return Response::LEVEL_RATE_FAILED_ALREADY_RATED->value;
         }
 
@@ -36,18 +36,18 @@ class LevelRatingController extends Controller
             ->where('ip', $ip)
             ->where('user_id', $userID);
 
-        if (! $record->exists()) {
+        if (!$record->exists()) {
             foreach ($request->account->groups as $group) {
                 if ($group->can('direct-rate')) {
                     LevelStarSuggestion::query()
                         ->where('level_id', $data['levelID'])
                         ->delete();
 
-                    if (! $this->rateNoStars($level, $data['stars'])) {
-                        return \App\Enums\Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
+                    if (!$this->rateNoStars($level, $data['stars'])) {
+                        return Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
                     }
 
-                    return \App\Enums\Response::LEVEL_RATE_SUCCESS->value;
+                    return Response::LEVEL_RATE_SUCCESS->value;
                 }
             }
 
@@ -64,26 +64,26 @@ class LevelRatingController extends Controller
             if ($query->count() >= config('gdcs.suggestion.minimum_count.rate', 10)) {
                 $avgStars = round($query->average('stars'));
                 if ($avgStars < 1 || $avgStars > 10) {
-                    return \App\Enums\Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
+                    return Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
                 }
 
                 $query->delete();
-                if (! $this->rateNoStars($level, $data['stars'])) {
-                    return \App\Enums\Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
+                if (!$this->rateNoStars($level, $data['stars'])) {
+                    return Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
                 }
 
                 return Response::LEVEL_RATE_SUCCESS->value;
             }
 
-            return \App\Enums\Response::LEVEL_RATE_SUGGESTION_SUBMITTED->value;
+            return Response::LEVEL_RATE_SUGGESTION_SUBMITTED->value;
         }
 
-        return \App\Enums\Response::LEVEL_RATE_FAILED_USER_ALREADY_RATED->value;
+        return Response::LEVEL_RATE_FAILED_USER_ALREADY_RATED->value;
     }
 
     protected function rateNoStars(Level $level, int $stars): bool
     {
-        if (! empty($level->rating)) {
+        if (!empty($level->rating)) {
             return false;
         }
 
@@ -108,9 +108,9 @@ class LevelRatingController extends Controller
             return Response::LEVEL_RATE_DEMON_FAILED_NOT_RATED->value;
         }
 
-        if (! empty($data['mode'])) {
+        if (!empty($data['mode'])) {
             if ($request->account->mod_level->value <= 0) {
-                return \App\Enums\Response::LEVEL_RATE_DEMON_FAILED_NO_PERMISSION->value;
+                return Response::LEVEL_RATE_DEMON_FAILED_NO_PERMISSION->value;
             }
 
             foreach ($request->account->groups as $group) {
@@ -119,11 +119,11 @@ class LevelRatingController extends Controller
                         ->where('level_id', $data['levelID'])
                         ->delete();
 
-                    if (! $this->rateDemonDiff($level, $data['rating'])) {
-                        return \App\Enums\Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
+                    if (!$this->rateDemonDiff($level, $data['rating'])) {
+                        return Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
                     }
 
-                    return \App\Enums\Response::LEVEL_RATE_DEMON_SUCCESS->value;
+                    return Response::LEVEL_RATE_DEMON_SUCCESS->value;
                 }
             }
         }
@@ -136,7 +136,7 @@ class LevelRatingController extends Controller
             ->where('ip', $ip)
             ->where('user_id', $userID);
 
-        if (! $record->exists()) {
+        if (!$record->exists()) {
             $record = new LevelDemonDifficultySuggestion();
             $record->level_id = $data['levelID'];
             $record->demon_diff = $data['rating'];
@@ -150,22 +150,22 @@ class LevelRatingController extends Controller
             if ($query->count() >= config('gdcs.suggestion.minimum_count.demon', 10)) {
                 $avgRating = round($query->average('demon_diff'));
                 if ($avgRating < 1 || $avgRating > 5) {
-                    return \App\Enums\Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
+                    return Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
                 }
 
-                if (! $this->rateDemonDiff($level, $avgRating)) {
+                if (!$this->rateDemonDiff($level, $avgRating)) {
                     return Response::LEVEL_RATE_DEMON_FAILED_UNKNOWN_ERROR->value;
                 }
 
                 $query->delete();
 
-                return \App\Enums\Response::LEVEL_RATE_DEMON_SUCCESS->value;
+                return Response::LEVEL_RATE_DEMON_SUCCESS->value;
             }
 
-            return \App\Enums\Response::LEVEL_RATE_DEMON_SUGGESTION_SUBMITTED->value;
+            return Response::LEVEL_RATE_DEMON_SUGGESTION_SUBMITTED->value;
         }
 
-        return \App\Enums\Response::LEVEL_RATE_DEMON_FAILED_USER_ALREADY_RATED->value;
+        return Response::LEVEL_RATE_DEMON_FAILED_USER_ALREADY_RATED->value;
     }
 
     protected function rateDemonDiff(Level $level, int $rating): bool
@@ -204,8 +204,8 @@ class LevelRatingController extends Controller
                     ->where('level_id', $level->id)
                     ->delete();
 
-                if (! $this->rate($level, $data['stars'])) {
-                    return \App\Enums\Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
+                if (!$this->rate($level, $data['stars'])) {
+                    return Response::LEVEL_RATE_FAILED_UNKNOWN_ERROR->value;
                 }
 
                 $level->rating->featured_score = $data['feature'];
@@ -223,7 +223,7 @@ class LevelRatingController extends Controller
                 'featured' => $data['feature'],
             ]);
 
-        if (! $record->exists()) {
+        if (!$record->exists()) {
             $record = new LevelRatingSuggestion();
             $record->account_id = $request->account->id;
             $record->level_id = $data['levelID'];
@@ -231,15 +231,15 @@ class LevelRatingController extends Controller
             $record->featured = $data['feature'];
             $record->save();
 
-            return \App\Enums\Response::LEVEL_RATE_SUGGESTION_SUBMITTED->value;
+            return Response::LEVEL_RATE_SUGGESTION_SUBMITTED->value;
         }
 
-        return \App\Enums\Response::LEVEL_RATE_SUGGEST_FAILED_ALREADY_SUGGESTED->value;
+        return Response::LEVEL_RATE_SUGGEST_FAILED_ALREADY_SUGGESTED->value;
     }
 
     protected function rate(Level $level, int $stars): bool
     {
-        if (! empty($level->rating)) {
+        if (!empty($level->rating)) {
             return false;
         }
 

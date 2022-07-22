@@ -177,7 +177,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ProxyServiceProvider::class,
-        App\Providers\StorageServiceProvider::class
+        App\Providers\StorageServiceProvider::class,
     ],
 
     /*

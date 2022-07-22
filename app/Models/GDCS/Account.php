@@ -30,7 +30,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
     protected $dates = ['email_verified_at'];
 
     protected $casts = [
-        'mod_level' => ModLevel::class
+        'mod_level' => ModLevel::class,
     ];
 
     public function user(): HasOne

@@ -18,7 +18,7 @@ class Song extends Model
     {
         return [
             ...parent::toArray(),
-            'download_url' => $this->download_url
+            'download_url' => $this->download_url,
         ];
     }
 
@@ -46,6 +46,7 @@ class Song extends Model
     {
         /** @var StorageService $storage */
         $storage = app('storage:ngproxy.song_data');
+
         return $storage->download($this->song_id);
     }
 }

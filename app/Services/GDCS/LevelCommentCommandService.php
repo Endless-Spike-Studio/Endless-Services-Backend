@@ -21,7 +21,7 @@ class LevelCommentCommandService extends CommandService
 
     public function unRate(): string
     {
-        if (! $this->account->can('rate-level')) {
+        if (!$this->account->can('rate-level')) {
             return __('messages.command.permission_denied');
         }
 
@@ -34,27 +34,27 @@ class LevelCommentCommandService extends CommandService
 
     public function rate(): string
     {
-        if (! Arr::has($this->parameters, [0])) {
+        if (!Arr::has($this->parameters, [0])) {
             return __('messages.command.invalid_parameters');
         }
 
-        if (! $this->account->can('rate-level')) {
+        if (!$this->account->can('rate-level')) {
             return __('messages.command.permission_denied');
         }
 
         $stars = Arr::get($this->parameters, 0);
-        if (! is_int($stars) || $stars < 1 || $stars > 10) {
+        if (!is_int($stars) || $stars < 1 || $stars > 10) {
             return __('messages.command.invalid_parameters');
         }
 
         $this->level->rate($stars);
         $featuredScore = Arr::get($this->arguments, 'featured-score');
-        if (! empty($featuredScore)) {
+        if (!empty($featuredScore)) {
             $this->level->rating->update(['featured_score' => $featuredScore]);
         }
 
         $demonDifficulty = Arr::get($this->arguments, 'demon-difficulty');
-        if (! empty($demonDifficulty)) {
+        if (!empty($demonDifficulty)) {
             $this->level->rating->update([
                 'demon_difficulty' => HelperController::guessLevelRatingDemonDifficultyFromName($demonDifficulty),
             ]);
@@ -73,11 +73,11 @@ class LevelCommentCommandService extends CommandService
 
     public function set(): string
     {
-        if (! Arr::has($this->parameters, [0, 1])) {
+        if (!Arr::has($this->parameters, [0, 1])) {
             return __('messages.command.invalid_parameters');
         }
 
-        if (! $this->checkLevelOwner()) {
+        if (!$this->checkLevelOwner()) {
             return __('messages.command.permission_denied');
         }
 
@@ -86,7 +86,7 @@ class LevelCommentCommandService extends CommandService
 
         switch ($key) {
             case 'as':
-                if (! $this->account->can('mark-level')) {
+                if (!$this->account->can('mark-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -99,7 +99,7 @@ class LevelCommentCommandService extends CommandService
                         DailyLevel::query()
                             ->create([
                                 'level_id' => $this->level->id,
-                                'apply_at' => ! $daily ? Carbon::parse('tomorrow') : $daily->apply_at->addWeek(),
+                                'apply_at' => !$daily ? Carbon::parse('tomorrow') : $daily->apply_at->addWeek(),
                             ]);
                         break;
                     case 'weekly':
@@ -110,7 +110,7 @@ class LevelCommentCommandService extends CommandService
                         WeeklyLevel::query()
                             ->create([
                                 'level_id' => $this->level->id,
-                                'apply_at' => ! $weekly ? Carbon::parse('next monday') : $weekly->apply_at->addWeek(),
+                                'apply_at' => !$weekly ? Carbon::parse('next monday') : $weekly->apply_at->addWeek(),
                             ]);
                         break;
                     default:
@@ -161,7 +161,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'difficulty':
-                if (! $this->account->can('rate-level')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -170,7 +170,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'demon-difficulty':
-                if (! $this->account->can('rate-level')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -179,11 +179,11 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'stars':
-                if (! $this->account->can('rate-level')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
-                if (! is_int($value) || $value < 1 || $value > 10) {
+                if (!is_int($value) || $value < 1 || $value > 10) {
                     return __('messages.command.invalid_parameters');
                 }
 
@@ -194,18 +194,18 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'featured-score':
-                if (! $this->account->can('rate-level')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
-                if (! is_int($value)) {
+                if (!is_int($value)) {
                     return __('messages.command.invalid_parameters');
                 }
 
                 $this->level->rating->update(['featured_score' => $value]);
                 break;
             case 'epic':
-                if (! $this->account->can('rate-level')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -214,7 +214,7 @@ class LevelCommentCommandService extends CommandService
                 ]);
                 break;
             case 'silver-coin':
-                if (! $this->account->can('rate-level')) {
+                if (!$this->account->can('rate-level')) {
                     return __('messages.command.permission_denied');
                 }
 
@@ -241,11 +241,11 @@ class LevelCommentCommandService extends CommandService
 
     public function transfer_to(): string
     {
-        if (! Arr::has($this->parameters, [0, 1])) {
+        if (!Arr::has($this->parameters, [0, 1])) {
             return __('messages.command.invalid_parameters');
         }
 
-        if (! $this->checkLevelOwner()) {
+        if (!$this->checkLevelOwner()) {
             return __('messages.command.permission_denied');
         }
 

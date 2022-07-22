@@ -45,5 +45,5 @@ return [
     'song_not_found' => '歌曲不存在',
     'song_fetch_failed' => '歌曲获取失败, 请稍后再试',
     'song_process_failed' => '歌曲处理失败',
-    'song_disabled' => '歌曲已禁用'
+    'song_disabled' => '歌曲已禁用',
 ];

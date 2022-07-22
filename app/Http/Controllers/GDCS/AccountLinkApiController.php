@@ -23,7 +23,7 @@ class AccountLinkApiController extends Controller
 
         try {
             $response = app('proxy')
-                ->post($data['server'].'/accounts/loginGJAccount.php', [
+                ->post($data['server'] . '/accounts/loginGJAccount.php', [
                     'userName' => $data['name'],
                     'password' => $data['password'],
                     'udid' => Str::uuid()
