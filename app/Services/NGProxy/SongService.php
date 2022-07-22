@@ -92,7 +92,7 @@ class SongService
                     ])
                     ->get($url)
                     ->body();
-            } catch (GuzzleException $e) {
+            } catch (GuzzleException) {
                 return false;
             }
 
