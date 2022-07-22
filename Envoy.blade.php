@@ -78,6 +78,13 @@ update-backend
 restart-server
 @endstory
 
+@story('deploy-without-package-update')
+update-code
+update-frontend
+update-backend
+restart-server
+@endstory
+
 @after
 Artisan::call('up');
 @endafter
