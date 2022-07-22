@@ -34,7 +34,9 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'domain' => 'fw.geometrydashchinese.com',
 ], static function () {
-    Route::redirect('/{path}', 'geometrydashchinese.com')->where('path', '.*')->name('deprecated');
+    Route::redirect('/{path}', 'https://geometrydashchinese.com')
+        ->where('path', '.*')
+        ->name('deprecated');
 });
 
 Route::group([
