@@ -4,7 +4,6 @@ namespace App\Http\Controllers\GDCS;
 
 use App\Enums\GDCS\FriendState;
 use App\Enums\Response;
-use App\Events\GDCS\AccountRegistered;
 use App\Http\Requests\GDCS\AccountInfoFetchRequest;
 use App\Http\Requests\GDCS\AccountLoginRequest;
 use App\Http\Requests\GDCS\AccountModAccessRequest;
@@ -21,19 +20,21 @@ use App\Services\GDCS\AccountFriendService;
 use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
     public function register(AccountRegisterRequest $request): int
     {
-        $data = Arr::rename($request->validated(), [
-            'userName' => 'name',
-        ]);
+        $data = $request->validated();
+        $data['name'] = $data['userName'];
 
         $account = Account::create($data);
-        AccountRegistered::dispatch($account);
+        $account->update([
+            'password' => Hash::make($data['password'])
+        ]);
 
+        $account->sendEmailVerificationNotification();
         return Response::ACCOUNT_REGISTER_SUCCESS->value;
     }
 

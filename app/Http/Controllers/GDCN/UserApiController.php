@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\GDCN;
 
-use App\Events\UserEmailChanged;
-use App\Events\UserPasswordChanged;
-use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCN\UserLoginApiRequest;
 use App\Http\Requests\GDCN\UserRegisterApiRequest;
@@ -14,6 +11,7 @@ use App\Http\Traits\HasMessage;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -28,12 +26,16 @@ class UserApiController extends Controller
 
         $user = User::create($data);
         Auth::login($user, true);
-        UserRegistered::dispatch($user);
+
+        $user->update([
+            'password' => Hash::make($data['password'])
+        ]);
 
         $this->pushSuccessMessage(
             __('messages.register_success')
         );
 
+        $user->sendEmailVerificationNotification();
         return to_route('home');
     }
 
@@ -85,7 +87,6 @@ class UserApiController extends Controller
         );
 
         Auth::logoutCurrentDevice();
-
         return to_route('home');
     }
 
@@ -130,15 +131,17 @@ class UserApiController extends Controller
         $user->update($data);
 
         if ($user->wasChanged('password')) {
-            UserPasswordChanged::dispatch($user);
+            $user->update([
+                'password' => Hash::make($data['password'])
+            ]);
         }
 
         if ($user->wasChanged('email')) {
             $user->update([
-                'email_verified_at' => null,
+                'email_verified_at' => null
             ]);
 
-            UserEmailChanged::dispatch($user);
+            $user->sendEmailVerificationNotification();
         }
 
         $this->pushSuccessMessage(

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Events\GDCS\AccountEmailChanged;
-use App\Events\GDCS\AccountPasswordChanged;
-use App\Events\GDCS\AccountRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AbilityUpdateApiRequest;
 use App\Http\Requests\GDCS\AccountLoginApiRequest;
@@ -20,6 +17,7 @@ use App\Models\GDCS\Account;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -88,12 +86,16 @@ class AccountApiController extends Controller
 
         $account = Account::create($data);
         Auth::login($account, true);
-        AccountRegistered::dispatch($account);
+
+        $account->update([
+            'password' => Hash::make($data['password'])
+        ]);
 
         $this->pushSuccessMessage(
             __('messages.register_success')
         );
 
+        $account->sendEmailVerificationNotification();
         return to_route('home');
     }
 
@@ -102,7 +104,7 @@ class AccountApiController extends Controller
         $data = $request->validated();
         $auth = Auth::guard('gdcs');
 
-        if (! $auth->attempt($data, true)) {
+        if (!$auth->attempt($data, true)) {
             $this->pushErrorMessage(
                 __('messages.login_failed')
             );
@@ -146,7 +148,7 @@ class AccountApiController extends Controller
                 }
             }, 3600);
 
-        if (! $attempt) {
+        if (!$attempt) {
             $this->pushErrorMessage(
                 __('messages.too_fast')
             );
@@ -173,7 +175,7 @@ class AccountApiController extends Controller
         /** @var Account $account */
         $account = $request->user('gdcs');
 
-        if (! $account->hasVerifiedEmail()) {
+        if (!$account->hasVerifiedEmail()) {
             $account->markEmailAsVerified();
 
             $this->pushSuccessMessage(
@@ -198,7 +200,9 @@ class AccountApiController extends Controller
         $account->update($data);
 
         if ($account->wasChanged('password')) {
-            AccountPasswordChanged::dispatch($account);
+            $account->update([
+                'password' => $data['password']
+            ]);
         }
 
         if ($account->wasChanged('email')) {
@@ -206,7 +210,7 @@ class AccountApiController extends Controller
                 'email_verified_at' => null,
             ]);
 
-            AccountEmailChanged::dispatch($account);
+            $account->sendEmailVerificationNotification();
         }
 
         $this->pushSuccessMessage(
