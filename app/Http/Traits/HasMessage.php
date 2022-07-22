@@ -8,22 +8,12 @@ trait HasMessage
 {
     public function pushErrorMessage(string $content, array $options = []): void
     {
-        Session::push('messages', [
-            'content' => $content,
-            'options' => array_merge([
+        $this->pushMessage(
+            $content,
+            array_merge([
                 'type' => 'error',
-            ], $options),
-        ]);
-    }
-
-    public function pushSuccessMessage(string $content, array $options = []): void
-    {
-        Session::push('messages', [
-            'content' => $content,
-            'options' => array_merge([
-                'type' => 'success',
-            ], $options),
-        ]);
+            ], $options)
+        );
     }
 
     protected function pushMessage(string $content, array $options = []): void
@@ -32,5 +22,15 @@ trait HasMessage
             'content' => $content,
             'options' => $options,
         ]);
+    }
+
+    public function pushSuccessMessage(string $content, array $options = []): void
+    {
+        $this->pushMessage(
+            $content,
+            array_merge([
+                'type' => 'success',
+            ], $options)
+        );
     }
 }
