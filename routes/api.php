@@ -21,7 +21,7 @@ Route::group([
     'as' => 'api.',
 ], static function () {
     Route::group([
-        'domain' => 'fw.geometrydashchinese.com',
+        'domain' => 'geometrydashchinese.com',
     ], static function () {
         Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
     });
