@@ -2,21 +2,12 @@
 
 namespace App\Models\GDProxy;
 
-use Database\Factories\GDProxy\CustomSongFactory;
 use GeometryDashChinese\GeometryDashObject;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomSong extends Model
 {
-    use HasFactory;
-
     protected $table = 'gdproxy_custom_songs';
-
-    protected static function newFactory(): CustomSongFactory
-    {
-        return new CustomSongFactory();
-    }
 
     public function getObjectAttribute(): string
     {

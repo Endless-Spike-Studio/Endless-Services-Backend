@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\GDCN\UserApiController;
 use App\Http\Controllers\GDCS\AccountApiController;
 use App\Http\Controllers\GDCS\AccountFailedLogApiController;
 use App\Http\Controllers\GDCS\AccountLinkApiController;
@@ -8,7 +7,6 @@ use App\Http\Controllers\GDCS\CustomSongApiController;
 use App\Http\Controllers\GDCS\LevelApiController;
 use App\Http\Controllers\GDCS\LevelTempUploadAccessApiController;
 use App\Http\Controllers\GDCS\LevelTransferApiController;
-use App\Http\Presenters\GDCN\Dashboard\UserPresenter;
 use App\Http\Presenters\GDCS\Admin\AbilityPresenter;
 use App\Http\Presenters\GDCS\Admin\LevelPresenter;
 use App\Http\Presenters\GDCS\Admin\RolePresenter;
@@ -36,50 +34,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'domain' => 'fw.geometrydashchinese.com',
 ], static function () {
-    Route::inertia('/', 'GDCN/Home')->name('home');
-
-    Route::group([
-        'middleware' => 'guest',
-    ], static function () {
-        Route::inertia('/register', 'GDCN/Auth/Register')->name('register');
-        Route::post('/register', [UserApiController::class, 'register'])->name('register.api');
-
-        Route::inertia('/login', 'GDCN/Auth/Login')->name('login');
-        Route::post('/login', [UserApiController::class, 'login'])->name('login.api');
-    });
-
-    Route::group([
-        'middleware' => 'auth',
-    ], static function () {
-        Route::get('/verify/{_}', [UserApiController::class, 'verify'])
-            ->middleware('signed')
-            ->name('verification.verify');
-
-        Route::group([
-            'prefix' => 'user',
-            'as' => 'user.',
-        ], static function () {
-            Route::get('/profile', [UserPresenter::class, 'renderProfile'])->name('profile');
-            Route::post('/resend:email_verification', [UserApiController::class, 'resendEmailVerification'])->name('resendEmailVerification.api');
-            Route::get('/setting', [UserPresenter::class, 'renderSetting'])->name('setting');
-            Route::patch('/setting', [UserApiController::class, 'updateSetting'])->name('setting.update.api');
-            Route::get('/logout', [UserApiController::class, 'logout'])->name('logout.api');
-        });
-
-        Route::group([
-            'prefix' => 'dashboard',
-            'as' => 'dashboard.',
-        ], static function () {
-            Route::inertia('/', 'GDCN/Dashboard/Home')->name('home');
-        });
-
-        Route::group([
-            'prefix' => 'tools',
-            'as' => 'tools.',
-        ], static function () {
-            Route::inertia('/', 'GDCN/Tools/Home')->name('home');
-        });
-    });
+    Route::redirect('/{path}', 'geometrydashchinese.com')->where('path', '.*')->name('deprecated');
 });
 
 Route::group([

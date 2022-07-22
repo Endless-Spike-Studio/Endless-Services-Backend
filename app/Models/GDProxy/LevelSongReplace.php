@@ -3,21 +3,12 @@
 namespace App\Models\GDProxy;
 
 use App\Models\NGProxy\Song;
-use Database\Factories\GDProxy\LevelSongReplaceFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LevelSongReplace extends Model
 {
-    use HasFactory;
-
     protected $table = 'gdproxy_level_song_replaces';
-
-    protected static function newFactory(): LevelSongReplaceFactory
-    {
-        return new LevelSongReplaceFactory();
-    }
 
     public function song(): BelongsTo
     {

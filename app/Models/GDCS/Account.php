@@ -7,11 +7,9 @@ use App\Enums\GDCS\AccountSettingFriendRequestState;
 use App\Enums\GDCS\AccountSettingMessageState;
 use App\Enums\GDCS\ModLevel;
 use App\Notifications\GDCS\EmailVerificationNotification;
-use Database\Factories\GDCS\AccountFactory;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,7 +19,7 @@ use Silber\Bouncer\Database\HasRolesAndAbilities;
 
 class Account extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasApiTokens, HasFactory, MustVerifyEmail, Notifiable, HasRolesAndAbilities;
+    use HasApiTokens, MustVerifyEmail, Notifiable, HasRolesAndAbilities;
 
     protected $table = 'gdcs_accounts';
 
@@ -34,11 +32,6 @@ class Account extends Authenticatable implements MustVerifyEmailContract
     protected $casts = [
         'mod_level' => ModLevel::class
     ];
-
-    protected static function newFactory(): AccountFactory
-    {
-        return new AccountFactory();
-    }
 
     public function user(): HasOne
     {

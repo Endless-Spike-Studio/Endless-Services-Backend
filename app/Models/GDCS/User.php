@@ -2,8 +2,6 @@
 
 namespace App\Models\GDCS;
 
-use Database\Factories\GDCS\UserFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -11,16 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasFactory;
-
     protected $table = 'gdcs_users';
 
     protected $fillable = ['name', 'uuid', 'udid'];
-
-    protected static function newFactory(): UserFactory
-    {
-        return new UserFactory();
-    }
 
     public function ban(): HasOne
     {

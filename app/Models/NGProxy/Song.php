@@ -4,24 +4,15 @@ namespace App\Models\NGProxy;
 
 use App\Exceptions\StorageContentMissingException;
 use App\Services\StorageService;
-use Database\Factories\NGProxy\SongFactory;
 use GeometryDashChinese\GeometryDashObject;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Song extends Model
 {
-    use HasFactory;
-
     protected $table = 'ngproxy_songs';
 
     protected $fillable = ['song_id', 'name', 'artist_id', 'artist_name', 'size', 'disabled'];
-
-    protected static function newFactory(): SongFactory
-    {
-        return new SongFactory();
-    }
 
     public function toArray(): array
     {
