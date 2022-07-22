@@ -2,7 +2,6 @@
 
 namespace App\Models\GDCS;
 
-use App\Casts\Base64Cast;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -13,8 +12,7 @@ class AccountComment extends Model
     protected $fillable = ['comment'];
 
     protected $casts = [
-        'comment' => Base64Cast::class,
-        'spam' => 'boolean',
+        'spam' => 'boolean'
     ];
 
     public function account(): BelongsTo

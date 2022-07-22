@@ -31,7 +31,9 @@ class Account extends Authenticatable implements MustVerifyEmailContract
 
     protected $dates = ['email_verified_at'];
 
-    protected $casts = ['mod_level' => ModLevel::class];
+    protected $casts = [
+        'mod_level' => ModLevel::class
+    ];
 
     protected static function newFactory(): AccountFactory
     {
@@ -67,7 +69,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
 
     public function sendEmailVerificationNotification(): void
     {
-        if (! $this->hasVerifiedEmail()) {
+        if (!$this->hasVerifiedEmail()) {
             $this->notify(new EmailVerificationNotification);
         }
     }
