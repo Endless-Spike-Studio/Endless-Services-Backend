@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([
-    'domain' => 'fw.geometrydashchinese.com',
+    'domain' => 'geometrydashchinese.com',
 ], static function () {
     Route::inertia('/', 'Home')->name('home');
 });
