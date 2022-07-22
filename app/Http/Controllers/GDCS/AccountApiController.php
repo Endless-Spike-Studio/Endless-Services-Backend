@@ -83,9 +83,10 @@ class AccountApiController extends Controller
     public function register(AccountRegisterApiRequest $request): RedirectResponse
     {
         $data = $request->validated();
-
         $account = Account::create($data);
-        Auth::login($account, true);
+
+        Auth::guard('gdcs')
+            ->login($account, true);
 
         $account->update([
             'password' => Hash::make($data['password'])

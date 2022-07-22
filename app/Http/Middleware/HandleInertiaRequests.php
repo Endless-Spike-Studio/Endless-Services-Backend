@@ -22,10 +22,6 @@ class HandleInertiaRequests extends Middleware
         });
 
         return array_merge(parent::share($request), [
-            'gdcn' => [
-                'user' => Auth::user()
-                    ?->only(['id', 'name']),
-            ],
             'gdcs' => [
                 'account' => Auth::guard('gdcs')
                     ->user()
