@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Jobs\CleanUnverifiedUser;
 use App\Jobs\GDCS\CleanUnusedTempLevelUploadAccess;
 use App\Jobs\GDCS\CleanUnverifiedAccount;
 use Illuminate\Console\Scheduling\Schedule;
@@ -12,8 +11,7 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(CleanUnverifiedUser::class)->everyTenMinutes();
-        $schedule->job(CleanUnverifiedAccount::class)->everyTenMinutes();
+        $schedule->call(CleanUnverifiedAccount::class)->everyTenMinutes();
         $schedule->job(CleanUnusedTempLevelUploadAccess::class)->everyTenMinutes();
     }
 
