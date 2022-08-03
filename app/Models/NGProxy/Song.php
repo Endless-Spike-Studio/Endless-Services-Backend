@@ -2,16 +2,16 @@
 
 namespace App\Models\NGProxy;
 
-use App\Exceptions\StorageContentMissingException;
-use App\Services\StorageService;
+use App\Exceptions\StorageException;
+use App\Services\Storage\SongStorageService;
 use GeometryDashChinese\GeometryDashObject;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Song extends Model
 {
     protected $table = 'ngproxy_songs';
-
     protected $fillable = ['song_id', 'name', 'artist_id', 'artist_name', 'size', 'disabled'];
 
     public function toArray(): array
@@ -22,9 +22,17 @@ class Song extends Model
         ];
     }
 
+    public function data(): Attribute
+    {
+        return new Attribute(
+            fn() => app(SongStorageService::class)->get(['id' => $this->song_id]),
+            fn(string $value) => app(SongStorageService::class)->put(['id' => $this->song_id], $value)
+        );
+    }
+
     public function getDownloadUrlAttribute(): string
     {
-        return route('api.ngproxy.download', $this->song_id);
+        return route('ngproxy.download', $this->song_id);
     }
 
     public function getObjectAttribute(): string
@@ -40,13 +48,10 @@ class Song extends Model
     }
 
     /**
-     * @throws StorageContentMissingException
+     * @throws StorageException
      */
     public function download(): StreamedResponse
     {
-        /** @var StorageService $storage */
-        $storage = app('storage:ngproxy.song_data');
-
-        return $storage->download($this->song_id);
+        return app(SongStorageService::class)->download(['id' => $this->song_id]);
     }
 }

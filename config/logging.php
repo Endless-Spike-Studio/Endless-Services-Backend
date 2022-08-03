@@ -67,30 +67,9 @@ return [
             'days' => 14,
         ],
 
-        'GDCN' => [
+        'gdcn' => [
             'driver' => 'daily',
             'path' => storage_path('logs/product/gdcn.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 3,
-        ],
-
-        'GDCS' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/product/gdcs.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 3,
-        ],
-
-        'GDProxy' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/product/gdproxy.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 3,
-        ],
-
-        'NGProxy' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/product/ngproxy.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 3,
         ],
