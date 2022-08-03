@@ -3,6 +3,7 @@
 namespace App\Services\NGProxy;
 
 use App\Exceptions\NGProxy\SongException;
+use App\Exceptions\ResponseException;
 use App\Models\NGProxy\Song;
 use App\Services\Game\ResponseService;
 use App\Services\Storage\SongStorageService;
@@ -30,15 +31,16 @@ class SongService
             return $song;
         }
 
-        $response = app('proxy')
-            ->post(config('gdproxy.base_url') . '/getGJSongInfo.php', [
-                'songID' => $id,
-                'secret' => 'Wmfd2893gb7',
-            ])->body();
+        try {
+            $response = app('proxy')
+                ->post(config('gdproxy.base_url') . '/getGJSongInfo.php', [
+                    'songID' => $id,
+                    'secret' => 'Wmfd2893gb7',
+                ])->body();
 
-        if (ResponseService::check($response)) {
+            ResponseService::check($response);
             $songObject = GeometryDashObject::split($response, '~|~');
-        } else {
+        } catch (ResponseException $e) {
             $response = app('proxy')
                 ->post(config('gdproxy.base_url') . '/getGJLevels21.php', [
                     'song' => $id,
@@ -46,7 +48,9 @@ class SongService
                     'secret' => 'Wmfd2893gb7',
                 ])->body();
 
-            if (!ResponseService::check($response)) {
+            try {
+                ResponseService::check($response);
+            } catch (ResponseException) {
                 $e = SongException::notFound();
                 $e->log_context = ['result' => $response];
 
