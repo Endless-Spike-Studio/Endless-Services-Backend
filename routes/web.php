@@ -7,6 +7,7 @@ use App\Http\Controllers\GDCS\CustomSongApiController;
 use App\Http\Controllers\GDCS\LevelApiController;
 use App\Http\Controllers\GDCS\LevelTempUploadAccessApiController;
 use App\Http\Controllers\GDCS\LevelTransferApiController;
+use App\Http\Controllers\NGProxy\SongController;
 use App\Http\Presenters\GDCS\Admin\AbilityPresenter;
 use App\Http\Presenters\GDCS\Admin\LevelPresenter;
 use App\Http\Presenters\GDCS\Admin\RolePresenter;
@@ -243,4 +244,8 @@ Route::group([
     Route::get('/{id}', [NGProxyPresenter::class, 'renderHomeWithSong'])
         ->where('id', '\d+')
         ->name('info');
+
+    Route::get('/{id}/download', [SongController::class, 'download'])
+        ->where('id', '\d+')
+        ->name('download');
 });
