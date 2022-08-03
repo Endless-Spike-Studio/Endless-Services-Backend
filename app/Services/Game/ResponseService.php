@@ -10,7 +10,7 @@ class ResponseService
     /**
      * @throws ResponseException
      */
-    public static function check(string $data): bool
+    public static function check(string $data): void
     {
         if (
             empty($data)
