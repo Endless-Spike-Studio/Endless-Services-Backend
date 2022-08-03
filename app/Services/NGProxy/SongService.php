@@ -47,7 +47,10 @@ class SongService
                 ])->body();
 
             if (!ResponseService::check($response)) {
-                throw SongException::notFound();
+                $e = SongException::notFound();
+                $e->log_context = ['result' => $response];
+
+                throw $e;
             }
 
             $songObject = GeometryDashObject::split(Arr::get(explode('#', $response), 2), '~|~');
