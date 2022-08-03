@@ -32,12 +32,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([
-    'domain' => 'geometrydashchinese.com',
-], static function () {
-    Route::inertia('/', 'Home')->name('home');
-});
-
-Route::group([
     'domain' => 'gf.geometrydashchinese.com',
     'as' => 'gdcs.',
 ], static function () {
