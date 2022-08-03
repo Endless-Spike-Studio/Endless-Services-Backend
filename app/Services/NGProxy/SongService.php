@@ -54,7 +54,10 @@ class SongService
         }
 
         if (!Arr::has($songObject, [1, 2, 3, 4, 5, 10])) {
-            throw SongException::processing();
+            $e = SongException::processing();
+            $e->log_context = ['error' => '歌曲对象处理失败', 'id' => $id, 'result' => $songObject];
+
+            throw $e;
         }
 
         $song = Song::query()
@@ -87,8 +90,10 @@ class SongService
                     ->body();
 
                 $song->save();
-            } catch (GuzzleException) {
-                throw SongException::processing();
+            } catch (GuzzleException $ex) {
+                $e = SongException::processing();
+                $e->log_context = ['error' => '请求失败', 'message' => $ex->getMessage(), 'id' => $song->song_id];
+                throw $e;
             }
         }
     }
