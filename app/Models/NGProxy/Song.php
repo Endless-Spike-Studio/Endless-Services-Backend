@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class Song extends Model
 {
     protected $table = 'ngproxy_songs';
-    protected $fillable = ['song_id', 'name', 'artist_id', 'artist_name', 'size', 'disabled'];
+    protected $fillable = ['song_id', 'name', 'artist_id', 'artist_name', 'size', 'disabled', 'original_download_url'];
 
     public function toArray(): array
     {
