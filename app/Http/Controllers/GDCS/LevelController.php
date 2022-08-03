@@ -26,6 +26,7 @@ use GeometryDashChinese\GeometryDashAlgorithm;
 use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -80,7 +81,8 @@ class LevelController extends Controller
                 $this->processSearchAdvancedOptions($request, $query);
             }
 
-            $data['page'] ??= 0;
+            $count = $query->count();
+            $page = Arr::get($data, 'page', 0);
             $perPage = config('gdcs.perPage', 10);
 
             $users = [];
@@ -88,7 +90,7 @@ class LevelController extends Controller
             $hash = null;
 
             return implode('#', [
-                $query->forPage(++$data['page'], $perPage)
+                $query->forPage(++$page, $perPage)
                     ->get()
                     ->map(function (Level $level) use ($data, &$users, &$songs, &$hash) {
                         $user = $level->user;
@@ -140,7 +142,7 @@ class LevelController extends Controller
                     })->join('|'),
                 implode('|', $users),
                 implode('~:~', $songs),
-                GeometryDashAlgorithm::genPage($data['page'], $query->count(), $perPage),
+                GeometryDashAlgorithm::genPage($page, $count, $perPage),
                 sha1($hash . Salts::LEVEL->value),
             ]);
         } catch (LevelSearchNotSupportedTypeException) {
