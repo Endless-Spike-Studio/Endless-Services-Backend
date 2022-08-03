@@ -20,11 +20,7 @@ use Tightenco\Ziggy\Ziggy;
 Route::group([
     'as' => 'api.',
 ], static function () {
-    Route::group([
-        'domain' => 'geometrydashchinese.com',
-    ], static function () {
-        Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
-    });
+    Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
 
     Route::group([
         'domain' => 'gf.geometrydashchinese.com',
