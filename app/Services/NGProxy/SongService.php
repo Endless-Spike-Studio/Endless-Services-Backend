@@ -99,7 +99,8 @@ class SongService
                 $song->save();
             } catch (GuzzleException $ex) {
                 $e = SongException::processing();
-                $e->log_context = ['error' => '请求失败', 'message' => $ex->getMessage(), 'id' => $song->song_id];
+                $e->log_context = ['error' => '请求失败', 'message' => $ex->getMessage(), 'url' => $url, 'id' => $song->song_id];
+
                 throw $e;
             }
         }
