@@ -5,7 +5,7 @@
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Artisan;
 
-$app = require __DIR__ . '/bootstrap/app.php';
+$app = require('/app/bootstrap/app.php');
 $app->make(Kernel::class)->bootstrap();
 @endsetup
 
@@ -14,6 +14,7 @@ Artisan::call('down');
 @endbefore
 
 @task('clear-log')
+cd /app
 rm storages/logs/*.log
 rm -r storages/logs/product
 @endtask
