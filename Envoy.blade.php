@@ -1,5 +1,4 @@
 @servers(['web' => 'localhost'])
-
 @include('vendor/autoload.php')
 
 @setup
@@ -13,6 +12,11 @@ $app->make(Kernel::class)->bootstrap();
 @before
 Artisan::call('down');
 @endbefore
+
+@task('clear-log')
+rm storages/logs/*.log
+rm -r storages/logs/product
+@endtask
 
 @task('update-code')
 git fetch --all
