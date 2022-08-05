@@ -1,64 +1,68 @@
 <script lang="ts" setup>
 import {
-  NButton,
-  NCard,
-  NCode,
-  NDescriptions,
-  NDescriptionsItem,
-  NDivider,
-  NEllipsis,
-  NInput,
-  NSpace,
-  NTabPane,
-  NTabs
+    NButton,
+    NCard,
+    NCode,
+    NDescriptions,
+    NDescriptionsItem,
+    NDivider,
+    NEllipsis,
+    NInput,
+    NSpace,
+    NTabPane,
+    NTabs
 } from 'naive-ui'
 import Banner from '@/images/NGProxy/Banner.png'
-import { isMobile, toURL } from '@/scripts/helpers'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {isMobile, toURL} from '@/scripts/helpers'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
-import { ref, watch } from 'vue'
-import { NGProxy } from '@/scripts/types/backend'
+import {ref, watch} from 'vue'
+import {NGProxy} from '@/scripts/types/backend'
 import CommonHome from '@/views/components/CommonHome.vue'
-import { useGlobalStore } from '@/scripts/stores'
-import { each } from 'lodash-es'
+import {useGlobalStore} from '@/scripts/stores'
+import {each} from 'lodash-es'
 
-defineProps<{
+const props = defineProps<{
     song?: NGProxy.Song
 }>()
 
 const API = {
-  info: {
-    id: 1,
-    song_id: 114514,
-    name: 'Im Bad',
-    artist_id: 10740,
-    artist_name: 'explode-a-tom',
-    size: '0.18',
-    disabled: 0,
-    created_at: '2022-04-09T05:53:18.000000Z',
-    updated_at: '2022-04-09T05:53:18.000000Z',
-    download_url: 'https://ng.geometrydashchinese.com/api/114514/download'
-  },
-  object: '1~|~114514~|~2~|~Im Bad~|~3~|~10740~|~4~|~explode-a-tom~|~5~|~0.18~|~10~|~https://ng.geometrydashchinese.com/api/114514/download'
+    info: {
+        id: 1,
+        song_id: 114514,
+        name: 'Im Bad',
+        artist_id: 10740,
+        artist_name: 'explode-a-tom',
+        size: '0.18',
+        disabled: 0,
+        created_at: '2022-04-09T05:53:18.000000Z',
+        updated_at: '2022-04-09T05:53:18.000000Z',
+        download_url: 'https://ng.geometrydashchinese.com/api/114514/download'
+    },
+    object: '1~|~114514~|~2~|~Im Bad~|~3~|~10740~|~4~|~explode-a-tom~|~5~|~0.18~|~10~|~https://ng.geometrydashchinese.com/api/114514/download'
 }
 
 const songID = ref()
 const fetchSongForm = useForm({})
 
-watch(fetchSongForm, newForm => {
-  const globalStore = useGlobalStore()
+if (props.song) {
+    songID.value = props.song.song_id;
+}
 
-  each(newForm.errors, (error, field) => {
-    globalStore.$message.error(`[${field}] ${error}`)
-  })
+watch(fetchSongForm, newForm => {
+    const globalStore = useGlobalStore()
+
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 
-function fetchSong () {
-  fetchSongForm.get(
-    route('ngproxy.info', {
-      id: songID.value
-    })
-  )
+function fetchSong() {
+    fetchSongForm.get(
+        route('ngproxy.info', {
+            id: songID.value
+        })
+    )
 }
 </script>
 
