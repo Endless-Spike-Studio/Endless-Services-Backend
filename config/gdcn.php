@@ -22,5 +22,15 @@ return [
                 ]
             ]
         ]
+    ],
+    'game' => [
+        'creator_points' => [
+            'rated' => 1,
+            'featured' => [
+                'reward' => 2,
+                'multiply_with_score' => false
+            ],
+            'epic' => 4
+        ]
     ]
 ];

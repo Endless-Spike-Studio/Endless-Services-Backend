@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\GDCS\CalculateCreatorPoints;
 use App\Jobs\GDCS\CleanUnusedTempLevelUploadAccess;
 use App\Jobs\GDCS\CleanUnverifiedAccount;
 use Illuminate\Console\Scheduling\Schedule;
@@ -11,8 +12,9 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(CleanUnverifiedAccount::class)->everyTenMinutes();
-        $schedule->job(CleanUnusedTempLevelUploadAccess::class)->everyTenMinutes();
+        $schedule->job(CleanUnverifiedAccount::class)->hourly();
+        $schedule->job(CleanUnusedTempLevelUploadAccess::class)->hourly();
+        $schedule->job(CalculateCreatorPoints::class)->daily();
     }
 
     protected function commands(): void

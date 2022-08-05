@@ -5,6 +5,7 @@ namespace App\Models\GDCS;
 use App\Enums\GDCS\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\LevelRatingDifficulty;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LevelRating extends Model
 {
@@ -21,4 +22,9 @@ class LevelRating extends Model
         'auto' => 'boolean',
         'demon' => 'boolean',
     ];
+
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(Level::class);
+    }
 }
