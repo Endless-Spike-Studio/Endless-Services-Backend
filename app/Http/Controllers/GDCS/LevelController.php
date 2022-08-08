@@ -137,7 +137,7 @@ class LevelController extends Controller
                             42 => $level->rating->epic,
                             43 => $level->rating->demon_difficulty->value,
                             44 => $data['gauntlet'] ?? 0,
-                            45 => max($level->objects, 65535),
+                            45 => min($level->objects, 65535),
                         ], ':');
                     })->join('|'),
                 implode('|', $users),
