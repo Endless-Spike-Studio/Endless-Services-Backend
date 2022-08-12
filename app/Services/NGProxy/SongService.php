@@ -27,7 +27,7 @@ class SongService
                 throw SongException::disabled();
             }
 
-            $this->processSong($song);
+            $this->process($song);
             return $song;
         }
 
@@ -78,14 +78,14 @@ class SongService
                 'original_download_url' => $songObject[10],
             ]);
 
-        $this->processSong($song);
+        $this->process($song);
         return $song;
     }
 
     /**
      * @throws SongException
      */
-    protected function processSong(Song $song): void
+    protected function process(Song $song): void
     {
         if (!app(SongStorageService::class)->allExists(['id' => $song->song_id])) {
             try {
