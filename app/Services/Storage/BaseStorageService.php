@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Storage;
 
 use App\Exceptions\StorageException;
 use Illuminate\Support\Arr;
