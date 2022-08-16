@@ -22,6 +22,11 @@ class Level extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function song(): HasOne
     {
         return $this->hasOne(Song::class, 'song_id', 'song_id');
