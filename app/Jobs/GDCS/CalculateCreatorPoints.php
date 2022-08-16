@@ -17,7 +17,7 @@ class CalculateCreatorPoints implements ShouldQueue
     public function handle(): void
     {
         $ratings = LevelRating::query()
-            ->with('level.user.score')
+            ->with('level.creator.score')
             ->get();
 
         UserScore::query()
@@ -26,7 +26,7 @@ class CalculateCreatorPoints implements ShouldQueue
             ]);
 
         foreach ($ratings as $rating) {
-            if (empty($score = $rating->level->user->score)) {
+            if (empty($score = $rating->level->creator->score)) {
                 continue;
             }
 
