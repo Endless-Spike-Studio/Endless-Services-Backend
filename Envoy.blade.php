@@ -13,8 +13,7 @@ $app->make(Kernel::class)->bootstrap();
 Artisan::call('down');
 @endbefore
 
-@task('clear-log')
-cd /app
+@task('clean-logs')
 rm storages/logs/*.log
 rm -r storages/logs/product
 @endtask
