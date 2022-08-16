@@ -26,7 +26,11 @@ class ReCalculateCreatorPointJob implements ShouldQueue
             ]);
 
         foreach ($ratings as $rating) {
-            if (empty($score = $rating->level->creator->score)) {
+            $score = $rating->level
+                ?->creator
+                ?->score;
+
+            if (empty($score)) {
                 continue;
             }
 
