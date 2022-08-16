@@ -10,6 +10,7 @@ use App\Notifications\GDCS\EmailVerificationNotification;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,7 +20,7 @@ use Silber\Bouncer\Database\HasRolesAndAbilities;
 
 class Account extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasApiTokens, MustVerifyEmail, Notifiable, HasRolesAndAbilities;
+    use HasFactory, HasApiTokens, MustVerifyEmail, Notifiable, HasRolesAndAbilities;
 
     protected $table = 'gdcs_accounts';
 
