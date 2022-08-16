@@ -40,7 +40,7 @@ class SongService
 
             ResponseService::check($response);
             $songObject = GeometryDashObject::split($response, '~|~');
-        } catch (ResponseException $e) {
+        } catch (ResponseException) {
             $response = app('proxy')
                 ->post(config('gdproxy.base_url') . '/getGJLevels21.php', [
                     'song' => $id,
