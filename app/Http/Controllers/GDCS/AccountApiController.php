@@ -12,7 +12,6 @@ use App\Http\Requests\GDCS\AccountVerifyRequest;
 use App\Http\Requests\GDCS\Request as GDCS_Request;
 use App\Http\Requests\GDCS\RoleUpdateApiRequest;
 use App\Http\Traits\HasMessage;
-use App\Jobs\GDCS\SendEmailVerification;
 use App\Models\GDCS\Account;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Http\RedirectResponse;
@@ -142,7 +141,7 @@ class AccountApiController extends Controller
                         __('messages.email_already_verified')
                     );
                 } else {
-                    SendEmailVerification::dispatch($account);
+                    $account->sendEmailVerificationNotification();
 
                     $this->pushSuccessMessage(
                         __('messages.verification_sent')
