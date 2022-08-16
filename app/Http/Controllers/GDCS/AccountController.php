@@ -123,7 +123,7 @@ class AccountController extends Controller
             50 => $target->setting->comment_history_state->value,
         ];
 
-        if ($requestAuth && $data['accountID'] === $data['targetAccountID']) {
+        if (!empty($data['accountID']) && $requestAuth && $data['accountID'] === $data['targetAccountID']) {
             $userInfo[38] = app(AccountMessageRepository::class)
                 ->findNewByAccount($data['targetAccountID'])
                 ->count();
