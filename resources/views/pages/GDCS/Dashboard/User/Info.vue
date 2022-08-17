@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { NButton, NCard, NDescriptions, NDescriptionsItem, NSpace } from 'naive-ui'
-import { formatTime, isMobile, toRouteWithParams } from '@/scripts/helpers'
-import { GDCS } from '@/scripts/types/backend'
+import {NButton, NCard, NDescriptions, NDescriptionsItem, NSpace} from 'naive-ui'
+import {formatTime, isMobile, toRouteWithParams} from '@/scripts/helpers'
+import {GDCS} from '@/scripts/types/backend'
 
 defineProps<{
     user: GDCS.User

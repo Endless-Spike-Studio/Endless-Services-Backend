@@ -16,15 +16,14 @@ class BaseException extends Exception
     use HasMessage;
 
     public bool $logging = true;
-    protected string $log_channel = 'stack';
-    protected string $log_type = 'info';
+
     public array $log_context = [];
+
     public int $http_code = 500;
 
-    protected function formatMessage(string $message): string
-    {
-        return $message;
-    }
+    protected string $log_channel = 'stack';
+
+    protected string $log_type = 'info';
 
     public function setLogChannel(string $log_channel): void
     {
@@ -43,6 +42,11 @@ class BaseException extends Exception
         }
     }
 
+    protected function formatMessage(string $message): string
+    {
+        return $message;
+    }
+
     /**
      * @return int|array|RedirectResponse|void
      */
@@ -58,6 +62,7 @@ class BaseException extends Exception
 
         if (Session::isStarted()) {
             $this->pushErrorMessage($message);
+
             return back();
         }
 

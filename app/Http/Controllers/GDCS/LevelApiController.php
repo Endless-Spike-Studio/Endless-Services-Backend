@@ -64,7 +64,7 @@ class LevelApiController extends Controller
             'level_id' => $level->id,
             'apply_at' => DailyLevel::latest()
                     ->value('apply_at')
-                ?? Carbon::parse('tomorrow'),
+                    ?? Carbon::parse('tomorrow'),
         ]);
 
         $this->pushSuccessMessage(
@@ -80,7 +80,7 @@ class LevelApiController extends Controller
             'level_id' => $level->id,
             'apply_at' => WeeklyLevel::latest()
                     ->value('apply_at')
-                ?? Carbon::parse('next monday'),
+                    ?? Carbon::parse('next monday'),
         ]);
 
         $this->pushSuccessMessage(

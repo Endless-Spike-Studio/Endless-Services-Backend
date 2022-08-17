@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSelect } from 'naive-ui'
-import { ref, watch } from 'vue'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSelect} from 'naive-ui'
+import {ref, watch} from 'vue'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
-import { GDCS } from '@/scripts/types/backend'
+import {GDCS} from '@/scripts/types/backend'
 
 defineProps<{
     levels: GDCS.Level[],
@@ -12,39 +12,39 @@ defineProps<{
 
 const el = ref<FormInst>()
 const form = useForm({
-  levelID: null,
-  linkID: null,
-  password: null
+    levelID: null,
+    linkID: null,
+    password: null
 })
 
 const rules = {
-  levelID: {
-    type: 'number',
-    required: true,
-    validator: () => Promise.reject(form.errors.levelID)
-  },
-  linkID: {
-    type: 'number',
-    required: true,
-    validator: () => Promise.reject(form.errors.linkID)
-  },
-  password: {
-    type: 'string',
-    required: true,
-    validator: () => Promise.reject(form.errors.password)
-  }
+    levelID: {
+        type: 'number',
+        required: true,
+        validator: () => Promise.reject(form.errors.levelID)
+    },
+    linkID: {
+        type: 'number',
+        required: true,
+        validator: () => Promise.reject(form.errors.linkID)
+    },
+    password: {
+        type: 'string',
+        required: true,
+        validator: () => Promise.reject(form.errors.password)
+    }
 } as FormRules
 
 watch([el, form], () => {
-  if (el.value) {
-    el.value.validate()
-  }
+    if (el.value) {
+        el.value.validate()
+    }
 })
 
-function submit () {
-  form.post(
-    route('gdcs.tools.level.transfer.out.api')
-  )
+function submit() {
+    form.post(
+        route('gdcs.tools.level.transfer.out.api')
+    )
 }
 </script>
 

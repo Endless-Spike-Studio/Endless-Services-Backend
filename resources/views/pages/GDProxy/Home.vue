@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { NButton, NDivider, NDropdown, NIcon, NSpace } from 'naive-ui'
+import {NButton, NDivider, NDropdown, NIcon, NSpace} from 'naive-ui'
 import Banner from '@/images/GDProxy/Banner.png'
-import { AndroidFilled, AppleFilled, WindowsFilled } from '@vicons/antd'
-import { toURL } from '@/scripts/helpers'
+import {AndroidFilled, AppleFilled, WindowsFilled} from '@vicons/antd'
+import {toURL} from '@/scripts/helpers'
 import CommonHome from '@/views/components/CommonHome.vue'
 
 const windowsDownloadOptions = [
-  {
-    label: '无资源包 (exe)',
-    key: 'exe'
-  },
-  {
-    label: '带资源包',
-    key: 'zip'
-  }
+    {
+        label: '无资源包 (exe)',
+        key: 'exe'
+    },
+    {
+        label: '带资源包',
+        key: 'zip'
+    }
 ]
 
-function handleWindowsDownload (suffix: string) {
-  toURL('https://cdn.geometrydashchinese.com/client/GDProxy.' + suffix)
+function handleWindowsDownload(suffix: string) {
+    toURL('https://cdn.geometrydashchinese.com/client/GDProxy.' + suffix)
 }
 </script>
 

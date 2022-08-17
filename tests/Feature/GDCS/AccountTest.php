@@ -21,7 +21,7 @@ test('游戏内注册', function () {
         'userName' => $name,
         'password' => $faker->password,
         'email' => $unique->safeEmail,
-        'secret' => 'Wmfv3899gc9'
+        'secret' => 'Wmfv3899gc9',
     ]);
 
     $response = $request->content();
@@ -41,7 +41,7 @@ test('游戏内登录', function () {
         'userName' => $account->name,
         'password' => $password,
         'udid' => $faker->uuid,
-        'secret' => 'Wmfv3899gc9'
+        'secret' => 'Wmfv3899gc9',
     ]);
 
     $response = $request->content();
@@ -61,7 +61,7 @@ test('网页注册', function () {
         'name' => $name,
         'password' => $password,
         'password_confirmation' => $password,
-        'email' => $unique->safeEmail
+        'email' => $unique->safeEmail,
     ]);
 
     assertDatabaseHas(Account::class, ['name' => $name]);
@@ -78,7 +78,7 @@ test('网页登录', function () {
 
     post(route('gdcs.login.api'), [
         'name' => $account->name,
-        'password' => $password
+        'password' => $password,
     ]);
 
     assertAuthenticatedAs($account, 'gdcs');

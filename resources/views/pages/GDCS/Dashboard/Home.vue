@@ -80,7 +80,10 @@ function handleLevelTabsUpdate(newTab: string) {
                                     </template>
 
                                     <template #description>
-                                        <n-text :depth="3">注册时间: {{ formatTime(account.created_at, '未知') }}</n-text>
+                                        <n-text :depth="3">注册时间: {{
+                                            formatTime(account.created_at, '未知')
+                                            }}
+                                        </n-text>
                                     </template>
                                 </n-thing>
 

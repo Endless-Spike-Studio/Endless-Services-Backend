@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { NButton, NCard, NSpace } from 'naive-ui'
-import { toRoute } from '@/scripts/helpers'</script>
+import {NButton, NCard, NSpace} from 'naive-ui'
+import {toRoute} from '@/scripts/helpers'</script>
 
 <template layout="GDCS">
     <n-space class="mx-auto lg:w-1/3" vertical>

@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import {
-  NAlert,
-  NButton,
-  NCard,
-  NDescriptions,
-  NDescriptionsItem,
-  NDivider,
-  NGrid,
-  NGridItem,
-  NImage,
-  NSpace
+    NAlert,
+    NButton,
+    NCard,
+    NDescriptions,
+    NDescriptionsItem,
+    NDivider,
+    NGrid,
+    NGridItem,
+    NImage,
+    NSpace
 } from 'naive-ui'
-import { isMobile, toURL } from '@/scripts/helpers'
+import {isMobile, toURL} from '@/scripts/helpers'
 
 defineProps<{
     banner: string,

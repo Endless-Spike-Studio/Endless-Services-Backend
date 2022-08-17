@@ -28,6 +28,7 @@ class SongService
             }
 
             $this->process($song);
+
             return $song;
         }
 
@@ -79,6 +80,7 @@ class SongService
             ]);
 
         $this->process($song);
+
         return $song;
     }
 
@@ -92,7 +94,7 @@ class SongService
                 $url = urldecode($song->original_download_url);
 
                 $song->data = app('proxy')
-                    ->withOptions(['decode_content' => false,])
+                    ->withOptions(['decode_content' => false])
                     ->get($url)
                     ->body();
             } catch (GuzzleException $ex) {

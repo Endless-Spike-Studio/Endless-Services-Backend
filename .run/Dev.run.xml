@@ -1,13 +1,13 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Dev" type="CompoundRunConfigurationType">
-    <toRun name="FrontEnd" type="js.build_tools.npm" />
-    <toRun name="BackEnd" type="PhpLocalRunConfigurationType" />
-    <toRun name="Queue" type="PhpLocalRunConfigurationType" />
-    <toRun name="Schedule" type="PhpLocalRunConfigurationType" />
-    <toRun name="DB" type="ShConfigurationType" />
-    <toRun name="Memcached" type="ShConfigurationType" />
-    <toRun name="Redis" type="ShConfigurationType" />
-    <toRun name="SMTP" type="ShConfigurationType" />
-    <method v="2" />
-  </configuration>
+    <configuration default="false" name="Dev" type="CompoundRunConfigurationType">
+        <toRun name="FrontEnd" type="js.build_tools.npm"/>
+        <toRun name="BackEnd" type="PhpLocalRunConfigurationType"/>
+        <toRun name="Queue" type="PhpLocalRunConfigurationType"/>
+        <toRun name="Schedule" type="PhpLocalRunConfigurationType"/>
+        <toRun name="DB" type="ShConfigurationType"/>
+        <toRun name="Memcached" type="ShConfigurationType"/>
+        <toRun name="Redis" type="ShConfigurationType"/>
+        <toRun name="SMTP" type="ShConfigurationType"/>
+        <method v="2"/>
+    </configuration>
 </component>

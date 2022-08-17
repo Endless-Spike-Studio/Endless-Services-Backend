@@ -22,7 +22,7 @@ class ReCalculateCreatorPointJob implements ShouldQueue
 
         UserScore::query()
             ->update([
-                'creator_points' => 0
+                'creator_points' => 0,
             ]);
 
         foreach ($ratings as $rating) {

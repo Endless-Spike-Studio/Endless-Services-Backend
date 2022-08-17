@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { NList, NListItem, NPopover, NSpace, NText, NThing } from 'naive-ui'</script>
+import {NList, NListItem, NPopover, NSpace, NText, NThing} from 'naive-ui'</script>
 
 <template>
     <n-list bordered>

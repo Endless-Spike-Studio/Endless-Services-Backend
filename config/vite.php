@@ -29,7 +29,7 @@ return [
     ],
     'commands' => [
         'artisan' => [
-            'vite:tsconfig'
+            'vite:tsconfig',
         ],
         'shell' => [],
     ],

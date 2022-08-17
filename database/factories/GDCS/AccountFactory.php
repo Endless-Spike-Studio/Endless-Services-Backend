@@ -19,21 +19,21 @@ class AccountFactory extends Factory
             'name' => $unique->userName,
             'password' => Hash::make($faker->password),
             'email' => $unique->safeEmail,
-            'email_verified_at' => now()
+            'email_verified_at' => now(),
         ];
     }
 
     public function withPassword(string $password): AccountFactory
     {
         return $this->state([
-            'password' => Hash::make($password)
+            'password' => Hash::make($password),
         ]);
     }
 
     public function unverified(): AccountFactory
     {
         return $this->state([
-            'email_verified_at' => null
+            'email_verified_at' => null,
         ]);
     }
 }

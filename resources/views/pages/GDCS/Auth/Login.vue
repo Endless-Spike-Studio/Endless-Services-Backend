@@ -1,39 +1,39 @@
 <script lang="ts" setup>
-import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSpace } from 'naive-ui'
-import { ref, watch } from 'vue'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSpace} from 'naive-ui'
+import {ref, watch} from 'vue'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
-import { toRoute } from '@/scripts/helpers'
+import {toRoute} from '@/scripts/helpers'
 
 const el = ref<FormInst>()
 const form = useForm({
-  name: null,
-  password: null
+    name: null,
+    password: null
 })
 
 const rules = {
-  name: {
-    required: true,
-    type: 'string',
-    validator: () => Promise.reject(form.errors.name)
-  },
-  password: {
-    required: true,
-    type: 'string',
-    validator: () => Promise.reject(form.errors.password)
-  }
+    name: {
+        required: true,
+        type: 'string',
+        validator: () => Promise.reject(form.errors.name)
+    },
+    password: {
+        required: true,
+        type: 'string',
+        validator: () => Promise.reject(form.errors.password)
+    }
 } as FormRules
 
 watch([el, form], () => {
-  if (el.value) {
-    el.value.validate()
-  }
+    if (el.value) {
+        el.value.validate()
+    }
 })
 
-function submit () {
-  form.post(
-    route('gdcs.login.api')
-  )
+function submit() {
+    form.post(
+        route('gdcs.login.api')
+    )
 }
 </script>
 

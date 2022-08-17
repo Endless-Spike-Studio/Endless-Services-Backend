@@ -1,49 +1,49 @@
 <script lang="ts" setup>
-import { getProp } from '@/scripts/helpers'
-import { User } from '@/scripts/types/backend'
-import { useForm } from '@inertiajs/inertia-vue3'
-import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput } from 'naive-ui'
-import { ref, watch } from 'vue'
+import {getProp} from '@/scripts/helpers'
+import {User} from '@/scripts/types/backend'
+import {useForm} from '@inertiajs/inertia-vue3'
+import {FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput} from 'naive-ui'
+import {ref, watch} from 'vue'
 import route from '@/scripts/route'
 
 const el = ref<FormInst>()
 const account = getProp<User>('gdcs.account')
 
 const form = useForm({
-  name: account.value.name,
-  email: account.value.email,
-  password: null,
-  password_confirmation: null
+    name: account.value.name,
+    email: account.value.email,
+    password: null,
+    password_confirmation: null
 })
 
 const rules = {
-  name: {
-    required: true,
-    type: 'string',
-    validator: () => Promise.reject(form.errors.name)
-  },
-  email: {
-    required: true,
-    type: 'email',
-    validator: () => Promise.reject(form.errors.email)
-  },
-  password: {
-    required: true,
-    type: 'string',
-    validator: () => Promise.reject(form.errors.password)
-  }
+    name: {
+        required: true,
+        type: 'string',
+        validator: () => Promise.reject(form.errors.name)
+    },
+    email: {
+        required: true,
+        type: 'email',
+        validator: () => Promise.reject(form.errors.email)
+    },
+    password: {
+        required: true,
+        type: 'string',
+        validator: () => Promise.reject(form.errors.password)
+    }
 } as FormRules
 
 watch([el, form], () => {
-  if (el.value) {
-    el.value.validate()
-  }
+    if (el.value) {
+        el.value.validate()
+    }
 })
 
-function submit () {
-  form.patch(
-    route('gdcs.account.setting.update.api')
-  )
+function submit() {
+    form.patch(
+        route('gdcs.account.setting.update.api')
+    )
 }
 </script>
 

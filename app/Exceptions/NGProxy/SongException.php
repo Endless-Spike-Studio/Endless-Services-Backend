@@ -9,13 +9,9 @@ class SongException extends BaseException
 {
     use HasMessage;
 
-    protected string $log_channel = 'gdcn';
     public int $http_code = 503;
 
-    protected function formatMessage(string $message): string
-    {
-        return 'NGProxy 歌曲异常: ' . $message;
-    }
+    protected string $log_channel = 'gdcn';
 
     public static function notFound(): SongException
     {
@@ -30,5 +26,10 @@ class SongException extends BaseException
     public static function processing(): SongException
     {
         return new static('歌曲处理异常, 请稍后再试');
+    }
+
+    protected function formatMessage(string $message): string
+    {
+        return 'NGProxy 歌曲异常: ' . $message;
     }
 }

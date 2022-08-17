@@ -1,53 +1,53 @@
 <script lang="ts" setup>
-import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSelect, NTabPane, NTabs } from 'naive-ui'
-import { ref, watch } from 'vue'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSelect, NTabPane, NTabs} from 'naive-ui'
+import {ref, watch} from 'vue'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
 import servers from '@/scripts/enums/servers'
-import { map } from 'lodash-es'
+import {map} from 'lodash-es'
 
 const el = ref<FormInst>()
 const form = useForm({
-  server: 'http://www.boomlings.com/database',
-  name: null,
-  password: null
+    server: 'http://www.boomlings.com/database',
+    name: null,
+    password: null
 })
 
 const rules = {
-  server: {
-    type: 'string',
-    required: true,
-    validator: () => Promise.reject(form.errors.server)
-  },
-  name: {
-    type: 'string',
-    required: true,
-    validator: () => Promise.reject(form.errors.name)
-  },
-  password: {
-    type: 'string',
-    required: true,
-    validator: () => Promise.reject(form.errors.password)
-  }
+    server: {
+        type: 'string',
+        required: true,
+        validator: () => Promise.reject(form.errors.server)
+    },
+    name: {
+        type: 'string',
+        required: true,
+        validator: () => Promise.reject(form.errors.name)
+    },
+    password: {
+        type: 'string',
+        required: true,
+        validator: () => Promise.reject(form.errors.password)
+    }
 } as FormRules
 
 const serverOptions = map(servers, server => {
-  return {
-    label: `${server.name} [${server.id}]`,
-    value: server.host
-  }
+    return {
+        label: `${server.name} [${server.id}]`,
+        value: server.host
+    }
 })
 
 watch([el, form], () => {
-  if (el.value) {
-    el.value.validate()
-  }
+    if (el.value) {
+        el.value.validate()
+    }
 })
 
-function submit () {
-  form.post(
-    route('gdcs.tools.account.link.create.api')
-  )
+function submit() {
+    form.post(
+        route('gdcs.tools.account.link.create.api')
+    )
 }
 </script>
 

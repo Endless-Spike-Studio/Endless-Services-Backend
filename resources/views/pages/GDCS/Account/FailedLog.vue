@@ -1,50 +1,50 @@
 <script lang="ts" setup>
-import { NButton, NCard, NDataTable, NPopconfirm } from 'naive-ui'
-import { formatTime } from '@/scripts/helpers'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {NButton, NCard, NDataTable, NPopconfirm} from 'naive-ui'
+import {formatTime} from '@/scripts/helpers'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
-import { GDCS } from '@/scripts/types/backend'
-import { watch } from 'vue'
-import { useGlobalStore } from '@/scripts/stores'
-import { each } from 'lodash-es'
+import {GDCS} from '@/scripts/types/backend'
+import {watch} from 'vue'
+import {useGlobalStore} from '@/scripts/stores'
+import {each} from 'lodash-es'
 
 defineProps<{
     logs: GDCS.AccountFailedLog[]
 }>()
 
 const columns = [
-  {
-    title: 'ID',
-    key: 'id'
-  },
-  {
-    title: '内容',
-    key: 'content'
-  },
-  {
-    title: 'IP',
-    key: 'ip'
-  },
-  {
-    title: '操作时间',
-    key: 'created_at',
-    render: (row: GDCS.AccountFailedLog) => formatTime(row.created_at, '未知')
-  }
+    {
+        title: 'ID',
+        key: 'id'
+    },
+    {
+        title: '内容',
+        key: 'content'
+    },
+    {
+        title: 'IP',
+        key: 'ip'
+    },
+    {
+        title: '操作时间',
+        key: 'created_at',
+        render: (row: GDCS.AccountFailedLog) => formatTime(row.created_at, '未知')
+    }
 ]
 
 const clearForm = useForm({})
 watch(clearForm, newForm => {
-  const globalStore = useGlobalStore()
+    const globalStore = useGlobalStore()
 
-  each(newForm.errors, (error, field) => {
-    globalStore.$message.error(`[${field}] ${error}`)
-  })
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 
-function clear () {
-  clearForm.delete(
-    route('gdcs.account.failed-log.clear.api')
-  )
+function clear() {
+    clearForm.delete(
+        route('gdcs.account.failed-log.clear.api')
+    )
 }
 </script>
 

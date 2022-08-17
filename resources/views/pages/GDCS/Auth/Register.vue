@@ -1,46 +1,46 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
-import { FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSpace } from 'naive-ui'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {ref, watch} from 'vue'
+import {FormInst, FormRules, NButton, NCard, NForm, NFormItem, NInput, NSpace} from 'naive-ui'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
-import { toRoute } from '@/scripts/helpers'
+import {toRoute} from '@/scripts/helpers'
 
 const el = ref<FormInst>()
 const form = useForm({
-  name: null,
-  email: null,
-  password: null,
-  password_confirmation: null
+    name: null,
+    email: null,
+    password: null,
+    password_confirmation: null
 })
 
 const rules = {
-  name: {
-    required: true,
-    type: 'string',
-    validator: () => Promise.reject(form.errors.name)
-  },
-  email: {
-    required: true,
-    type: 'email',
-    validator: () => Promise.reject(form.errors.email)
-  },
-  password: {
-    required: true,
-    type: 'string',
-    validator: () => Promise.reject(form.errors.password)
-  }
+    name: {
+        required: true,
+        type: 'string',
+        validator: () => Promise.reject(form.errors.name)
+    },
+    email: {
+        required: true,
+        type: 'email',
+        validator: () => Promise.reject(form.errors.email)
+    },
+    password: {
+        required: true,
+        type: 'string',
+        validator: () => Promise.reject(form.errors.password)
+    }
 } as FormRules
 
 watch([el, form], () => {
-  if (el.value) {
-    el.value.validate()
-  }
+    if (el.value) {
+        el.value.validate()
+    }
 })
 
-function submit () {
-  form.post(
-    route('gdcs.register.api')
-  )
+function submit() {
+    form.post(
+        route('gdcs.register.api')
+    )
 }
 </script>
 

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { GDCS } from '@/scripts/types/backend'
-import { formatTime, isMobile } from '@/scripts/helpers'
-import { NButton, NCard, NDescriptions, NDescriptionsItem, NInput, NSpace, NText } from 'naive-ui'
-import { reactive } from 'vue'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {GDCS} from '@/scripts/types/backend'
+import {formatTime, isMobile} from '@/scripts/helpers'
+import {NButton, NCard, NDescriptions, NDescriptionsItem, NInput, NSpace, NText} from 'naive-ui'
+import {reactive} from 'vue'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
 
 const props = defineProps<{
@@ -11,17 +11,17 @@ const props = defineProps<{
 }>()
 
 const changing = reactive({
-  title: false
+    title: false
 })
 
 const roleUpdateForm = useForm({
-  title: props.role.title
+    title: props.role.title
 })
 
-function updateRole () {
-  roleUpdateForm.patch(
-    route('gdcs.admin.account.role.update.api', [props.role.id])
-  )
+function updateRole() {
+    roleUpdateForm.patch(
+        route('gdcs.admin.account.role.update.api', [props.role.id])
+    )
 }
 </script>
 

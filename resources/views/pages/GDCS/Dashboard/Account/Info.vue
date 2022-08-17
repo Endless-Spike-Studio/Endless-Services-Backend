@@ -1,27 +1,27 @@
 <script lang="ts" setup>
 import {
-  NButton,
-  NCard,
-  NDescriptions,
-  NDescriptionsItem,
-  NEmpty,
-  NList,
-  NListItem,
-  NPopover,
-  NSelect,
-  NSpace,
-  NTag,
-  NText,
-  NThing
+    NButton,
+    NCard,
+    NDescriptions,
+    NDescriptionsItem,
+    NEmpty,
+    NList,
+    NListItem,
+    NPopover,
+    NSelect,
+    NSpace,
+    NTag,
+    NText,
+    NThing
 } from 'naive-ui'
-import { formatTime, isMobile, toRoute, toRouteWithParams } from '@/scripts/helpers'
-import { Base64 } from 'js-base64'
-import { GDCS } from '@/scripts/types/backend'
-import { useForm } from '@inertiajs/inertia-vue3'
-import { each, map } from 'lodash-es'
-import { computed, h, watch } from 'vue'
+import {formatTime, isMobile, toRoute, toRouteWithParams} from '@/scripts/helpers'
+import {Base64} from 'js-base64'
+import {GDCS} from '@/scripts/types/backend'
+import {useForm} from '@inertiajs/inertia-vue3'
+import {each, map} from 'lodash-es'
+import {computed, h, watch} from 'vue'
 import route from '@/scripts/route'
-import { useGlobalStore } from '@/scripts/stores'
+import {useGlobalStore} from '@/scripts/stores'
 
 const props = defineProps<{
     account: GDCS.Account,
@@ -33,46 +33,46 @@ const props = defineProps<{
 }>()
 
 const abilityOptions = computed(() => {
-  return map(props.abilities, ability => {
-    return {
-      label: () => h(NPopover, null, {
-        trigger: () => ability.title,
-        default: () => ability.name
-      }),
-      value: ability.name
-    }
-  })
+    return map(props.abilities, ability => {
+        return {
+            label: () => h(NPopover, null, {
+                trigger: () => ability.title,
+                default: () => ability.name
+            }),
+            value: ability.name
+        }
+    })
 })
 
 const roleOptions = computed(() => {
-  return map(props.roles, role => {
-    return {
-      label: () => h(NPopover, null, {
-        trigger: () => role.title,
-        default: () => role.name
-      }),
-      value: role.name
-    }
-  })
+    return map(props.roles, role => {
+        return {
+            label: () => h(NPopover, null, {
+                trigger: () => role.title,
+                default: () => role.name
+            }),
+            value: role.name
+        }
+    })
 })
 
 const permissionUpdateForm = useForm({
-  abilities: map(props.account.abilities, 'name'),
-  roles: map(props.account.roles, 'name')
+    abilities: map(props.account.abilities, 'name'),
+    roles: map(props.account.roles, 'name')
 })
 
 watch(permissionUpdateForm, newForm => {
-  const globalStore = useGlobalStore()
+    const globalStore = useGlobalStore()
 
-  each(newForm.errors, (error, field) => {
-    globalStore.$message.error(`[${field}] ${error}`)
-  })
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 
-function updatePermission () {
-  permissionUpdateForm.patch(
-    route('gdcs.admin.account.permission.update.api', [props.account.id])
-  )
+function updatePermission() {
+    permissionUpdateForm.patch(
+        route('gdcs.admin.account.permission.update.api', [props.account.id])
+    )
 }
 </script>
 

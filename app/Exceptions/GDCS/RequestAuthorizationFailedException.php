@@ -12,7 +12,7 @@ class RequestAuthorizationFailedException extends Exception
     public function report(): void
     {
         Log::error('GDCS: 请求身份验证失败', [
-            'path' => Request::fullUrl()
+            'path' => Request::fullUrl(),
         ]);
     }
 

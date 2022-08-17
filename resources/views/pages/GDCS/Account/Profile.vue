@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { formatTime, getProp, isMobile, toRoute } from '@/scripts/helpers'
-import { GDCS } from '@/scripts/types/backend'
-import { useForm } from '@inertiajs/inertia-vue3'
+import {formatTime, getProp, isMobile, toRoute} from '@/scripts/helpers'
+import {GDCS} from '@/scripts/types/backend'
+import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/route'
-import { computed, h, reactive, watch } from 'vue'
-import { NButton, NCard, NDescriptions, NDescriptionsItem, NPopover, NSelect, NSpace, NTag, NText } from 'naive-ui'
-import { useGlobalStore } from '@/scripts/stores'
-import { each, map } from 'lodash-es'
+import {computed, h, reactive, watch} from 'vue'
+import {NButton, NCard, NDescriptions, NDescriptionsItem, NPopover, NSelect, NSpace, NTag, NText} from 'naive-ui'
+import {useGlobalStore} from '@/scripts/stores'
+import {each, map} from 'lodash-es'
 
 const account = getProp<GDCS.Account>('gdcs.account')
 const user = getProp<GDCS.User>('gdcs.user')
@@ -21,59 +21,59 @@ const props = defineProps<{
 }>()
 
 watch(resendEmailVerificationForm, newForm => {
-  const globalStore = useGlobalStore()
+    const globalStore = useGlobalStore()
 
-  each(newForm.errors, (error, field) => {
-    globalStore.$message.error(`[${field}] ${error}`)
-  })
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 
 const hidden = reactive({
-  uuid: true,
-  udid: true
+    uuid: true,
+    udid: true
 })
 
 const abilityOptions = computed(() => {
-  return map(props.abilities, ability => {
-    return {
-      label: () => h(NPopover, null, {
-        trigger: () => ability.title,
-        default: () => ability.name
-      }),
-      value: ability.name
-    }
-  })
+    return map(props.abilities, ability => {
+        return {
+            label: () => h(NPopover, null, {
+                trigger: () => ability.title,
+                default: () => ability.name
+            }),
+            value: ability.name
+        }
+    })
 })
 
 const roleOptions = computed(() => {
-  return map(props.roles, role => {
-    return {
-      label: () => h(NPopover, null, {
-        trigger: () => role.title,
-        default: () => role.name
-      }),
-      value: role.name
-    }
-  })
+    return map(props.roles, role => {
+        return {
+            label: () => h(NPopover, null, {
+                trigger: () => role.title,
+                default: () => role.name
+            }),
+            value: role.name
+        }
+    })
 })
 
 const permissionUpdateForm = useForm({
-  abilities: map(account.value.abilities, 'name'),
-  roles: map(account.value.roles, 'name')
+    abilities: map(account.value.abilities, 'name'),
+    roles: map(account.value.roles, 'name')
 })
 
 watch(permissionUpdateForm, newForm => {
-  const globalStore = useGlobalStore()
+    const globalStore = useGlobalStore()
 
-  each(newForm.errors, (error, field) => {
-    globalStore.$message.error(`[${field}] ${error}`)
-  })
+    each(newForm.errors, (error, field) => {
+        globalStore.$message.error(`[${field}] ${error}`)
+    })
 })
 
-function resendEmailVerification () {
-  resendEmailVerificationForm.post(
-    route('gdcs.account.resendEmailVerification.api')
-  )
+function resendEmailVerification() {
+    resendEmailVerificationForm.post(
+        route('gdcs.account.resendEmailVerification.api')
+    )
 }
 </script>
 
