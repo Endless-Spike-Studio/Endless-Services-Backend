@@ -41,7 +41,7 @@ watch([el, form], () => {
     }
 })
 
-function submit() {
+function submit () {
     form.post(
         route('gdcs.tools.level.transfer.out.api')
     )

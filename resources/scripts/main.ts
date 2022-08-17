@@ -15,7 +15,7 @@ const pinia = createPinia()
 
 createInertiaApp({
     resolve: (name) => importPageComponent(name, components),
-    setup({
+    setup ({
               el,
               app,
               props,

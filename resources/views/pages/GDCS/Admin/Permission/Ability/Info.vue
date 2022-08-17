@@ -18,7 +18,7 @@ const abilityUpdateForm = useForm({
     title: props.ability.title
 })
 
-function updateAbility() {
+function updateAbility () {
     abilityUpdateForm.patch(
         route('gdcs.admin.account.ability.update.api', [props.ability.id])
     )

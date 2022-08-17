@@ -1,4 +1,4 @@
-export function importPageComponent(name: string, pages: Record<string, any>) {
+export function importPageComponent (name: string, pages: Record<string, any>) {
     // eslint-disable-next-line no-restricted-syntax
     for (const path in pages) {
         if (path.endsWith(`${name.replaceAll('.', '/')}.vue`)) {

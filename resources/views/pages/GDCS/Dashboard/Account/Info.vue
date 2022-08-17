@@ -69,7 +69,7 @@ watch(permissionUpdateForm, newForm => {
     })
 })
 
-function updatePermission() {
+function updatePermission () {
     permissionUpdateForm.patch(
         route('gdcs.admin.account.permission.update.api', [props.account.id])
     )

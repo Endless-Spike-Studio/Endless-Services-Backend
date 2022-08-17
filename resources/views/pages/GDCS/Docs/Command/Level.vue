@@ -6,7 +6,7 @@ import {h} from 'vue'
 
 const globalStore = useGlobalStore()
 
-async function renderOptions(type: string) {
+async function renderOptions (type: string) {
     const component = await import('./Options/' + type + '.vue')
 
     globalStore.$dialog.info({

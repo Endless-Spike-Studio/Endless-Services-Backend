@@ -18,7 +18,7 @@ const roleUpdateForm = useForm({
     title: props.role.title
 })
 
-function updateRole() {
+function updateRole () {
     roleUpdateForm.patch(
         route('gdcs.admin.account.role.update.api', [props.role.id])
     )

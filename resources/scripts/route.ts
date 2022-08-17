@@ -8,7 +8,7 @@ export const routes = ref<Config>({
     defaults: {}
 })
 
-axios.get(`/api/routes`)
+axios.get('/api/routes')
     .then(response => {
         routes.value = response.data
     })

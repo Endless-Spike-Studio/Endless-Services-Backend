@@ -40,7 +40,7 @@ watch([el, form], () => {
     }
 })
 
-function submit() {
+function submit () {
     form.patch(
         route('gdcs.account.setting.update.api')
     )

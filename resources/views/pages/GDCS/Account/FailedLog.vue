@@ -41,7 +41,7 @@ watch(clearForm, newForm => {
     })
 })
 
-function clear() {
+function clear () {
     clearForm.delete(
         route('gdcs.account.failed-log.clear.api')
     )

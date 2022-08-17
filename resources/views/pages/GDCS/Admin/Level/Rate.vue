@@ -101,7 +101,7 @@ watch([el, form], () => {
     }
 })
 
-function applyPreset(name: string) {
+function applyPreset (name: string) {
     switch (name) {
         case 'un_rate':
             form.reset()
@@ -189,7 +189,7 @@ function applyPreset(name: string) {
     }
 }
 
-function submit() {
+function submit () {
     form.post(
         route('gdcs.admin.level.rate.api', [props.level.id])
     )

@@ -66,7 +66,7 @@ const columns = [
     }
 ]
 
-function guessServerName(server: string) {
+function guessServerName (server: string) {
     const item = find(servers, {
         host: server
     })

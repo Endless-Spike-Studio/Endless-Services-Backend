@@ -91,7 +91,7 @@ watch(markAsWeeklyForm, newForm => {
 
 const isLevelOwner = computed(() => getProp('gdcs.user.id').value === props.level.user_id)
 
-function handleSongTypeUpdate(value: string) {
+function handleSongTypeUpdate (value: string) {
     if (value === 'official') {
         levelUpdateForm.audio_track = props.level.audio_track.toString()
         levelUpdateForm.song_id = 0

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import {NButton, NCard, NList, NListItem, NSpace, NStatistic, NTabPane, NTabs, NText, NThing} from "naive-ui"
-import {formatTime, getProp, isMobile, toRouteWithParams} from "@/scripts/helpers"
-import {GDCS} from "@/scripts/types/backend"
-import {Inertia} from "@inertiajs/inertia"
+import {NButton, NCard, NList, NListItem, NSpace, NStatistic, NTabPane, NTabs, NText, NThing} from 'naive-ui'
+import {formatTime, getProp, isMobile, toRouteWithParams} from '@/scripts/helpers'
+import {GDCS} from '@/scripts/types/backend'
+import {Inertia} from '@inertiajs/inertia'
 
 defineProps<{
     todayRegisteredAccountCount: number,
@@ -17,7 +17,7 @@ const recentRatedLevels = getProp<GDCS.Level[]>('recentRatedLevels')
 const recentFeaturedLevels = getProp<GDCS.Level[]>('recentFeaturedLevels')
 const recentEpicLevels = getProp<GDCS.Level[]>('recentEpicLevels')
 
-function handleAccountTabsUpdate(newTab: string) {
+function handleAccountTabsUpdate (newTab: string) {
     if (newTab === 'leaderboard') {
         Inertia.reload({
             only: ['leaderboards']
@@ -25,7 +25,7 @@ function handleAccountTabsUpdate(newTab: string) {
     }
 }
 
-function handleLevelTabsUpdate(newTab: string) {
+function handleLevelTabsUpdate (newTab: string) {
     switch (newTab) {
         case 'rated':
             Inertia.reload({

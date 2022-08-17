@@ -46,7 +46,7 @@ const songID = ref()
 const fetchSongForm = useForm({})
 
 if (props.song) {
-    songID.value = props.song.song_id;
+    songID.value = props.song.song_id
 }
 
 watch(fetchSongForm, newForm => {
@@ -57,7 +57,7 @@ watch(fetchSongForm, newForm => {
     })
 })
 
-function fetchSong() {
+function fetchSong () {
     fetchSongForm.get(
         route('ngproxy.info', {
             id: songID.value

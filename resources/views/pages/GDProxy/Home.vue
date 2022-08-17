@@ -16,7 +16,7 @@ const windowsDownloadOptions = [
     }
 ]
 
-function handleWindowsDownload(suffix: string) {
+function handleWindowsDownload (suffix: string) {
     toURL('https://cdn.geometrydashchinese.com/client/GDProxy.' + suffix)
 }
 </script>

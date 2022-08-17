@@ -37,7 +37,7 @@ watch([el, form], () => {
     }
 })
 
-function submit() {
+function submit () {
     form.post(
         route('gdcs.register.api')
     )

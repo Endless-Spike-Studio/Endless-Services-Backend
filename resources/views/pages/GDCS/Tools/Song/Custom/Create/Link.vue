@@ -35,7 +35,7 @@ watch([el, form], () => {
     }
 })
 
-function submit() {
+function submit () {
     form.post(
         route('gdcs.tools.song.custom.create.link.api')
     )

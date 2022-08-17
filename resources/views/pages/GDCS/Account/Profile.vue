@@ -70,7 +70,7 @@ watch(permissionUpdateForm, newForm => {
     })
 })
 
-function resendEmailVerification() {
+function resendEmailVerification () {
     resendEmailVerificationForm.post(
         route('gdcs.account.resendEmailVerification.api')
     )
