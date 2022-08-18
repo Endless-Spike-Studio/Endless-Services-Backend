@@ -89,7 +89,7 @@ class SongService
      */
     protected function process(Song $song): void
     {
-        if (!app(SongStorageService::class)->allExists(['id' => $song->song_id])) {
+        if (!app(SongStorageService::class)->allValid(['id' => $song->song_id])) {
             try {
                 $url = urldecode($song->original_download_url);
 
