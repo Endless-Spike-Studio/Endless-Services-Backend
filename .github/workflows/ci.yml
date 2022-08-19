@@ -1,5 +1,5 @@
 on: push
-name: '项目测试'
+name: CI
 
 jobs:
   test:
@@ -15,78 +15,78 @@ jobs:
         ports:
           - 3306:3306
     steps:
-      - uses: actions/checkout@v3
+        - uses: actions/checkout@v3
 
-      - name: '安装依赖'
-        run: |
-          rm -f composer.lock
-          composer update --no-interaction --no-ansi
+        -   name: Install packages
+            run: |
+                rm -f composer.lock
+                composer update --no-interaction --no-ansi
 
-      - name: '初始化项目'
-        run: |
-          cp .env.ci .env
-          php artisan key:generate
+        -   name: Initialize project
+            run: |
+                cp .env.ci .env
+                php artisan key:generate
 
-      - name: '开始测试'
-        run: php artisan test
+        -   name: Execute tests
+            run: php artisan test
 
   stan:
     runs-on: ubuntu-latest
     container:
       image: laradock/workspace:master-8.1
     steps:
-      - uses: actions/checkout@v3
+        - uses: actions/checkout@v3
 
-      - name: '安装依赖'
-        run: |
-          rm -f composer.lock
-          composer update --no-interaction --no-ansi
+        -   name: Install packages
+            run: |
+                rm -f composer.lock
+                composer update --no-interaction --no-ansi
 
-      - name: '初始化项目'
-        run: |
-          cp .env.ci .env
-          php artisan key:generate
+        -   name: Initialize project
+            run: |
+                cp .env.ci .env
+                php artisan key:generate
 
-      - name: '开始检查'
-        run: vendor/bin/phpstan analyse
-        continue-on-error: true
+        -   name: Execute analyse
+            run: vendor/bin/phpstan analyse
+            continue-on-error: true
 
   lint:
     runs-on: ubuntu-latest
     container:
       image: laradock/workspace:master-8.1
     steps:
-      - uses: actions/checkout@v3
+        - uses: actions/checkout@v3
 
-      - name: '安装依赖'
-        run: |
-          rm -f composer.lock
-          composer update --no-interaction --no-ansi
+        -   name: Install packages
+            run: |
+                rm -f composer.lock
+                composer update --no-interaction --no-ansi
 
-      - name: '初始化项目'
-        run: |
-          cp .env.ci .env
-          php artisan key:generate
+        -   name: Initialize project
+            run: |
+                cp .env.ci .env
+                php artisan key:generate
 
-      - name: '开始检查'
-        run: vendor/bin/pint --test
-        continue-on-error: true
+        -   name: Execute lint
+            run: vendor/bin/pint --test
+            continue-on-error: true
 
   frontend-lint:
     runs-on: ubuntu-latest
     container:
       image: node:alpine
     steps:
-      - uses: actions/checkout@v3
+        - uses: actions/checkout@v3
 
-      - name: '安装包管理工具'
-        run: npm install --global pnpm
+        -   name: Install pnpm
+            run: npm install --global pnpm
 
-      - name: '安装依赖'
-        run: |
-          rm -f pnpm-lock.yaml
-          pnpm update
+        -   name: Install packages
+            run: |
+                rm -f pnpm-lock.yaml
+                pnpm update
 
-      - name: '开始检查'
-        run: npx eslint resources/**
-        continue-on-error: true
+        -   name: Execute lint
+            run: npx eslint resources/**
+            continue-on-error: true
