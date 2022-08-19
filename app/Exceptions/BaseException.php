@@ -10,20 +10,29 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use InvalidArgumentException;
+use Throwable;
 
 class BaseException extends Exception
 {
     use HasMessage;
 
-    public bool $logging = true;
+    public function __construct(
+        string           $message = null,
+        int              $code = 0,
+        Throwable        $previous = null,
+        public           $logging = true,
+        public array     $log_context = [],
+        public int       $http_code = 500,
+        protected string $log_channel = 'stack',
+        protected string $log_type = 'notice'
+    )
+    {
+        parent::__construct($message, $code, $previous);
 
-    public array $log_context = [];
-
-    public int $http_code = 500;
-
-    protected string $log_channel = 'stack';
-
-    protected string $log_type = 'info';
+        if (method_exists($this, 'initialize')) {
+            $this->initialize();
+        }
+    }
 
     public function setLogChannel(string $log_channel): void
     {
