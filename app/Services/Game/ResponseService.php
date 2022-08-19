@@ -18,7 +18,7 @@ class ResponseService
             || Str::startsWith($data, '<')
             || Str::matchAll('/^(-)(\d+)$/', $data)->isNotEmpty()
         ) {
-            throw ResponseException::invalid();
+            throw ResponseException::invalid($data);
         }
     }
 }
