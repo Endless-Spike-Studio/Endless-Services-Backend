@@ -17,7 +17,7 @@ class BaseStorageService
     {
         foreach ($this->storages as $storage) {
             if (!Arr::has($storage, ['disk', 'format'])) {
-                throw StorageException::invalidConfig();
+                throw new StorageException(__('error.invalid_config'));
             }
         }
     }

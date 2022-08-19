@@ -46,4 +46,13 @@ return [
     'song_fetch_failed' => '歌曲获取失败, 请稍后再试',
     'song_process_failed' => '歌曲处理失败',
     'song_disabled' => '歌曲已禁用',
+
+    'game' => [
+        'account' => [
+            'block' => [
+                'success' => '拉黑成功',
+                'destroy' => '解除拉黑成功'
+            ]
+        ]
+    ]
 ];

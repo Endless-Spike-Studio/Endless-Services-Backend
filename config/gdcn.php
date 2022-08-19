@@ -32,5 +32,22 @@ return [
             ],
             'epic' => 4,
         ],
+        'command' => [
+            'start' => '!',
+            'argument' => [
+                'start' => ':',
+                'delimiter' => '='
+            ],
+            'boolean_mapper' => [
+                'false' => false,
+                'true' => true,
+                'no' => false,
+                'yes' => true,
+                'off' => false,
+                'on' => true,
+                '0' => false,
+                '1' => true,
+            ]
+        ]
     ],
 ];
