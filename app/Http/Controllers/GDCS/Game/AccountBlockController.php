@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\GDCS;
+namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\Response;
+use App\Exceptions\GDCS\GameException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountBlockRequest;
 use App\Http\Requests\GDCS\AccountUnblockRequest;
-use App\Services\GDCS\AccountBlockService;
+use App\Services\GDCS\Game\AccountBlockService;
 
 class AccountBlockController extends Controller
 {
@@ -16,21 +17,23 @@ class AccountBlockController extends Controller
     {
     }
 
+    /**
+     * @throws GameException
+     */
     public function block(AccountBlockRequest $request): int
     {
         $data = $request->validated();
-
-        return $this->service->create($data['accountID'], $data['targetAccountID'])
-            ? Response::ACCOUNT_BLOCK_SUCCESS->value
-            : Response::ACCOUNT_BLOCK_FAILED->value;
+        $this->service->store($data['accountID'], $data['targetAccountID']);
+        return Response::GAME_ACCOUNT_BLOCK_SUCCESS->value;
     }
 
+    /**
+     * @throws GameException
+     */
     public function unblock(AccountUnblockRequest $request): int
     {
         $data = $request->validated();
-
-        return $this->service->delete($data['accountID'], $data['targetAccountID'])
-            ? Response::ACCOUNT_UNBLOCK_SUCCESS->value
-            : Response::ACCOUNT_UNBLOCK_FAILED->value;
+        $this->service->destroy($data['accountID'], $data['targetAccountID']);
+        return Response::GAME_ACCOUNT_UNBLOCK_SUCCESS->value;
     }
 }

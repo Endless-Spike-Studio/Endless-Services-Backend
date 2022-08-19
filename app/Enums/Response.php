@@ -172,4 +172,9 @@ enum Response: int
 
         return '#' . GeometryDashAlgorithm::genPage(1, 0, $perPage);
     }
+
+    public const GAME_ACCOUNT_BLOCK_SUCCESS = Response::SUCCESS;
+    public const GAME_ACCOUNT_BLOCK_FAILED_NOT_FOUND = Response::FAILED;
+    public const GAME_ACCOUNT_UNBLOCK_SUCCESS = Response::SUCCESS;
+    public const GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND = Response::FAILED;
 }
