@@ -1,52 +1,59 @@
 <?php
 
-namespace App\Http\Controllers\GDCS;
+namespace App\Http\Controllers\GDCS\Game;
 
+use App\Enums\GDCS\CommentMode;
 use App\Enums\Response;
+use App\Exceptions\GDCS\GameException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountCommentHistoryFetchRequest;
 use App\Models\GDCS\LevelComment;
 use App\Models\GDCS\User;
-use GeometryDashChinese\GeometryDashAlgorithm;
-use GeometryDashChinese\GeometryDashObject;
+use App\Services\Game\AlgorithmService;
+use App\Services\Game\BaseGameService;
+use App\Services\Game\ObjectService;
 
 class AccountCommentHistoryController extends Controller
 {
-    public function fetchAll(AccountCommentHistoryFetchRequest $request): int|string
+    /**
+     * @throws GameException
+     */
+    public function index(AccountCommentHistoryFetchRequest $request): int|string
     {
         $data = $request->validated();
-        $perPage = config('gdcs.perPage', 10);
-
-        $accountID = User::query()
-            ->where('id', $data['userID'])
-            ->value('uuid');
 
         $comments = LevelComment::query()
-            ->where('account_id', $accountID);
+            ->where('account_id', User::query()
+                ->where('id', $data['userID'])
+                ->value('uuid'));
 
         $count = $comments->count();
         if ($count <= 0) {
-            return Response::ACCOUNT_COMMENT_HISTORY_EMPTY->value;
+            throw new GameException(__('error.game.account.comment.history.empty'), log_context: [
+                'user_id' => $data['userID']
+            ], response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
         }
 
         switch ($data['mode']) {
-            case 0:
+            case CommentMode::RECENT->value:
                 $comments->orderByDesc('created_at');
                 break;
-            case 1:
+            case CommentMode::MOST_LIKED->value:
                 $comments->orderByDesc('likes');
                 break;
             default:
-                return Response::ACCOUNT_COMMENT_HISTORY_FETCH_FAILED_INVALID_MODE->value;
+                throw new GameException(__('error.game.account.comment.invalid_mode'), log_context: [
+                    'value' => $data['mode']
+                ], response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
         }
 
         return implode('#', [
-            $comments->forPage(++$data['page'], $perPage)
+            $comments->forPage(++$data['page'], BaseGameService::$perPage)
                 ->with('account.user.score')
                 ->get()
                 ->map(function (LevelComment $comment) {
                     return implode(':', [
-                        GeometryDashObject::merge([
+                        ObjectService::merge([
                             1 => $comment->level_id,
                             2 => $comment->comment,
                             3 => $comment->account->user->id,
@@ -60,7 +67,7 @@ class AccountCommentHistoryController extends Controller
                             11 => $comment->account->mod_level->value,
                             12 => $comment->account->comment_color,
                         ], '~'),
-                        GeometryDashObject::merge([
+                        ObjectService::merge([
                             1 => $comment->account->name,
                             9 => $comment->account->user->score->icon,
                             10 => $comment->account->user->score->color1,
@@ -71,7 +78,7 @@ class AccountCommentHistoryController extends Controller
                         ], '~'),
                     ]);
                 })->join('|'),
-            GeometryDashAlgorithm::genPage($data['page'], $comments->count(), $perPage),
+            AlgorithmService::genPage($data['page'], $count),
         ]);
     }
 }

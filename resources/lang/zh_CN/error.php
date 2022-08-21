@@ -10,7 +10,11 @@ return [
             ],
             'comment' => [
                 'empty' => '账号评论为空',
-                'not_found' => '目标账号评论未找到(或不存在)'
+                'not_found' => '目标账号评论未找到(或不存在)',
+                'invalid_mode' => '无效模式',
+                'history' => [
+                    'empty' => '账号评论历史为空'
+                ]
             ]
         ]
     ]

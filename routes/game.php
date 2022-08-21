@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\GDCS\AccountCommentHistoryController;
 use App\Http\Controllers\GDCS\AccountController;
 use App\Http\Controllers\GDCS\AccountDataController;
 use App\Http\Controllers\GDCS\AccountFriendController;
@@ -11,6 +10,7 @@ use App\Http\Controllers\GDCS\ChallengeController;
 use App\Http\Controllers\GDCS\DailyChestController;
 use App\Http\Controllers\GDCS\Game\AccountBlockController;
 use App\Http\Controllers\GDCS\Game\AccountCommentController;
+use App\Http\Controllers\GDCS\Game\AccountCommentHistoryController;
 use App\Http\Controllers\GDCS\ItemController;
 use App\Http\Controllers\GDCS\LeaderboardController;
 use App\Http\Controllers\GDCS\LevelCommentController;
@@ -69,7 +69,7 @@ Route::group([
         Route::post('/getGJUserList20.php', [UserController::class, 'fetchAll'])->name('user.list.get');
         Route::post('/removeGJFriend20.php', [AccountFriendController::class, 'remove'])->name('friend.remove');
         Route::post('/acceptGJFriendRequest20.php', [AccountFriendRequestController::class, 'accept'])->name('friend.request.accept');
-        Route::post('/getGJCommentHistory.php', [AccountCommentHistoryController::class, 'fetchAll'])->name('account.comment.history.get');
+        Route::post('/getGJCommentHistory.php', [AccountCommentHistoryController::class, 'index'])->name('account.comment.history.get');
         Route::post('/getGJMapPacks21.php', [LevelPackController::class, 'fetchAll'])->name('map.pack.get');
         Route::post('/getGJDailyLevel.php', [LevelController::class, 'fetchDailyOrWeekly'])->name('daily.level.get');
         Route::post('/getGJGauntlets21.php', [LevelGauntletController::class, 'fetchAll'])->name('gauntlet.get');

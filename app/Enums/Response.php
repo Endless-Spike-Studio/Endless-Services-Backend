@@ -170,10 +170,13 @@ enum Response: int
         return '#' . AlgorithmService::genPage(1, 0);
     }
 
+    public const GAME_SPECIAL_FAILED_2 = Response::SPECIAL_FAILED;
     public const GAME_ACCOUNT_BLOCK_SUCCESS = Response::SUCCESS;
     public const GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS = Response::FAILED;
     public const GAME_ACCOUNT_UNBLOCK_SUCCESS = Response::SUCCESS;
     public const GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND = Response::FAILED;
     public const GAME_ACCOUNT_COMMENT_DELETE_SUCCESS = Response::SUCCESS;
     public const GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND = Response::FAILED;
+    public const GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY = Response::GAME_SPECIAL_FAILED_2;
+    public const GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE = Response::FAILED;
 }
