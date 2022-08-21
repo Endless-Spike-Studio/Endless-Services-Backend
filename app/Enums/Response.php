@@ -2,8 +2,7 @@
 
 namespace App\Enums;
 
-use GeometryDashChinese\GeometryDashAlgorithm;
-use function config;
+use App\Services\Game\AlgorithmService;
 
 enum Response: int
 {
@@ -168,13 +167,13 @@ enum Response: int
 
     public static function empty(): string
     {
-        $perPage = config('gdcs.perPage', 10);
-
-        return '#' . GeometryDashAlgorithm::genPage(1, 0, $perPage);
+        return '#' . AlgorithmService::genPage(1, 0);
     }
 
     public const GAME_ACCOUNT_BLOCK_SUCCESS = Response::SUCCESS;
     public const GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS = Response::FAILED;
     public const GAME_ACCOUNT_UNBLOCK_SUCCESS = Response::SUCCESS;
     public const GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND = Response::FAILED;
+    public const GAME_ACCOUNT_COMMENT_DELETE_SUCCESS = Response::SUCCESS;
+    public const GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND = Response::FAILED;
 }
