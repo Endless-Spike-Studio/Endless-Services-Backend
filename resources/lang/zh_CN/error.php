@@ -25,6 +25,9 @@ return [
             'banned' => '操作失败, 玩家已被封禁',
             'save' => [
                 'not_found' => '存档不存在(或未找到)'
+            ],
+            'friend' => [
+                'not_found' => '好友不存在(或未找到)'
             ]
         ]
     ]

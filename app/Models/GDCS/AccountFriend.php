@@ -17,13 +17,16 @@ class AccountFriend extends Model
         'friend_new' => 'boolean',
     ];
 
-    public static function findBetween(int $accountID, int $friendAccountID): AccountFriend|Builder
+    public static function findBetween(int $accountID, int $targetAccountID): AccountFriend|Builder
     {
         return static::query()
             ->where('account_id', $accountID)
-            ->where('friend_account_id', $friendAccountID)
-            ->orWhere('account_id', $friendAccountID)
-            ->where('friend_account_id', $accountID);
+            ->where('friend_account_id', $targetAccountID)
+            ->union(function () use ($accountID, $targetAccountID) {
+                return static::query()
+                    ->where('account_id', $targetAccountID)
+                    ->where('friend_account_id', $accountID);
+            });
     }
 
     public function account(): BelongsTo
