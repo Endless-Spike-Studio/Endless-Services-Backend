@@ -174,7 +174,7 @@ enum Response: int
     }
 
     public const GAME_ACCOUNT_BLOCK_SUCCESS = Response::SUCCESS;
-    public const GAME_ACCOUNT_BLOCK_FAILED_NOT_FOUND = Response::FAILED;
+    public const GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS = Response::FAILED;
     public const GAME_ACCOUNT_UNBLOCK_SUCCESS = Response::SUCCESS;
     public const GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND = Response::FAILED;
 }

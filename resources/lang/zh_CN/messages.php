@@ -50,8 +50,8 @@ return [
     'game' => [
         'account' => [
             'block' => [
-                'success' => '拉黑成功',
-                'destroy' => '解除拉黑成功'
+                'added' => '拉黑成功',
+                'removed' => '解除拉黑成功'
             ]
         ]
     ]
