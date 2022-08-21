@@ -5,7 +5,7 @@ namespace App\Services\Game;
 use App\Exceptions\ResponseException;
 use Illuminate\Support\Str;
 
-class ResponseService
+class ResponseService extends BaseGameService
 {
     /**
      * @throws ResponseException

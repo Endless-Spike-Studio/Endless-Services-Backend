@@ -5,7 +5,7 @@ namespace App\Services\Game;
 use Base64Url\Base64Url;
 use GeometryDashChinese\enums\Salts;
 
-class AlgorithmService
+class AlgorithmService extends BaseGameService
 {
     public static function encode(string $data, string $key, bool $usePadding = true, bool $sha1 = true): string
     {
@@ -56,7 +56,7 @@ class AlgorithmService
     public static function genPage(int $page, int $total, int $perPage = null): string
     {
         if ($perPage === null) {
-            $perPage = BaseGameService::$perPage;
+            $perPage = self::$perPage;
         }
 
         return implode(':', [$total, (--$page * $perPage), $perPage]);
