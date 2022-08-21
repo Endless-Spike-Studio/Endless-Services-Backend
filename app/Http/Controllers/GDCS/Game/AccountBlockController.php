@@ -17,7 +17,7 @@ class AccountBlockController extends Controller
     /**
      * @throws GameException
      */
-    public function add(AccountBlockRequest $request): int
+    public function block(AccountBlockRequest $request): int
     {
         $data = $request->validated();
 
@@ -39,7 +39,7 @@ class AccountBlockController extends Controller
     /**
      * @throws GameException
      */
-    public function remove(AccountUnblockRequest $request): int
+    public function unblock(AccountUnblockRequest $request): int
     {
         $data = $request->validated();
 

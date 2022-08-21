@@ -64,8 +64,8 @@ Route::group([
         Route::post('/deleteGJComment20.php', [LevelCommentController::class, 'delete'])->name('level.comment.delete');
         Route::post('/deleteGJFriendRequests20.php', [AccountFriendRequestController::class, 'delete'])->name('friend.request.delete');
         Route::post('/getGJFriendRequests20.php', [AccountFriendRequestController::class, 'fetchAll'])->name('friend.request.get');
-        Route::post('/blockGJUser20.php', [AccountBlockController::class, 'add'])->name('account.block');
-        Route::post('/unblockGJUser20.php', [AccountBlockController::class, 'remove'])->name('account.unblock');
+        Route::post('/blockGJUser20.php', [AccountBlockController::class, 'block'])->name('account.block');
+        Route::post('/unblockGJUser20.php', [AccountBlockController::class, 'unblock'])->name('account.unblock');
         Route::post('/getGJUserList20.php', [UserController::class, 'fetchAll'])->name('user.list.get');
         Route::post('/removeGJFriend20.php', [AccountFriendController::class, 'remove'])->name('friend.remove');
         Route::post('/acceptGJFriendRequest20.php', [AccountFriendRequestController::class, 'accept'])->name('friend.request.accept');
