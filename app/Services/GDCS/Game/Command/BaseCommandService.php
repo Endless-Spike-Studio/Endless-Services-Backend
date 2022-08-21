@@ -41,9 +41,14 @@ class BaseCommandService
         }
     }
 
+    public function valid(): bool
+    {
+        return $this->valid;
+    }
+
     public function execute(): string
     {
-        $unavailableCommands = array_merge(['__construct', 'formatMessage', 'execute'], $this->disabled_commands);
+        $unavailableCommands = array_merge(['__construct', 'valid', 'formatMessage', 'execute'], $this->disabled_commands);
 
         if (!$this->valid || in_array($this->name, $unavailableCommands, true)) {
             return $this->formatMessage(__('game.command.unavailable'));
