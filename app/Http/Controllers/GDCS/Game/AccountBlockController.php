@@ -9,17 +9,10 @@ use App\Http\Requests\GDCS\AccountBlockRequest;
 use App\Http\Requests\GDCS\AccountUnblockRequest;
 use App\Http\Traits\GameLog;
 use App\Models\GDCS\AccountBlock;
-use App\Services\GDCS\Game\AccountBlockService;
 
 class AccountBlockController extends Controller
 {
     use GameLog;
-
-    public function __construct(
-        protected AccountBlockService $service
-    )
-    {
-    }
 
     /**
      * @throws GameException
@@ -61,7 +54,7 @@ class AccountBlockController extends Controller
         }
 
         $query->delete();
-        $this->logGame(__('messages.game.account.block.destroy'), $context);
+        $this->logGame(__('messages.game.account.block.removed'), $context);
 
         return Response::GAME_ACCOUNT_UNBLOCK_SUCCESS->value;
     }
