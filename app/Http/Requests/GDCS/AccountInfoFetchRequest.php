@@ -7,6 +7,15 @@ use Illuminate\Validation\Rule;
 
 class AccountInfoFetchRequest extends Request
 {
+    public function authorize(): bool
+    {
+        if ($this->has('accountID')) {
+            return $this->auth() && !empty($this->account);
+        }
+
+        return true;
+    }
+
     public function rules(): array
     {
         return [
