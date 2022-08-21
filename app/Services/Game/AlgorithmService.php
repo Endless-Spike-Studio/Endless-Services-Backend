@@ -7,8 +7,6 @@ use GeometryDashChinese\enums\Salts;
 
 class AlgorithmService
 {
-    public static int $perPage = 10;
-
     public static function encode(string $data, string $key, bool $usePadding = true, bool $sha1 = true): string
     {
         return Base64Url::encode(self::xor($sha1 ? sha1($data) : $data, $key), $usePadding);
@@ -58,7 +56,7 @@ class AlgorithmService
     public static function genPage(int $page, int $total, int $perPage = null): string
     {
         if ($perPage === null) {
-            $perPage = self::$perPage;
+            $perPage = BaseGameService::$perPage;
         }
 
         return implode(':', [$total, (--$page * $perPage), $perPage]);
