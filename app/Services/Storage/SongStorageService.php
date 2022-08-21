@@ -24,7 +24,7 @@ class SongStorageService extends BaseStorageService
                 $path = Str::replace('{' . $key . '}', $value, $path);
             }
 
-            if ($disk->size($path) <= 0) {
+            if (!$disk->exists($path) || $disk->size($path) <= 0) {
                 return false;
             }
         }
