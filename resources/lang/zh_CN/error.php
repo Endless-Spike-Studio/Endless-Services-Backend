@@ -22,7 +22,10 @@ return [
             'login' => [
                 'need_verify_email' => '玩家登录失败, 需要验证邮箱'
             ],
-            'banned' => '操作失败, 玩家已被封禁'
+            'banned' => '操作失败, 玩家已被封禁',
+            'save' => [
+                'not_found' => '存档不存在(或未找到)'
+            ]
         ]
     ]
 ];

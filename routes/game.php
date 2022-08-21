@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\GDCS\AccountDataController;
 use App\Http\Controllers\GDCS\AccountFriendController;
 use App\Http\Controllers\GDCS\AccountFriendRequestController;
 use App\Http\Controllers\GDCS\AccountMessageController;
@@ -11,6 +10,7 @@ use App\Http\Controllers\GDCS\Game\AccountBlockController;
 use App\Http\Controllers\GDCS\Game\AccountCommentController;
 use App\Http\Controllers\GDCS\Game\AccountCommentHistoryController;
 use App\Http\Controllers\GDCS\Game\AccountController;
+use App\Http\Controllers\GDCS\Game\AccountDataController;
 use App\Http\Controllers\GDCS\ItemController;
 use App\Http\Controllers\GDCS\LeaderboardController;
 use App\Http\Controllers\GDCS\LevelCommentController;

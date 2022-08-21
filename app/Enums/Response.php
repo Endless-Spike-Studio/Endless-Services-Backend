@@ -186,4 +186,6 @@ enum Response: int
     public const GAME_ACCOUNT_ACCESS_REQUEST_FAILED_NOT_FOUND = Response::FAILED;
     public const GAME_ACCOUNT_LOGIN_FAILED_NEED_VERIFY_EMAIL = Response::FAILED;
     public const GAME_ACCOUNT_LOGIN_FAILED_BANNED = Response::GAME_SPECIAL_FAILED_12;
+    public const GAME_ACCOUNT_DATA_SAVE_SUCCESS = Response::SUCCESS;
+    public const GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND = Response::FAILED;
 }
