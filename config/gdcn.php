@@ -24,6 +24,7 @@ return [
         ],
     ],
     'game' => [
+        'per_page' => 10,
         'creator_points' => [
             'rated' => 1,
             'featured' => [
