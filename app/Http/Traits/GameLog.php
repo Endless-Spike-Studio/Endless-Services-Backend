@@ -11,6 +11,7 @@ trait GameLog
     {
         $data = array_merge([
             'request' => [
+                'ip' => Request::ip(),
                 'url' => Request::fullUrl(),
                 'data' => Request::except(['gjp', 'password'])
             ]

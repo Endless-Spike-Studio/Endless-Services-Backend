@@ -24,6 +24,7 @@ class GameException extends BaseException
 
         $this->log_context = array_merge([
             'request' => [
+                'ip' => Request::ip(),
                 'url' => Request::fullUrl(),
                 'data' => Request::except(['gjp', 'password'])
             ]
