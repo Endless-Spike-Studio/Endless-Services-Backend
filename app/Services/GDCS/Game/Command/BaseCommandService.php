@@ -9,7 +9,7 @@ class BaseCommandService
 {
     protected bool $valid = false;
     protected string $name = '';
-    protected int $time = 98978399; // remain temp ban time, 98978399 is 1145 days and 14 hours
+    protected int $time = 98978399;
     protected array $arguments = [];
     protected array $parameters = [];
     protected array $disabled_commands = [];
