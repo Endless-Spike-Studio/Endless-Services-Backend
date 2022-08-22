@@ -7,6 +7,7 @@ use App\Enums\Response;
 use App\Exceptions\GDCS\GameException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountCommentHistoryFetchRequest;
+use App\Http\Traits\GameLog;
 use App\Models\GDCS\LevelComment;
 use App\Models\GDCS\User;
 use App\Services\Game\AlgorithmService;
@@ -15,6 +16,8 @@ use App\Services\Game\ObjectService;
 
 class AccountCommentHistoryController extends Controller
 {
+    use GameLog;
+
     /**
      * @throws GameException
      */
@@ -29,9 +32,7 @@ class AccountCommentHistoryController extends Controller
 
         $count = $comments->count();
         if ($count <= 0) {
-            throw new GameException(__('error.game.account.comment.history.empty'), log_context: [
-                'user_id' => $data['userID']
-            ], response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
+            throw new GameException(__('error.game.account.comment.history.empty'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
         }
 
         switch ($data['mode']) {
@@ -42,10 +43,10 @@ class AccountCommentHistoryController extends Controller
                 $comments->orderByDesc('likes');
                 break;
             default:
-                throw new GameException(__('error.game.account.comment.invalid_mode'), log_context: [
-                    'value' => $data['mode']
-                ], response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
+                throw new GameException(__('error.game.account.comment.invalid_mode'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
         }
+
+        $this->logGame(__('messages.game.index_account_comment_history'));
 
         return implode('#', [
             $comments->forPage(++$data['page'], BaseGameService::$perPage)

@@ -3,6 +3,7 @@
 namespace App\Exceptions\GDCS;
 
 use App\Exceptions\BaseException;
+use Illuminate\Support\Facades\Request;
 use Throwable;
 
 class GameException extends BaseException
@@ -20,6 +21,13 @@ class GameException extends BaseException
     )
     {
         parent::__construct($message, $code, $previous);
+
+        $this->log_context = array_merge([
+            'request' => [
+                'url' => Request::fullUrl(),
+                'data' => Request::except(['gjp', 'password'])
+            ]
+        ], $this->log_context);
     }
 
     public function render()

@@ -9,6 +9,7 @@ use App\Http\Requests\GDCS\AccountInfoFetchRequest;
 use App\Http\Requests\GDCS\AccountLoginRequest;
 use App\Http\Requests\GDCS\AccountModAccessRequest;
 use App\Http\Requests\GDCS\AccountRegisterRequest;
+use App\Http\Traits\GameLog;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\AccountFriendRequest;
@@ -22,6 +23,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
+    use GameLog;
+
     public function register(AccountRegisterRequest $request): int
     {
         $data = $request->validated();
@@ -31,6 +34,8 @@ class AccountController extends Controller
             'password' => Hash::make($data['password']),
             'email' => $data['email']
         ]);
+
+        $this->logGame(__('messages.game.register'));
 
         $account->sendEmailVerificationNotification();
         return Response::GAME_ACCOUNT_REGISTER_SUCCESS->value;
@@ -47,9 +52,7 @@ class AccountController extends Controller
             ->find($data['targetAccountID']);
 
         if (!$target) {
-            throw new GameException(__('error.game.account.not_found'), log_context: [
-                'account_id' => $data['targetAccountID']
-            ], response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_NOT_FOUND->value);
+            throw new GameException(__('error.game.account.not_found'), response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_NOT_FOUND->value);
         }
 
         $userInfo = [
@@ -93,10 +96,7 @@ class AccountController extends Controller
                 ->exists();
 
             if ($targetHasBlockedVisitor) {
-                throw new GameException(__('error.game.account.blocked_by_target'), log_context: [
-                    'account_id' => $data['accountID'],
-                    'target_account_id' => $data['targetAccountID']
-                ], response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_BLOCKED_BY_TARGET->value);
+                throw new GameException(__('error.game.account.blocked_by_target'), response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_BLOCKED_BY_TARGET->value);
             }
 
             $targetIsFriend = AccountFriend::findBetween($request->account->id, $target->id)->exists();
@@ -161,6 +161,7 @@ class AccountController extends Controller
             }
         }
 
+        $this->logGame(__('messages.game.fetch_account_profile'));
         return ObjectService::merge($userInfo, ':');
     }
 
@@ -172,11 +173,10 @@ class AccountController extends Controller
         $modLevel = $request->account->mod_level->value;
 
         if ($modLevel <= 0) {
-            throw new GameException(__('error.game.account.mod_permission_not_found'), log_context: [
-                'account_id' => $request->account->id
-            ], response_code: Response::GAME_ACCOUNT_ACCESS_REQUEST_FAILED_NOT_FOUND->value);
+            throw new GameException(__('error.game.account.mod_permission_not_found'), response_code: Response::GAME_ACCOUNT_ACCESS_REQUEST_FAILED_NOT_FOUND->value);
         }
 
+        $this->logGame(__('messages.game.request_account_mod_access'));
         return $modLevel;
     }
 
@@ -209,9 +209,11 @@ class AccountController extends Controller
             ], response_code: Response::GAME_ACCOUNT_LOGIN_FAILED_BANNED->value);
         }
 
-        return implode(',', [
-            $account->id,
-            $user->id,
+        $this->logGame(__('messages.game.login'), [
+            'account_id' => $account->id,
+            'user_id' => $user->id
         ]);
+
+        return $account->id . ',' . $user->id;
     }
 }

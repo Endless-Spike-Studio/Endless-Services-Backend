@@ -48,11 +48,20 @@ return [
     'song_disabled' => '歌曲已禁用',
 
     'game' => [
-        'account' => [
-            'block' => [
-                'added' => '拉黑成功',
-                'removed' => '解除拉黑成功'
-            ]
-        ]
+        'account_block' => '拉黑',
+        'account_unblock' => '取消拉黑',
+        'execute_account_comment_command' => '执行账号评论指令',
+        'create_account_comment' => '发布账号评论',
+        'index_account_comment' => '读取账号评论',
+        'delete_account_comment' => '删除账号评论',
+        'index_account_comment_history' => '读取账号历史关卡评论',
+        'register' => '注册新账号',
+        'fetch_account_profile' => '读取账号资料',
+        'request_account_mod_access' => '请求账号 Mod 许可',
+        'login' => '登录账号',
+        'account_data_server_url_get' => '获取账号存档服务器地址',
+        'account_data_save' => '保存账号存档',
+        'account_data_load' => '读取账号存档',
+        'delete_account_friend' => '删除账号好友'
     ]
 ];

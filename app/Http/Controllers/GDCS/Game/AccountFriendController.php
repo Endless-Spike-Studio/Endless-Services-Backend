@@ -6,10 +6,13 @@ use App\Enums\Response;
 use App\Exceptions\GDCS\GameException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\AccountFriendRemoveRequest;
+use App\Http\Traits\GameLog;
 use App\Models\GDCS\AccountFriend;
 
 class AccountFriendController extends Controller
 {
+    use GameLog;
+
     /**
      * @throws GameException
      */
@@ -26,6 +29,8 @@ class AccountFriendController extends Controller
         }
 
         $query->delete();
+        $this->logGame(__('messages.game.delete_account_friend'));
+
         return Response::GAME_ACCOUNT_FRIEND_DELETE_SUCCESS->value;
     }
 }
