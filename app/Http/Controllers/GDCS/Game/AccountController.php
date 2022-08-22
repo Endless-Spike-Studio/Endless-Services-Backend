@@ -12,12 +12,11 @@ use App\Http\Requests\GDCS\AccountRegisterRequest;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\AccountFriendRequest;
+use App\Models\GDCS\AccountMessage;
 use App\Models\GDCS\User;
 use App\Models\GDCS\UserScore;
-use App\Repositories\GDCS\AccountFriendRepository;
-use App\Repositories\GDCS\AccountFriendRequestRepository;
-use App\Repositories\GDCS\AccountMessageRepository;
 use App\Services\Game\ObjectService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 
@@ -136,17 +135,29 @@ class AccountController extends Controller
             }
 
             if ($target->is($request->account)) {
-                $userInfo[38] = app(AccountMessageRepository::class)
-                    ->findNewByAccount($data['targetAccountID'])
-                    ->count();
+                $userInfo[38] = AccountMessage::query()
+                    ->where([
+                        'target_account_id' => $data['targetAccountID'],
+                        'new' => true,
+                    ])->count();
 
-                $userInfo[39] = app(AccountFriendRequestRepository::class)
-                    ->findNewByAccount($data['targetAccountID'])
-                    ->count();
+                $userInfo[39] = AccountFriendRequest::query()
+                    ->where([
+                        'target_account_id' => $data['targetAccountID'],
+                        'new' => true,
+                    ])->count();
 
-                $userInfo[40] = app(AccountFriendRepository::class)
-                    ->findNewByAccount($data['targetAccountID'])
-                    ->count();
+                $userInfo[40] = AccountFriend::query()
+                    ->where([
+                        'account_id' => $data['targetAccountID'],
+                        'new' => true,
+                    ])
+                    ->union(function (Builder $query) use ($data) {
+                        return $query->where([
+                            'friend_account_id' => $data['targetAccountID'],
+                            'friend_new' => true,
+                        ]);
+                    })->count();
             }
         }
 
