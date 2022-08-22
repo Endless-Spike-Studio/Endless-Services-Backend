@@ -4,7 +4,10 @@ namespace App\Exceptions;
 
 class StorageException extends BaseException
 {
-    protected string $log_channel = 'gdcn';
+    protected function initialize(): void
+    {
+        $this->log_channel = 'gdcn';
+    }
 
     public static function invalidConfig(): StorageException
     {

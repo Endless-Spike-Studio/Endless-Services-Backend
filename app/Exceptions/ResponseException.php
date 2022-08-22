@@ -4,7 +4,11 @@ namespace App\Exceptions;
 
 class ResponseException extends BaseException
 {
-    protected string $log_channel = 'gdcn';
+    protected function initialize(): void
+    {
+        $this->log_channel = 'gdcn';
+        $this->http_code = 503;
+    }
 
     public static function invalid(string $response): ResponseException
     {

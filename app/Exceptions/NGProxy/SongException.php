@@ -9,9 +9,11 @@ class SongException extends BaseException
 {
     use HasMessage;
 
-    public int $http_code = 503;
-
-    protected string $log_channel = 'gdcn';
+    protected function initialize(): void
+    {
+        $this->log_channel = 'gdcn';
+        $this->http_code = 503;
+    }
 
     public static function notFound(): SongException
     {

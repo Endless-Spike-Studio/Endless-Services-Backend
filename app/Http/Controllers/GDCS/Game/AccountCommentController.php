@@ -48,7 +48,6 @@ class AccountCommentController extends Controller
         ]);
 
         return $comment->id;
-
     }
 
     /**
