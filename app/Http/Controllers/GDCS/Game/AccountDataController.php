@@ -37,9 +37,7 @@ class AccountDataController extends Controller
         $content = $request->account->data;
 
         if (empty($content)) {
-            throw new GameException(__('error.game.account.save.not_found'), log_context: [
-                'account_id' => $request->account->id
-            ], response_code: Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
+            throw new GameException(__('error.game.account.save.not_found'), response_code: Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
         }
 
         $this->logGame(__('messages.game.account_data_load'));
