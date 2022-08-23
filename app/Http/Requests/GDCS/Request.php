@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\GDCS;
 
-use App\Exceptions\GDCS\RequestAuthorizationFailedException;
-use App\Exceptions\GDCS\RequestValidationFailedException;
+use App\Enums\Response;
+use App\Exceptions\GDCS\GameException;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\User;
 use GeometryDashChinese\enums\Keys;
@@ -127,18 +127,21 @@ class Request extends FormRequest
     }
 
     /**
-     * @throws RequestAuthorizationFailedException
+     * @throws GameException
      */
     protected function failedAuthorization(): void
     {
-        throw new RequestAuthorizationFailedException();
+        throw new GameException(__('gdcn.game.error.request_authorization_failed'), response_code: Response::GAME_REQUEST_AUTHORIZATION_FAILED->value);
     }
 
     /**
-     * @throws RequestValidationFailedException
+     * @throws GameException
      */
     protected function failedValidation(Validator $validator): void
     {
-        throw (new RequestValidationFailedException)->setValidator($validator);
+        throw new GameException(__('gdcn.game.error.request_authorization_failed'), log_context: [
+            'errors' => $validator->errors()
+                ->toArray()
+        ], response_code: Response::GAME_REQUEST_AUTHORIZATION_FAILED->value);
     }
 }

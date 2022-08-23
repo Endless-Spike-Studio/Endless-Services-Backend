@@ -172,6 +172,8 @@ enum Response: int
 
     public const GAME_SPECIAL_FAILED_2 = Response::SPECIAL_FAILED;
     public const GAME_SPECIAL_FAILED_12 = Response::ACCOUNT_LOGIN_FAILED_BANNED;
+    public const GAME_REQUEST_AUTHORIZATION_FAILED = Response::FAILED;
+    public const GAME_REQUEST_VALIDATE_FAILED = Response::FAILED;
     public const GAME_ACCOUNT_BLOCK_SUCCESS = Response::SUCCESS;
     public const GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS = Response::FAILED;
     public const GAME_ACCOUNT_UNBLOCK_SUCCESS = Response::SUCCESS;
