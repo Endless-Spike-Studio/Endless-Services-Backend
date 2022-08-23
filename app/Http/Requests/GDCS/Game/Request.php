@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Enums\Response;
 use App\Exceptions\GDCS\GameException;

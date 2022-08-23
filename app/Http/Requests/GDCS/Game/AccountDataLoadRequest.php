@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
-class AccountDataSaveRequest extends Request
+class AccountDataLoadRequest extends Request
 {
     public function authorize(): bool
     {
@@ -33,10 +33,6 @@ class AccountDataSaveRequest extends Request
                 Rule::exists(Account::class, 'name'),
             ],
             'password' => [
-                'required',
-                'string',
-            ],
-            'saveData' => [
                 'required',
                 'string',
             ],

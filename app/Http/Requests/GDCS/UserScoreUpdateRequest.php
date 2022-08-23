@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\GDCS;
 
+use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\Account;
 use GeometryDashChinese\enums\Keys;
 use GeometryDashChinese\enums\Salts;

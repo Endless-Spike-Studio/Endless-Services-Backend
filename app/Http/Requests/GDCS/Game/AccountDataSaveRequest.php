@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
-class AccountInfoFetchRequest extends Request
+class AccountDataSaveRequest extends Request
 {
     public function authorize(): bool
     {
-        if ($this->has('accountID')) {
-            return $this->auth() && !empty($this->account);
-        }
-
-        return true;
+        return $this->auth() && !empty($this->account);
     }
 
     public function rules(): array
@@ -31,27 +27,23 @@ class AccountInfoFetchRequest extends Request
                 'required',
                 'boolean',
             ],
-            'accountID' => [
-                'sometimes',
-                'exclude_if:accountID,0',
+            'userName' => [
                 'required',
-                'integer',
-                Rule::exists(Account::class, 'id'),
+                'string',
+                Rule::exists(Account::class, 'name'),
             ],
-            'gjp' => [
-                'required_with:accountID',
-                'nullable',
+            'password' => [
+                'required',
                 'string',
             ],
-            'targetAccountID' => [
+            'saveData' => [
                 'required',
-                'integer',
-                Rule::exists(Account::class, 'id'),
+                'string',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7',
+                'in:Wmfv3899gc9',
             ],
         ];
     }

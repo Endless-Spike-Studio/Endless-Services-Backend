@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\GDCS;
 
+use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\User;
 use Illuminate\Validation\Rule;
 

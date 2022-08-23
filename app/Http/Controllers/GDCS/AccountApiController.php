@@ -9,7 +9,7 @@ use App\Http\Requests\GDCS\AccountPermissionUpdateApiRequest;
 use App\Http\Requests\GDCS\AccountRegisterApiRequest;
 use App\Http\Requests\GDCS\AccountSettingUpdateApiRequest;
 use App\Http\Requests\GDCS\AccountVerifyRequest;
-use App\Http\Requests\GDCS\Request as GDCS_Request;
+use App\Http\Requests\GDCS\Game\Request as GDCS_Request;
 use App\Http\Requests\GDCS\RoleUpdateApiRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;

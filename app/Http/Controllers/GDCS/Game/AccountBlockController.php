@@ -5,8 +5,8 @@ namespace App\Http\Controllers\GDCS\Game;
 use App\Enums\Response;
 use App\Exceptions\GDCS\GameException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GDCS\AccountBlockRequest;
-use App\Http\Requests\GDCS\AccountUnblockRequest;
+use App\Http\Requests\GDCS\Game\AccountBlockRequest;
+use App\Http\Requests\GDCS\Game\AccountUnblockRequest;
 use App\Http\Traits\GameLog;
 use App\Models\GDCS\AccountBlock;
 

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\GDCS\Game;
 use App\Enums\Response;
 use App\Exceptions\GDCS\GameException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GDCS\AccountDataLoadRequest;
-use App\Http\Requests\GDCS\AccountDataSaveRequest;
-use App\Http\Requests\GDCS\AccountDataServerAddressGetRequest;
+use App\Http\Requests\GDCS\Game\AccountDataLoadRequest;
+use App\Http\Requests\GDCS\Game\AccountDataSaveRequest;
+use App\Http\Requests\GDCS\Game\AccountDataServerAddressGetRequest;
 use App\Http\Traits\GameLog;
 
 class AccountDataController extends Controller

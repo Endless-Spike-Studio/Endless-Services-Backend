@@ -5,7 +5,7 @@ namespace App\Http\Controllers\GDCS\Game;
 use App\Enums\Response;
 use App\Exceptions\GDCS\GameException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GDCS\AccountFriendRemoveRequest;
+use App\Http\Requests\GDCS\Game\AccountFriendRemoveRequest;
 use App\Http\Traits\GameLog;
 use App\Models\GDCS\AccountFriend;
 

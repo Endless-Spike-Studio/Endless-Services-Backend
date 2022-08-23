@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\GDCS;
 
+use App\Http\Requests\GDCS\Game\Request;
+
 class SongGetRequest extends Request
 {
     public function rules(): array

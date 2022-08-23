@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
-class AccountFriendRequestSendRequest extends Request
+class AccountFriendRequestDeleteRequest extends Request
 {
     public function authorize(): bool
     {
@@ -36,16 +36,22 @@ class AccountFriendRequestSendRequest extends Request
                 'required',
                 'string',
             ],
-            'toAccountID' => [
+            'targetAccountID' => [
                 'different:accountID',
-                'required',
+                'exclude_if:targetAccountID,0',
+                'required_without:accounts',
                 'integer',
                 Rule::exists(Account::class, 'id'),
             ],
-            'comment' => [
-                'present',
-                'nullable',
+            'accounts' => [
+                'different:accountID',
+                'required_without:targetAccountID',
                 'string',
+                Rule::exists(Account::class, 'id'),
+            ],
+            'isSender' => [
+                'required',
+                'boolean',
             ],
             'secret' => [
                 'required',

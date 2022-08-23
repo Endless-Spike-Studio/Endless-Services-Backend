@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
+use App\Models\GDCS\AccountComment;
 use Illuminate\Validation\Rule;
 
-class AccountFriendRequestDeleteRequest extends Request
+class AccountCommentDeleteRequest extends Request
 {
     public function authorize(): bool
     {
@@ -36,22 +37,15 @@ class AccountFriendRequestDeleteRequest extends Request
                 'required',
                 'string',
             ],
-            'targetAccountID' => [
-                'different:accountID',
-                'exclude_if:targetAccountID,0',
-                'required_without:accounts',
-                'integer',
-                Rule::exists(Account::class, 'id'),
-            ],
-            'accounts' => [
-                'different:accountID',
-                'required_without:targetAccountID',
-                'string',
-                Rule::exists(Account::class, 'id'),
-            ],
-            'isSender' => [
+            'commentID' => [
                 'required',
-                'boolean',
+                'integer',
+                Rule::exists(AccountComment::class, 'id'),
+            ],
+            'cType' => [
+                'required',
+                'integer',
+                'in:1',
             ],
             'secret' => [
                 'required',

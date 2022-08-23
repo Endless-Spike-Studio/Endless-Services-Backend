@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
-class AccountCommentFetchRequest extends Request
+class AccountUnblockRequest extends Request
 {
+    public function authorize(): bool
+    {
+        return $this->auth() && ! empty($this->account);
+    }
+
     public function rules(): array
     {
         return [
@@ -27,15 +32,15 @@ class AccountCommentFetchRequest extends Request
                 'integer',
                 Rule::exists(Account::class, 'id'),
             ],
-            'page' => [
+            'gjp' => [
                 'required',
-                'integer',
-                'min:0',
+                'string',
             ],
-            'total' => [
+            'targetAccountID' => [
+                'different:accountID',
                 'required',
                 'integer',
-                'min:0',
+                Rule::exists(Account::class, 'id'),
             ],
             'secret' => [
                 'required',

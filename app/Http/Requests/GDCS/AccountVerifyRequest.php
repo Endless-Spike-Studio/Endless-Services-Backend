@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\GDCS;
 
+use App\Http\Requests\GDCS\Game\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class AccountVerifyRequest extends Request

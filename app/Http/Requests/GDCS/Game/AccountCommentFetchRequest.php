@@ -1,18 +1,12 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
-use App\Models\GDCS\AccountFriendRequest;
 use Illuminate\Validation\Rule;
 
-class AccountFriendRequestAcceptRequest extends Request
+class AccountCommentFetchRequest extends Request
 {
-    public function authorize(): bool
-    {
-        return $this->auth() && !empty($this->account);
-    }
-
     public function rules(): array
     {
         return [
@@ -32,23 +26,16 @@ class AccountFriendRequestAcceptRequest extends Request
                 'required',
                 'integer',
                 Rule::exists(Account::class, 'id'),
-                Rule::exists(AccountFriendRequest::class, 'target_account_id'),
             ],
-            'gjp' => [
-                'required',
-                'string',
-            ],
-            'targetAccountID' => [
-                'different:accountID',
+            'page' => [
                 'required',
                 'integer',
-                Rule::exists(Account::class, 'id'),
-                Rule::exists(AccountFriendRequest::class, 'account_id'),
+                'min:0',
             ],
-            'requestID' => [
+            'total' => [
                 'required',
                 'integer',
-                Rule::exists(AccountFriendRequest::class, 'id'),
+                'min:0',
             ],
             'secret' => [
                 'required',

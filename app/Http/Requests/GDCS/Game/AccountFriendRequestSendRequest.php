@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
-class AccountFriendRequestFetchRequest extends Request
+class AccountFriendRequestSendRequest extends Request
 {
     public function authorize(): bool
     {
@@ -36,20 +36,16 @@ class AccountFriendRequestFetchRequest extends Request
                 'required',
                 'string',
             ],
-            'page' => [
+            'toAccountID' => [
+                'different:accountID',
                 'required',
                 'integer',
-                'min:0',
+                Rule::exists(Account::class, 'id'),
             ],
-            'total' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
-            'getSent' => [
-                'sometimes',
-                'required',
-                'boolean',
+            'comment' => [
+                'present',
+                'nullable',
+                'string',
             ],
             'secret' => [
                 'required',

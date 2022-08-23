@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
-class AccountUnblockRequest extends Request
+class AccountModAccessRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->account);
+        return $this->auth() && !empty($this->account);
     }
 
     public function rules(): array
@@ -35,12 +35,6 @@ class AccountUnblockRequest extends Request
             'gjp' => [
                 'required',
                 'string',
-            ],
-            'targetAccountID' => [
-                'different:accountID',
-                'required',
-                'integer',
-                Rule::exists(Account::class, 'id'),
             ],
             'secret' => [
                 'required',

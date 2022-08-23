@@ -1,26 +1,16 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
 use App\Models\GDCS\Account;
-use GeometryDashChinese\enums\Keys;
-use GeometryDashChinese\enums\Salts;
-use GeometryDashChinese\GeometryDashAlgorithm;
+use App\Models\GDCS\AccountFriendRequest;
 use Illuminate\Validation\Rule;
 
-class AccountCommentCreateRequest extends Request
+class AccountFriendRequestAcceptRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && !empty($this->account) && $this->validateChk();
-    }
-
-    protected function validateChk(): bool
-    {
-        return hash_equals(
-            GeometryDashAlgorithm::encode($this->get('userName') . $this->get('comment') . $this->get('levelID', 0) . $this->get('percent', 0) . $this->get('cType') . Salts::COMMENT->value, Keys::COMMENT_CHK->value),
-            $this->get('chk')
-        );
+        return $this->auth() && !empty($this->account);
     }
 
     public function rules(): array
@@ -42,27 +32,23 @@ class AccountCommentCreateRequest extends Request
                 'required',
                 'integer',
                 Rule::exists(Account::class, 'id'),
+                Rule::exists(AccountFriendRequest::class, 'target_account_id'),
             ],
             'gjp' => [
                 'required',
                 'string',
             ],
-            'userName' => [
-                'required',
-                'string',
-            ],
-            'comment' => [
-                'required',
-                'string',
-            ],
-            'cType' => [
+            'targetAccountID' => [
+                'different:accountID',
                 'required',
                 'integer',
-                'in:1',
+                Rule::exists(Account::class, 'id'),
+                Rule::exists(AccountFriendRequest::class, 'account_id'),
             ],
-            'chk' => [
+            'requestID' => [
                 'required',
-                'string',
+                'integer',
+                Rule::exists(AccountFriendRequest::class, 'id'),
             ],
             'secret' => [
                 'required',
