@@ -17,7 +17,7 @@ use App\Models\GDCS\AccountMessage;
 use App\Models\GDCS\User;
 use App\Models\GDCS\UserScore;
 use App\Services\Game\ObjectService;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 
