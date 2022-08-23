@@ -15,19 +15,17 @@ class BaseException extends Exception
 {
     use HasMessage;
 
-    public function __construct(
-        string           $message = null,
-        int              $code = 0,
-        Throwable        $previous = null,
-        public           $logging = true,
-        public array     $log_context = [],
-        public int       $http_code = 500,
-        protected string $log_channel = 'stack',
-        protected string $log_type = 'notice'
-    )
+    public bool $logging = true;
+    public array $log_context = [];
+    public int $http_code = 500;
+    protected string $log_channel = 'stack';
+    protected string $log_type = 'notice';
+
+    public function __construct(string $message = null, int $code = 0, Throwable $previous = null, int $http_code = 500, array $log_context = [])
     {
+        $this->http_code = $http_code;
+        $this->log_context = array_merge(Request::context(), $log_context);
         parent::__construct($message, $code, $previous);
-        $this->log_context = array_merge(Request::context(), $this->log_context);
     }
 
     public function report(): void
