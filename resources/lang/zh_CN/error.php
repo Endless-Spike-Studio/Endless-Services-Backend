@@ -19,6 +19,7 @@ return [
             'not_found' => '账号不存在',
             'blocked_by_target' => '玩家被目标拉黑',
             'mod_permission_not_found' => '没有找到对应玩家的 Mod 记录',
+            'target_not_allowed_to_send_friend_request' => '目标不允许发送好友请求',
             'login' => [
                 'need_verify_email' => '玩家登录失败, 需要验证邮箱'
             ],
@@ -28,6 +29,10 @@ return [
             ],
             'friend' => [
                 'not_found' => '好友不存在(或未找到)'
+            ],
+            'friend_request' => [
+                'empty' => '账号好友请求为空',
+                'not_found' => '好友请求不存在(或未找到)'
             ]
         ]
     ]

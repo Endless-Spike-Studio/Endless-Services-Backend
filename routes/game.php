@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\GDCS\AccountFriendRequestController;
 use App\Http\Controllers\GDCS\AccountMessageController;
 use App\Http\Controllers\GDCS\AccountSettingController;
 use App\Http\Controllers\GDCS\ChallengeController;
@@ -11,6 +10,7 @@ use App\Http\Controllers\GDCS\Game\AccountCommentHistoryController;
 use App\Http\Controllers\GDCS\Game\AccountController;
 use App\Http\Controllers\GDCS\Game\AccountDataController;
 use App\Http\Controllers\GDCS\Game\AccountFriendController;
+use App\Http\Controllers\GDCS\Game\AccountFriendRequestController;
 use App\Http\Controllers\GDCS\ItemController;
 use App\Http\Controllers\GDCS\LeaderboardController;
 use App\Http\Controllers\GDCS\LevelCommentController;
@@ -63,7 +63,7 @@ Route::group([
         Route::post('/getGJComments21.php', [LevelCommentController::class, 'fetchAll'])->name('level.comment.get');
         Route::post('/deleteGJComment20.php', [LevelCommentController::class, 'delete'])->name('level.comment.delete');
         Route::post('/deleteGJFriendRequests20.php', [AccountFriendRequestController::class, 'delete'])->name('friend.request.delete');
-        Route::post('/getGJFriendRequests20.php', [AccountFriendRequestController::class, 'fetchAll'])->name('friend.request.get');
+        Route::post('/getGJFriendRequests20.php', [AccountFriendRequestController::class, 'index'])->name('friend.request.get');
         Route::post('/blockGJUser20.php', [AccountBlockController::class, 'block'])->name('account.block');
         Route::post('/unblockGJUser20.php', [AccountBlockController::class, 'unblock'])->name('account.unblock');
         Route::post('/getGJUserList20.php', [UserController::class, 'fetchAll'])->name('user.list.get');
