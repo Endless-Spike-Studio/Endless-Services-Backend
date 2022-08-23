@@ -30,7 +30,7 @@ class AccountCommentController extends Controller
 
         if ($command->valid()) {
             $result = $command->execute();
-            $this->logGame(__('messages.game.execute_account_comment_command'), [
+            $this->logGame(__('gdcn.game.action.account_comment_command_execute_success'), [
                 'command' => $content,
                 'result' => $result
             ]);
@@ -44,7 +44,7 @@ class AccountCommentController extends Controller
                 'comment' => $data['comment']
             ]);
 
-        $this->logGame(__('messages.game.create_account_comment'), [
+        $this->logGame(__('gdcn.game.action.account_comment_create_success'), [
             'comment_id' => $comment->id
         ]);
 
@@ -60,18 +60,18 @@ class AccountCommentController extends Controller
         $account = Account::find($data['accountID']);
 
         if (!$account) {
-            throw new GameException(__('error.game.account.not_found'), response_code: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_NOT_FOUND->value);
+            throw new GameException(__('gdcn.game.error.account_comment_index_failed_target_not_found'), response_code: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_NOT_FOUND->value);
         }
 
         $account->loadCount('comments');
         if ($account->comments_count <= 0) {
             throw new GameException(
-                __('error.game.account.comment.empty'),
+                __('gdcn.game.error.account_comment_index_failed_empty'),
                 response_code: Response::empty()
             );
         }
 
-        $this->logGame(__('messages.game.index_account_comment'));
+        $this->logGame(__('gdcn.game.action.account_comment_index_success'));
 
         return implode('#', [
             $account->comments()
@@ -98,17 +98,18 @@ class AccountCommentController extends Controller
     public function delete(AccountCommentDeleteRequest $request): int
     {
         $data = $request->validated();
-        $account = $request->account;
+        $comment = AccountComment::find($data['commentID']);
 
-        $query = $account->comments()
-            ->whereKey($data['commentID']);
-
-        if (!$query->exists()) {
-            throw new GameException(__('error.game.account.comment.not_found'), response_code: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value);
+        if (!$comment) {
+            throw new GameException(__('gdcn.game.error.account_comment_delete_failed_not_found'), response_code: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value);
         }
 
-        $query->delete();
-        $this->logGame(__('messages.game.delete_account_comment'));
+        if (!$comment->account->isNot($request->account)) {
+            throw new GameException(__('gdcn.game.error.account_comment_delete_failed_not_owner'), response_code: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_OWNER->value);
+        }
+
+        $comment->delete();
+        $this->logGame(__('gdcn.game.action.account_comment_delete_success'));
 
         return Response::GAME_ACCOUNT_COMMENT_DELETE_SUCCESS->value;
     }

@@ -27,11 +27,11 @@ class AccountBlockController extends Controller
         ];
 
         if (AccountBlock::where($context)->exists()) {
-            throw new GameException(__('error.game.account.block.already_exists'), response_code: Response::GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS->value);
+            throw new GameException(__('gdcn.game.error.account_block_failed_already_exists'), response_code: Response::GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS->value);
         }
 
         AccountBlock::create($context);
-        $this->logGame(__('messages.game.account_block'));
+        $this->logGame(__('gdcn.game.action.account_block_success'));
 
         return Response::GAME_ACCOUNT_BLOCK_SUCCESS->value;
     }
@@ -50,11 +50,11 @@ class AccountBlockController extends Controller
 
         $query = AccountBlock::where($context);
         if (!$query->exists()) {
-            throw new GameException(__('error.game.account.block.not_found'), response_code: Response::GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND->value);
+            throw new GameException(__('gdcn.game.error.account_unblock_failed_not_found'), response_code: Response::GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND->value);
         }
 
         $query->delete();
-        $this->logGame(__('messages.game.account_unblock'));
+        $this->logGame(__('gdcn.game.action.account_unblock_success'));
 
         return Response::GAME_ACCOUNT_UNBLOCK_SUCCESS->value;
     }

@@ -35,7 +35,7 @@ class AccountController extends Controller
             'email' => $data['email']
         ]);
 
-        $this->logGame(__('messages.game.register'));
+        $this->logGame(__('gdcn.game.action.account_register_success'));
 
         $account->sendEmailVerificationNotification();
         return Response::GAME_ACCOUNT_REGISTER_SUCCESS->value;
@@ -52,7 +52,7 @@ class AccountController extends Controller
             ->find($data['targetAccountID']);
 
         if (!$target) {
-            throw new GameException(__('error.game.account.not_found'), response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_NOT_FOUND->value);
+            throw new GameException(__('gdcn.game.error.account_profile_fetch_failed_target_not_found'), response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_NOT_FOUND->value);
         }
 
         $userInfo = [
@@ -96,7 +96,7 @@ class AccountController extends Controller
                 ->exists();
 
             if ($targetHasBlockedVisitor) {
-                throw new GameException(__('error.game.account.blocked_by_target'), response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_BLOCKED_BY_TARGET->value);
+                throw new GameException(__('gdcn.game.error.account_profile_fetch_failed_blocked_by_target'), response_code: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_BLOCKED_BY_TARGET->value);
             }
 
             $targetIsFriend = AccountFriend::findBetween($request->account->id, $target->id)->exists();
@@ -161,7 +161,7 @@ class AccountController extends Controller
             }
         }
 
-        $this->logGame(__('messages.game.fetch_account_profile'));
+        $this->logGame(__('gdcn.game.action.account_profile_fetch_success'));
         return ObjectService::merge($userInfo, ':');
     }
 
@@ -173,10 +173,10 @@ class AccountController extends Controller
         $modLevel = $request->account->mod_level->value;
 
         if ($modLevel <= 0) {
-            throw new GameException(__('error.game.account.mod_permission_not_found'), response_code: Response::GAME_ACCOUNT_ACCESS_REQUEST_FAILED_NOT_FOUND->value);
+            throw new GameException(__('gdcn.game.error.account_access_request_failed_not_found'), response_code: Response::GAME_ACCOUNT_ACCESS_REQUEST_FAILED_NOT_FOUND->value);
         }
 
-        $this->logGame(__('messages.game.request_account_mod_access'));
+        $this->logGame(__('gdcn.game.action.account_access_request_success'));
         return $modLevel;
     }
 
@@ -189,7 +189,7 @@ class AccountController extends Controller
 
         $account = $request->account;
         if (!$account->hasVerifiedEmail()) {
-            throw new GameException(__('error.game.account.login.need_verify_email'), log_context: [
+            throw new GameException(__('gdcn.game.error.account_login_failed_not_verified_email'), log_context: [
                 'account_id' => $account->id
             ], response_code: Response::GAME_ACCOUNT_LOGIN_FAILED_NEED_VERIFY_EMAIL->value);
         }
@@ -203,12 +203,12 @@ class AccountController extends Controller
             ]);
 
         if ($user->ban->login_ban) {
-            throw new GameException(__('error.game.account.banned'), log_context: [
+            throw new GameException(__('gdcn.game.error.account_login_failed_banned'), log_context: [
                 'account_id' => $account->id
             ], response_code: Response::GAME_ACCOUNT_LOGIN_FAILED_BANNED->value);
         }
 
-        $this->logGame(__('messages.game.login'), [
+        $this->logGame(__('gdcn.game.action.account_login_success'), [
             'account_id' => $account->id,
             'user_id' => $user->id
         ]);

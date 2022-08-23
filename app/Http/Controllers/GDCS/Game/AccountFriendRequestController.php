@@ -10,6 +10,7 @@ use App\Http\Requests\GDCS\AccountFriendRequestAcceptRequest;
 use App\Http\Requests\GDCS\AccountFriendRequestDeleteRequest;
 use App\Http\Requests\GDCS\AccountFriendRequestFetchRequest;
 use App\Http\Requests\GDCS\AccountFriendRequestSendRequest;
+use App\Http\Traits\GameLog;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\AccountFriendRequest;
@@ -20,6 +21,8 @@ use Illuminate\Support\Arr;
 
 class AccountFriendRequestController extends Controller
 {
+    use GameLog;
+
     /**
      * @throws GameException
      */
@@ -30,7 +33,7 @@ class AccountFriendRequestController extends Controller
             ->find($data['targetAccountID']);
 
         if (!$target) {
-            throw new GameException(__('error.game.account.not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_NOT_FOUND->value);
+            throw new GameException(__('gdcn.game.error.account_friend_request_send_failed_target_not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_NOT_FOUND->value);
         }
 
         $targetHasBlockedOperator = $target->blocks()
@@ -38,11 +41,11 @@ class AccountFriendRequestController extends Controller
             ->exists();
 
         if ($targetHasBlockedOperator) {
-            throw new GameException(__('error.game.account.blocked_by_target'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_BLOCKED_BY_TARGET->value);
+            throw new GameException(__('gdcn.game.error.account_friend_request_send_failed_blocked_by_target'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_BLOCKED_BY_TARGET->value);
         }
 
         if ($target->setting->friend_request_state === AccountSettingFriendRequestState::NONE) {
-            throw new GameException(__('error.game.account.target_not_allowed_to_send_friend_request'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_TARGET_DISABLED->value);
+            throw new GameException(__('gdcn.game.error.account_friend_request_send_failed_blocked_by_target_setting'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_TARGET_DISABLED->value);
         }
 
         $friendRequest = new AccountFriendRequest();
@@ -50,6 +53,10 @@ class AccountFriendRequestController extends Controller
         $friendRequest->target_account_id = $data['toAccountID'];
         $friendRequest->comment = $data['comment'];
         $friendRequest->save();
+
+        $this->logGame(__('gdcn.game.action.account_friend_request_send_success'), [
+            'friend_request_id' => $friendRequest->id
+        ]);
 
         return $friendRequest->id;
     }
@@ -74,9 +81,10 @@ class AccountFriendRequestController extends Controller
 
         $count = $query->count();
         if ($count <= 0) {
-            throw new GameException(__('error.game.account.friend_request.empty'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_INDEX_FAILED_EMPTY->value);
+            throw new GameException(__($getSent ? 'gdcn.game.error.account_friend_request_send_failed_empty_sent' : 'gdcn.game.error.account_friend_request_send_failed_empty'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_INDEX_FAILED_EMPTY->value);
         }
 
+        $this->logGame(__('gdcn.game.action.account_friend_request_index_success'));
         return implode('#', [
             $query->forPage(++$data['page'], BaseGameService::$perPage)
                 ->get()
@@ -112,13 +120,20 @@ class AccountFriendRequestController extends Controller
     {
         $data = $request->validated();
 
-        $query = AccountFriendRequest::query()
-            ->whereKey($data['requestID'])
-            ->where('account_id', $data['targetAccountID'])
-            ->where('target_account_id', $data['accountID']);
+        $friendRequest = AccountFriendRequest::query()
+            ->with('target_account')
+            ->find($data['requestID']);
 
-        if (!$query->exists()) {
-            throw new GameException(__('error.game.account.friend_request.not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED_NOT_FOUND->value);
+        if (!$friendRequest) {
+            throw new GameException(__('gdcn.game.error.account_friend_request_accept_failed_not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED_NOT_FOUND->value);
+        }
+
+        if ($friendRequest->account_id !== $data['targetAccountID']) {
+            throw new GameException(__('gdcn.game.error.account_friend_request_accept_failed_target_account_not_match'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED_TARGET_ACCOUNT_NOT_MATCH->value);
+        }
+
+        if ($friendRequest->target_account->isNot($request->account)) {
+            throw new GameException(__('gdcn.game.error.account_friend_request_accept_failed_not_receiver'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED_NOT_RECEIVER->value);
         }
 
         AccountFriend::create([
@@ -126,7 +141,9 @@ class AccountFriendRequestController extends Controller
             'friend_account_id' => $data['targetAccountID']
         ]);
 
-        $query->delete();
+        $friendRequest->delete();
+        $this->logGame(__('gdcn.game.action.account_friend_request_accept_success'));
+
         return Response::GAME_ACCOUNT_FRIEND_REQUEST_ACCEPT_SUCCESS->value;
     }
 
@@ -149,10 +166,12 @@ class AccountFriendRequestController extends Controller
         }
 
         if (!$query->exists()) {
-            throw new GameException(__('error.game.account.friend_request.not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_DELETE_FAILED_NOT_FOUND->value);
+            throw new GameException(__('gdcn.game.error.account_friend_request_delete_failed_not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_REQUEST_DELETE_FAILED_NOT_FOUND->value);
         }
 
         $query->delete();
+        $this->logGame(__('gdcn.game.action.account_friend_request_delete_success'));
+
         return Response::GAME_ACCOUNT_FRIEND_REQUEST_DELETE_SUCCESS->value;
     }
 }

@@ -9,13 +9,7 @@ trait GameLog
 {
     public function logGame(string $message, array $context = []): void
     {
-        $data = array_merge([
-            'request' => [
-                'ip' => Request::ip(),
-                'url' => Request::fullUrl(),
-                'data' => Request::except(['gjp', 'password'])
-            ]
-        ], $context);
+        $data = array_merge(Request::context(), $context);
 
         Log::channel('gdcn')
             ->info($this->formatGameLogMessage($message), $data);

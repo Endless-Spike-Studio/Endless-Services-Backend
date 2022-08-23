@@ -21,14 +21,7 @@ class GameException extends BaseException
     )
     {
         parent::__construct($message, $code, $previous);
-
-        $this->log_context = array_merge([
-            'request' => [
-                'ip' => Request::ip(),
-                'url' => Request::fullUrl(),
-                'data' => Request::except(['gjp', 'password'])
-            ]
-        ], $this->log_context);
+        $this->log_context = array_merge(Request::context(), $this->log_context);
     }
 
     public function render()

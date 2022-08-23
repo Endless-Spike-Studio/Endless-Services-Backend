@@ -6,6 +6,6 @@ class AccountCommandService extends BaseCommandService
 {
     protected function test(): string
     {
-        return 'worked!';
+        return __('gdcn.game.command.worked');
     }
 }

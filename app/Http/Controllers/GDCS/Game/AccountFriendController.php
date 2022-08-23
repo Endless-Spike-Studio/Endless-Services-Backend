@@ -22,11 +22,11 @@ class AccountFriendController extends Controller
         $query = AccountFriend::findBetween($request->account->id, $data['targetAccountID']);
 
         if (!$query->exists()) {
-            throw new GameException(__('error.game.account.friend.not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_DELETE_FAILED_NOT_FOUND->value);
+            throw new GameException(__('gdcn.game.error.account_friend_delete_failed_target_not_found'), response_code: Response::GAME_ACCOUNT_FRIEND_DELETE_FAILED_NOT_FOUND->value);
         }
 
         $query->delete();
-        $this->logGame(__('messages.game.delete_account_friend'));
+        $this->logGame(__('gdcn.game.action.account_friend_delete_success'));
 
         return Response::GAME_ACCOUNT_FRIEND_DELETE_SUCCESS->value;
     }

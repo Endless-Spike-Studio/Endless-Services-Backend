@@ -51,11 +51,11 @@ class BaseCommandService
         $unavailableCommands = array_merge(['__construct', 'valid', 'formatMessage', 'execute'], $this->disabled_commands);
 
         if (!$this->valid || in_array($this->name, $unavailableCommands, true)) {
-            return $this->formatMessage(__('game.command.unavailable'));
+            return $this->formatMessage(__('gdcn.game.command.unavailable'));
         }
 
         if (!method_exists($this, $this->name)) {
-            return $this->formatMessage(__('game.command.not_found'));
+            return $this->formatMessage(__('gdcn.game.command.not_found'));
         }
 
         return $this->formatMessage($this->{$this->name}(...$this->parameters));

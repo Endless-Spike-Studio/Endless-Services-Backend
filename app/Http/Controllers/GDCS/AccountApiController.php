@@ -96,8 +96,7 @@ class AccountApiController extends Controller
         );
 
         $account->sendEmailVerificationNotification();
-
-        return to_route('home');
+        return to_route('gdcs.home');
     }
 
     public function login(GDCS_Request $gdcs_request, AccountLoginApiRequest $request): RedirectResponse

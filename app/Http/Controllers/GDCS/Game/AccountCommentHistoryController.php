@@ -32,7 +32,7 @@ class AccountCommentHistoryController extends Controller
 
         $count = $comments->count();
         if ($count <= 0) {
-            throw new GameException(__('error.game.account.comment.history.empty'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
+            throw new GameException(__('gdcn.game.error.account_comment_history_index_failed_empty'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
         }
 
         switch ($data['mode']) {
@@ -43,10 +43,10 @@ class AccountCommentHistoryController extends Controller
                 $comments->orderByDesc('likes');
                 break;
             default:
-                throw new GameException(__('error.game.account.comment.invalid_mode'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
+                throw new GameException(__('gdcn.game.error.account_comment_history_index_failed_invalid_mode'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
         }
 
-        $this->logGame(__('messages.game.index_account_comment_history'));
+        $this->logGame(__('gdcn.game.action.account_comment_history_index_success'));
 
         return implode('#', [
             $comments->forPage(++$data['page'], BaseGameService::$perPage)
