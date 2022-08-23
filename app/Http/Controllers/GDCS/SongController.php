@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\GDCS;
 
 use App\Enums\Response;
-use App\Exceptions\NGProxy\SongException;
+use App\Exceptions\NewGroundsProxyException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\SongGetRequest;
 use App\Http\Requests\GDCS\TopArtistFetchRequest;
@@ -33,7 +33,7 @@ class SongController extends Controller
             return app(SongService::class)
                 ->find($data['songID'])
                 ->object;
-        } catch (SongException) {
+        } catch (NewGroundsProxyException) {
             return Response::SONG_FETCH_FAILED->value;
         }
     }

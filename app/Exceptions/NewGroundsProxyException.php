@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Exceptions\NGProxy;
+namespace App\Exceptions;
 
-use App\Exceptions\BaseException;
 use Throwable;
 
-class SongException extends BaseException
+class NewGroundsProxyException extends BaseException
 {
     public function __construct(string $message = null, int $code = 0, Throwable $previous = null, public array $log_context = [])
     {
@@ -14,6 +13,6 @@ class SongException extends BaseException
 
     protected function formatMessage(string $message): string
     {
-        return 'NGProxy 歌曲异常: ' . $message;
+        return '[NGProxy]' . $message;
     }
 }

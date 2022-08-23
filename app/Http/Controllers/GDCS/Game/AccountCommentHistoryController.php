@@ -4,7 +4,7 @@ namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\CommentMode;
 use App\Enums\Response;
-use App\Exceptions\GDCS\GameException;
+use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\AccountCommentHistoryFetchRequest;
 use App\Http\Traits\GameLog;
@@ -19,7 +19,7 @@ class AccountCommentHistoryController extends Controller
     use GameLog;
 
     /**
-     * @throws GameException
+     * @throws GeometryDashChineseServerException
      */
     public function index(AccountCommentHistoryFetchRequest $request): int|string
     {
@@ -32,7 +32,7 @@ class AccountCommentHistoryController extends Controller
 
         $count = $comments->count();
         if ($count <= 0) {
-            throw new GameException(__('gdcn.game.error.account_comment_history_index_failed_empty'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_empty'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
         }
 
         switch ($data['mode']) {
@@ -43,7 +43,7 @@ class AccountCommentHistoryController extends Controller
                 $comments->orderByDesc('likes');
                 break;
             default:
-                throw new GameException(__('gdcn.game.error.account_comment_history_index_failed_invalid_mode'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_invalid_mode'), response_code: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_comment_history_index_success'));

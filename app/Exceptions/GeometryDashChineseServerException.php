@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Exceptions\GDCS;
+namespace App\Exceptions;
 
-use App\Exceptions\BaseException;
 use Throwable;
 
-class GameException extends BaseException
+class GeometryDashChineseServerException extends BaseException
 {
     public function __construct(string $message = null, int $code = 0, Throwable $previous = null, public array $log_context = [], protected ?int $response_code = null)
     {
@@ -23,6 +22,6 @@ class GameException extends BaseException
 
     protected function formatMessage(string $message): string
     {
-        return 'GDCS 游戏异常: ' . $message;
+        return '[GDCS]' . $message;
     }
 }

@@ -48,7 +48,7 @@ class BaseException extends Exception
      */
     public function render()
     {
-        $message = $this->formatMessage($this->message);
+        $message = method_exists($this, 'formatMessage') ? $this->formatMessage($this->message) : $this->message;
 
         if (Session::isStarted()) {
             $this->pushErrorMessage($message);

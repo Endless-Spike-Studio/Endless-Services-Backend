@@ -13,6 +13,6 @@ class StorageException extends BaseException
 
     protected function formatMessage(string $message): string
     {
-        return '存储异常: ' . $message;
+        return '[存储] 异常: ' . $message;
     }
 }

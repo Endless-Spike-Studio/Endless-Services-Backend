@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\NGProxy;
 
-use App\Exceptions\NGProxy\SongException;
+use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\StorageException;
 use App\Http\Requests\NGProxy\SongGetRequest;
 use App\Http\Traits\HasMessage;
@@ -21,7 +21,7 @@ class SongController extends Controller
     }
 
     /**
-     * @throws SongException
+     * @throws NewGroundsProxyException
      */
     public function info(int $id): array
     {
@@ -29,7 +29,7 @@ class SongController extends Controller
     }
 
     /**
-     * @throws SongException
+     * @throws NewGroundsProxyException
      */
     public function objectForGD(SongGetRequest $request): int|string
     {
@@ -39,7 +39,7 @@ class SongController extends Controller
     }
 
     /**
-     * @throws SongException
+     * @throws NewGroundsProxyException
      */
     public function object(int $id): int|string
     {
@@ -47,7 +47,7 @@ class SongController extends Controller
     }
 
     /**
-     * @throws SongException
+     * @throws NewGroundsProxyException
      * @throws StorageException
      */
     public function download(int $id): StreamedResponse

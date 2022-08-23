@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\Response;
-use App\Exceptions\GDCS\GameException;
+use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\AccountDataLoadRequest;
 use App\Http\Requests\GDCS\Game\AccountDataSaveRequest;
@@ -29,7 +29,7 @@ class AccountDataController extends Controller
     }
 
     /**
-     * @throws GameException
+     * @throws GeometryDashChineseServerException
      */
     public function load(AccountDataLoadRequest $request): int|string
     {
@@ -37,7 +37,7 @@ class AccountDataController extends Controller
         $content = $request->account->data;
 
         if (empty($content)) {
-            throw new GameException(__('gdcn.game.error.account_data_load_failed_not_found'), response_code: Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_data_load_failed_not_found'), response_code: Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_data_load_success'));

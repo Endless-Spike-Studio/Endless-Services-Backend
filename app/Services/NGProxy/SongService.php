@@ -2,7 +2,7 @@
 
 namespace App\Services\NGProxy;
 
-use App\Exceptions\NGProxy\SongException;
+use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\ResponseException;
 use App\Models\NGProxy\Song;
 use App\Services\Game\ResponseService;
@@ -14,7 +14,7 @@ use Psr\Http\Client\ClientExceptionInterface;
 class SongService
 {
     /**
-     * @throws SongException
+     * @throws \App\Exceptions\NewGroundsProxyException
      */
     public function find(int $id): Song
     {
@@ -24,7 +24,7 @@ class SongService
 
         if (!empty($song)) {
             if ($song->disabled) {
-                throw new SongException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
+                throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
             }
 
             $this->process($song);
@@ -51,14 +51,14 @@ class SongService
             try {
                 ResponseService::check($response);
             } catch (ResponseException) {
-                throw new SongException(__('gdcn.song.error.fetch_failed'));
+                throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed'));
             }
 
             $songObject = GeometryDashObject::split(Arr::get(explode('#', $response), 2), '~|~');
         }
 
         if (!Arr::has($songObject, [1, 2, 3, 4, 5, 10])) {
-            throw new SongException(__('gdcn.song.error.fetch_failed_wrong_song_object'), log_context: [
+            throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_wrong_song_object'), log_context: [
                 'object' => $songObject
             ]);
         }
@@ -79,7 +79,7 @@ class SongService
     }
 
     /**
-     * @throws SongException
+     * @throws \App\Exceptions\NewGroundsProxyException
      */
     protected function process(Song $song): void
     {
@@ -92,7 +92,7 @@ class SongService
                     ->get($url)
                     ->body();
             } catch (ClientExceptionInterface $ex) {
-                throw new SongException(
+                throw new NewGroundsProxyException(
                     __('gdcn.song.error.process_failed_request_error', [
                         'reason' => $ex->getMessage()
                     ])

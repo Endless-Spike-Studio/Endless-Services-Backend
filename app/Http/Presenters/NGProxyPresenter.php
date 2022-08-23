@@ -2,7 +2,7 @@
 
 namespace App\Http\Presenters;
 
-use App\Exceptions\NGProxy\SongException;
+use App\Exceptions\NewGroundsProxyException;
 use App\Http\Controllers\NGProxy\SongController;
 use App\Http\Traits\HasMessage;
 use Illuminate\Http\RedirectResponse;
@@ -14,7 +14,7 @@ class NGProxyPresenter
     use HasMessage;
 
     /**
-     * @throws SongException
+     * @throws \App\Exceptions\NewGroundsProxyException
      */
     public function renderHomeWithSong(int $id): InertiaResponse|RedirectResponse
     {
