@@ -5,12 +5,10 @@ namespace App\Exceptions;
 use App\Http\Traits\HasMessage;
 use Exception;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
-use InvalidArgumentException;
 use Throwable;
 
 class BaseException extends Exception
@@ -30,15 +28,6 @@ class BaseException extends Exception
     {
         parent::__construct($message, $code, $previous);
         $this->log_context = array_merge(Request::context(), $this->log_context);
-    }
-
-    public function setLogChannel(string $log_channel): void
-    {
-        if (!Config::has('logging.channels' . $log_channel)) {
-            throw new InvalidArgumentException('日志频道不存在');
-        }
-
-        $this->log_channel = $log_channel;
     }
 
     public function report(): void
