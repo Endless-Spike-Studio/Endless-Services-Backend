@@ -57,7 +57,7 @@ class LevelSearchRequest extends Request
                 'exclude_if:diff,-',
                 'required_without:gauntlet',
                 'integer',
-                'between:-2,5',
+                'between:-3,5',
             ],
             'len' => [
                 'exclude_if:len,-',
