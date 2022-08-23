@@ -9,6 +9,7 @@ use App\Http\Requests\GDCS\AccountCommentCreateRequest;
 use App\Http\Requests\GDCS\AccountCommentDeleteRequest;
 use App\Http\Requests\GDCS\AccountCommentFetchRequest;
 use App\Http\Traits\GameLog;
+use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountComment;
 use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
@@ -56,9 +57,13 @@ class AccountCommentController extends Controller
     public function index(AccountCommentFetchRequest $request): string
     {
         $data = $request->validated();
-        $account = $request->account;
-        $account->loadCount('comments');
+        $account = Account::find($data['accountID']);
 
+        if (!$account) {
+            throw new GameException(__('error.game.account.not_found'), response_code: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_NOT_FOUND->value);
+        }
+
+        $account->loadCount('comments');
         if ($account->comments_count <= 0) {
             throw new GameException(
                 __('error.game.account.comment.empty'),
