@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use InvalidArgumentException;
 use Throwable;
@@ -28,10 +29,7 @@ class BaseException extends Exception
     )
     {
         parent::__construct($message, $code, $previous);
-
-        if (method_exists($this, 'initialize')) {
-            $this->initialize();
-        }
+        $this->log_context = array_merge(Request::context(), $this->log_context);
     }
 
     public function setLogChannel(string $log_channel): void
@@ -61,24 +59,17 @@ class BaseException extends Exception
      */
     public function render()
     {
-        /** @var int $code */
-        $code = $this->getCode();
         $message = $this->formatMessage($this->message);
-
-        if (is_int($code) && $code <= 0) {
-            return $code;
-        }
 
         if (Session::isStarted()) {
             $this->pushErrorMessage($message);
-
             return back();
         }
 
         if (Request::wantsJson()) {
-            return ['error' => $message];
+            return Response::make(['error' => $message], $this->http_code);
         }
 
-        abort($this->http_code);
+        abort($this->http_code, $message);
     }
 }

@@ -2,21 +2,13 @@
 
 namespace App\Exceptions;
 
+use Throwable;
+
 class StorageException extends BaseException
 {
-    protected function initialize(): void
+    public function __construct(string $message = null, int $code = 0, Throwable $previous = null)
     {
-        $this->log_channel = 'gdcn';
-    }
-
-    public static function invalidConfig(): StorageException
-    {
-        return new static('无效的配置');
-    }
-
-    public static function notFound(): StorageException
-    {
-        return new static('内容不存在(或未找到)');
+        parent::__construct($message, $code, $previous, log_channel: 'gdcn');
     }
 
     protected function formatMessage(string $message): string

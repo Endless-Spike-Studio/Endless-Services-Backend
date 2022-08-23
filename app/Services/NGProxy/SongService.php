@@ -8,8 +8,8 @@ use App\Models\NGProxy\Song;
 use App\Services\Game\ResponseService;
 use App\Services\Storage\SongStorageService;
 use GeometryDashChinese\GeometryDashObject;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Arr;
+use Psr\Http\Client\ClientExceptionInterface;
 
 class SongService
 {
@@ -24,11 +24,10 @@ class SongService
 
         if (!empty($song)) {
             if ($song->disabled) {
-                throw SongException::disabled();
+                throw new SongException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
             }
 
             $this->process($song);
-
             return $song;
         }
 
@@ -52,20 +51,16 @@ class SongService
             try {
                 ResponseService::check($response);
             } catch (ResponseException) {
-                $e = SongException::notFound();
-                $e->log_context = ['result' => $response];
-
-                throw $e;
+                throw new SongException(__('gdcn.song.error.fetch_failed'));
             }
 
             $songObject = GeometryDashObject::split(Arr::get(explode('#', $response), 2), '~|~');
         }
 
         if (!Arr::has($songObject, [1, 2, 3, 4, 5, 10])) {
-            $e = SongException::processing();
-            $e->log_context = ['error' => '歌曲对象处理失败', 'id' => $id, 'result' => $songObject];
-
-            throw $e;
+            throw new SongException(__('gdcn.song.error.fetch_failed_wrong_song_object'), log_context: [
+                'object' => $songObject
+            ]);
         }
 
         $song = Song::query()
@@ -80,7 +75,6 @@ class SongService
             ]);
 
         $this->process($song);
-
         return $song;
     }
 
@@ -97,11 +91,12 @@ class SongService
                     ->withOptions(['decode_content' => false])
                     ->get($url)
                     ->body();
-            } catch (GuzzleException $ex) {
-                $e = SongException::processing();
-                $e->log_context = ['error' => '请求失败', 'message' => $ex->getMessage(), 'url' => $url, 'id' => $song->song_id];
-
-                throw $e;
+            } catch (ClientExceptionInterface $ex) {
+                throw new SongException(
+                    __('gdcn.song.error.process_failed_request_error', [
+                        'reason' => $ex->getMessage()
+                    ])
+                );
             }
         }
     }

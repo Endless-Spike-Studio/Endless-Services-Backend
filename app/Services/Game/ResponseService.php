@@ -18,7 +18,7 @@ class ResponseService extends BaseGameService
             || Str::startsWith($data, '<')
             || Str::matchAll('/^(-)(\d+)$/', $data)->isNotEmpty()
         ) {
-            throw ResponseException::invalid($data);
+            throw new ResponseException(__('gdcn.error.response_invalid'), log_context: ['data' => $data]);
         }
     }
 }

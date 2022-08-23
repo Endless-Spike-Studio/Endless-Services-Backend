@@ -2,19 +2,13 @@
 
 namespace App\Exceptions;
 
+use Throwable;
+
 class ResponseException extends BaseException
 {
-    protected function initialize(): void
+    public function __construct(string $message = null, int $code = 0, Throwable $previous = null)
     {
-        $this->log_channel = 'gdcn';
-        $this->http_code = 503;
-    }
-
-    public static function invalid(string $response): ResponseException
-    {
-        $e = new static('数据无效');
-        $e->log_context = ['data' => $response];
-        return $e;
+        parent::__construct($message, $code, $previous, log_channel: 'gdcn');
     }
 
     protected function formatMessage(string $message): string

@@ -17,7 +17,7 @@ class BaseStorageService
     {
         foreach ($this->storages as $storage) {
             if (!Arr::has($storage, ['disk', 'format'])) {
-                throw new StorageException(__('error.invalid_config'));
+                throw new StorageException(__('gdcn.storage.error.invalid_config'));
             }
         }
     }
@@ -40,7 +40,7 @@ class BaseStorageService
             }
         }
 
-        throw StorageException::notFound();
+        throw new StorageException(__('gdcn.storage.error.fetch_failed_not_found'));
     }
 
     public function exists(array $data): bool
@@ -111,6 +111,6 @@ class BaseStorageService
             }
         }
 
-        throw StorageException::notFound();
+        throw new StorageException(__('gdcn.storage.error.download_failed_not_found'));
     }
 }

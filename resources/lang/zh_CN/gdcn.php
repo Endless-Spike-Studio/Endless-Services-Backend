@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'error' => [
+        'response_invalid' => '[响应] 内容无效'
+    ],
     'game' => [
         'command' => [
             'not_found' => 'Command not found',
@@ -55,6 +58,21 @@ return [
             'account_friend_request_index_success' => '[账号好友请求] 检索成功',
             'account_friend_request_accept_success' => '[账号好友请求] 同意成功',
             'account_friend_request_delete_success' => '[账号好友请求] 删除成功'
+        ]
+    ],
+    'storage' => [
+        'error' => [
+            'invalid_config' => '[存储] 配置解析失败, 无效的配置',
+            'fetch_failed_not_found' => '[存储] 内容获取失败, 文件不存在',
+            'download_failed_not_found' => '[存储] 内容下载失败, 文件不存在'
+        ]
+    ],
+    'song' => [
+        'error' => [
+            'fetch_failed' => '[歌曲] 获取失败',
+            'process_failed_request_error' => '[歌曲] 处理失败, 请求错误: :reason',
+            'fetch_failed_disabled' => '[歌曲] 获取失败, 已被禁用',
+            'fetch_failed_wrong_song_object' => '[歌曲] 获取失败, 错误的歌曲对象'
         ]
     ]
 ];
