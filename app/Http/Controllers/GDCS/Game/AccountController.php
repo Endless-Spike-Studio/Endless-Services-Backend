@@ -195,13 +195,12 @@ class AccountController extends Controller
         }
 
         $user = User::query()
-            ->where('uuid', $account->id)
-            ->firstOrNew();
-
-        $user->name = $account->name;
-        $user->uuid = $account->id;
-        $user->udid = $data['udid'];
-        $user->save();
+            ->firstOrCreate([
+                'uuid' => $account->id
+            ], [
+                'name' => $account->name,
+                'udid' => $data['udid']
+            ]);
 
         if ($user->ban->login_ban) {
             throw new GameException(__('error.game.account.banned'), log_context: [
