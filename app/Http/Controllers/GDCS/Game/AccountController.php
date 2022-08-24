@@ -17,7 +17,6 @@ use App\Models\GDCS\AccountMessage;
 use App\Models\GDCS\User;
 use App\Models\GDCS\UserScore;
 use App\Services\Game\ObjectService;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 
@@ -147,17 +146,18 @@ class AccountController extends Controller
                         'new' => true,
                     ])->count();
 
-                $userInfo[40] = AccountFriend::query()
-                    ->where([
-                        'account_id' => $data['targetAccountID'],
-                        'new' => true,
-                    ])
-                    ->union(function (Builder $query) use ($data) {
-                        return $query->where([
+                $userInfo[40] = array_sum([
+                    AccountFriend::query()
+                        ->where([
+                            'account_id' => $data['targetAccountID'],
+                            'new' => true,
+                        ])->count(),
+                    AccountFriend::query()
+                        ->where([
                             'friend_account_id' => $data['targetAccountID'],
                             'friend_new' => true,
-                        ]);
-                    })->count();
+                        ])->count()
+                ]);
             }
         }
 
