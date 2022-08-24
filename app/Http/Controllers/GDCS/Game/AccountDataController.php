@@ -37,7 +37,7 @@ class AccountDataController extends Controller
         $content = $request->account->data;
 
         if (empty($content)) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_data_load_failed_not_found'), response_code: Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_data_load_failed_not_found'), Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_data_load_success'));
