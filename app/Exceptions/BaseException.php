@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Http\Traits\HasMessage;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -42,11 +43,11 @@ class BaseException extends Exception
     }
 
     /**
-     * @return int|array|RedirectResponse|void
+     * @return HttpResponse|RedirectResponse|void
      */
     public function render()
     {
-        $message = method_exists($this, 'formatMessage') ? $this->formatMessage($this->message) : $this->message;
+        $message = $this->formatMessage($this->message);
 
         if (Session::isStarted()) {
             $this->pushErrorMessage($message);
