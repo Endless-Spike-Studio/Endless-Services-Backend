@@ -8,8 +8,8 @@ class GeometryDashChineseServerException extends BaseException
 
     public function render()
     {
-        if (!empty($this->code)) {
-            return $this->code;
+        if (!empty($this->response_code)) {
+            return $this->response_code;
         }
 
         return parent::render();
