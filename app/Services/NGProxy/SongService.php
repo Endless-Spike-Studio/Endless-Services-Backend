@@ -4,15 +4,12 @@ namespace App\Services\NGProxy;
 
 use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\ResponseException;
+use App\Jobs\NGProxy\ProcessSongJob;
 use App\Models\NGProxy\Song;
 use App\Services\Game\ResponseService;
-use App\Services\ProxyService;
-use App\Services\Storage\SongStorageService;
 use GeometryDashChinese\GeometryDashObject;
-use GuzzleHttp\RequestOptions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Arr;
-use Psr\Http\Client\ClientExceptionInterface;
 
 class SongService
 {
@@ -32,10 +29,7 @@ class SongService
                 throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
             }
 
-            $this->dispatch(function () use ($song) {
-                $this->process($song);
-            });
-
+            ProcessSongJob::dispatch($song);
             return $song;
         }
 
@@ -82,38 +76,7 @@ class SongService
                 'original_download_url' => $songObject[10],
             ]);
 
-        $this->dispatch(function () use ($song) {
-            $this->process($song);
-        });
-
+        ProcessSongJob::dispatch($song);
         return $song;
-    }
-
-    /**
-     * @throws NewGroundsProxyException
-     */
-    protected function process(Song $song): void
-    {
-        if (!app(SongStorageService::class)->allValid(['id' => $song->song_id])) {
-            try {
-                $decodedUrl = urldecode($song->original_download_url);
-                $url = str_replace('https://', 'http://', $decodedUrl);
-
-                $song->data = ProxyService::instance()
-                    ->withOptions([
-                        RequestOptions::DECODE_CONTENT => false
-                    ])
-                    ->retry(3, 1000)
-                    ->timeout(600)
-                    ->get($url)
-                    ->body();
-            } catch (ClientExceptionInterface $ex) {
-                throw new NewGroundsProxyException(
-                    __('gdcn.song.error.process_failed_request_error', [
-                        'reason' => $ex->getMessage()
-                    ])
-                );
-            }
-        }
     }
 }
