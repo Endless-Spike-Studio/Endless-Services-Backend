@@ -10,11 +10,14 @@ use App\Services\ProxyService;
 use App\Services\Storage\SongStorageService;
 use GeometryDashChinese\GeometryDashObject;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Arr;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class SongService
 {
+    use DispatchesJobs;
+
     /**
      * @throws NewGroundsProxyException
      */
@@ -29,7 +32,10 @@ class SongService
                 throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
             }
 
-            $this->process($song);
+            $this->dispatch(function () use ($song) {
+                $this->process($song);
+            });
+
             return $song;
         }
 
@@ -76,7 +82,10 @@ class SongService
                 'original_download_url' => $songObject[10],
             ]);
 
-        $this->process($song);
+        $this->dispatch(function () use ($song) {
+            $this->process($song);
+        });
+
         return $song;
     }
 
