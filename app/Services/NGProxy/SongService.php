@@ -6,6 +6,7 @@ use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\ResponseException;
 use App\Models\NGProxy\Song;
 use App\Services\Game\ResponseService;
+use App\Services\ProxyService;
 use App\Services\Storage\SongStorageService;
 use GeometryDashChinese\GeometryDashObject;
 use GuzzleHttp\RequestOptions;
@@ -89,8 +90,11 @@ class SongService
                 $decodedUrl = urldecode($song->original_download_url);
                 $url = str_replace('https://', 'http://', $decodedUrl);
 
-                $song->data = app('proxy')
-                    ->withOptions([RequestOptions::DECODE_CONTENT => false])
+                $song->data = ProxyService::instance()
+                    ->withOptions([
+                        RequestOptions::DECODE_CONTENT => false
+                    ])
+                    ->retry(10, 3000)
                     ->get($url)
                     ->body();
             } catch (ClientExceptionInterface $ex) {
