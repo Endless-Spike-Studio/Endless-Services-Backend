@@ -15,7 +15,7 @@ class AccountBlockController extends Controller
     use GameLog;
 
     /**
-     * @throws \App\Exceptions\GeometryDashChineseServerException
+     * @throws GeometryDashChineseServerException
      */
     public function block(AccountBlockRequest $request): int
     {
@@ -27,7 +27,7 @@ class AccountBlockController extends Controller
         ];
 
         if (AccountBlock::where($context)->exists()) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_block_failed_already_exists'), response_code: Response::GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_block_failed_already_exists'), response: Response::GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS->value);
         }
 
         AccountBlock::create($context);
@@ -50,7 +50,7 @@ class AccountBlockController extends Controller
 
         $query = AccountBlock::where($context);
         if (!$query->exists()) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_unblock_failed_not_found'), response_code: Response::GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_unblock_failed_not_found'), response: Response::GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND->value);
         }
 
         $query->delete();

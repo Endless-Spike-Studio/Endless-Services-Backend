@@ -131,7 +131,7 @@ class Request extends FormRequest
      */
     protected function failedAuthorization(): void
     {
-        throw new GeometryDashChineseServerException(__('gdcn.game.error.request_authorization_failed'), response_code: Response::GAME_REQUEST_AUTHORIZATION_FAILED->value);
+        throw new GeometryDashChineseServerException(__('gdcn.game.error.request_authorization_failed'), response: Response::GAME_REQUEST_AUTHORIZATION_FAILED->value);
     }
 
     /**
@@ -142,6 +142,6 @@ class Request extends FormRequest
         throw new GeometryDashChineseServerException(__('gdcn.game.error.request_authorization_failed'), log_context: [
             'errors' => $validator->errors()
                 ->toArray()
-        ], response_code: Response::GAME_REQUEST_AUTHORIZATION_FAILED->value);
+        ], response: Response::GAME_REQUEST_AUTHORIZATION_FAILED->value);
     }
 }
