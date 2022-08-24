@@ -14,9 +14,8 @@ Artisan::call('down');
 @endbefore
 
 @task('clean-logs')
-rm storage/logs/*.log
-mkdir storage/logs/product
-rm -r storage/logs/product
+rm -f storage/logs/*.log
+rm -rf storage/logs/product
 @endtask
 
 @task('update-code')
