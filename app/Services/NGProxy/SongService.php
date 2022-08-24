@@ -29,7 +29,7 @@ class SongService
                 throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
             }
 
-            ProcessSongJob::dispatch($song);
+            ProcessSongJob::dispatchSync($song);
             return $song;
         }
 
@@ -76,7 +76,7 @@ class SongService
                 'original_download_url' => $songObject[10],
             ]);
 
-        ProcessSongJob::dispatch($song);
+        ProcessSongJob::dispatchSync($song);
         return $song;
     }
 }
