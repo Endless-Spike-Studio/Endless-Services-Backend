@@ -94,7 +94,7 @@ class SongService
                     ->withOptions([
                         RequestOptions::DECODE_CONTENT => false
                     ])
-                    ->retry(10, 3000)
+                    ->retry(3, 1000)
                     ->get($url)
                     ->body();
             } catch (ClientExceptionInterface $ex) {
