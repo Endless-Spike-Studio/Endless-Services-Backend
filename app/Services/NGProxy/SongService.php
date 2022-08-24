@@ -8,13 +8,14 @@ use App\Models\NGProxy\Song;
 use App\Services\Game\ResponseService;
 use App\Services\Storage\SongStorageService;
 use GeometryDashChinese\GeometryDashObject;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Arr;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class SongService
 {
     /**
-     * @throws \App\Exceptions\NewGroundsProxyException
+     * @throws NewGroundsProxyException
      */
     public function find(int $id): Song
     {
@@ -79,16 +80,17 @@ class SongService
     }
 
     /**
-     * @throws \App\Exceptions\NewGroundsProxyException
+     * @throws NewGroundsProxyException
      */
     protected function process(Song $song): void
     {
         if (!app(SongStorageService::class)->allValid(['id' => $song->song_id])) {
             try {
-                $url = urldecode($song->original_download_url);
+                $decodedUrl = urldecode($song->original_download_url);
+                $url = str_replace('https://', 'http://', $decodedUrl);
 
                 $song->data = app('proxy')
-                    ->withOptions(['decode_content' => false])
+                    ->withOptions([RequestOptions::DECODE_CONTENT => false])
                     ->get($url)
                     ->body();
             } catch (ClientExceptionInterface $ex) {
