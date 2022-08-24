@@ -95,6 +95,7 @@ class SongService
                         RequestOptions::DECODE_CONTENT => false
                     ])
                     ->retry(3, 1000)
+                    ->timeout(600)
                     ->get($url)
                     ->body();
             } catch (ClientExceptionInterface $ex) {
