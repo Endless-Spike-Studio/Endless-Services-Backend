@@ -60,15 +60,12 @@ class AccountCommentController extends Controller
         $account = Account::find($data['accountID']);
 
         if (!$account) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_index_failed_target_not_found'), response: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_index_failed_target_not_found'), response: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_TARGET_NOT_FOUND->value);
         }
 
         $account->loadCount('comments');
         if ($account->comments_count <= 0) {
-            throw new GeometryDashChineseServerException(
-                __('gdcn.game.error.account_comment_index_failed_empty'),
-                response: Response::empty()
-            );
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_index_failed_empty'), response: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_EMPTY->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_comment_index_success'));
