@@ -139,9 +139,9 @@ class Request extends FormRequest
      */
     protected function failedValidation(Validator $validator): void
     {
-        throw new GeometryDashChineseServerException(__('gdcn.game.error.request_authorization_failed'), log_context: [
+        throw new GeometryDashChineseServerException(__('gdcn.game.error.request_validate_failed'), log_context: [
             'errors' => $validator->errors()
                 ->toArray()
-        ], response: Response::GAME_REQUEST_AUTHORIZATION_FAILED->value);
+        ], response: Response::GAME_REQUEST_VALIDATE_FAILED->value);
     }
 }
