@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Game;
 
+use App\Enums\GDCS\Game\Objects\CommentObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
@@ -79,11 +80,11 @@ class AccountCommentController extends Controller
                 ->get()
                 ->map(function (AccountComment $comment) {
                     return ObjectService::merge([
-                        2 => $comment->comment,
-                        4 => $comment->likes,
-                        6 => $comment->id,
-                        7 => $comment->spam,
-                        9 => $comment->created_at
+                        CommentObject::CONTENT => $comment->comment,
+                        CommentObject::LIKES => $comment->likes,
+                        CommentObject::ID => $comment->id,
+                        CommentObject::IS_SPAM => $comment->spam,
+                        CommentObject::AGE => $comment->created_at
                             ?->locale('en')
                             ->diffForHumans(syntax: true),
                     ], '~');

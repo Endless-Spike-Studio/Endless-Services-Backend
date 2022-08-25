@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\FriendState;
+use App\Enums\GDCS\Game\Objects\UserObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Requests\GDCS\Game\AccountInfoFetchRequest;
@@ -55,38 +56,38 @@ class AccountController extends Controller
         }
 
         $userInfo = [
-            1 => $target->name,
-            2 => $target->user->id,
-            3 => $target->user->score->stars,
-            4 => $target->user->score->demons,
-            8 => $target->user->score->creator_points,
-            10 => $target->user->score->color1,
-            11 => $target->user->score->color2,
-            13 => $target->user->score->coins,
-            16 => $target->id,
-            17 => $target->user->score->user_coins,
-            18 => $target->setting->message_state->value,
-            19 => $target->setting->friend_request_state->value,
-            20 => $target->setting->youtube_channel,
-            21 => $target->user->score->acc_icon,
-            22 => $target->user->score->acc_ship,
-            23 => $target->user->score->acc_ball,
-            24 => $target->user->score->acc_bird,
-            25 => $target->user->score->acc_dart,
-            26 => $target->user->score->acc_robot,
-            28 => $target->user->score->acc_glow,
-            29 => !empty($target),
-            30 => UserScore::query()
+            UserObject::NAME => $target->user->name,
+            UserObject::ID => $target->user->id,
+            UserObject::STARS => $target->user->score->stars,
+            UserObject::DEMONS => $target->user->score->demons,
+            UserObject::CREATOR_POINTS => $target->user->score->creator_points,
+            UserObject::COLOR_ID => $target->user->score->color1,
+            UserObject::SECOND_COLOR_ID => $target->user->score->color2,
+            UserObject::COINS => $target->user->score->coins,
+            UserObject::UUID => $target->user->uuid,
+            UserObject::USER_COINS => $target->user->score->user_coins,
+            UserObject::MESSAGE_STATE => $target->setting->message_state->value,
+            UserObject::FRIEND_REQUEST_STATE => $target->setting->friend_request_state->value,
+            UserObject::YOUTUBE => $target->setting->youtube_channel,
+            UserObject::CUBE_ID => $target->user->score->acc_icon,
+            UserObject::SHIP_IP => $target->user->score->acc_ship,
+            UserObject::BALL_ID => $target->user->score->acc_ball,
+            UserObject::BIRD_ID => $target->user->score->acc_bird,
+            UserObject::WAVE_ID => $target->user->score->acc_dart,
+            UserObject::ROBOT_ID => $target->user->score->acc_robot,
+            UserObject::GLOW_ID => $target->user->score->acc_glow,
+            UserObject::IS_REGISTERED => true,
+            UserObject::GLOBAL_RANK => UserScore::query()
                 ->where('stars', '<=', $target->user->score->stars)
                 ->count(),
-            31 => FriendState::NONE->value,
-            43 => $target->user->score->acc_spider,
-            44 => $target->setting->twitter,
-            45 => $target->setting->twitch,
-            46 => $target->user->score->diamonds,
-            48 => $target->user->score->acc_explosion,
-            49 => $target->mod_level->value,
-            50 => $target->setting->comment_history_state->value,
+            UserObject::FRIEND_STATE => FriendState::NONE->value,
+            UserObject::SPIDER_ID => $target->user->score->acc_spider,
+            UserObject::TWITTER => $target->setting->twitter,
+            UserObject::TWITCH => $target->setting->twitch,
+            UserObject::DIAMONDS => $target->user->score->diamonds,
+            UserObject::EXPLOSION_ID => $target->user->score->acc_explosion,
+            UserObject::MOD_LEVEL => $target->mod_level->value,
+            UserObject::COMMENT_HISTORY_STATE => $target->setting->comment_history_state->value,
         ];
 
         if (!empty($request->account)) {
@@ -100,7 +101,7 @@ class AccountController extends Controller
 
             $targetIsFriend = AccountFriend::findBetween($request->account->id, $target->id)->exists();
             if ($targetIsFriend) {
-                $userInfo[31] = FriendState::IS->value;
+                $userInfo[UserObject::FRIEND_STATE] = FriendState::IS->value;
             }
 
             $outComingFriendRequestQuery = AccountFriendRequest::query()
@@ -111,7 +112,7 @@ class AccountController extends Controller
 
             if ($outComingFriendRequestQuery->exists()) {
                 $friendRequest = $outComingFriendRequestQuery->first();
-                $userInfo[31] = FriendState::OUT_COMING->value;
+                $userInfo[UserObject::FRIEND_STATE] = FriendState::OUT_COMING->value;
             }
 
             $inComingFriendRequestQuery = AccountFriendRequest::query()
@@ -122,31 +123,31 @@ class AccountController extends Controller
 
             if ($inComingFriendRequestQuery->exists()) {
                 $friendRequest = $inComingFriendRequestQuery->first();
-                $userInfo[31] = FriendState::IN_COMING->value;
+                $userInfo[UserObject::FRIEND_STATE] = FriendState::IN_COMING->value;
             }
 
             if (!empty($friendRequest)) {
-                $userInfo[32] = $friendRequest->id;
-                $userInfo[35] = $friendRequest->comment;
-                $userInfo[37] = $friendRequest->created_at
+                $userInfo[UserObject::IN_COMING_FRIEND_REQUEST_ID] = $friendRequest->id;
+                $userInfo[UserObject::IN_COMING_FRIEND_REQUEST_COMMENT] = $friendRequest->comment;
+                $userInfo[UserObject::IN_COMING_FRIEND_REQUEST_AGE] = $friendRequest->created_at
                     ?->locale('en')
                     ->diffForHumans(syntax: true);
             }
 
             if ($target->is($request->account)) {
-                $userInfo[38] = AccountMessage::query()
+                $userInfo[UserObject::NEW_MESSAGE_COUNT] = AccountMessage::query()
                     ->where([
                         'target_account_id' => $data['targetAccountID'],
                         'new' => true,
                     ])->count();
 
-                $userInfo[39] = AccountFriendRequest::query()
+                $userInfo[UserObject::NEW_FRIEND_REQUEST_COUNT] = AccountFriendRequest::query()
                     ->where([
                         'target_account_id' => $data['targetAccountID'],
                         'new' => true,
                     ])->count();
 
-                $userInfo[40] = array_sum([
+                $userInfo[UserObject::NEW_FRIEND_COUNT] = array_sum([
                     AccountFriend::query()
                         ->where([
                             'account_id' => $data['targetAccountID'],

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\CommentMode;
+use App\Enums\GDCS\Game\Objects\CommentObject;
+use App\Enums\GDCS\Game\Objects\UserObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
@@ -55,27 +57,27 @@ class AccountCommentHistoryController extends Controller
                 ->map(function (LevelComment $comment) {
                     return implode(':', [
                         ObjectService::merge([
-                            1 => $comment->level_id,
-                            2 => $comment->comment,
-                            3 => $comment->account->user->id,
-                            4 => $comment->likes,
-                            6 => $comment->id,
-                            7 => $comment->spam,
-                            9 => $comment->created_at
+                            CommentObject::LEVEL_ID => $comment->level_id,
+                            CommentObject::CONTENT => $comment->comment,
+                            CommentObject::USER_ID => $comment->account->user->id,
+                            CommentObject::LIKES => $comment->likes,
+                            CommentObject::ID => $comment->id,
+                            CommentObject::IS_SPAM => $comment->spam,
+                            CommentObject::AGE => $comment->created_at
                                 ?->locale('en')
                                 ->diffForHumans(syntax: true),
-                            10 => $comment->percent,
-                            11 => $comment->account->mod_level->value,
-                            12 => $comment->account->comment_color,
+                            CommentObject::PERCENT => $comment->percent,
+                            CommentObject::MOD_BADGE => $comment->account->mod_level->value,
+                            CommentObject::COLOR => $comment->account->comment_color,
                         ], '~'),
                         ObjectService::merge([
-                            1 => $comment->account->name,
-                            9 => $comment->account->user->score->icon,
-                            10 => $comment->account->user->score->color1,
-                            11 => $comment->account->user->score->color2,
-                            14 => $comment->account->user->score->icon_type,
-                            15 => $comment->account->user->score->acc_glow,
-                            16 => $comment->account->id,
+                            UserObject::NAME => $comment->account->user->name,
+                            UserObject::ICON_ID => $comment->account->user->score->icon,
+                            UserObject::COLOR_ID => $comment->account->user->score->color1,
+                            UserObject::SECOND_COLOR_ID => $comment->account->user->score->color2,
+                            UserObject::ICON_TYPE => $comment->account->user->score->icon_type,
+                            UserObject::SPECIAL => $comment->account->user->score->special,
+                            UserObject::UUID => $comment->account->user->uuid,
                         ], '~'),
                     ]);
                 })->join('|'),

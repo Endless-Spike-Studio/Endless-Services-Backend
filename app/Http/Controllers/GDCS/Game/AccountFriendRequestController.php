@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\AccountSettingFriendRequestState;
+use App\Enums\GDCS\Game\Objects\FriendRequestObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
@@ -93,20 +94,20 @@ class AccountFriendRequestController extends Controller
                     $target = $friendRequest->{$getSent ? 'target_account' : 'account'};
 
                     return ObjectService::merge([
-                        1 => $target->name,
-                        2 => $target->user->id,
-                        9 => $target->user->score->icon,
-                        10 => $target->user->score->color1,
-                        11 => $target->user->score->color2,
-                        14 => $target->user->score->icon_type,
-                        15 => $target->user->score->acc_glow,
-                        16 => $target->id,
-                        32 => $friendRequest->id,
-                        35 => $friendRequest->comment,
-                        37 => $friendRequest->created_at
+                        FriendRequestObject::TARGET_NAME => $target->user->name,
+                        FriendRequestObject::TARGET_USER_ID => $target->user->id,
+                        FriendRequestObject::TARGET_ICON_ID => $target->user->score->icon,
+                        FriendRequestObject::TARGET_COLOR_ID => $target->user->score->color1,
+                        FriendRequestObject::TARGET_SECOND_COLOR_ID => $target->user->score->color2,
+                        FriendRequestObject::TARGET_ICON_TYPE => $target->user->score->icon_type,
+                        FriendRequestObject::TARGET_SPECIAL => $target->user->score->special,
+                        FriendRequestObject::TARGET_UUID => $target->user->uuid,
+                        FriendRequestObject::ID => $friendRequest->id,
+                        FriendRequestObject::COMMENT => $friendRequest->comment,
+                        FriendRequestObject::AGE => $friendRequest->created_at
                             ?->locale('en')
                             ->diffForHumans(syntax: true),
-                        41 => $friendRequest->new,
+                        FriendRequestObject::IS_NEW => $friendRequest->new,
                     ], ':');
                 })->join('|'),
             AlgorithmService::genPage($data['page'], $count),
