@@ -101,7 +101,7 @@ class AccountCommentController extends Controller
         $comment = AccountComment::find($data['commentID']);
 
         if (!$comment) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_delete_failed_not_found'), response: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_delete_failed_target_not_friend'), response: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value);
         }
 
         if (!$comment->account->isNot($request->account)) {

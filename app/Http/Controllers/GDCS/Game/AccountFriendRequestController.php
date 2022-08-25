@@ -33,7 +33,7 @@ class AccountFriendRequestController extends Controller
             ->find($data['targetAccountID']);
 
         if (!$target) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_request_send_failed_target_not_found'), response: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_request_send_failed_target_not_found'), response: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_TARGET_NOT_FOUND->value);
         }
 
         $targetHasBlockedOperator = $target->blocks()
@@ -81,7 +81,7 @@ class AccountFriendRequestController extends Controller
 
         $count = $query->count();
         if ($count <= 0) {
-            throw new GeometryDashChineseServerException(__($getSent ? 'gdcn.game.error.account_friend_request_send_failed_empty_sent' : 'gdcn.game.error.account_friend_request_send_failed_empty'), response: Response::GAME_ACCOUNT_FRIEND_REQUEST_INDEX_FAILED_EMPTY->value);
+            throw new GeometryDashChineseServerException(__($getSent ? 'gdcn.game.error.account_friend_request_index_failed_empty_sent' : 'gdcn.game.error.account_friend_request_index_failed_empty'), response: Response::GAME_ACCOUNT_FRIEND_REQUEST_INDEX_FAILED_EMPTY->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_friend_request_index_success'));

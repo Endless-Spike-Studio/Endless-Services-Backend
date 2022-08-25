@@ -27,16 +27,25 @@ return [
             'account_login_failed_not_verified_email' => '[账号] 登录失败, 未验证邮箱',
             'account_login_failed_banned' => '[账号] 登录失败, 已被封禁',
             'account_data_load_failed_not_found' => '[账号存档] 读取失败, 没有找到该账号的存档',
-            'account_friend_delete_failed_target_not_found' => '[账号好友] 删除失败, 目标账号不是操作者的好友',
+            'account_friend_delete_failed_target_not_friend' => '[账号好友] 删除失败, 目标账号不是操作者的好友',
             'account_friend_request_send_failed_target_not_found' => '[账号好友请求] 发送失败, 目标账号不存在',
             'account_friend_request_send_failed_blocked_by_target' => '[账号好友请求] 发送失败, 操作者已被目标账号拉黑',
             'account_friend_request_send_failed_blocked_by_target_setting' => '[账号好友请求] 发送失败, 目标账号设置不允许发送好友请求',
-            'account_friend_request_send_failed_empty' => '[账号好友请求] 检索失败, 没有人发送过好友请求给当前操作者',
-            'account_friend_request_send_failed_empty_sent' => '[账号好友请求] 检索失败, 当前操作者没有发送过好友请求',
+            'account_friend_request_index_failed_empty' => '[账号好友请求] 检索失败, 没有人发送过好友请求给当前操作者',
+            'account_friend_request_index_failed_empty_sent' => '[账号好友请求] 检索失败, 当前操作者没有发送过好友请求',
             'account_friend_request_accept_failed_not_found' => '[账号好友请求] 无法同意, 没有找到对应的好友请求',
             'account_friend_request_accept_failed_target_account_not_match' => '[账号好友请求] 无法同意, 目标账号与发送的值不匹配',
             'account_friend_request_accept_failed_not_receiver' => '[账号好友请求] 无法同意, 当前操作者不是该好友请求的接收者',
-            'account_friend_request_delete_failed_not_found' => '[账号好友请求] 删除失败, 没有找到对应的好友请求'
+            'account_friend_request_delete_failed_not_found' => '[账号好友请求] 删除失败, 没有找到对应的好友请求',
+            'account_message_send_failed_target_not_found' => '[账号私信] 发送失败, 目标账号不存在',
+            'account_message_send_failed_blocked_by_target' => '[账号私信] 发送失败, 操作者已被目标账号拉黑',
+            'account_message_send_failed_blocked_by_target_setting' => '[账号私信] 发送失败, 目标账号设置不允许发送私信',
+            'account_message_send_failed_blocked_by_target_setting_unless_friends' => '[账号私信] 发送失败, 目标账号设置不允许发送私信, 除非是好友',
+            'account_message_index_failed_empty' => '[账号私信] 检索失败, 没有人发送过私信给当前操作者',
+            'account_message_index_failed_empty_sent' => '[账号私信] 检索失败, 当前操作者没有发送过私信',
+            'account_message_fetch_failed_not_found' => '[账号私信] 获取失败, 没有找到对应的私信',
+            'account_message_fetch_failed_not_owner' => '[账号私信] 获取失败, 私信不属于当前操作者',
+            'account_message_delete_failed_not_found' => '[账号私信] 删除失败, 没有找到对应的私信',
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -57,7 +66,11 @@ return [
             'account_friend_request_send_success' => '[账号好友请求] 发送成功',
             'account_friend_request_index_success' => '[账号好友请求] 检索成功',
             'account_friend_request_accept_success' => '[账号好友请求] 同意成功',
-            'account_friend_request_delete_success' => '[账号好友请求] 删除成功'
+            'account_friend_request_delete_success' => '[账号好友请求] 删除成功',
+            'account_message_send_success' => '[账号私信] 发送成功',
+            'account_message_index_success' => '[账号私信] 检索成功',
+            'account_message_fetch_success' => '[账号私信] 获取成功',
+            'account_message_delete_success' => '[账号私信] 删除成功'
         ]
     ],
     'storage' => [

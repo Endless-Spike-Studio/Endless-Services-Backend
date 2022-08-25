@@ -51,7 +51,7 @@ class AccountController extends Controller
             ->find($data['targetAccountID']);
 
         if (!$target) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_profile_fetch_failed_target_not_found'), response: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_profile_fetch_failed_target_not_found'), response: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_TARGET_NOT_FOUND->value);
         }
 
         $userInfo = [

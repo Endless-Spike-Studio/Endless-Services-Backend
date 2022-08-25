@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\Account;
-use App\Models\GDCS\AccountMessage;
 use Illuminate\Validation\Rule;
 
-class AccountMessageDeleteRequest extends Request
+class AccountMessageFetchRequest extends Request
 {
     public function authorize(): bool
     {
@@ -38,17 +36,17 @@ class AccountMessageDeleteRequest extends Request
                 'required',
                 'string',
             ],
-            'messageID' => [
-                'required_without:messages',
+            'page' => [
+                'required',
                 'integer',
-                Rule::exists(AccountMessage::class, 'id'),
+                'min:0',
             ],
-            'messages' => [
-                'required_without:messageID',
-                'string',
-                Rule::exists(AccountMessage::class, 'id'),
+            'total' => [
+                'required',
+                'integer',
+                'min:0',
             ],
-            'isSender' => [
+            'getSent' => [
                 'sometimes',
                 'boolean',
             ],

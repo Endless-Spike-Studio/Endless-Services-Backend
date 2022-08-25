@@ -22,7 +22,7 @@ class AccountFriendController extends Controller
         $query = AccountFriend::findBetween($request->account->id, $data['targetAccountID']);
 
         if (!$query->exists()) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_delete_failed_target_not_found'), response: Response::GAME_ACCOUNT_FRIEND_DELETE_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_delete_failed_target_not_found'), response: Response::GAME_ACCOUNT_FRIEND_DELETE_FAILED_TARGET_NOT_FRIEND->value);
         }
 
         $query->delete();
