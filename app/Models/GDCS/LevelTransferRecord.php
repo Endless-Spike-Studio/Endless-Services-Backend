@@ -2,7 +2,7 @@
 
 namespace App\Models\GDCS;
 
-use App\Enums\GDCS\LevelTransferType;
+use App\Enums\GDCS\Game\LevelTransferType;
 use Illuminate\Database\Eloquent\Model;
 
 class LevelTransferRecord extends Model

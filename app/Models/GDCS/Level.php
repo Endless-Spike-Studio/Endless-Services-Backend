@@ -2,8 +2,8 @@
 
 namespace App\Models\GDCS;
 
-use App\Enums\GDCS\LevelRatingDemonDifficulty;
-use App\Enums\GDCS\LevelRatingDifficulty;
+use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
+use App\Enums\GDCS\Game\LevelRatingDifficulty;
 use App\Http\Controllers\GDCS\HelperController;
 use App\Models\NGProxy\Song;
 use Illuminate\Database\Eloquent\Model;

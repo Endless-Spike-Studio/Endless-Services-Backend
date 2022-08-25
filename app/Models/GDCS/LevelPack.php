@@ -2,7 +2,7 @@
 
 namespace App\Models\GDCS;
 
-use App\Enums\GDCS\LevelPackDifficulty;
+use App\Enums\GDCS\Game\LevelPackDifficulty;
 use Illuminate\Database\Eloquent\Model;
 
 class LevelPack extends Model

@@ -2,10 +2,10 @@
 
 namespace App\Models\GDCS;
 
-use App\Enums\GDCS\AccountSettingCommentHistoryState;
-use App\Enums\GDCS\AccountSettingFriendRequestState;
-use App\Enums\GDCS\AccountSettingMessageState;
-use App\Enums\GDCS\ModLevel;
+use App\Enums\GDCS\Game\AccountSettingCommentHistoryState;
+use App\Enums\GDCS\Game\AccountSettingFriendRequestState;
+use App\Enums\GDCS\Game\AccountSettingMessageState;
+use App\Enums\GDCS\Game\ModLevel;
 use App\Notifications\GDCS\EmailVerificationNotification;
 use App\Services\Storage\GameAccountDataStorageService;
 use Illuminate\Auth\MustVerifyEmail;

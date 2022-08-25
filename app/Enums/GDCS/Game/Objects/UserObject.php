@@ -2,10 +2,10 @@
 
 namespace App\Enums\GDCS\Game\Objects;
 
-use App\Enums\GDCS\AccountSettingCommentHistoryState;
-use App\Enums\GDCS\AccountSettingFriendRequestState;
-use App\Enums\GDCS\AccountSettingMessageState;
-use App\Enums\GDCS\FriendState;
+use App\Enums\GDCS\Game\AccountSettingCommentHistoryState;
+use App\Enums\GDCS\Game\AccountSettingFriendRequestState;
+use App\Enums\GDCS\Game\AccountSettingMessageState;
+use App\Enums\GDCS\Game\FriendState;
 
 enum UserObject: int
 {

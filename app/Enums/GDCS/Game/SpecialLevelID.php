@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\GDCS;
+namespace App\Enums\GDCS\Game;
 
 enum SpecialLevelID: int
 {

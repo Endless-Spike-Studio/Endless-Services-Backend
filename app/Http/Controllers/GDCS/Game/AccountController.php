@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Game;
 
-use App\Enums\GDCS\FriendState;
+use App\Enums\GDCS\Game\FriendState;
 use App\Enums\GDCS\Game\Objects\UserObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;

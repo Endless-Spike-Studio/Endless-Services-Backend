@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\LevelRatingDemonDifficulty;
-use App\Enums\GDCS\LevelRatingDifficulty;
+use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
+use App\Enums\GDCS\Game\LevelRatingDifficulty;
 use App\Http\Controllers\Controller;
 
 class HelperController extends Controller

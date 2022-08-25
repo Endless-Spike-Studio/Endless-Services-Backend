@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\LevelSearchType;
-use App\Enums\GDCS\SpecialLevelID;
+use App\Enums\GDCS\Game\LevelSearchType;
+use App\Enums\GDCS\Game\SpecialLevelID;
 use App\Enums\Response;
 use App\Exceptions\GDCS\LevelSearchAuthFailedException;
 use App\Exceptions\GDCS\LevelSearchNotSupportedTypeException;

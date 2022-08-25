@@ -2,9 +2,9 @@
 
 namespace App\Models\GDCS;
 
-use App\Enums\GDCS\AccountSettingCommentHistoryState;
-use App\Enums\GDCS\AccountSettingFriendRequestState;
-use App\Enums\GDCS\AccountSettingMessageState;
+use App\Enums\GDCS\Game\AccountSettingCommentHistoryState;
+use App\Enums\GDCS\Game\AccountSettingFriendRequestState;
+use App\Enums\GDCS\Game\AccountSettingMessageState;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

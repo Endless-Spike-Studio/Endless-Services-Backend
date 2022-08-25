@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Game;
 
-use App\Enums\GDCS\AccountSettingFriendRequestState;
+use App\Enums\GDCS\Game\AccountSettingFriendRequestState;
 use App\Enums\GDCS\Game\Objects\FriendRequestObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;

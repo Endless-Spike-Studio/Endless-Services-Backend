@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Game;
 
-use App\Enums\GDCS\AccountSettingMessageState;
+use App\Enums\GDCS\Game\AccountSettingMessageState;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;

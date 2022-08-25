@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Game;
 
-use App\Enums\GDCS\CommentMode;
+use App\Enums\GDCS\Game\CommentMode;
 use App\Enums\GDCS\Game\Objects\CommentObject;
 use App\Enums\GDCS\Game\Objects\UserObject;
 use App\Enums\Response;

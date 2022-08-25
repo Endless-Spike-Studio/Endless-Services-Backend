@@ -2,8 +2,8 @@
 
 namespace App\Models\GDCS;
 
-use App\Enums\GDCS\LevelRatingDemonDifficulty;
-use App\Enums\GDCS\LevelRatingDifficulty;
+use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
+use App\Enums\GDCS\Game\LevelRatingDifficulty;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
