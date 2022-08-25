@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\GDCS;
+namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\Response;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GDCS\AccountSettingUpdateRequest;
+use App\Http\Requests\GDCS\Game\AccountSettingUpdateRequest;
 
 class AccountSettingController extends Controller
 {
@@ -21,6 +21,6 @@ class AccountSettingController extends Controller
         $setting->twitch = $data['twitch'];
         $setting->save();
 
-        return Response::ACCOUNT_SETTING_UPDATE_SUCCESS->value;
+        return Response::GAME_ACCOUNT_SETTING_UPDATE_SUCCESS->value;
     }
 }

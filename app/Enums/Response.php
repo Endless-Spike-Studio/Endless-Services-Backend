@@ -213,4 +213,5 @@ enum Response: int
     public const GAME_ACCOUNT_MESSAGE_FETCH_FAILED_NOT_OWNER = Response::FAILED;
     public const GAME_ACCOUNT_MESSAGE_DELETE_FAILED_NOT_FOUND = Response::FAILED;
     public const GAME_ACCOUNT_MESSAGE_DELETE_SUCCESS = Response::SUCCESS;
+    public const GAME_ACCOUNT_SETTING_UPDATE_SUCCESS = Response::SUCCESS;
 }
