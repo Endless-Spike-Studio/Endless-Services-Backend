@@ -49,6 +49,47 @@ return [
                 '0' => false,
                 '1' => true,
             ]
+        ],
+        'challenges' => [
+            [
+                'id' => 1,
+                'name' => 'orb',
+                'collect' => [
+                    'min' => 200,
+                    'max' => 2000
+                ],
+                'names' => [],
+                'reward' => [
+                    'every' => 100,
+                    'give' => 4
+                ],
+            ],
+            [
+                'id' => 2,
+                'name' => 'coin',
+                'collect' => [
+                    'min' => 2,
+                    'max' => 10
+                ],
+                'names' => [],
+                'reward' => [
+                    'every' => 2,
+                    'give' => 4
+                ]
+            ],
+            [
+                'id' => 3,
+                'name' => 'star',
+                'collect' => [
+                    'min' => 3,
+                    'max' => 10
+                ],
+                'names' => [],
+                'reward' => [
+                    'every' => 2,
+                    'give' => 4
+                ]
+            ],
         ]
     ],
 ];

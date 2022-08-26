@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\GDCS\ChallengeController;
 use App\Http\Controllers\GDCS\DailyChestController;
 use App\Http\Controllers\GDCS\Game\AccountBlockController;
 use App\Http\Controllers\GDCS\Game\AccountCommentController;
@@ -11,6 +10,7 @@ use App\Http\Controllers\GDCS\Game\AccountFriendController;
 use App\Http\Controllers\GDCS\Game\AccountFriendRequestController;
 use App\Http\Controllers\GDCS\Game\AccountMessageController;
 use App\Http\Controllers\GDCS\Game\AccountSettingController;
+use App\Http\Controllers\GDCS\Game\ChallengeController;
 use App\Http\Controllers\GDCS\ItemController;
 use App\Http\Controllers\GDCS\LeaderboardController;
 use App\Http\Controllers\GDCS\LevelCommentController;
@@ -46,7 +46,7 @@ Route::group([
         Route::post('/database/accounts/syncGJAccountNew.php', [AccountDataController::class, 'load'])->name('account.data.sync');
         Route::post('/getGJRewards.php', [DailyChestController::class, 'fetch'])->name('reward.get');
         Route::post('/requestUserAccess.php', [AccountController::class, 'requestModAccess'])->name('user.access.request');
-        Route::post('/getGJChallenges.php', [ChallengeController::class, 'fetchAll'])->name('challenge.get');
+        Route::post('/getGJChallenges.php', [ChallengeController::class, 'fetch'])->name('challenge.get');
         Route::post('/getGJUsers20.php', [UserController::class, 'search'])->name('user.get');
         Route::post('/getGJScores20.php', [LeaderboardController::class, 'fetchAll'])->name('score.get');
         Route::post('/uploadGJMessage20.php', [AccountMessageController::class, 'send'])->name('message.upload');

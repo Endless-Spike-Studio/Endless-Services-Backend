@@ -46,6 +46,7 @@ return [
             'account_message_fetch_failed_not_found' => '[账号私信] 获取失败, 没有找到对应的私信',
             'account_message_fetch_failed_not_owner' => '[账号私信] 获取失败, 私信不属于当前操作者',
             'account_message_delete_failed_not_found' => '[账号私信] 删除失败, 没有找到对应的私信',
+            'challenge_generate_failed_unexpected_exception' => '[挑战] 生成失败, 遇到了意料外的异常'
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -70,7 +71,9 @@ return [
             'account_message_send_success' => '[账号私信] 发送成功',
             'account_message_index_success' => '[账号私信] 检索成功',
             'account_message_fetch_success' => '[账号私信] 获取成功',
-            'account_message_delete_success' => '[账号私信] 删除成功'
+            'account_message_delete_success' => '[账号私信] 删除成功',
+            'account_setting_update_success' => '[账号设置] 更新成功',
+            'challenge_fetch_success' => '[挑战] 获取成功'
         ]
     ],
     'storage' => [
