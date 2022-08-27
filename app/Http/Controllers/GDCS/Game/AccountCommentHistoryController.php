@@ -23,7 +23,7 @@ class AccountCommentHistoryController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function index(AccountCommentHistoryFetchRequest $request): int|string
+    public function index(AccountCommentHistoryFetchRequest $request): string
     {
         $data = $request->validated();
 

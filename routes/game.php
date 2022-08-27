@@ -50,7 +50,7 @@ Route::group([
         Route::post('/getGJUsers20.php', [UserController::class, 'search'])->name('user.get');
         Route::post('/getGJScores20.php', [LeaderboardController::class, 'fetchAll'])->name('score.get');
         Route::post('/uploadGJMessage20.php', [AccountMessageController::class, 'send'])->name('message.upload');
-        Route::post('/getGJMessages20.php', [AccountMessageController::class, 'fetchAll'])->name('message.get');
+        Route::post('/getGJMessages20.php', [AccountMessageController::class, 'index'])->name('message.get');
         Route::post('/downloadGJMessage20.php', [AccountMessageController::class, 'fetch'])->name('message.download');
         Route::post('/deleteGJMessages20.php', [AccountMessageController::class, 'delete'])->name('message.delete');
         Route::post('/uploadGJLevel21.php', [LevelController::class, 'upload'])->name('level.upload');

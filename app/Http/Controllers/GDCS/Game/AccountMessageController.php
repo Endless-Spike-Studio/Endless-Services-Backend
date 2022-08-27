@@ -71,7 +71,7 @@ class AccountMessageController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function fetchAll(AccountMessageFetchRequest $request): int|string
+    public function index(AccountMessageFetchRequest $request): string
     {
         $data = $request->validated();
         $getSent = !empty($data['getSent']);
@@ -118,7 +118,7 @@ class AccountMessageController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function fetch(AccountMessageDownloadRequest $request): int|string
+    public function fetch(AccountMessageDownloadRequest $request): string
     {
         $data = $request->validated();
         $isSender = !empty($data['isSender']);

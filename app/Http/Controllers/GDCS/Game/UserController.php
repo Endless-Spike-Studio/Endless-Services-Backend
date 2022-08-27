@@ -25,7 +25,7 @@ class UserController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function search(UserSearchRequest $request): int|string
+    public function search(UserSearchRequest $request): string
     {
         $data = $request->validated();
 
@@ -70,7 +70,7 @@ class UserController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function index(UserFetchRequest $request): int|string
+    public function index(UserFetchRequest $request): string
     {
         $data = $request->validated();
         $type = (int)$data['type'];

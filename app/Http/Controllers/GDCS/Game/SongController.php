@@ -23,7 +23,7 @@ class SongController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function fetch(SongFetchRequest $request): int|string
+    public function fetch(SongFetchRequest $request): string
     {
         try {
             $data = $request->validated();

@@ -31,7 +31,7 @@ class AccountDataController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function load(AccountDataLoadRequest $request): int|string
+    public function load(AccountDataLoadRequest $request): string
     {
         $data = $request->validated();
         $content = $request->account->data;

@@ -65,7 +65,7 @@ class AccountFriendRequestController extends Controller
     /**
      * @throws GeometryDashChineseServerException
      */
-    public function index(AccountFriendRequestFetchRequest $request): int|string
+    public function index(AccountFriendRequestFetchRequest $request): string
     {
         $data = $request->validated();
         $getSent = !empty($data['getSent']);
