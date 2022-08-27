@@ -9,7 +9,6 @@ use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Session;
 use Throwable;
 
 class BaseException extends Exception
@@ -22,10 +21,17 @@ class BaseException extends Exception
     protected string $log_channel = 'stack';
     protected string $log_type = 'notice';
 
-    public function __construct(string $message = null, int $code = 0, Throwable $previous = null, int $http_code = 500, array $log_context = [])
+    public function __construct(
+        string                          $message = null,
+        int                             $code = 0,
+        Throwable                       $previous = null,
+        int                             $http_code = 500,
+        array                           $log_context = [],
+        public readonly int|string|null $game_response = null
+    )
     {
         $this->http_code = $http_code;
-        $this->log_context = array_merge(Request::context(), $log_context);
+        $this->log_context = array_merge(['game_response' => $this->game_response], Request::context(), $log_context);
         parent::__construct($message, $code, $previous);
     }
 
@@ -49,9 +55,13 @@ class BaseException extends Exception
     {
         $message = $this->formatMessage($this->message);
 
-        if (Session::isStarted()) {
+        if (Request::hasHeader('X-Inertia')) {
             $this->pushErrorMessage($message);
             return back();
+        }
+
+        if (Request::has('secret')) {
+            return Response::make($this->game_response);
         }
 
         if (Request::wantsJson()) {

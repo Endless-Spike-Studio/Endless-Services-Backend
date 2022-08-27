@@ -40,7 +40,7 @@ class BaseStorageService
             }
         }
 
-        throw new StorageException(__('gdcn.storage.error.fetch_failed_not_found'));
+        throw new StorageException(__('gdcn.storage.error.fetch_failed_not_found'), http_code: 404);
     }
 
     public function exists(array $data): bool
@@ -111,6 +111,6 @@ class BaseStorageService
             }
         }
 
-        throw new StorageException(__('gdcn.storage.error.download_failed_not_found'));
+        throw new StorageException(__('gdcn.storage.error.download_failed_not_found'), http_code: 404);
     }
 }

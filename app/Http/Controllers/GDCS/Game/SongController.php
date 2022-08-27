@@ -34,7 +34,7 @@ class SongController extends Controller
                     ->find($data['songID'] - $customSongOffset);
 
                 if (!$song) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_not_found_custom'), response: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_not_found_custom'), game_response: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM->value);
                 }
             } else {
                 $song = app(SongService::class)
@@ -44,7 +44,7 @@ class SongController extends Controller
             $this->logGame(__('gdcn.game.action.song_fetch_success'));
             return $song->object;
         } catch (NewGroundsProxyException $e) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_upstream_exception'), previous: $e, response: $e->response);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_upstream_exception'), previous: $e, game_response: $e->game_response);
         }
     }
 

@@ -52,7 +52,7 @@ class AccountController extends Controller
             ->find($data['targetAccountID']);
 
         if (!$target) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_profile_fetch_failed_target_not_found'), response: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_TARGET_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_profile_fetch_failed_target_not_found'), game_response: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_TARGET_NOT_FOUND->value);
         }
 
         $userInfo = [
@@ -96,7 +96,7 @@ class AccountController extends Controller
                 ->exists();
 
             if ($targetHasBlockedVisitor) {
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.account_profile_fetch_failed_blocked_by_target'), response: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_BLOCKED_BY_TARGET->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.account_profile_fetch_failed_blocked_by_target'), game_response: Response::GAME_ACCOUNT_PROFILE_FETCH_FAILED_BLOCKED_BY_TARGET->value);
             }
 
             $targetIsFriend = AccountFriend::findBetween($request->account->id, $target->id)->exists();
@@ -174,7 +174,7 @@ class AccountController extends Controller
         $modLevel = $request->account->mod_level->value;
 
         if ($modLevel <= 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_access_request_failed_not_found'), response: Response::GAME_ACCOUNT_ACCESS_REQUEST_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_access_request_failed_not_found'), game_response: Response::GAME_ACCOUNT_ACCESS_REQUEST_FAILED_NOT_FOUND->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_access_request_success'));
@@ -192,7 +192,7 @@ class AccountController extends Controller
         if (!$account->hasVerifiedEmail()) {
             throw new GeometryDashChineseServerException(__('gdcn.game.error.account_login_failed_not_verified_email'), log_context: [
                 'account_id' => $account->id
-            ], response: Response::GAME_ACCOUNT_LOGIN_FAILED_NEED_VERIFY_EMAIL->value);
+            ], game_response: Response::GAME_ACCOUNT_LOGIN_FAILED_NEED_VERIFY_EMAIL->value);
         }
 
         $user = User::query()
@@ -206,7 +206,7 @@ class AccountController extends Controller
         if ($user->ban->login_ban) {
             throw new GeometryDashChineseServerException(__('gdcn.game.error.account_login_failed_banned'), log_context: [
                 'account_id' => $account->id
-            ], response: Response::GAME_ACCOUNT_LOGIN_FAILED_BANNED->value);
+            ], game_response: Response::GAME_ACCOUNT_LOGIN_FAILED_BANNED->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_login_success'), [
