@@ -7,6 +7,7 @@ use App\Exceptions\ResponseException;
 use App\Jobs\NGProxy\ProcessSongJob;
 use App\Models\NGProxy\Song;
 use App\Services\Game\ResponseService;
+use App\Services\ProxyService;
 use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Arr;
@@ -29,12 +30,14 @@ class SongService
                 throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
             }
 
-            ProcessSongJob::dispatchSync($song);
+            ProcessSongJob::dispatch($song);
             return $song;
         }
 
+        $disabled = false;
+
         try {
-            $response = app('proxy')
+            $response = ProxyService::instance()
                 ->post(config('gdproxy.base_url') . '/getGJSongInfo.php', [
                     'songID' => $id,
                     'secret' => 'Wmfd2893gb7',
@@ -43,6 +46,10 @@ class SongService
             ResponseService::check($response);
             $songObject = GeometryDashObject::split($response, '~|~');
         } catch (ResponseException) {
+            if (!empty($response) && $response === '-2') {
+                $disabled = true;
+            }
+
             $response = app('proxy')
                 ->post(config('gdproxy.base_url') . '/getGJLevels21.php', [
                     'song' => $id,
@@ -72,11 +79,11 @@ class SongService
                 'artist_id' => $songObject[3],
                 'artist_name' => $songObject[4],
                 'size' => $songObject[5],
-                'disabled' => false,
+                'disabled' => $disabled,
                 'original_download_url' => $songObject[10],
             ]);
 
-        ProcessSongJob::dispatchSync($song);
+        ProcessSongJob::dispatch($song);
         return $song;
     }
 }

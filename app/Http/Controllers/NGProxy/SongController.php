@@ -34,7 +34,6 @@ class SongController extends Controller
     public function objectForGD(SongGetRequest $request): int|string
     {
         $data = $request->validated();
-
         return $this->object($data['songID']);
     }
 
