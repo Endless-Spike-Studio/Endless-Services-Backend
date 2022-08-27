@@ -60,6 +60,7 @@ return [
             'level_comment_delete_failed_not_found' => '[关卡评论] 删除失败, 评论不存在',
             'level_comment_delete_failed_parameter_validate_failed' => '[关卡评论] 删除失败, 参数验证失败',
             'level_comment_delete_failed_not_owner' => '[关卡评论] 删除失败, 目标评论不属于当前操作者',
+            'leaderboard_fetch_failed_invalid_type' => '[排行榜] 获取失败, 无效类型'
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -100,7 +101,8 @@ return [
             'level_comment_command_execute_success' => '[关卡评论] 命令执行成功',
             'level_comment_create_success' => '[关卡评论] 发布成功',
             'level_comment_index_success' => '[关卡评论] 检索成功',
-            'level_comment_delete_success' => '[关卡评论] 删除成功'
+            'level_comment_delete_success' => '[关卡评论] 删除成功',
+            'leaderboard_fetch_success' => '[排行榜] 获取成功'
         ]
     ],
     'storage' => [

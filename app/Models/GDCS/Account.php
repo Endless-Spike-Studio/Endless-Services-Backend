@@ -98,7 +98,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
         return AccountFriend::query()
             ->orWhere([
                 'account_id' => $this->id,
-                'friend_account_id' => $this,
+                'friend_account_id' => $this->id,
             ]);
     }
 
