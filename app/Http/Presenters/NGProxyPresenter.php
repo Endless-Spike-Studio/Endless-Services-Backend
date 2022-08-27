@@ -2,6 +2,7 @@
 
 namespace App\Http\Presenters;
 
+use App\Exceptions\NewGroundsProxyException;
 use App\Http\Traits\HasMessage;
 use App\Services\NGProxy\SongService;
 use App\Services\Storage\SongStorageService;
@@ -13,6 +14,9 @@ class NGProxyPresenter
 {
     use HasMessage;
 
+    /**
+     * @throws NewGroundsProxyException
+     */
     public function renderHomeWithSong(int $id): InertiaResponse|RedirectResponse
     {
         $item = app(SongService::class)->find($id);
