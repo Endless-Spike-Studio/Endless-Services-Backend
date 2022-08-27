@@ -78,7 +78,8 @@ return [
             'challenge_fetch_success' => '[挑战] 获取成功',
             'reward_fetch_success' => '[奖励] 获取成功',
             'song_fetch_success' => '[歌曲] 获取成功',
-            'featured_artists_fetch_success' => '[特色艺术家] 获取成功'
+            'featured_artists_fetch_success' => '[特色艺术家] 获取成功',
+            'user_score_update_success' => '[用户分数] 更新成功'
         ]
     ],
     'storage' => [

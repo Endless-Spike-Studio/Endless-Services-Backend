@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\GDCS;
+namespace App\Http\Controllers\GDCS\Game;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GDCS\UserScoreUpdateRequest;
+use App\Http\Requests\GDCS\Game\UserScoreUpdateRequest;
+use App\Http\Traits\GameLog;
 
 class UserScoreController extends Controller
 {
+    use GameLog;
+
     public function update(UserScoreUpdateRequest $request): int
     {
         $data = $request->validated();
-        $user = $request->user;
 
-        $score = $user->score;
+        $score = $request->user->score;
         $score->stars = $data['stars'];
         $score->demons = $data['demons'];
         $score->diamonds = $data['diamonds'];
@@ -34,6 +36,7 @@ class UserScoreController extends Controller
         $score->acc_explosion = $data['accExplosion'];
         $score->save();
 
-        return $user->id;
+        $this->logGame(__('gdcn.game.action.user_score_update_success'));
+        return $request->user->id;
     }
 }
