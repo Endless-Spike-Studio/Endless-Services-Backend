@@ -53,7 +53,13 @@ return [
             'user_index_failed_empty' => '[用户] 检索失败, 结果为空',
             'user_search_failed_empty' => '[用户] 搜索失败, 结果为空',
             'item_like_failed_invalid_type' => '[项目] 点赞失败, 无效类型',
-            'item_like_failed_already_exists' => '[项目] 点赞失败, 当前操作者已经点过赞了'
+            'item_like_failed_already_exists' => '[项目] 点赞失败, 当前操作者已经点过赞了',
+            'level_comment_index_failed_level_not_found' => '[关卡评论] 检索失败, 关卡不存在',
+            'level_comment_index_failed_empty' => '[关卡评论] 检索失败, 目标关卡没人发过评论',
+            'level_comment_index_failed_invalid_mode' => '[关卡评论] 检索失败, 无效模式',
+            'level_comment_delete_failed_not_found' => '[关卡评论] 删除失败, 评论不存在',
+            'level_comment_delete_failed_parameter_validate_failed' => '[关卡评论] 删除失败, 参数验证失败',
+            'level_comment_delete_failed_not_owner' => '[关卡评论] 删除失败, 目标评论不属于当前操作者',
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -90,7 +96,11 @@ return [
             'level_pack_index_success' => '[关卡包] 检索成功',
             'level_gauntlet_index_success' => '[关卡挑战] 检索成功',
             'item_restore_success' => '[项目] 恢复成功',
-            'item_like_success' => '[项目] 点赞成功'
+            'item_like_success' => '[项目] 点赞成功',
+            'level_comment_command_execute_success' => '[关卡评论] 命令执行成功',
+            'level_comment_create_success' => '[关卡评论] 发布成功',
+            'level_comment_index_success' => '[关卡评论] 检索成功',
+            'level_comment_delete_success' => '[关卡评论] 删除成功'
         ]
     ],
     'storage' => [

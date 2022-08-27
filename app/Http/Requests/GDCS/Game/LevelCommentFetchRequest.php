@@ -1,20 +1,12 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
-use App\Models\GDCS\Account;
 use App\Models\GDCS\Level;
-use App\Models\GDCS\LevelComment;
 use Illuminate\Validation\Rule;
 
-class LevelCommentDeleteRequest extends Request
+class LevelCommentFetchRequest extends Request
 {
-    public function authorize(): bool
-    {
-        return $this->auth() && ! empty($this->account);
-    }
-
     public function rules(): array
     {
         return [
@@ -30,25 +22,24 @@ class LevelCommentDeleteRequest extends Request
                 'required',
                 'boolean',
             ],
-            'accountID' => [
-                'required',
-                'integer',
-                Rule::exists(Account::class, 'id'),
-            ],
-            'gjp' => [
-                'required',
-                'string',
-            ],
-            'commentID' => [
-                'required',
-                'integer',
-                Rule::exists(LevelComment::class, 'id'),
-            ],
-
             'levelID' => [
                 'required',
                 'integer',
                 Rule::exists(Level::class, 'id'),
+            ],
+            'page' => [
+                'required',
+                'integer',
+                'min:0',
+            ],
+            'total' => [
+                'required',
+                'integer',
+                'min:0',
+            ],
+            'mode' => [
+                'required',
+                'between:0,1',
             ],
             'secret' => [
                 'required',

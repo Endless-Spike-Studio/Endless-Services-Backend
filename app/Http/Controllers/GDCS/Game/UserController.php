@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\Game\Objects\UserObject;
-use App\Enums\GDCS\Game\UserIndexType;
+use App\Enums\GDCS\Game\Parameters\UserIndexType;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
@@ -76,8 +76,8 @@ class UserController extends Controller
         $type = (int)$data['type'];
 
         $query = match ($type) {
-            UserIndexType::FRIENDS->value => $request->account->friends(),
-            UserIndexType::BLOCKS->value => $request->account->blocks(),
+            UserIndexType::FRIENDS => $request->account->friends(),
+            UserIndexType::BLOCKS => $request->account->blocks(),
             default => throw new GeometryDashChineseServerException(__('gdcn.game.error.user_index_failed_invalid_mode'), game_response: Response::GAME_USER_INDEX_FAILED_INVALID_MODE->value),
         };
 
@@ -91,7 +91,7 @@ class UserController extends Controller
                 $isNew = false;
 
                 switch ($type) {
-                    case UserIndexType::FRIENDS->value:
+                    case UserIndexType::FRIENDS:
                         if ($item->account->is($request->account)) {
                             $account = $item->friend_account;
                             $isNew = $item->new;
@@ -108,7 +108,7 @@ class UserController extends Controller
                             ]);
                         }
                         break;
-                    case UserIndexType::BLOCKS->value:
+                    case UserIndexType::BLOCKS:
                         $account = $item->account->is($request->account) ? $item->target_account : $item->account;
                         break;
                     default:

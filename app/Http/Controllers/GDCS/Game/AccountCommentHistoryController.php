@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\GDCS\Game;
 
-use App\Enums\GDCS\Game\CommentMode;
 use App\Enums\GDCS\Game\Objects\CommentObject;
 use App\Enums\GDCS\Game\Objects\UserObject;
+use App\Enums\GDCS\Game\Parameters\CommentMode;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
@@ -38,10 +38,10 @@ class AccountCommentHistoryController extends Controller
         }
 
         switch ($data['mode']) {
-            case CommentMode::RECENT->value:
+            case CommentMode::RECENT:
                 $comments->orderByDesc('created_at');
                 break;
-            case CommentMode::MOST_LIKED->value:
+            case CommentMode::MOST_LIKED:
                 $comments->orderByDesc('likes');
                 break;
             default:

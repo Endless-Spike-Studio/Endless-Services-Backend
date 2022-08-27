@@ -58,7 +58,9 @@ class AccountCommentController extends Controller
     public function index(AccountCommentFetchRequest $request): string
     {
         $data = $request->validated();
-        $account = Account::find($data['accountID']);
+
+        $account = Account::query()
+            ->find($data['accountID']);
 
         if (!$account) {
             throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_index_failed_target_not_found'), game_response: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_TARGET_NOT_FOUND->value);
@@ -99,7 +101,9 @@ class AccountCommentController extends Controller
     public function delete(AccountCommentDeleteRequest $request): int
     {
         $data = $request->validated();
-        $comment = AccountComment::find($data['commentID']);
+
+        $comment = AccountComment::query()
+            ->find($data['commentID']);
 
         if (!$comment) {
             throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_delete_failed_not_found'), game_response: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value);

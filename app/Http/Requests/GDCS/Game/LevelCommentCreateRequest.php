@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
+use App\Models\GDCS\Account;
 use App\Models\GDCS\Level;
 use Illuminate\Validation\Rule;
 
-class LevelCommentFetchRequest extends Request
+class LevelCommentCreateRequest extends Request
 {
+    public function authorize(): bool
+    {
+        return $this->auth() && !empty($this->account);
+    }
+
     public function rules(): array
     {
         return [
@@ -23,24 +28,36 @@ class LevelCommentFetchRequest extends Request
                 'required',
                 'boolean',
             ],
+            'accountID' => [
+                'required',
+                'integer',
+                Rule::exists(Account::class, 'id'),
+            ],
+            'gjp' => [
+                'required',
+                'string',
+            ],
+            'userName' => [
+                'required',
+                'string',
+            ],
+            'comment' => [
+                'required',
+                'string',
+            ],
+            'chk' => [
+                'required',
+                'string',
+            ],
             'levelID' => [
                 'required',
                 'integer',
                 Rule::exists(Level::class, 'id'),
             ],
-            'page' => [
+            'percent' => [
+                'sometimes',
                 'required',
                 'integer',
-                'min:0',
-            ],
-            'total' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
-            'mode' => [
-                'required',
-                'between:0,1',
             ],
             'secret' => [
                 'required',

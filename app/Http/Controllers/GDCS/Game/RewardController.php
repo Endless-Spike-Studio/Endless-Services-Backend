@@ -4,7 +4,7 @@ namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\Game\Algorithm\Keys;
 use App\Enums\GDCS\Game\Algorithm\Salts;
-use App\Enums\GDCS\Game\RewardType;
+use App\Enums\GDCS\Game\Parameters\RewardType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\RewardFetchRequest;
 use App\Http\Traits\GameLog;
@@ -66,7 +66,7 @@ class RewardController extends Controller
         }
 
         switch ($data['rewardType']) {
-            case RewardType::SMALL->value:
+            case RewardType::SMALL:
                 $smallChestRemainTime = $config['small']['wait'];
                 $bigChestReward = '0,0,0,0';
 
@@ -75,7 +75,7 @@ class RewardController extends Controller
                     'small_count' => ++$reward->small_count
                 ]);
                 break;
-            case RewardType::BIG->value:
+            case RewardType::BIG:
                 $bigChestRemainTime = $config['big']['wait'];
                 $smallChestReward = '0,0,0,0';
 
@@ -84,7 +84,7 @@ class RewardController extends Controller
                     'big_count' => ++$reward->big_count
                 ]);
                 break;
-            case RewardType::LIST->value:
+            case RewardType::LIST:
             default:
                 $smallChestReward = '0,0,0,0';
                 $bigChestReward = '0,0,0,0';

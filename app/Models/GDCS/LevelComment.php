@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class LevelComment extends Model
 {
     protected $table = 'gdcs_level_comments';
-    protected $fillable = ['likes'];
+    protected $fillable = ['account_id', 'comment', 'percent', 'likes'];
 
     protected $casts = [
         'spam' => 'boolean',
