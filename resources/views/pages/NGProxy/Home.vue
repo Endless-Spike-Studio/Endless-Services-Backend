@@ -23,7 +23,8 @@ import {useGlobalStore} from '@/scripts/stores'
 import {each} from 'lodash-es'
 
 const props = defineProps<{
-    song?: NGProxy.Song
+    song?: NGProxy.Song,
+    ready?: boolean
 }>()
 
 const API = {
@@ -57,7 +58,7 @@ watch(fetchSongForm, newForm => {
     })
 })
 
-function fetchSong () {
+function fetchSong() {
     fetchSongForm.get(
         route('ngproxy.info', {
             id: songID.value
@@ -107,7 +108,7 @@ function fetchSong () {
                             {{ new Date(song.created_at).toLocaleString() }}
                         </n-descriptions-item>
                         <n-descriptions-item label="下载地址">
-                            <n-button text @click="toURL(song.download_url)">
+                            <n-button :disabled="!ready" text @click="toURL(song.download_url)">
                                 <n-ellipsis class="!max-w-[100px]">
                                     {{ song.download_url }}
                                 </n-ellipsis>
