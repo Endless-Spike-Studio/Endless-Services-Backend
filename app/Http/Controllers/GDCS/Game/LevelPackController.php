@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\GDCS;
+namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\Game\Algorithm\Salts;
 use App\Enums\GDCS\Game\Objects\LevelPackObject;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GDCS\LevelPackFetchRequest;
+use App\Http\Requests\GDCS\Game\LevelPackFetchRequest;
 use App\Http\Traits\GameLog;
 use App\Models\GDCS\LevelPack;
 use App\Services\Game\AlgorithmService;

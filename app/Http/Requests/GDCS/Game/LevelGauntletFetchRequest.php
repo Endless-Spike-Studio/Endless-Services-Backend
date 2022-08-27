@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
-
-use App\Http\Requests\GDCS\Game\Request;
+namespace App\Http\Requests\GDCS\Game;
 
 class LevelGauntletFetchRequest extends Request
 {

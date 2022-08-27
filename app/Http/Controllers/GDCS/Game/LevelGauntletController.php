@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\GDCS;
+namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\Game\Algorithm\Salts;
 use App\Enums\GDCS\Game\Objects\LevelGauntletObject;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GDCS\LevelGauntletFetchRequest;
+use App\Http\Requests\GDCS\Game\LevelGauntletFetchRequest;
 use App\Http\Traits\GameLog;
 use App\Models\GDCS\LevelGauntlet;
 use App\Services\Game\ObjectService;
