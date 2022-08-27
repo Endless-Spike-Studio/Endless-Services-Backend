@@ -12,11 +12,11 @@ class GeometryDashChineseServerException extends BaseException
     protected string $log_channel = 'gdcn';
 
     public function __construct(
-        string                    $message = null,
-        int                       $code = 0,
-        Throwable                 $previous = null,
-        array                     $log_context = [],
-        protected int|string|null $response = null
+        string                             $message = null,
+        int                                $code = 0,
+        Throwable                          $previous = null,
+        array                              $log_context = [],
+        protected readonly int|string|null $response = null
     )
     {
         parent::__construct($message, $code, $previous, 500, $log_context);
