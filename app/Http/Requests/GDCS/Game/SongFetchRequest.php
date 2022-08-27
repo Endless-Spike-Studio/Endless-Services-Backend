@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
-
-class SongGetRequest extends Request
+class SongFetchRequest extends Request
 {
     public function rules(): array
     {

@@ -11,6 +11,7 @@ use App\Http\Controllers\GDCS\Game\AccountMessageController;
 use App\Http\Controllers\GDCS\Game\AccountSettingController;
 use App\Http\Controllers\GDCS\Game\ChallengeController;
 use App\Http\Controllers\GDCS\Game\RewardController;
+use App\Http\Controllers\GDCS\Game\SongController;
 use App\Http\Controllers\GDCS\ItemController;
 use App\Http\Controllers\GDCS\LeaderboardController;
 use App\Http\Controllers\GDCS\LevelCommentController;
@@ -19,7 +20,6 @@ use App\Http\Controllers\GDCS\LevelGauntletController;
 use App\Http\Controllers\GDCS\LevelLeaderboardController;
 use App\Http\Controllers\GDCS\LevelPackController;
 use App\Http\Controllers\GDCS\LevelRatingController;
-use App\Http\Controllers\GDCS\SongController;
 use App\Http\Controllers\GDCS\UserController;
 use App\Http\Controllers\GDCS\UserScoreController;
 use App\Http\Controllers\GDProxyController;
@@ -80,7 +80,7 @@ Route::group([
         Route::post('/suggestGJStars20.php', [LevelRatingController::class, 'suggestStars'])->name('level.suggest.stars');
         Route::post('/getGJSongInfo.php', [SongController::class, 'fetch'])->name('song.info.get');
         Route::post('/restoreGJItems.php', [ItemController::class, 'restore'])->name('item.restore');
-        Route::post('/getGJTopArtists.php', [SongController::class, 'fetchAllTopArtists'])->name('song.top.artists.get');
+        Route::post('/getGJTopArtists.php', [SongController::class, 'fetchTopArtists'])->name('song.top.artists.get');
     });
 
     Route::group([
