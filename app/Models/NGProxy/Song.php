@@ -48,12 +48,11 @@ class Song extends Model
         ], '~|~');
     }
 
+    /**
+     * @throws StorageException
+     */
     public function download(): StreamedResponse
     {
-        try {
-            return app(SongStorageService::class)->download(['id' => $this->song_id]);
-        } catch (StorageException $e) {
-            abort(404);
-        }
+        return app(SongStorageService::class)->download(['id' => $this->song_id]);
     }
 }
