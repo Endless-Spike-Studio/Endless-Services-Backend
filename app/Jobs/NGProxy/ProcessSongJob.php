@@ -8,23 +8,27 @@ use App\Services\ProxyService;
 use App\Services\Storage\SongStorageService;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
 use Psr\Http\Client\ClientExceptionInterface;
 
-class ProcessSongJob implements ShouldQueue
+class ProcessSongJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+
     public function __construct(protected Song $song)
     {
-        $this->middleware = [
-            new WithoutOverlapping($song->id)
-        ];
+
+    }
+
+    public function uniqueId()
+    {
+        return $this->song->id;
     }
 
     /**
