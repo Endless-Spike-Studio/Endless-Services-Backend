@@ -70,7 +70,7 @@ Route::group([
         Route::post('/removeGJFriend20.php', [AccountFriendController::class, 'remove'])->name('friend.remove');
         Route::post('/acceptGJFriendRequest20.php', [AccountFriendRequestController::class, 'accept'])->name('friend.request.accept');
         Route::post('/getGJCommentHistory.php', [AccountCommentHistoryController::class, 'index'])->name('account.comment.history.get');
-        Route::post('/getGJMapPacks21.php', [LevelPackController::class, 'fetchAll'])->name('map.pack.get');
+        Route::post('/getGJMapPacks21.php', [LevelPackController::class, 'index'])->name('map.pack.get');
         Route::post('/getGJDailyLevel.php', [LevelController::class, 'fetchDailyOrWeekly'])->name('daily.level.get');
         Route::post('/getGJGauntlets21.php', [LevelGauntletController::class, 'fetchAll'])->name('gauntlet.get');
         Route::post('/likeGJItem211.php', [ItemController::class, 'like'])->name('like');
