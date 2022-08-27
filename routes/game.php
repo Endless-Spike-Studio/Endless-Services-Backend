@@ -72,7 +72,7 @@ Route::group([
         Route::post('/getGJCommentHistory.php', [AccountCommentHistoryController::class, 'index'])->name('account.comment.history.get');
         Route::post('/getGJMapPacks21.php', [LevelPackController::class, 'index'])->name('map.pack.get');
         Route::post('/getGJDailyLevel.php', [LevelController::class, 'fetchDailyOrWeekly'])->name('daily.level.get');
-        Route::post('/getGJGauntlets21.php', [LevelGauntletController::class, 'fetchAll'])->name('gauntlet.get');
+        Route::post('/getGJGauntlets21.php', [LevelGauntletController::class, 'index'])->name('gauntlet.get');
         Route::post('/likeGJItem211.php', [ItemController::class, 'like'])->name('like');
         Route::post('/getGJLevelScores211.php', [LevelLeaderboardController::class, 'fetchAll'])->name('level.score.get');
         Route::post('/rateGJStars211.php', [LevelRatingController::class, 'rateStars'])->name('level.rate.stars');

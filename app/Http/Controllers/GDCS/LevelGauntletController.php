@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers\GDCS;
 
+use App\Enums\GDCS\Game\Algorithm\Salts;
+use App\Enums\GDCS\Game\Objects\LevelGauntletObject;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\LevelGauntletFetchRequest;
+use App\Http\Traits\GameLog;
 use App\Models\GDCS\LevelGauntlet;
-use GeometryDashChinese\enums\Salts;
-use GeometryDashChinese\GeometryDashObject;
+use App\Services\Game\ObjectService;
 
 class LevelGauntletController extends Controller
 {
-    public function fetchAll(LevelGauntletFetchRequest $request): string
+    use GameLog;
+
+    public function index(LevelGauntletFetchRequest $request): string
     {
         $request->validated();
-        $hash = null;
 
+        $query = LevelGauntlet::query();
+        $hashes = [];
+
+        $this->logGame(__('gdcn.game.action.level_gauntlet_index_success'));
         return implode('#', [
-            LevelGauntlet::query()
-                ->get()
-                ->map(function (LevelGauntlet $gauntlet) use (&$hash) {
+            $query->get()
+                ->map(function (LevelGauntlet $gauntlet) use (&$hashes) {
                     $levels = implode(null, [
                         $gauntlet->level1_id,
                         $gauntlet->level2_id,
@@ -27,17 +33,17 @@ class LevelGauntletController extends Controller
                         $gauntlet->level5_id,
                     ]);
 
-                    $hash .= implode(null, [
+                    $hashes[] = implode(null, [
                         $gauntlet->id,
                         $levels,
                     ]);
 
-                    return GeometryDashObject::merge([
-                        1 => $gauntlet->id,
-                        3 => $levels,
+                    return ObjectService::merge([
+                        LevelGauntletObject::ID => $gauntlet->id,
+                        LevelGauntletObject::LEVELS => $levels,
                     ], ':');
                 })->join('|'),
-            sha1($hash . Salts::LEVEL->value),
+            sha1(implode(null, $hashes) . Salts::LEVEL->value),
         ]);
     }
 }

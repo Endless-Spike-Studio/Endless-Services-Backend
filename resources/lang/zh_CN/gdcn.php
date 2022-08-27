@@ -85,7 +85,8 @@ return [
             'user_score_update_success' => '[用户分数] 更新成功',
             'user_index_success' => '[用户] 检索成功',
             'user_search_success' => '[用户] 搜索成功',
-            'level_pack_index_success' => '[关卡包] 检索成功'
+            'level_pack_index_success' => '[关卡包] 检索成功',
+            'level_gauntlet_index_success' => '[关卡挑战] 检索成功'
         ]
     ],
     'storage' => [
