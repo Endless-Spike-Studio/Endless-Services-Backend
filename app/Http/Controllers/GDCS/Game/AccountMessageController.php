@@ -54,12 +54,12 @@ class AccountMessageController extends Controller
             throw new GeometryDashChineseServerException(__('gdcn.game.error.account_message_send_failed_blocked_by_target_setting_unless_friends'), game_response: Response::GAME_ACCOUNT_MESSAGE_CREATE_FAILED_TARGET_DISABLED_FRIENDS_ONLY->value);
         }
 
-        $message = new AccountMessage();
-        $message->account_id = $data['accountID'];
-        $message->target_account_id = $data['toAccountID'];
-        $message->subject = $data['subject'];
-        $message->body = $data['body'];
-        $message->save();
+        $message = AccountMessage::create([
+            'account_id' => $data['accountID'],
+            'target_account_id' => $data['toAccountID'],
+            'subject' => $data['subject'],
+            'body' => $data['body'],
+        ]);
 
         $this->logGame(__('gdcn.game.action.account_message_send_success'), [
             'message_id' => $message->id
@@ -143,8 +143,9 @@ class AccountMessageController extends Controller
         $new = $message->new;
 
         if (!$isSender) {
-            $message->new = false;
-            $message->save();
+            $message->update([
+                'new' => false
+            ]);
         }
 
         $this->logGame(__('gdcn.game.action.account_message_fetch_success'));

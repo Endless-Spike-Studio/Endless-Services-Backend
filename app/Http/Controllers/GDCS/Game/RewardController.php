@@ -70,17 +70,19 @@ class RewardController extends Controller
                 $smallChestRemainTime = $config['small']['wait'];
                 $bigChestReward = '0,0,0,0';
 
-                $reward->small_time = now();
-                $reward->small_count++;
-                $reward->save();
+                $reward->update([
+                    'small_time' => now(),
+                    'small_count' => ++$reward->small_count
+                ]);
                 break;
             case RewardType::BIG->value:
                 $bigChestRemainTime = $config['big']['wait'];
                 $smallChestReward = '0,0,0,0';
 
-                $reward->big_time = now();
-                $reward->big_count++;
-                $reward->save();
+                $reward->update([
+                    'big_time' => now(),
+                    'big_count' => ++$reward->big_count
+                ]);
                 break;
             case RewardType::LIST->value:
             default:

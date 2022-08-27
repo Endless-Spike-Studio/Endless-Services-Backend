@@ -9,7 +9,7 @@ class AccountComment extends Model
 {
     protected $table = 'gdcs_account_comments';
 
-    protected $fillable = ['comment'];
+    protected $fillable = ['comment', 'likes'];
 
     protected $casts = [
         'spam' => 'boolean',

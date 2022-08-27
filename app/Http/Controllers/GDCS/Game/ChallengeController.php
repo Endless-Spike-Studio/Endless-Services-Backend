@@ -38,13 +38,14 @@ class ChallengeController extends Controller
             for ($i = 0; $i < 3 - $count; $i++) {
                 try {
                     $item = Arr::random($items);
+                    $collect = random_int($item['collect']['min'], $item['collect']['max']);
 
-                    $challenge = new Challenge();
-                    $challenge->type = $item['id'];
-                    $challenge->collect = random_int($item['collect']['min'], $item['collect']['max']);
-                    $challenge->name = $this->generateName($item, $challenge->collect);
-                    $challenge->reward = round($item['reward']['give'] * $challenge->collect / $item['reward']['every']);
-                    $challenge->save();
+                    $challenge = Challenge::create([
+                        'type' => $item['id'],
+                        'collect' => $collect,
+                        'name' => $this->generateName($item, $collect),
+                        'reward' => round($item['reward']['give'] * $collect / $item['reward']['every']),
+                    ]);
 
                     $challenges->push($challenge);
                 } catch (Exception $e) {

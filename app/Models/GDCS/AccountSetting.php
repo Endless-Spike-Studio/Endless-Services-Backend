@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AccountSetting extends Model
 {
     protected $table = 'gdcs_account_settings';
+    protected $fillable = ['message_state', 'friend_request_state', 'comment_history_state', 'youtube_channel', 'twitter', 'twitch',];
 
     protected $casts = [
         'message_state' => AccountSettingMessageState::class,

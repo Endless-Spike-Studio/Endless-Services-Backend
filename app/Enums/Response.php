@@ -222,4 +222,8 @@ enum Response: int
     public const GAME_USER_INDEX_FAILED_INVALID_MODE = Response::FAILED;
     public const GAME_USER_INDEX_FAILED_EMPTY = Response::GAME_SPECIAL_FAILED_2;
     public const GAME_USER_SEARCH_FAILED_EMPTY = Response::GAME_SPECIAL_FAILED_2;
+    public const GAME_ITEM_RESTORE_SUCCESS = Response::SUCCESS;
+    public const GAME_ITEM_LIKE_SUCCESS = Response::SUCCESS;
+    public const GAME_ITEM_LIKE_FAILED_INVALID_TYPE = Response::FAILED;
+    public const GAME_ITEM_LIKE_FAILED_ALREADY_EXISTS = Response::FAILED;
 }

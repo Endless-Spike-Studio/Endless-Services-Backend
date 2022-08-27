@@ -95,14 +95,18 @@ class UserController extends Controller
                         if ($item->account->is($request->account)) {
                             $account = $item->friend_account;
                             $isNew = $item->new;
-                            $item->new = false;
+
+                            $item->update([
+                                'new' => false
+                            ]);
                         } else {
                             $account = $item->account;
                             $isNew = $item->friend_new;
-                            $item->friend_new = false;
-                        }
 
-                        $item->save();
+                            $item->update([
+                                'friend_new' => false
+                            ]);
+                        }
                         break;
                     case UserIndexType::BLOCKS->value:
                         $account = $item->account->is($request->account) ? $item->target_account : $item->account;

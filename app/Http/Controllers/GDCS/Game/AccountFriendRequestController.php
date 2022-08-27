@@ -49,11 +49,11 @@ class AccountFriendRequestController extends Controller
             throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_request_send_failed_blocked_by_target_setting'), game_response: Response::GAME_ACCOUNT_FRIEND_REQUEST_CREATE_FAILED_TARGET_DISABLED->value);
         }
 
-        $friendRequest = new AccountFriendRequest();
-        $friendRequest->account_id = $data['accountID'];
-        $friendRequest->target_account_id = $data['toAccountID'];
-        $friendRequest->comment = $data['comment'];
-        $friendRequest->save();
+        $friendRequest = AccountFriendRequest::create([
+            'account_id' => $data['accountID'],
+            'target_account_id' => $data['toAccountID'],
+            'comment' => $data['comment'],
+        ]);
 
         $this->logGame(__('gdcn.game.action.account_friend_request_send_success'), [
             'friend_request_id' => $friendRequest->id

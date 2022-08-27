@@ -51,7 +51,9 @@ return [
             'song_fetch_failed_not_found_custom' => '[歌曲] 获取失败, 没有找到对应的自定义歌曲',
             'user_index_failed_invalid_mode' => '[用户] 检索失败, 无效的检索模式',
             'user_index_failed_empty' => '[用户] 检索失败, 结果为空',
-            'user_search_failed_empty' => '[用户] 搜索失败, 结果为空'
+            'user_search_failed_empty' => '[用户] 搜索失败, 结果为空',
+            'item_like_failed_invalid_type' => '[项目] 点赞失败, 无效类型',
+            'item_like_failed_already_exists' => '[项目] 点赞失败, 当前操作者已经点过赞了'
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -86,7 +88,9 @@ return [
             'user_index_success' => '[用户] 检索成功',
             'user_search_success' => '[用户] 搜索成功',
             'level_pack_index_success' => '[关卡包] 检索成功',
-            'level_gauntlet_index_success' => '[关卡挑战] 检索成功'
+            'level_gauntlet_index_success' => '[关卡挑战] 检索成功',
+            'item_restore_success' => '[项目] 恢复成功',
+            'item_like_success' => '[项目] 点赞成功'
         ]
     ],
     'storage' => [

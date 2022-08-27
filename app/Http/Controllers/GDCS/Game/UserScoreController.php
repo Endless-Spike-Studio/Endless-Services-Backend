@@ -14,27 +14,27 @@ class UserScoreController extends Controller
     {
         $data = $request->validated();
 
-        $score = $request->user->score;
-        $score->stars = $data['stars'];
-        $score->demons = $data['demons'];
-        $score->diamonds = $data['diamonds'];
-        $score->icon = $data['icon'];
-        $score->color1 = $data['color1'];
-        $score->color2 = $data['color2'];
-        $score->icon_type = $data['iconType'];
-        $score->coins = $data['coins'];
-        $score->user_coins = $data['userCoins'];
-        $score->special = $data['special'];
-        $score->acc_icon = $data['accIcon'];
-        $score->acc_ship = $data['accShip'];
-        $score->acc_ball = $data['accBall'];
-        $score->acc_bird = $data['accBird'];
-        $score->acc_dart = $data['accDart'];
-        $score->acc_robot = $data['accRobot'];
-        $score->acc_glow = $data['accGlow'];
-        $score->acc_spider = $data['accSpider'];
-        $score->acc_explosion = $data['accExplosion'];
-        $score->save();
+        $request->user->score->update([
+            'stars' => $data['stars'],
+            'demons' => $data['demons'],
+            'diamonds' => $data['diamonds'],
+            'icon' => $data['icon'],
+            'color1' => $data['color1'],
+            'color2' => $data['color2'],
+            'icon_type' => $data['iconType'],
+            'coins' => $data['coins'],
+            'user_coins' => $data['userCoins'],
+            'special' => $data['special'],
+            'acc_icon' => $data['accIcon'],
+            'acc_ship' => $data['accShip'],
+            'acc_ball' => $data['accBall'],
+            'acc_bird' => $data['accBird'],
+            'acc_dart' => $data['accDart'],
+            'acc_robot' => $data['accRobot'],
+            'acc_glow' => $data['accGlow'],
+            'acc_spider' => $data['accSpider'],
+            'acc_explosion' => $data['accExplosion']
+        ]);
 
         $this->logGame(__('gdcn.game.action.user_score_update_success'));
         return $request->user->id;

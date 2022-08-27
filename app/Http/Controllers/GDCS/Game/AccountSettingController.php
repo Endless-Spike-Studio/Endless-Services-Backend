@@ -15,14 +15,14 @@ class AccountSettingController extends Controller
     {
         $data = $request->validated();
 
-        $setting = $request->account->setting;
-        $setting->message_state = $data['mS'];
-        $setting->friend_request_state = $data['frS'];
-        $setting->comment_history_state = $data['cS'];
-        $setting->youtube_channel = $data['yt'];
-        $setting->twitter = $data['twitter'];
-        $setting->twitch = $data['twitch'];
-        $setting->save();
+        $request->account->setting->update([
+            'message_state' => $data['mS'],
+            'friend_request_state' => $data['frS'],
+            'comment_history_state' => $data['cS'],
+            'youtube_channel' => $data['yt'],
+            'twitter' => $data['twitter'],
+            'twitch' => $data['twitch'],
+        ]);
 
         $this->logGame(__('gdcn.game.action.account_setting_update_success'));
         return Response::GAME_ACCOUNT_SETTING_UPDATE_SUCCESS->value;

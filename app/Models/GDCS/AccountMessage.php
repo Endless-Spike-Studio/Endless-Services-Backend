@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AccountMessage extends Model
 {
     protected $table = 'gdcs_account_messages';
+    protected $fillable = ['account_id', 'target_account_id', 'subject', 'body', 'new'];
 
     public static function findBetween(int $accountID, int $targetAccountID): Builder|AccountMessage
     {
