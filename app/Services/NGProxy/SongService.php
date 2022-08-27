@@ -2,6 +2,7 @@
 
 namespace App\Services\NGProxy;
 
+use App\Enums\Response;
 use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\ResponseException;
 use App\Jobs\NGProxy\ProcessSongJob;
@@ -27,7 +28,11 @@ class SongService
 
         if (!empty($song)) {
             if ($song->disabled) {
-                throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_disabled'), http_code: 403);
+                throw new NewGroundsProxyException(
+                    __('gdcn.song.error.fetch_failed_disabled'),
+                    http_code: 403,
+                    game_response: Response::GAME_SONG_FETCH_FAILED_DISABLED->value
+                );
             }
 
             ProcessSongJob::dispatch($song);
@@ -60,16 +65,23 @@ class SongService
             try {
                 ResponseService::check($response);
             } catch (ResponseException) {
-                throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed'));
+                throw new NewGroundsProxyException(
+                    __('gdcn.song.error.fetch_failed'),
+                    game_response: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND->value
+                );
             }
 
             $songObject = GeometryDashObject::split(Arr::get(explode('#', $response), 2), '~|~');
         }
 
         if (!Arr::has($songObject, [1, 2, 3, 4, 5, 10])) {
-            throw new NewGroundsProxyException(__('gdcn.song.error.fetch_failed_wrong_song_object'), log_context: [
-                'object' => $songObject
-            ]);
+            throw new NewGroundsProxyException(
+                __('gdcn.song.error.fetch_failed_wrong_song_object'),
+                log_context: [
+                    'object' => $songObject
+                ],
+                game_response: Response::GAME_SONG_FETCH_FAILED_PROCESS_EXCEPTION->value
+            );
         }
 
         $song = Song::query()

@@ -49,6 +49,9 @@ return [
             'challenge_generate_failed_unexpected_exception' => '[挑战] 生成失败, 遇到了意料外的异常',
             'song_fetch_failed_upstream_exception' => '[歌曲] 获取失败, 上流异常',
             'song_fetch_failed_not_found_custom' => '[歌曲] 获取失败, 没有找到对应的自定义歌曲',
+            'user_index_failed_invalid_mode' => '[用户] 检索失败, 无效的检索模式',
+            'user_index_failed_empty' => '[用户] 检索失败, 结果为空',
+            'user_search_failed_empty' => '[用户] 搜索失败, 结果为空'
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -79,7 +82,9 @@ return [
             'reward_fetch_success' => '[奖励] 获取成功',
             'song_fetch_success' => '[歌曲] 获取成功',
             'featured_artists_fetch_success' => '[特色艺术家] 获取成功',
-            'user_score_update_success' => '[用户分数] 更新成功'
+            'user_score_update_success' => '[用户分数] 更新成功',
+            'user_index_success' => '[用户] 检索成功',
+            'user_search_success' => '[用户] 搜索成功'
         ]
     ],
     'storage' => [

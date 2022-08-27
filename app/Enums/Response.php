@@ -219,4 +219,7 @@ enum Response: int
     public const GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM = Response::FAILED;
     public const GAME_SONG_FETCH_FAILED_PROCESS_EXCEPTION = Response::FAILED;
     public const GAME_SONG_FETCH_FAILED_DISABLED = Response::FAILED;
+    public const GAME_USER_INDEX_FAILED_INVALID_MODE = Response::FAILED;
+    public const GAME_USER_INDEX_FAILED_EMPTY = Response::GAME_SPECIAL_FAILED_2;
+    public const GAME_USER_SEARCH_FAILED_EMPTY = Response::GAME_SPECIAL_FAILED_2;
 }
