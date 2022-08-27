@@ -73,7 +73,8 @@ return [
             'account_message_fetch_success' => '[账号私信] 获取成功',
             'account_message_delete_success' => '[账号私信] 删除成功',
             'account_setting_update_success' => '[账号设置] 更新成功',
-            'challenge_fetch_success' => '[挑战] 获取成功'
+            'challenge_fetch_success' => '[挑战] 获取成功',
+            'reward_fetch_success' => '[奖励] 获取成功',
         ]
     ],
     'storage' => [

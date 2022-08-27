@@ -90,6 +90,46 @@ return [
                     'give' => 4
                 ]
             ],
+        ],
+        'rewards' => [
+            'small' => [
+                'wait' => 3600,
+                'orbs' => [
+                    'min' => 200,
+                    'max' => 400
+                ],
+                'diamonds' => [
+                    'min' => 2,
+                    'max' => 10
+                ],
+                'shards' => [
+                    'min' => 1,
+                    'max' => 6
+                ],
+                'keys' => [
+                    'min' => 1,
+                    'max' => 6
+                ],
+            ],
+            'big' => [
+                'wait' => 14400,
+                'orbs' => [
+                    'min' => 2000,
+                    'max' => 4000
+                ],
+                'diamonds' => [
+                    'min' => 20,
+                    'max' => 100
+                ],
+                'shards' => [
+                    'min' => 1,
+                    'max' => 6
+                ],
+                'keys' => [
+                    'min' => 1,
+                    'max' => 6
+                ],
+            ],
         ]
     ],
 ];
