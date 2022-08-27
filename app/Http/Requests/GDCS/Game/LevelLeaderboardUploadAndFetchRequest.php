@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\Account;
 use Illuminate\Validation\Rule;
 
@@ -10,7 +9,7 @@ class LevelLeaderboardUploadAndFetchRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->account);
+        return $this->auth() && !empty($this->account);
     }
 
     public function rules(): array

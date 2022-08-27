@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Game;
 
+use App\Enums\GDCS\Game\Objects\LeaderboardObject;
 use App\Enums\GDCS\Game\Objects\UserObject;
 use App\Enums\GDCS\Game\Parameters\LeaderboardFetchType;
 use App\Enums\Response;
@@ -34,9 +35,14 @@ class LeaderboardController extends Controller
                 $result = $query->get();
                 break;
             case LeaderboardFetchType::FRIENDS:
+                if (empty($request->account)) {
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.leaderboard_fetch_failed_need_login'), game_response: Response::GAME_LEADERBOARD_FETCH_FAILED_NEED_LOGIN->value);
+                }
+
                 $query->whereIn(
                     'user_id',
                     $request->account->friends()
+                        ->with('account.user', 'friend_account.user')
                         ->get()
                         ->map(function (AccountFriend $friend) use ($request) {
                             return ($friend->account->is($request->account) ? $friend->friend_account : $friend->account)->user->id;
@@ -80,19 +86,19 @@ class LeaderboardController extends Controller
         $this->logGame(__('gdcn.game.action.leaderboard_fetch_success'));
         return $result->map(function (UserScore $score) use (&$top) {
             return GeometryDashObject::merge([
-                UserObject::NAME => $score->user->name,
-                UserObject::ID => $score->user->id,
+                LeaderboardObject::USER_NAME => $score->user->name,
+                LeaderboardObject::USER_ID => $score->user->id,
                 UserObject::STARS => $score->stars,
                 UserObject::DEMONS => $score->demons,
-                UserObject::RANKING => ++$top,
+                LeaderboardObject::RANKING => ++$top,
                 UserObject::CREATOR_POINTS => $score->creator_points,
-                UserObject::ICON_ID => $score->icon,
-                UserObject::COLOR_ID => $score->color1,
-                UserObject::SECOND_COLOR_ID => $score->color2,
+                LeaderboardObject::USER_ICON_ID => $score->icon,
+                LeaderboardObject::USER_COLOR_ID => $score->color1,
+                LeaderboardObject::USER_SECOND_COLOR_ID => $score->color2,
                 UserObject::COINS => $score->coins,
-                UserObject::ICON_TYPE => $score->icon_type,
-                UserObject::SPECIAL => $score->special,
-                UserObject::UUID => $score->user->uuid,
+                LeaderboardObject::USER_ICON_TYPE => $score->icon_type,
+                LeaderboardObject::USER_SPECIAL => $score->special,
+                LeaderboardObject::USER_UUID => $score->user->uuid,
                 UserObject::USER_COINS => $score->user_coins,
                 UserObject::DIAMONDS => $score->diamonds,
             ], ':');

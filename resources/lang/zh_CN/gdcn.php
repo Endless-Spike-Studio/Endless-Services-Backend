@@ -60,7 +60,10 @@ return [
             'level_comment_delete_failed_not_found' => '[关卡评论] 删除失败, 评论不存在',
             'level_comment_delete_failed_parameter_validate_failed' => '[关卡评论] 删除失败, 参数验证失败',
             'level_comment_delete_failed_not_owner' => '[关卡评论] 删除失败, 目标评论不属于当前操作者',
-            'leaderboard_fetch_failed_invalid_type' => '[排行榜] 获取失败, 无效类型'
+            'leaderboard_fetch_failed_invalid_type' => '[排行榜] 获取失败, 无效类型',
+            'leaderboard_fetch_failed_need_login' => '[排行榜] 获取失败, 需要登录',
+            'level_leaderboard_fetch_failed_need_login' => '[关卡排行榜] 获取失败, 需要登录',
+            'level_leaderboard_fetch_failed_invalid_mode' => '[关卡排行榜] 获取失败, 无效模式',
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
