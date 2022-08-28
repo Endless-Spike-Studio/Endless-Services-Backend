@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\NGProxy;
 
 use App\Exceptions\NewGroundsProxyException;
-use App\Exceptions\StorageException;
 use App\Http\Requests\NGProxy\SongGetRequest;
 use App\Http\Traits\HasMessage;
 use App\Services\NGProxy\SongService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -47,9 +47,8 @@ class SongController extends Controller
 
     /**
      * @throws NewGroundsProxyException
-     * @throws StorageException
      */
-    public function download(int $id): StreamedResponse
+    public function download(int $id): StreamedResponse|RedirectResponse
     {
         return $this->service->find($id)->download();
     }
