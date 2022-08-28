@@ -40,8 +40,9 @@ class ItemController extends Controller
             ->firstOrCreate([
                 'type' => $data['type'],
                 'item_id' => $data['itemID'],
-                'ip' => $request->ip(),
                 'user_id' => $request->user->id
+            ], [
+                'ip' => $request->ip()
             ]);
 
         if (!$record->wasRecentlyCreated) {
