@@ -15,7 +15,7 @@ export default defineConfig({
         vueJsx(),
         legacy({
             targets: [
-                'default',
+                'defaults',
                 'chrome 52',
                 'ie >= 11'
             ],
