@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\Account;
+use App\Models\GDCS\Level;
 use Illuminate\Validation\Rule;
 
-class LevelDownloadRequest extends Request
+class LevelDeleteRequest extends Request
 {
+    public function authorize(): bool
+    {
+        return $this->auth() && !empty($this->user);
+    }
+
     public function rules(): array
     {
         return [
@@ -36,7 +41,6 @@ class LevelDownloadRequest extends Request
                 'string',
             ],
             'uuid' => [
-                'sometimes',
                 'required_without:accountID',
                 'integer',
             ],
@@ -47,31 +51,12 @@ class LevelDownloadRequest extends Request
             'levelID' => [
                 'required',
                 'integer',
-            ],
-            'inc' => [
-                'sometimes',
-                'required',
-                'boolean',
-            ],
-            'extras' => [
-                'sometimes',
-                'required',
-                'boolean',
+                Rule::exists(Level::class, 'id'),
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7',
-            ],
-            'rs' => [
-                'sometimes',
-                'required',
-                'string',
-            ],
-            'chk' => [
-                'sometimes',
-                'required',
-                'string',
+                'in:Wmfv2898gc9',
             ],
         ];
     }

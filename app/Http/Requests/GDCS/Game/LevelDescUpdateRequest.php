@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\Level;
 use Illuminate\Validation\Rule;
@@ -11,7 +10,7 @@ class LevelDescUpdateRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->user);
+        return $this->auth() && !empty($this->user);
     }
 
     public function rules(): array

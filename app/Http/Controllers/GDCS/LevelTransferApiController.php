@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\GDCS;
 
-use App\Enums\GDCS\Game\LevelSearchType;
 use App\Enums\GDCS\Game\LevelTransferType;
+use App\Enums\GDCS\Game\Parameters\LevelSearchType;
 use App\Exceptions\GDCS\LevelTransferTargetLinkNotFoundException;
 use App\Exceptions\InvalidResponseException;
 use App\Exceptions\StorageContentMissingException;

@@ -25,22 +25,14 @@ class LevelGauntletController extends Controller
         return implode('#', [
             $query->get()
                 ->map(function (LevelGauntlet $gauntlet) use (&$hashes) {
-                    $levels = implode(null, [
-                        $gauntlet->level1_id,
-                        $gauntlet->level2_id,
-                        $gauntlet->level3_id,
-                        $gauntlet->level4_id,
-                        $gauntlet->level5_id,
-                    ]);
-
                     $hashes[] = implode(null, [
                         $gauntlet->id,
-                        $levels,
+                        $gauntlet->levels,
                     ]);
 
                     return ObjectService::merge([
                         LevelGauntletObject::ID => $gauntlet->id,
-                        LevelGauntletObject::LEVELS => $levels,
+                        LevelGauntletObject::LEVELS => $gauntlet->levels,
                     ], ':');
                 })->join('|'),
             sha1(implode(null, $hashes) . Salts::LEVEL->value),

@@ -93,6 +93,22 @@ class BaseStorageService
         }
     }
 
+    public function delete(array $data): void
+    {
+        foreach ($this->storages as $storage) {
+            $disk = Storage::disk($storage['disk']);
+            $path = $storage['format'];
+
+            foreach ($data as $key => $value) {
+                $path = Str::replace('{' . $key . '}', $value, $path);
+            }
+
+            if ($disk->exists($path)) {
+                $disk->delete($path);
+            }
+        }
+    }
+
     /**
      * @throws StorageException
      */

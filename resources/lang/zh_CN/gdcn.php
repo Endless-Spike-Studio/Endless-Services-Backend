@@ -75,7 +75,20 @@ return [
             'level_rating_suggest_failed_suggestion_not_enabled' => '[关卡评分] 恶魔难度评分失败, 未开启建议收集',
             'level_rating_suggest_failed_level_not_found' => '[关卡评分] 评分建议失败, 关卡不存在',
             'level_rating_suggest_failed_overwrite_disabled' => '[关卡评分] 评分建议失败, 禁止覆盖已有的评分',
-            'level_rating_suggest_failed_already_exists' => '[关卡评分] 评分建议失败, 当前操作者已经评分过了'
+            'level_rating_suggest_failed_already_exists' => '[关卡评分] 评分建议失败, 当前操作者已经评分过了',
+            'level_search_failed_empty' => '[关卡] 搜索失败, 结果为空',
+            'level_search_failed_unsupported_type' => '[关卡] 搜索失败, 不支持的搜索类型',
+            'level_search_failed_gauntlet_not_found' => '[关卡] 搜索失败, 指定的挑战不存在',
+            'level_search_failed_authorization_exception' => '[关卡] 搜索失败, 授权异常',
+            'level_download_failed_daily_not_found' => '[关卡] 下载失败, 每日关卡不存在',
+            'level_download_failed_weekly_not_found' => '[关卡] 下载失败, 每周关卡不存在',
+            'level_download_failed_not_found' => '[关卡] 下载失败, 关卡不存在',
+            'level_delete_failed_not_found' => '[关卡] 删除失败, 关卡不存在',
+            'level_delete_failed_not_owner' => '[关卡] 删除失败, 目标关卡不属于当前操作者',
+            'level_description_update_failed_not_found' => '[关卡] 简介更新失败, 关卡不存在',
+            'level_description_update_failed_not_owner' => '[关卡] 简介更新失败, 目标关卡不属于当前操作者',
+            'level_daily_fetch_failed_not_found' => '[关卡] 每日关卡获取失败, 数据不存在(或未找到)',
+            'level_weekly_fetch_failed_not_found' => '[关卡] 每周关卡获取失败, 数据不存在(或未找到)'
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -120,7 +133,16 @@ return [
             'leaderboard_fetch_success' => '[排行榜] 获取成功',
             'level_rating_stars_rate_success' => '[关卡评分] 星星评分成功',
             'level_rating_demon_difficulty_rate_success' => '[关卡评分] 恶魔难度评分成功',
-            'level_rating_suggest_success' => '[关卡评分] 评分建议成功'
+            'level_rating_suggest_success' => '[关卡评分] 评分建议成功',
+            'level_upload_success' => '[关卡] 上传成功',
+            'level_leaderboard_fetch_success' => '[关卡排行榜] 获取成功',
+            'level_leaderboard_update_success' => '[关卡排行榜] 更新成功',
+            'level_search_success' => '[关卡] 搜索成功',
+            'level_download_success' => '[关卡] 下载成功',
+            'level_delete_success' => '[关卡] 删除成功',
+            'level_description_update_success' => '[关卡] 简介更新成功',
+            'level_daily_fetch_success' => '[关卡] 每日关卡获取成功',
+            'level_weekly_fetch_success' => '[关卡] 每周关卡获取成功'
         ]
     ],
     'storage' => [

@@ -4,8 +4,9 @@ namespace App\Models\GDCS;
 
 use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\Game\LevelRatingDifficulty;
-use App\Http\Controllers\GDCS\HelperController;
 use App\Models\NGProxy\Song;
+use App\Services\Storage\GameLevelDataStorageService;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +18,14 @@ class Level extends Model
 
     protected $fillable = ['user_id', 'game_version', 'name', 'desc', 'downloads', 'likes', 'version', 'length', 'audio_track', 'song_id', 'auto', 'password', 'original_level_id', 'two_player', 'objects', 'coins', 'requested_stars', 'unlisted', 'ldm', 'extra_string', 'level_info'];
 
+    public function data(): Attribute
+    {
+        return new Attribute(
+            fn() => (new GameLevelDataStorageService)->get(['id' => $this->id]),
+            fn(string $value) => (new GameLevelDataStorageService)->put(['id' => $this->id], $value)
+        );
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -24,7 +33,7 @@ class Level extends Model
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->user();
     }
 
     public function song(): HasOne
@@ -35,19 +44,6 @@ class Level extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(LevelComment::class, 'level_id');
-    }
-
-    public function rate(int $stars): Model|LevelRating
-    {
-        $diff = HelperController::guessLevelRatingDifficultyFromStars($stars);
-
-        return $this->rating()
-            ->firstOrCreate([
-                'stars' => $stars,
-                'difficulty' => $diff,
-                'auto' => $diff === LevelRatingDifficulty::AUTO,
-                'demon' => $diff === LevelRatingDifficulty::DEMON,
-            ]);
     }
 
     public function rating(): HasOne

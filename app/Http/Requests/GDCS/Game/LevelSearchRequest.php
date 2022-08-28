@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\LevelGauntlet;
 use Illuminate\Validation\Rule;

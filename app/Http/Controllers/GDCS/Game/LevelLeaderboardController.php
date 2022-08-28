@@ -8,12 +8,15 @@ use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\LevelLeaderboardUploadAndFetchRequest;
+use App\Http\Traits\GameLog;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\LevelScore;
 use App\Services\Game\ObjectService;
 
 class LevelLeaderboardController extends Controller
 {
+    use GameLog;
+
     /**
      * @throws GeometryDashChineseServerException
      */
@@ -58,6 +61,8 @@ class LevelLeaderboardController extends Controller
                 throw new GeometryDashChineseServerException(__('gdcn.game.error.level_leaderboard_fetch_failed_invalid_mode'), game_response: Response::GAME_LEVEL_LEADERBOARD_FETCH_FAILED_INVALID_MODE->value);
         }
 
+        $this->logGame(__('gdcn.game.action.level_leaderboard_fetch_success'));
+
         return $query->get()
             ->map(function (LevelScore $score) use (&$top) {
                 return ObjectService::merge([
@@ -96,5 +101,7 @@ class LevelLeaderboardController extends Controller
                 'percent' => $data['percent'],
                 'coins' => $data['s9'] - 5819
             ]);
+
+        $this->logGame(__('gdcn.game.action.level_leaderboard_update_success'));
     }
 }
