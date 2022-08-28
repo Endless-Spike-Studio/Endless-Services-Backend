@@ -22,7 +22,7 @@ use App\Http\Controllers\GDCS\Game\RewardController;
 use App\Http\Controllers\GDCS\Game\SongController;
 use App\Http\Controllers\GDCS\Game\UserController;
 use App\Http\Controllers\GDCS\Game\UserScoreController;
-use App\Http\Controllers\GDProxyController;
+use App\Http\Controllers\GDProxy\GameController;
 use App\Http\Controllers\NGProxy\SongController as NGProxySongController;
 use Illuminate\Support\Facades\Route;
 
@@ -87,7 +87,7 @@ Route::group([
         'domain' => 'dl.geometrydashchinese.com',
         'as' => 'gdproxy.',
     ], static function () {
-        Route::post('/{path}', [GDProxyController::class, 'process'])
+        Route::post('/{path}', [GameController::class, 'proxy'])
             ->where('path', '.*')
             ->name('proxy');
     });

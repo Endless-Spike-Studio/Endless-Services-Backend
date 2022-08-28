@@ -23,6 +23,10 @@ return [
             ],
         ],
     ],
+    'proxy' => [
+        'url' => env('PROXY_URL'),
+        'base' => 'http://www.boomlings.com/database'
+    ],
     'game' => [
         'per_page' => 10,
         'custom_song_offset' => 10000000,
