@@ -114,7 +114,7 @@ class LevelTransferApiController extends Controller
     {
         $response = app('proxy')
             ->post(config('gdproxy.base_url') . '/getGJLevels21.php', [
-                'type' => LevelSearchType::USER->value,
+                'type' => LevelSearchType::USER,
                 'str' => $userID,
                 'secret' => 'Wmfd2893gb7',
             ])->body();
