@@ -10,7 +10,6 @@ use App\Http\Requests\GDCS\Game\RewardFetchRequest;
 use App\Http\Traits\GameLog;
 use App\Services\Game\AlgorithmService;
 use Exception;
-use GeometryDashChinese\GeometryDashAlgorithm;
 use Illuminate\Support\Str;
 
 class RewardController extends Controller
@@ -107,7 +106,7 @@ class RewardController extends Controller
         ]);
 
         $this->logGame(__('gdcn.game.action.reward_fetch_success'));
-        $result = GeometryDashAlgorithm::encode($reward, Keys::REWARD->value, sha1: false);
+        $result = AlgorithmService::encode($reward, Keys::REWARD->value, sha1: false);
         return Str::random(5) . $result . '|' . sha1($result . Salts::REWARD->value);
     }
 }

@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\LevelLeaderboardUploadAndFetchRequest;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\LevelScore;
-use GeometryDashChinese\GeometryDashObject;
+use App\Services\Game\ObjectService;
 
 class LevelLeaderboardController extends Controller
 {
@@ -60,7 +60,7 @@ class LevelLeaderboardController extends Controller
 
         return $query->get()
             ->map(function (LevelScore $score) use (&$top) {
-                return GeometryDashObject::merge([
+                return ObjectService::merge([
                     LeaderboardObject::USER_NAME => $score->account->user->name,
                     LeaderboardObject::USER_ID => $score->account->user->id,
                     LeaderboardObject::PERCENT => $score->percent,

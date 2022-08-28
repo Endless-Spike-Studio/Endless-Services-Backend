@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\Game\AccountSettingMessageState;
+use App\Enums\GDCS\Game\Objects\MessageObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,6 @@ use App\Models\GDCS\AccountMessage;
 use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
 use App\Services\Game\ObjectService;
-use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Support\Arr;
 
 class AccountMessageController extends Controller
@@ -101,14 +101,16 @@ class AccountMessageController extends Controller
                     $target = $message->{$getSent ? 'target_account' : 'account'};
 
                     return ObjectService::merge([
-                        1 => $message->id,
-                        2 => $target->id,
-                        3 => $target->user->id,
-                        4 => $message->subject,
-                        6 => $target->name,
-                        7 => $message->created_at?->locale('en')->diffForHumans(syntax: true),
-                        8 => !$message->new,
-                        9 => $getSent,
+                        MessageObject::ID => $message->id,
+                        MessageObject::ACCOUNT_ID => $target->id,
+                        MessageObject::USER_ID => $target->user->id,
+                        MessageObject::SUBJECT => $message->subject,
+                        MessageObject::USER_NAME => $target->user->name,
+                        MessageObject::AGE => $message->created_at
+                            ?->locale('en')
+                            ->diffForHumans(syntax: true),
+                        MessageObject::IS_READ => !$message->new,
+                        MessageObject::IS_SENDER => $getSent,
                     ], ':');
                 })->join('|'),
             AlgorithmService::genPage($data['page'], $count),
@@ -150,18 +152,18 @@ class AccountMessageController extends Controller
 
         $this->logGame(__('gdcn.game.action.account_message_fetch_success'));
 
-        return GeometryDashObject::merge([
-            1 => $message->id,
-            2 => $target->id,
-            3 => $target->user->id,
-            4 => $message->subject,
-            5 => $message->body,
-            6 => $target->name,
-            7 => $message->created_at
+        return ObjectService::merge([
+            MessageObject::ID => $message->id,
+            MessageObject::ACCOUNT_ID => $target->id,
+            MessageObject::USER_ID => $target->user->id,
+            MessageObject::SUBJECT => $message->subject,
+            MessageObject::BODY => $message->body,
+            MessageObject::USER_NAME => $target->user->name,
+            MessageObject::AGE => $message->created_at
                 ?->locale('en')
                 ->diffForHumans(syntax: true),
-            8 => $new,
-            9 => $isSender,
+            MessageObject::IS_READ => $new,
+            MessageObject::IS_SENDER => $isSender,
         ], ':');
     }
 

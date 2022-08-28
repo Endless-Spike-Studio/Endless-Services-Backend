@@ -12,7 +12,7 @@ use App\Http\Requests\GDCS\Game\LeaderboardFetchRequest;
 use App\Http\Traits\GameLog;
 use App\Models\GDCS\AccountFriend;
 use App\Models\GDCS\UserScore;
-use GeometryDashChinese\GeometryDashObject;
+use App\Services\Game\ObjectService;
 
 class LeaderboardController extends Controller
 {
@@ -85,7 +85,7 @@ class LeaderboardController extends Controller
 
         $this->logGame(__('gdcn.game.action.leaderboard_fetch_success'));
         return $result->map(function (UserScore $score) use (&$top) {
-            return GeometryDashObject::merge([
+            return ObjectService::merge([
                 LeaderboardObject::USER_NAME => $score->user->name,
                 LeaderboardObject::USER_ID => $score->user->id,
                 UserObject::STARS => $score->stars,
