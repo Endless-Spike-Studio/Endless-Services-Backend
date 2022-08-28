@@ -7,6 +7,8 @@ use App\Services\Storage\SongStorageService;
 use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Song extends Model
@@ -48,11 +50,12 @@ class Song extends Model
         ], '~|~');
     }
 
-    /**
-     * @throws StorageException
-     */
-    public function download(): StreamedResponse
+    public function download(): StreamedResponse|RedirectResponse
     {
-        return app(SongStorageService::class)->download(['id' => $this->song_id]);
+        try {
+            return app(SongStorageService::class)->download(['id' => $this->song_id]);
+        } catch (StorageException) {
+            return Redirect::away($this->original_download_url);
+        }
     }
 }
