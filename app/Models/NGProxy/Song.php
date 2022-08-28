@@ -55,7 +55,9 @@ class Song extends Model
         try {
             return app(SongStorageService::class)->download(['id' => $this->song_id]);
         } catch (StorageException) {
-            return Redirect::away($this->original_download_url);
+            return Redirect::away(
+                urldecode($this->original_download_url)
+            );
         }
     }
 }
