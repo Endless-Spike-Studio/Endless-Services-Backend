@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\GDCS\CustomSongApiController as GDCS_CustomSongController;
-use App\Http\Controllers\GDProxy\CustomSongController as GDProxy_CustomSongController;
-use App\Http\Controllers\NGProxy\SongController as NGProxySongController;
+use App\Http\Controllers\NGProxy\SongController;
 use Illuminate\Support\Facades\Route;
 use Tightenco\Ziggy\Ziggy;
 
@@ -23,36 +21,18 @@ Route::group([
     Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
 
     Route::group([
-        'domain' => 'gf.geometrydashchinese.com',
-        'as' => 'gdcs.',
-    ], static function () {
-        Route::get('/customSong/{id}/download', [GDCS_CustomSongController::class, 'download'])
-            ->where('id', '\d+')
-            ->name('customSong.download');
-    });
-
-    Route::group([
-        'domain' => 'dl.geometrydashchinese.com',
-        'as' => 'gdproxy.',
-    ], static function () {
-        Route::get('/customSong/{id}/download', [GDProxy_CustomSongController::class, 'download'])
-            ->where('id', '\d+')
-            ->name('customSong.download');
-    });
-
-    Route::group([
         'domain' => 'ng.geometrydashchinese.com',
         'as' => 'ngproxy.',
     ], static function () {
-        Route::get('/{id}/info', [NGProxySongController::class, 'info'])
+        Route::get('/{id}/info', [SongController::class, 'info'])
             ->where('id', '\d+')
             ->name('info');
 
-        Route::get('/{id}/object', [NGProxySongController::class, 'object'])
+        Route::get('/{id}/object', [SongController::class, 'object'])
             ->where('id', '\d+')
             ->name('object');
 
-        Route::get('/{id}/download', [NGProxySongController::class, 'download'])
+        Route::get('/{id}/download', [SongController::class, 'download'])
             ->where('id', '\d+')
             ->name('download');
     });

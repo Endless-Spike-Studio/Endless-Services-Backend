@@ -11,7 +11,6 @@ use App\Models\GDCS\CustomSong;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CustomSongApiController extends Controller
@@ -145,19 +144,5 @@ class CustomSongApiController extends Controller
         }
 
         return back();
-    }
-
-    public function download(int $id)
-    {
-        foreach (config('gdcs.storages.customSongData') as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = str_replace('@', $id, $storage['format']);
-
-            if ($disk->exists($path)) {
-                return $disk->download($path);
-            }
-        }
-
-        abort(404);
     }
 }
