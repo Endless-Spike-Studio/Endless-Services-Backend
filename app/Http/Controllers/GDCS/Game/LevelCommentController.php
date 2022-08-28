@@ -64,6 +64,7 @@ class LevelCommentController extends Controller
     public function index(LevelCommentFetchRequest $request): int|string
     {
         $data = $request->validated();
+        $mode = (int)$data['mode'];
 
         $level = Level::query()
             ->find($data['levelID']);
@@ -80,7 +81,7 @@ class LevelCommentController extends Controller
             throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_empty'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_EMPTY->value);
         }
 
-        match ($data['mode']) {
+        match ($mode) {
             CommentMode::RECENT => $comments->orderByDesc('created_at'),
             CommentMode::MOST_LIKED => $comments->orderByDesc('likes'),
             default => throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_invalid_mode'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_INVALID_MODE->value),
