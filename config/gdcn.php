@@ -131,6 +131,24 @@ return [
                     'max' => 6
                 ],
             ],
+        ],
+        'level_rating_suggestions' => [
+            'stars' => [
+                'enabled' => true,
+                'assign_stars' => false,
+                'overwrite_able' => true,
+                'minimum_count' => 3
+            ],
+            'demon' => [
+                'enabled' => true,
+                'overwrite_able' => true,
+                'minimum_count' => 3
+            ],
+            'suggest' => [
+                'enabled' => true,
+                'overwrite_able' => true,
+                'minimum_count' => 3
+            ]
         ]
     ],
 ];

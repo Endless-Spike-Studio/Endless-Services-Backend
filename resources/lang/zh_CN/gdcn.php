@@ -64,6 +64,18 @@ return [
             'leaderboard_fetch_failed_need_login' => '[排行榜] 获取失败, 需要登录',
             'level_leaderboard_fetch_failed_need_login' => '[关卡排行榜] 获取失败, 需要登录',
             'level_leaderboard_fetch_failed_invalid_mode' => '[关卡排行榜] 获取失败, 无效模式',
+            'level_rating_stars_rate_failed_suggestion_not_enabled' => '[关卡评分] 星星评分失败, 未开启建议收集',
+            'level_rating_stars_rate_failed_level_not_found' => '[关卡评分] 星星评分失败, 关卡不存在',
+            'level_rating_stars_rate_failed_overwrite_disabled' => '[关卡评分] 星星评分失败, 禁止覆盖已有的评分',
+            'level_rating_stars_rate_failed_already_exists' => '[关卡评分] 星星评分失败, 当前操作者已经评分过了',
+            'level_rating_demon_difficulty_rate_failed_suggestion_not_enabled' => '[关卡评分] 恶魔难度评分失败, 未开启建议收集',
+            'level_rating_demon_difficulty_rate_failed_level_not_found' => '[关卡评分] 恶魔难度评分失败, 关卡不存在',
+            'level_rating_demon_difficulty_rate_failed_overwrite_disabled' => '[关卡评分] 恶魔难度评分失败, 禁止覆盖已有的评分',
+            'level_rating_demon_difficulty_rate_failed_already_exists' => '[关卡评分] 恶魔难度评分失败, 当前操作者已经评分过了',
+            'level_rating_suggest_failed_suggestion_not_enabled' => '[关卡评分] 恶魔难度评分失败, 未开启建议收集',
+            'level_rating_suggest_failed_level_not_found' => '[关卡评分] 评分建议失败, 关卡不存在',
+            'level_rating_suggest_failed_overwrite_disabled' => '[关卡评分] 评分建议失败, 禁止覆盖已有的评分',
+            'level_rating_suggest_failed_already_exists' => '[关卡评分] 评分建议失败, 当前操作者已经评分过了'
         ],
         'action' => [
             'account_block_success' => '[账号黑名单] 拉黑成功',
@@ -105,7 +117,10 @@ return [
             'level_comment_create_success' => '[关卡评论] 发布成功',
             'level_comment_index_success' => '[关卡评论] 检索成功',
             'level_comment_delete_success' => '[关卡评论] 删除成功',
-            'leaderboard_fetch_success' => '[排行榜] 获取成功'
+            'leaderboard_fetch_success' => '[排行榜] 获取成功',
+            'level_rating_stars_rate_success' => '[关卡评分] 星星评分成功',
+            'level_rating_demon_difficulty_rate_success' => '[关卡评分] 恶魔难度评分成功',
+            'level_rating_suggest_success' => '[关卡评分] 评分建议成功'
         ]
     ],
     'storage' => [

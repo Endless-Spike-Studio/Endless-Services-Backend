@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Requests\GDCS;
+namespace App\Http\Requests\GDCS\Game;
 
-use App\Http\Requests\GDCS\Game\Request;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\Level;
 use Illuminate\Validation\Rule;
 
-class LevelRateStarRequest extends Request
+class LevelRateDemonRequest extends Request
 {
     public function authorize(): bool
     {
-        return $this->auth() && ! empty($this->user);
+        return $this->auth() && !empty($this->user);
     }
 
     public function rules(): array
@@ -49,28 +48,25 @@ class LevelRateStarRequest extends Request
                 'required_with:uuid',
                 'string',
             ],
+            'mode' => [
+                'sometimes',
+                'required',
+                'in:1',
+            ],
             'levelID' => [
                 'required',
                 'integer',
                 Rule::exists(Level::class, 'id'),
             ],
-            'stars' => [
+            'rating' => [
                 'required',
                 'integer',
-                'between:1,10',
+                'between:1,5',
             ],
             'secret' => [
                 'required',
                 'string',
-                'in:Wmfd2893gb7',
-            ],
-            'rs' => [
-                'required',
-                'string',
-            ],
-            'chk' => [
-                'required',
-                'string',
+                'in:Wmfp3879gc3',
             ],
         ];
     }
