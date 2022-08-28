@@ -15,10 +15,11 @@ export default defineConfig({
         vueJsx(),
         legacy({
             targets: [
-                '> 1%',
-                'last 2 versions',
-                'not dead'
-            ]
+                'default',
+                'chrome 52',
+                'ie >= 11'
+            ],
+            additionalLegacyPolyfills: ['regenerator-runtime/runtime']
         }),
         laravel({
             postcss: [
