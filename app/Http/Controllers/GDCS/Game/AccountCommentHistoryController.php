@@ -32,11 +32,6 @@ class AccountCommentHistoryController extends Controller
                 ->where('id', $data['userID'])
                 ->value('uuid'));
 
-        $count = $comments->count();
-        if ($count <= 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_empty'), game_response: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
-        }
-
         switch ($data['mode']) {
             case CommentMode::RECENT:
                 $comments->orderByDesc('created_at');
@@ -46,6 +41,11 @@ class AccountCommentHistoryController extends Controller
                 break;
             default:
                 throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_invalid_mode'), game_response: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
+        }
+
+        $count = $comments->count();
+        if ($count <= 0) {
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_empty'), game_response: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_comment_history_index_success'));

@@ -84,14 +84,6 @@ class LevelController extends Controller
         $query = Level::query()
             ->with('user');
 
-        $count = $query->count();
-        if ($count <= 0) {
-            throw new GeometryDashChineseServerException(
-                __('gdcn.game.error.level_search_failed_empty'),
-                game_response: '##' . Response::empty() . '#' . sha1(Salts::LEVEL->value)
-            );
-        }
-
         $song = new SongService();
         $customSongOffset = config('gdcn.game.custom_song_offset');
         $showUnlisted = false;
@@ -286,6 +278,14 @@ class LevelController extends Controller
 
         if (!empty($data['song'])) {
             $query->where(!empty($data['customSong']) ? 'song_id' : 'audio_track', $data['song']);
+        }
+
+        $count = $query->count();
+        if ($count <= 0) {
+            throw new GeometryDashChineseServerException(
+                __('gdcn.game.error.level_search_failed_empty'),
+                game_response: '##' . Response::empty() . '#' . sha1(Salts::LEVEL->value)
+            );
         }
 
         $users = [];

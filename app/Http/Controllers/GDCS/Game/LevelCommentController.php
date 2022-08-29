@@ -76,16 +76,16 @@ class LevelCommentController extends Controller
         $comments = $level->comments()
             ->with('account.user.score');
 
-        $count = $comments->count();
-        if ($count <= 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_empty'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_EMPTY->value);
-        }
-
         match ($mode) {
             CommentMode::RECENT => $comments->orderByDesc('created_at'),
             CommentMode::MOST_LIKED => $comments->orderByDesc('likes'),
             default => throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_invalid_mode'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_INVALID_MODE->value),
         };
+
+        $count = $comments->count();
+        if ($count <= 0) {
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_empty'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_EMPTY->value);
+        }
 
         $this->logGame(__('gdcn.game.action.level_comment_index_success'));
         return implode('#', [
