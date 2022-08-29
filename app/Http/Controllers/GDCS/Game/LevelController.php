@@ -404,7 +404,7 @@ class LevelController extends Controller
                 break;
             default:
                 $level = Level::query()
-                    ->first($data['levelID']);
+                    ->find($data['levelID']);
 
                 if (!$level) {
                     throw new GeometryDashChineseServerException(__('gdcn.game.error.level_download_failed_not_found'), game_response: Response::GAME_LEVEL_DOWNLOAD_FAILED_NOT_FOUND->value);
