@@ -339,10 +339,15 @@ class LevelController extends Controller
                     }
 
                     if ($level->song_id > 0 && !array_key_exists($level->song_id, $songs)) {
-                        if ($level->song_id < $customSongOffset) {
-                            $songs[$level->song_id] = $song->find($level->song_id)->object;
+                        if ($level->song_id >= $customSongOffset) {
+                            $customSong = CustomSong::query()
+                                ->find($level->song_id - $customSongOffset);
+
+                            if (!empty($customSong)) {
+                                $songs[$level->song_id] = $customSong->object;
+                            }
                         } else {
-                            $songs[$level->song_id] = CustomSong::find($level->song_id - $customSongOffset)->object;
+                            $songs[$level->song_id] = $song->find($level->song_id)->object;
                         }
                     }
 
