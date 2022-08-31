@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\Game\BaseGameService;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
                     continue;
                 }
 
-                $parameters[$key] = $value;
+                $parameters[$key] = Str::limit($value);
             }
 
             return [
@@ -32,7 +32,6 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
 
-        BaseGameService::$perPage = config('gdcn.game.per_page', 10);
         Schema::defaultStringLength(191);
     }
 }

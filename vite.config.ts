@@ -5,6 +5,8 @@ import autoprefixer from 'autoprefixer'
 import laravel from 'vite-plugin-laravel'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import Components from 'unplugin-vue-components/vite'
+import {NaiveUiResolver} from 'unplugin-vue-components/resolvers'
 import inertia from './resources/scripts/vite/inertia-layout'
 import eslintPlugin from 'vite-plugin-eslint'
 
@@ -13,6 +15,11 @@ export default defineConfig({
         inertia(),
         vue(),
         vueJsx(),
+        Components({
+            resolvers: [
+                NaiveUiResolver()
+            ]
+        }),
         legacy({
             targets: [
                 'defaults',

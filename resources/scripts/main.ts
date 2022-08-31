@@ -1,39 +1,31 @@
-import {createApp, h} from 'vue'
-import {createInertiaApp} from '@inertiajs/inertia-vue3'
-import {importPageComponent} from '@/scripts/vite/import-page-component'
-import {createPinia} from 'pinia'
-import {InertiaProgress} from '@inertiajs/progress'
-import axios from 'axios'
-import {getProp} from '@/scripts/helpers'
+import {createApp, h} from "vue";
+import {createInertiaApp} from "@inertiajs/inertia-vue3";
+import {importPageComponent} from "@/scripts/vite/import-page-component";
+import {InertiaProgress} from "@inertiajs/progress";
+import axios from "axios";
+import {pages, pinia} from "@/scripts/core/client";
+import {useProp} from "@/scripts/core/utils";
 
 if (import.meta.env.PROD && location.protocol === 'http:') {
-    location.protocol = 'https:'
+    location.protocol = 'https:';
 }
 
-const components = import.meta.glob('../views/pages/**/*.vue')
-const pinia = createPinia()
-
 createInertiaApp({
-    resolve: (name) => importPageComponent(name, components),
-    setup ({
-              el,
-              app,
-              props,
-              plugin
-          }) {
-        const _app = createApp({
+    resolve: (name: string) => importPageComponent(name, pages),
+    setup({el, app, props, plugin}) {
+        const instance = createApp({
             render: () => h(app, props)
-        })
+        });
 
-        _app.use(pinia)
-        _app.use(plugin)
-        _app.mount(el)
+        instance.use(pinia);
+        instance.use(plugin);
+        instance.mount(el);
     }
 }).then(() => {
-    InertiaProgress.init()
+    InertiaProgress.init();
 
     axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRF-TOKEN': getProp<string>('csrf_token').value
+        'X-CSRF-TOKEN': useProp<string>('csrf_token').value
     }
-})
+});

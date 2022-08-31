@@ -1,12 +1,9 @@
-export function importPageComponent (name: string, pages: Record<string, any>) {
-    // eslint-disable-next-line no-restricted-syntax
+export function importPageComponent(name: string, pages: Record<string, any>) {
     for (const path in pages) {
         if (path.endsWith(`${name.replaceAll('.', '/')}.vue`)) {
-            return typeof pages[path] === 'function'
-                ? pages[path]()
-                : pages[path]
+            return typeof pages[path] === 'function' ? pages[path]() : pages[path];
         }
     }
 
-    throw new Error(`Page not found: ${name}`)
+    throw new Error(`页面不存在: ${name}`);
 }

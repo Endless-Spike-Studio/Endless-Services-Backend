@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Http\Traits\HasMessage;
-use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,11 +17,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                $this->pushErrorMessage(
-                    __('messages.already_logged')
-                );
-
-                return redirect(RouteServiceProvider::HOME);
+                return back();
             }
         }
 

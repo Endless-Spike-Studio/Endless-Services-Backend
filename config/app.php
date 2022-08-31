@@ -44,6 +44,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ProxyServiceProvider::class,
         App\Providers\StorageServiceProvider::class,
+        App\Providers\GameServiceProvider::class,
     ],
     'aliases' => Facade::defaultAliases()
         ->merge([

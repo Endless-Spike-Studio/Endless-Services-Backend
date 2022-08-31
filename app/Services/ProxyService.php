@@ -10,7 +10,7 @@ class ProxyService
     public static function instance(): PendingRequest
     {
         return Http::withOptions([
-            'proxy' => config('proxy.url'),
+            'proxy' => config('gdcn.proxy.url'),
         ]);
     }
 }

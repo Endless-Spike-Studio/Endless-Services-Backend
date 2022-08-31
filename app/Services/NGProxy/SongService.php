@@ -43,7 +43,7 @@ class SongService
 
         try {
             $response = ProxyService::instance()
-                ->post(config('gdproxy.base_url') . '/getGJSongInfo.php', [
+                ->post(config('gdcn.proxy.base') . '/getGJSongInfo.php', [
                     'songID' => $id,
                     'secret' => 'Wmfd2893gb7',
                 ])->body();
@@ -55,8 +55,8 @@ class SongService
                 $disabled = true;
             }
 
-            $response = app('proxy')
-                ->post(config('gdproxy.base_url') . '/getGJLevels21.php', [
+            $response = ProxyService::instance()
+                ->post(config('gdcn.proxy.base') . '/getGJLevels21.php', [
                     'song' => $id,
                     'customSong' => true,
                     'secret' => 'Wmfd2893gb7',
