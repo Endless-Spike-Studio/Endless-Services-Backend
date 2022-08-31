@@ -39,15 +39,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\ProxyServiceProvider::class,
-        App\Providers\StorageServiceProvider::class,
         App\Providers\GameServiceProvider::class,
     ],
     'aliases' => Facade::defaultAliases()
-        ->merge([
-            // ...
-        ])->toArray(),
+        ->toArray(),
 ];
