@@ -24,7 +24,7 @@ return [
         ],
     ],
     'proxy' => [
-        'url' => env('PROXY_URL'),
+        'url' => env('PROXY_URL', 'http://clash:7890'),
         'base' => 'http://www.boomlings.com/database'
     ],
     'game' => [
