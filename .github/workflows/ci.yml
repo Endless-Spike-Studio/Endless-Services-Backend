@@ -2,91 +2,30 @@ on: push
 name: CI
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    container:
-      image: laradock/workspace:master-8.1
-    services:
-      database:
-        image: mariadb
-        env:
-          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
-          MARIADB_DATABASE: gdcn
-        ports:
-          - 3306:3306
-    steps:
-        - uses: actions/checkout@v3
+    test:
+        runs-on: ubuntu-latest
+        container:
+            image: laradock/workspace:master-8.1
+        services:
+            database:
+                image: mariadb
+                env:
+                    MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+                    MARIADB_DATABASE: gdcn
+                ports:
+                    - 3306:3306
+        steps:
+            -   uses: actions/checkout@v3
 
-        -   name: Install packages
-            run: |
-                rm -f composer.lock
-                composer update --no-interaction --no-ansi
+            -   name: Install packages
+                run: |
+                    rm -f composer.lock
+                    composer update --no-interaction --no-ansi
 
-        -   name: Initialize project
-            run: |
-                cp .env.ci .env
-                php artisan key:generate
+            -   name: Initialize project
+                run: |
+                    cp .env.ci .env
+                    php artisan key:generate
 
-        -   name: Execute tests
-            run: php artisan test
-
-  stan:
-    runs-on: ubuntu-latest
-    container:
-      image: laradock/workspace:master-8.1
-    steps:
-        - uses: actions/checkout@v3
-
-        -   name: Install packages
-            run: |
-                rm -f composer.lock
-                composer update --no-interaction --no-ansi
-
-        -   name: Initialize project
-            run: |
-                cp .env.ci .env
-                php artisan key:generate
-
-        -   name: Execute analyse
-            run: vendor/bin/phpstan analyse
-            continue-on-error: true
-
-  lint:
-    runs-on: ubuntu-latest
-    container:
-      image: laradock/workspace:master-8.1
-    steps:
-        - uses: actions/checkout@v3
-
-        -   name: Install packages
-            run: |
-                rm -f composer.lock
-                composer update --no-interaction --no-ansi
-
-        -   name: Initialize project
-            run: |
-                cp .env.ci .env
-                php artisan key:generate
-
-        -   name: Execute lint
-            run: vendor/bin/pint --test
-            continue-on-error: true
-
-  frontend-lint:
-    runs-on: ubuntu-latest
-    container:
-      image: node:alpine
-    steps:
-        - uses: actions/checkout@v3
-
-        -   name: Install pnpm
-            run: npm install --global pnpm
-
-        -   name: Install packages
-            run: |
-                rm -f pnpm-lock.yaml
-                pnpm update
-
-        -   name: Execute lint
-            run: npx eslint resources/**
-            continue-on-error: true
+            -   name: Execute tests
+                run: php artisan test
