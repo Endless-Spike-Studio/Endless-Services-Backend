@@ -2,8 +2,8 @@
 
 namespace App\Services\Game;
 
+use App\Enums\GDCS\Game\Algorithm\Salts;
 use Base64Url\Base64Url;
-use GeometryDashChinese\enums\Salts;
 
 class AlgorithmService extends BaseGameService
 {

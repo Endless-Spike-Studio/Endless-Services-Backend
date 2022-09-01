@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\GDCS\Game;
 
+use App\Enums\GDCS\Game\Algorithm\Keys;
+use App\Enums\GDCS\Game\Algorithm\Salts;
 use App\Models\GDCS\Account;
-use GeometryDashChinese\enums\Keys;
-use GeometryDashChinese\enums\Salts;
-use GeometryDashChinese\GeometryDashAlgorithm;
+use App\Services\Game\AlgorithmService;
 use Illuminate\Validation\Rule;
 
 class AccountCommentCreateRequest extends Request
@@ -18,7 +18,7 @@ class AccountCommentCreateRequest extends Request
     protected function validateChk(): bool
     {
         return hash_equals(
-            GeometryDashAlgorithm::encode($this->get('userName') . $this->get('comment') . $this->get('levelID', 0) . $this->get('percent', 0) . $this->get('cType') . Salts::COMMENT->value, Keys::COMMENT_CHK->value),
+            AlgorithmService::encode($this->get('userName') . $this->get('comment') . $this->get('levelID', 0) . $this->get('percent', 0) . $this->get('cType') . Salts::COMMENT->value, Keys::COMMENT_CHK->value),
             $this->get('chk')
         );
     }

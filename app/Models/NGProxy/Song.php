@@ -3,8 +3,8 @@
 namespace App\Models\NGProxy;
 
 use App\Exceptions\StorageException;
+use App\Services\Game\ObjectService;
 use App\Services\Storage\SongStorageService;
-use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -40,7 +40,7 @@ class Song extends Model
 
     public function getObjectAttribute(): string
     {
-        return GeometryDashObject::merge([
+        return ObjectService::merge([
             1 => $this->song_id,
             2 => $this->name,
             3 => $this->artist_id,

@@ -7,9 +7,9 @@ use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\ResponseException;
 use App\Jobs\NGProxy\ProcessSongJob;
 use App\Models\NGProxy\Song;
+use App\Services\Game\ObjectService;
 use App\Services\Game\ResponseService;
 use App\Services\ProxyService;
-use GeometryDashChinese\GeometryDashObject;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Arr;
 
@@ -49,7 +49,7 @@ class SongService
                 ])->body();
 
             ResponseService::check($response);
-            $songObject = GeometryDashObject::split($response, '~|~');
+            $songObject = ObjectService::split($response, '~|~');
         } catch (ResponseException) {
             if (!empty($response) && $response === '-2') {
                 $disabled = true;
@@ -71,7 +71,7 @@ class SongService
                 );
             }
 
-            $songObject = GeometryDashObject::split(Arr::get(explode('#', $response), 2), '~|~');
+            $songObject = ObjectService::split(Arr::get(explode('#', $response), 2), '~|~');
         }
 
         if (!Arr::has($songObject, [1, 2, 3, 4, 5, 10])) {

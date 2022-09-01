@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GDCS\Game;
 
 use App\Enums\GDCS\Game\Algorithm\Keys;
+use App\Enums\GDCS\Game\Algorithm\Salts;
 use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\Game\Objects\LevelObject;
 use App\Enums\GDCS\Game\Parameters\LevelSearchDiff;
@@ -30,8 +31,6 @@ use App\Services\Game\ObjectService;
 use App\Services\NGProxy\SongService;
 use App\Services\Storage\GameLevelDataStorageService;
 use Carbon\Carbon;
-use GeometryDashChinese\enums\Salts;
-use GeometryDashChinese\GeometryDashAlgorithm;
 
 class LevelController extends Controller
 {
@@ -480,8 +479,8 @@ class LevelController extends Controller
                 LevelObject::DEMON_DIFFICULTY => $level->rating->demon_difficulty->value,
                 LevelObject::OBJECTS => min($level->objects, 65535),
             ], ':'),
-            GeometryDashAlgorithm::genLevelDivided($levelString, 40, 39),
-            sha1($hash . \App\Enums\GDCS\Game\Algorithm\Salts::LEVEL->value),
+            AlgorithmService::genLevelDivided($levelString, 40, 39),
+            sha1($hash . Salts::LEVEL->value),
             !empty($specialID) ? implode(':', [$level->user->id, $level->user->name, $level->user->uuid]) : config('app.name'),
         ]);
     }

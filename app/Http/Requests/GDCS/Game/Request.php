@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests\GDCS\Game;
 
+use App\Enums\GDCS\Game\Algorithm\Keys;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\User;
-use GeometryDashChinese\enums\Keys;
-use GeometryDashChinese\GeometryDashAlgorithm;
+use App\Services\Game\AlgorithmService;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Http\FormRequest;
@@ -45,7 +45,7 @@ class Request extends FormRequest
             $this->account = Account::query()
                 ->findOrFail($accountID);
 
-            $password = GeometryDashAlgorithm::decode($gjp, Keys::ACCOUNT_PASSWORD->value);
+            $password = AlgorithmService::decode($gjp, Keys::ACCOUNT_PASSWORD->value);
             if (!Hash::check($password, $this->account->password)) {
                 return false;
             }
