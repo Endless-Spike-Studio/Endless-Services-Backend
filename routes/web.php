@@ -20,17 +20,3 @@ Route::group([
 ], static function () {
     Route::get('/', [HomePresenter::class, 'renderHome'])->name('home');
 });
-
-Route::group([
-    'domain' => 'dl.geometrydashchinese.com',
-    'as' => 'gdproxy.',
-], static function () {
-    Route::inertia('/', 'GDProxy/Home')->name('home');
-});
-
-Route::group([
-    'domain' => 'ng.geometrydashchinese.com',
-    'as' => 'ngproxy.',
-], static function () {
-    Route::inertia('/', 'NGProxy/Home')->name('home');
-});
