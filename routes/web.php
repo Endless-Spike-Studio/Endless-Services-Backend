@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Presenters\GDCS\HomePresenter;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,25 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'domain' => 'gf.geometrydashchinese.com',
-    'as' => 'game.',
+    'as' => 'gdcs.',
 ], static function () {
-    Route::inertia('/', 'Game/Home')->name('home');
-
-    Route::group([
-        'prefix' => 'dashboard',
-        'as' => 'dashboard.'
-    ], static function () {
-        Route::inertia('/', 'Game/Dashboard/Home')->name('home');
-    });
-
-    Route::group([
-        'prefix' => 'tools',
-        'as' => 'tools.'
-    ], static function () {
-        Route::inertia('/', 'Game/Tools/Home')->name('home');
-    });
-
-    Route::inertia('/', 'Game/Home')->name('home');
+    Route::get('/', [HomePresenter::class, 'renderHome'])->name('home');
 });
 
 Route::group([

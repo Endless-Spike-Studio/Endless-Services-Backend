@@ -7,7 +7,7 @@
     src: local('HarmonyOS Sans SC'), url(../fonts/HarmonyOS_Sans_SC_Regular.ttf) format('truetype');
 }
 
-#app {
+html, body, #app {
     @apply h-full;
     font-family: 'HarmonyOS Sans SC', sans-serif;
 }
