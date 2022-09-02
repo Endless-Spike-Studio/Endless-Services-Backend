@@ -34,5 +34,5 @@ RUN php /app/artisan optimize
 COPY --from=git /workspace/docker/supervisord /etc/supervisor/conf.d
 COPY --from=roadrunner /usr/bin/rr /app/rr
 
-ENTRYPOINT supervisord && php /app/artisan octane:start --port=60101
+ENTRYPOINT cd /app && supervisord && php /app/artisan octane:start --port=60101
 EXPOSE 60101
