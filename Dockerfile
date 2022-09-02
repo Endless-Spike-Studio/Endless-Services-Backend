@@ -23,7 +23,7 @@ FROM php:zts-alpine
 COPY --from=composer /workspace /app
 WORKDIR /app
 
-RUN apk add libmemcached-dev zlib-dev supervisor
+RUN apk add autoconf libmemcached-dev zlib-dev supervisor
 RUN pecl install redis memcached swoole
 RUN docker-php-ext-enable redis memcached swoole
 
