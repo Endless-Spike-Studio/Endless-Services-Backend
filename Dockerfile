@@ -23,9 +23,8 @@ FROM php:zts-alpine
 COPY --from=composer /workspace /app
 WORKDIR /app
 
-RUN apk add autoconf gcc libmemcached-dev zlib-dev supervisor
-RUN pecl install redis memcached swoole
-RUN docker-php-ext-enable redis memcached swoole
+RUN apk add php81-pecl-redis php81-pecl-memcached php81-pecl-swoole
+RUN mv /app/.env.example .env
 
 RUN php /app/artisan key:generate
 RUN php /app/artisan storage:link
