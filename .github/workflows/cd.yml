@@ -16,6 +16,15 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@master
 
+            -   uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: "latest"
+
+            -   uses: "ramsey/composer-install@v2"
+
+            -   name: Install backend dependencies
+                run: composer install
+
             -   name: Setup PNPM
                 uses: pnpm/action-setup@v2.2.2
                 with:
