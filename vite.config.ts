@@ -10,6 +10,7 @@ import {NaiveUiResolver} from "unplugin-vue-components/resolvers";
 import inertia from "./resources/scripts/vite/inertia-layout";
 
 export default defineConfig({
+    base: 'https://cdn.geometrydashchinese.com/static/website',
     plugins: [
         inertia(),
         vue(),
