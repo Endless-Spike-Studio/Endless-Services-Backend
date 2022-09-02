@@ -1,3 +1,4 @@
+FROM spiralscout/roadrunner:latest as roadrunner
 FROM bitnami/git:latest AS git
 
 RUN mkdir /workspace
@@ -31,7 +32,7 @@ RUN php /app/artisan storage:link
 RUN php /app/artisan optimize
 
 COPY --from=git /workspace/docker/supervisord /etc/supervisor/conf.d
-COPY --from=spiralscout/roadrunner:latest /usr/bin/rr /app/rr
+COPY --from=roadrunner /usr/bin/rr /app/rr
 
 ENTRYPOINT supervisord && php /app/artisan octane:start --port=60101
 EXPOSE 60101
