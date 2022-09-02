@@ -16,7 +16,7 @@ FROM composer AS composer
 COPY --from=frontend /workspace /workspace
 WORKDIR /workspace
 
-RUN composer install --optimize-autoload
+RUN composer install --optimize-autoloader
 
 FROM php:zts-alpine
 
