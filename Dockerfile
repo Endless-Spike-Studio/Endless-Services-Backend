@@ -23,7 +23,7 @@ FROM php:zts-alpine
 COPY --from=composer /workspace /app
 WORKDIR /app
 
-RUN apk add php81-pecl-redis php81-pecl-memcached php81-pecl-swoole
+RUN apk add supervisor php81-pecl-redis php81-pecl-memcached php81-pecl-swoole
 RUN mv /app/.env.example .env
 
 RUN php /app/artisan key:generate
