@@ -6,13 +6,13 @@ RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese /ap
 
 FROM node:alpine AS frontend
 
-COPY --from git /app /app/
+COPY --from=git /app /app/
 RUN npm install --global pnpm --loglevel silly
 RUN pnpm install --loglevel silly
 
 FROM composer AS composer
 
-COPY --from frontend /app /app/
+COPY --from=frontend /app /app/
 RUN composer install -vvv --optimize-autoload
 
 COPY files/supervisord /etc/supervisor/conf.d
