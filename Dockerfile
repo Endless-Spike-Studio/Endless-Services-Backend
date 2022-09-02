@@ -17,7 +17,7 @@ FROM composer AS composer
 COPY --from=frontend /workspace /workspace
 WORKDIR /workspace
 
-RUN composer install --optimize-autoloader
+RUN composer install --optimize-autoloader --ignore-platform-req=ext-sockets
 
 FROM php:latest
 
