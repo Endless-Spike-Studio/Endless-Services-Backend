@@ -1,21 +1,19 @@
 FROM node:alpine AS frontend
+WORKDIR /workspace
 
-RUN mv /workspace /app
-WORKDIR /app
-
-RUN npm install --global pnpm --loglevel silly
-RUN pnpm install --loglevel silly
+RUN npm install --global pnpm
+RUN pnpm install
 
 FROM composer AS composer
 
-COPY --from=frontend /app /app
-WORKDIR /app
+COPY --from=frontend /workspace /workspace
+WORKDIR /workspace
 
-RUN composer install -vvv --optimize-autoload
+RUN composer install --optimize-autoload
 
 FROM php:zts-alpine
 
-COPY --from=composer /app /app
+COPY --from=composer /workspace /app
 WORKDIR /app
 
 RUN apk add libmemcached-dev zlib-dev supervisor
