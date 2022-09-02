@@ -1,7 +1,7 @@
 FROM node:alpine AS frontend
 WORKDIR /workspace
 
-RUN npm install --global pnpm
+RUN wget -qO- https://get.pnpm.io/install.sh | sh -
 RUN pnpm install
 
 FROM composer AS composer
