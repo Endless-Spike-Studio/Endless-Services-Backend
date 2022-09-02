@@ -1,7 +1,8 @@
 FROM node:alpine AS frontend
-
 WORKDIR /workspace
-RUN npx -y pnpm install
+
+RUN npm install --global pnpm
+RUN npx pnpm install
 
 FROM composer AS composer
 
