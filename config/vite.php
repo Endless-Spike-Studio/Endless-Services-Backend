@@ -21,7 +21,7 @@ return [
                 'key' => env('DEV_SERVER_KEY'),
                 'cert' => env('DEV_SERVER_CERT'),
             ],
-            'build_path' => 'build',
+            'build_path' => 'https://cdn.geometrydashchinese.com/static/website'
         ],
     ],
     'aliases' => [
