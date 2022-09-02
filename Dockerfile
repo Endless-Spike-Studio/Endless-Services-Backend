@@ -19,12 +19,12 @@ WORKDIR /workspace
 
 RUN composer install --optimize-autoloader
 
-FROM php:zts-alpine
+FROM alpine:latest
 
 COPY --from=composer /workspace /app
 WORKDIR /app
 
-RUN apk add supervisor php81-pecl-redis php81-pecl-memcached php81-pecl-swoole
+RUN apk add supervisor php81 php81-pecl-redis php81-pecl-memcached php81-pecl-swoole
 RUN mv /app/.env.example .env
 
 RUN php /app/artisan key:generate
