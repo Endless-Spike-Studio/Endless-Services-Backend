@@ -25,3 +25,5 @@ yarn-error.log
 /public/storage
 
 /storage/*.key
+rr
+.rr.yaml
