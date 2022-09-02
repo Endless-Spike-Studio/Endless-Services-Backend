@@ -52,4 +52,4 @@ jobs:
             -   name: Deploy to oss
                 run: |
                     ossutil rm -rf oss://gdcn/static/website
-                    ossutil cp -rf ./public/build oss://gdcn/static/website
+                    ossutil cp -rf ./public/https:/cdn.geometrydashchinese.com/static/website oss://gdcn/static/website
