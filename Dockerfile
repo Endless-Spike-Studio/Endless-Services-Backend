@@ -38,5 +38,8 @@ RUN php /app/artisan optimize
 COPY --from=git /workspace/docker/supervisord /etc/supervisor/conf.d
 COPY --from=roadrunner /usr/bin/rr /app/rr
 
+RUN chmod +x /app/rr
+RUN docker-php-ext-enable redis memcached swoole
+
 ENTRYPOINT supervisord && php /app/artisan octane:start --port=60101
 EXPOSE 60101
