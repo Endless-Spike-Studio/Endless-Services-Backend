@@ -11,7 +11,7 @@ specifiers:
   '@vicons/material': ^0.12.0
   '@vitejs/plugin-legacy': ^2.0.1
   '@vitejs/plugin-vue': ^3.0.3
-  '@vitejs/plugin-vue-jsx': ^2.0.0
+  '@vitejs/plugin-vue-jsx': ^2.0.1
   autoprefixer: ^10.4.8
   axios: ^0.27.2
   laravel-vite: ^0.0.24
@@ -25,7 +25,7 @@ specifiers:
   typescript: ^4.8.2
   unplugin-vue-components: ^0.22.4
   vite: ^3.0.9
-  vite-plugin-laravel: 0.2.0-beta.29
+  vite-plugin-laravel: 0.2.1
   vue: ^3.2.38
   ziggy-js: ^1.4.6
 
@@ -43,7 +43,7 @@ devDependencies:
   '@vicons/material': registry.npmmirror.com/@vicons/material/0.12.0
   '@vitejs/plugin-legacy': registry.npmmirror.com/@vitejs/plugin-legacy/2.0.1_terser@5.15.0+vite@3.0.9
   '@vitejs/plugin-vue': registry.npmmirror.com/@vitejs/plugin-vue/3.0.3_vite@3.0.9+vue@3.2.38
-  '@vitejs/plugin-vue-jsx': registry.npmmirror.com/@vitejs/plugin-vue-jsx/2.0.0_vite@3.0.9+vue@3.2.38
+  '@vitejs/plugin-vue-jsx': registry.npmmirror.com/@vitejs/plugin-vue-jsx/2.0.1_vite@3.0.9+vue@3.2.38
   autoprefixer: registry.npmmirror.com/autoprefixer/10.4.8_postcss@8.4.16
   axios: registry.npmmirror.com/axios/0.27.2
   laravel-vite: registry.npmmirror.com/laravel-vite/0.0.24
@@ -52,12 +52,12 @@ devDependencies:
   pinia: registry.npmmirror.com/pinia/2.0.21_pj7ch6rmow6odq73xb5hfvge3q
   postcss: registry.npmmirror.com/postcss/8.4.16
   sass: registry.npmmirror.com/sass/1.54.8
-  tailwindcss: registry.npmmirror.com/tailwindcss/3.1.8
+  tailwindcss: registry.npmmirror.com/tailwindcss/3.1.8_postcss@8.4.16
   terser: registry.npmmirror.com/terser/5.15.0
   typescript: registry.npmmirror.com/typescript/4.8.2
   unplugin-vue-components: registry.npmmirror.com/unplugin-vue-components/0.22.4_vite@3.0.9+vue@3.2.38
   vite: registry.npmmirror.com/vite/3.0.9_sass@1.54.8+terser@5.15.0
-  vite-plugin-laravel: registry.npmmirror.com/vite-plugin-laravel/0.2.0-beta.29
+  vite-plugin-laravel: registry.npmmirror.com/vite-plugin-laravel/0.2.1
   ziggy-js: registry.npmmirror.com/ziggy-js/1.4.6
 
 packages:
@@ -692,12 +692,12 @@ packages:
       vite: registry.npmmirror.com/vite/3.0.9_sass@1.54.8+terser@5.15.0
     dev: true
 
-  registry.npmmirror.com/@vitejs/plugin-vue-jsx/2.0.0_vite@3.0.9+vue@3.2.38:
-    resolution: {integrity: sha512-WF9ApZ/ivyyW3volQfu0Td0KNPhcccYEaRNzNY1NxRLVJQLSX0nFqquv3e2g7MF74p1XZK4bGtDL2y5i5O5+1A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitejs/plugin-vue-jsx/-/plugin-vue-jsx-2.0.0.tgz}
-    id: registry.npmmirror.com/@vitejs/plugin-vue-jsx/2.0.0
+  registry.npmmirror.com/@vitejs/plugin-vue-jsx/2.0.1_vite@3.0.9+vue@3.2.38:
+    resolution: {integrity: sha512-lmiR1k9+lrF7LMczO0pxtQ8mOn6XeppJDHxnpxkJQpT5SiKz4SKhKdeNstXaTNuR8qZhUo5X0pJlcocn72Y4Jg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@vitejs/plugin-vue-jsx/-/plugin-vue-jsx-2.0.1.tgz}
+    id: registry.npmmirror.com/@vitejs/plugin-vue-jsx/2.0.1
     name: '@vitejs/plugin-vue-jsx'
-    version: 2.0.0
-    engines: {node: '>=14.18.0'}
+    version: 2.0.1
+    engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^3.0.0
       vue: ^3.0.0
@@ -942,7 +942,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: registry.npmmirror.com/browserslist/4.21.3
-      caniuse-lite: registry.npmmirror.com/caniuse-lite/1.0.30001387
+      caniuse-lite: registry.npmmirror.com/caniuse-lite/1.0.30001388
       fraction.js: registry.npmmirror.com/fraction.js/4.2.0
       normalize-range: registry.npmmirror.com/normalize-range/0.1.2
       picocolors: registry.npmmirror.com/picocolors/1.0.0
@@ -1007,10 +1007,10 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: registry.npmmirror.com/caniuse-lite/1.0.30001387
-      electron-to-chromium: registry.npmmirror.com/electron-to-chromium/1.4.239
+      caniuse-lite: registry.npmmirror.com/caniuse-lite/1.0.30001388
+      electron-to-chromium: registry.npmmirror.com/electron-to-chromium/1.4.240
       node-releases: registry.npmmirror.com/node-releases/2.0.6
-      update-browserslist-db: registry.npmmirror.com/update-browserslist-db/1.0.5_browserslist@4.21.3
+      update-browserslist-db: registry.npmmirror.com/update-browserslist-db/1.0.7_browserslist@4.21.3
     dev: true
 
   registry.npmmirror.com/buffer-from/1.1.2:
@@ -1041,10 +1041,10 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  registry.npmmirror.com/caniuse-lite/1.0.30001387:
-    resolution: {integrity: sha512-fKDH0F1KOJvR+mWSOvhj8lVRr/Q/mc5u5nabU2vi1/sgvlSqEsE8dOq0Hy/BqVbDkCYQPRRHB1WRjW6PGB/7PA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001387.tgz}
+  registry.npmmirror.com/caniuse-lite/1.0.30001388:
+    resolution: {integrity: sha512-znVbq4OUjqgLxMxoNX2ZeeLR0d7lcDiE5uJ4eUiWdml1J1EkxbnQq6opT9jb9SMfJxB0XA16/ziHwni4u1I3GQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001388.tgz}
     name: caniuse-lite
-    version: 1.0.30001387
+    version: 1.0.30001388
     dev: true
 
   registry.npmmirror.com/chalk/2.4.2:
@@ -1278,10 +1278,10 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  registry.npmmirror.com/electron-to-chromium/1.4.239:
-    resolution: {integrity: sha512-XbhfzxPIFzMjJm17T7yUGZEyYh5XuUjrA/FQ7JUy2bEd4qQ7MvFTaKpZ6zXZog1cfVttESo2Lx0ctnf7eQOaAQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.239.tgz}
+  registry.npmmirror.com/electron-to-chromium/1.4.240:
+    resolution: {integrity: sha512-r20dUOtZ4vUPTqAajDGonIM1uas5tf85Up+wPdtNBNvBSqGCfkpvMVvQ1T8YJzPV9/Y9g3FbUDcXb94Rafycow==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.240.tgz}
     name: electron-to-chromium
-    version: 1.4.239
+    version: 1.4.240
     dev: true
 
   registry.npmmirror.com/esbuild-android-64/0.14.54:
@@ -2414,12 +2414,15 @@ packages:
     version: 6.12.6
     dev: true
 
-  registry.npmmirror.com/tailwindcss/3.1.8:
+  registry.npmmirror.com/tailwindcss/3.1.8_postcss@8.4.16:
     resolution: {integrity: sha512-YSneUCZSFDYMwk+TGq8qYFdCA3yfBRdBlS7txSq0LUmzyeqRe3a8fBQzbz9M3WS/iFT4BNf/nmw9mEzrnSaC0g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/tailwindcss/-/tailwindcss-3.1.8.tgz}
+    id: registry.npmmirror.com/tailwindcss/3.1.8
     name: tailwindcss
     version: 3.1.8
     engines: {node: '>=12.13.0'}
     hasBin: true
+    peerDependencies:
+      postcss: ^8.0.9
     dependencies:
       arg: registry.npmmirror.com/arg/5.0.2
       chokidar: registry.npmmirror.com/chokidar/3.5.3
@@ -2548,11 +2551,11 @@ packages:
       webpack-virtual-modules: registry.npmmirror.com/webpack-virtual-modules/0.4.4
     dev: true
 
-  registry.npmmirror.com/update-browserslist-db/1.0.5_browserslist@4.21.3:
-    resolution: {integrity: sha512-dteFFpCyvuDdr9S/ff1ISkKt/9YZxKjI9WlRR99c180GaztJtRa/fn18FdxGVKVsnPY7/a/FDN68mcvUmP4U7Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/update-browserslist-db/-/update-browserslist-db-1.0.5.tgz}
-    id: registry.npmmirror.com/update-browserslist-db/1.0.5
+  registry.npmmirror.com/update-browserslist-db/1.0.7_browserslist@4.21.3:
+    resolution: {integrity: sha512-iN/XYesmZ2RmmWAiI4Z5rq0YqSiv0brj9Ce9CfhNE4xIW2h+MFxcgkxIzZ+ShkFPUkjU3gQ+3oypadD3RAMtrg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/update-browserslist-db/-/update-browserslist-db-1.0.7.tgz}
+    id: registry.npmmirror.com/update-browserslist-db/1.0.7
     name: update-browserslist-db
-    version: 1.0.5
+    version: 1.0.7
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
@@ -2580,10 +2583,10 @@ packages:
       vue: registry.npmmirror.com/vue/3.2.38
     dev: true
 
-  registry.npmmirror.com/vite-plugin-laravel/0.2.0-beta.29:
-    resolution: {integrity: sha512-QpJw4JXd4EUlzBxbZRhfwM2hIZHAe369XoLmrdyZbgeZUq0I4AhRPXQWv9dW84jiD3mQz8vbnWcolwiEheqWFg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vite-plugin-laravel/-/vite-plugin-laravel-0.2.0-beta.29.tgz}
+  registry.npmmirror.com/vite-plugin-laravel/0.2.1:
+    resolution: {integrity: sha512-9s4b3AxqYrVGV9EQ6v+Dt4DjEktmvLoTLWaKp8hlbjgxILDJ9Y3vhGWa7ZEtC5KdvWmmAkCeyQKTC6+KmrQpzw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vite-plugin-laravel/-/vite-plugin-laravel-0.2.1.tgz}
     name: vite-plugin-laravel
-    version: 0.2.0-beta.29
+    version: 0.2.1
     dependencies:
       chalk: registry.npmmirror.com/chalk/4.1.2
       debug: registry.npmmirror.com/debug/4.3.4

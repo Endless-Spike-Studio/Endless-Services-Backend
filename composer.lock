@@ -1610,16 +1610,16 @@
         },
         {
             "name": "innocenzi/laravel-vite",
-            "version": "v0.2.0-beta.29",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/innocenzi/laravel-vite.git",
-                "reference": "091928b989ad04d9763f25ac24321a9f6f8701c5"
+                "reference": "9ec139ab115d7a93def1607d4291b6ce49c5839b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/innocenzi/laravel-vite/zipball/091928b989ad04d9763f25ac24321a9f6f8701c5",
-                "reference": "091928b989ad04d9763f25ac24321a9f6f8701c5",
+                "url": "https://api.github.com/repos/innocenzi/laravel-vite/zipball/9ec139ab115d7a93def1607d4291b6ce49c5839b",
+                "reference": "9ec139ab115d7a93def1607d4291b6ce49c5839b",
                 "shasum": ""
             },
             "require": {
@@ -1675,7 +1675,7 @@
             ],
             "support": {
                 "issues": "https://github.com/innocenzi/laravel-vite/issues",
-                "source": "https://github.com/innocenzi/laravel-vite/tree/v0.2.0-beta.29"
+                "source": "https://github.com/innocenzi/laravel-vite/tree/v0.2.1"
             },
             "funding": [
                 {
@@ -1683,7 +1683,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-08-04T12:32:01+00:00"
+            "time": "2022-09-02T13:09:12+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -2868,16 +2868,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.62.0",
+            "version": "2.62.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "7507aec3d626797ce2123cf6c6556683be22b5f8"
+                "reference": "01bc4cdefe98ef58d1f9cb31bdbbddddf2a88f7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7507aec3d626797ce2123cf6c6556683be22b5f8",
-                "reference": "7507aec3d626797ce2123cf6c6556683be22b5f8",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/01bc4cdefe98ef58d1f9cb31bdbbddddf2a88f7a",
+                "reference": "01bc4cdefe98ef58d1f9cb31bdbbddddf2a88f7a",
                 "shasum": ""
             },
             "require": {
@@ -2966,7 +2966,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-28T19:48:05+00:00"
+            "time": "2022-09-02T07:48:13+00:00"
         },
         {
             "name": "nette/schema",
