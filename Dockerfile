@@ -25,7 +25,7 @@ COPY --from=composer /workspace /app
 WORKDIR /app
 
 RUN apk add supervisor php81 php81-pecl-redis php81-pecl-memcached php81-pecl-swoole
-RUN alias php = php81
+RUN alias php=php81
 RUN mv /app/.env.example .env
 
 RUN php /app/artisan key:generate
@@ -35,5 +35,5 @@ RUN php /app/artisan optimize
 COPY --from=git /workspace/docker/supervisord /etc/supervisor/conf.d
 COPY --from=roadrunner /usr/bin/rr /app/rr
 
-ENTRYPOINT cd /app && alias php = php81 && supervisord && php /app/artisan octane:start --port=60101
+ENTRYPOINT cd /app && alias php=php81 && supervisord && php /app/artisan octane:start --port=60101
 EXPOSE 60101
