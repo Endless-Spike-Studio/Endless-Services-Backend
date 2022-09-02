@@ -1,4 +1,11 @@
+FROM bitnami/git:latest AS git
+
+RUN mkdir /workspace
+RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese /workspace
+
 FROM node:alpine AS frontend
+
+COPY --from=git /workspace /workspace
 WORKDIR /workspace
 
 RUN npm install --global pnpm
