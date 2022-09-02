@@ -1,6 +1,6 @@
 FROM node:alpine AS frontend
 
-COPY --from=0 /workspace /app
+RUN mv /workspace /app
 WORKDIR /app
 
 RUN npm install --global pnpm --loglevel silly
