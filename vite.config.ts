@@ -11,7 +11,7 @@ import inertia from "./resources/scripts/vite/inertia-layout";
 import {short} from "git-rev-sync";
 
 export default defineConfig({
-    base: 'https://cdn.geometrydashchinese.com/static/website',
+    base: 'https://cdn.geometrydashchinese.com/static/website/',
     plugins: [
         inertia(),
         vue(),
@@ -37,6 +37,6 @@ export default defineConfig({
         })
     ],
     define: {
-        git_commit_hash: short()
+        git_commit_hash: ` '${short()}' `.trim()
     }
 })
