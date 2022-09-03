@@ -19,6 +19,7 @@ yarn-error.log
 /node_modules
 /vendor
 
+/dist
 /public/build
 /public/vendor
 /public/hot
