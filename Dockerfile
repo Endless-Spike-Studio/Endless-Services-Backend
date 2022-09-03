@@ -35,6 +35,7 @@ RUN php /app/artisan key:generate
 RUN php /app/artisan storage:link
 RUN php /app/artisan optimize
 
+COPY --from=git /workspace/docker/start.sh /app/start.sh
 COPY --from=git /workspace/docker/supervisord /etc/supervisor/conf.d
 COPY --from=roadrunner /usr/bin/rr /app/rr
 
@@ -42,5 +43,5 @@ RUN chmod +x /app/rr
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-enable redis memcached swoole
 
-ENTRYPOINT supervisord && php /app/artisan octane:start --port=60101
+ENTRYPOINT sh /app/start.sh
 EXPOSE 60101
