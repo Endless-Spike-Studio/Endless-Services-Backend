@@ -35,7 +35,7 @@ class Song extends Model
 
     public function getDownloadUrlAttribute(): string
     {
-        return route('ngproxy.download', $this->song_id);
+        return route('api.ngproxy.download', $this->song_id);
     }
 
     public function getObjectAttribute(): string
