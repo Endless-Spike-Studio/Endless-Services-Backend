@@ -96,19 +96,19 @@ defineProps<{
 
                     <template #footer>
                         <n-space>
-                            <n-button href="https://cdn.geometrydashchinese.com/client/GDCN.apk" tag="a">
+                            <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.apk" tag="a">
                                 安卓
                             </n-button>
 
-                            <n-button href="https://cdn.geometrydashchinese.com/client/GDCN.zip" tag="a">
+                            <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.zip" tag="a">
                                 Windows
                             </n-button>
 
-                            <n-button href="https://cdn.geometrydashchinese.com/client/GDCN.exe" tag="a">
+                            <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.exe" tag="a">
                                 Windows (单exe)
                             </n-button>
 
-                            <n-button disabled href="https://cdn.geometrydashchinese.com/client/GDCN.ipa" tag="a">
+                            <n-button disabled href="https://cdn.geometrydashchinese.com/client/GDCS.ipa" tag="a">
                                 IOS 或 MacOS
                             </n-button>
                         </n-space>
