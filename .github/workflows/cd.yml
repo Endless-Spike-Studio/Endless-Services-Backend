@@ -53,3 +53,6 @@ jobs:
                 run: |
                     ossutil rm -rf oss://gdcn/static/website
                     ossutil cp -rf ./public/https:/cdn.geometrydashchinese.com/static/website oss://gdcn/static/website
+
+            -   name: report and remove outdated manifest
+                run: curl ${{ secrets.FRONTEND_RESOURCES_UPDATE_SUCCESS_HOOK_URL }}

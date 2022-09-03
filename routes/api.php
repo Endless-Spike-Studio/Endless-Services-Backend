@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\NGProxy\SongController;
 use Illuminate\Support\Facades\Route;
 use Tightenco\Ziggy\Ziggy;
@@ -19,6 +20,7 @@ Route::group([
     'as' => 'api.',
 ], static function () {
     Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
+    Route::get('/_internal/bdb58739787c90e980458df6d36e6928', [ApiController::class, 'removeOutdatedManifestCache'])->name('manifest_cache.remove');
 
     Route::group([
         'domain' => 'ng.geometrydashchinese.com',
