@@ -1,11 +1,16 @@
+FROM bitnami/git:latest
+RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese /app
+
 FROM composer
+
+COPY --from=0 /app /app
 
 RUN cd /app
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-sockets
 
 FROM php:zts-alpine
-COPY --from=0 /app /app
+COPY --from=1 /app /app
 
 RUN cd /app
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
