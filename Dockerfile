@@ -1,31 +1,16 @@
-FROM spiralscout/roadrunner:latest as roadrunner
-FROM bitnami/git:latest AS git
-
-RUN mkdir /workspace
-RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese /workspace
-
-FROM node:alpine AS frontend
-
-COPY --from=git /workspace /workspace
+FROM composer
 WORKDIR /workspace
 
-RUN npm install --global pnpm
-RUN npx pnpm install
-
-FROM composer AS composer
-
-COPY --from=frontend /workspace /workspace
-WORKDIR /workspace
-
+RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-req=ext-sockets
 
-FROM php:latest
+FROM php:zts-alpine
 
-COPY --from=composer /workspace /app
+COPY --from=0 /workspace /app
 WORKDIR /app
 
-RUN apt-get update
-RUN apt-get install -y libmemcached-dev zlib1g-dev
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
+RUN apk add --update --no-cache libmemcached-dev ${PHPIZE_DEPS}
 RUN pecl install redis memcached swoole
 
 RUN apt-get install -y supervisor
@@ -35,11 +20,13 @@ RUN php /app/artisan key:generate
 RUN php /app/artisan storage:link
 RUN php /app/artisan optimize
 
-COPY --from=git /workspace/docker/start.sh /app/start.sh
-COPY --from=git /workspace/docker/supervisord /etc/supervisor/conf.d
-COPY --from=roadrunner /usr/bin/rr /app/rr
+COPY --from=0 /workspace/docker/start.sh /app/start.sh
+COPY --from=0 /workspace/docker/supervisord /etc/supervisor/conf.d
+COPY --from=spiralscout/roadrunner:latest /usr/bin/rr /app/rr
 
 RUN chmod +x /app/rr
+RUN chmod +x /app/start.sh
+
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-enable redis memcached swoole
 
