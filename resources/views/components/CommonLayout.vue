@@ -8,9 +8,9 @@ import {useSlots} from "vue";
 const versions = useProp<{
     php: string;
     laravel: string;
-    git: string;
 }>('versions');
 
+const git_commit_hash = window.git_commit_hash;
 const slots = useSlots();
 const appStore = useAppStore();
 </script>
@@ -82,7 +82,7 @@ const appStore = useAppStore();
                                                 <n-icon :component="CommitRound"/>
                                             </template>
 
-                                            {{ versions.git }}
+                                            {{ git_commit_hash }}
                                         </n-button>
                                     </n-thing>
                                 </n-space>
