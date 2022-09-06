@@ -89,6 +89,6 @@ update-backend
 restart-server
 @endstory
 
-@after
+@finished
 Artisan::call('up');
-@endafter
+@endfinished
