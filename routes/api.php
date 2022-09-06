@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\NGProxy\SongController;
-use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Tightenco\Ziggy\Ziggy;
 
@@ -9,7 +8,6 @@ Route::group([
     'as' => 'api.',
 ], static function () {
     Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
-    Route::get('/_internal/a38a44bb8e660ed4d2a990c9046135e7', [ProjectController::class, 'update'])->name('project.update');
 
     Route::group([
         'domain' => 'ng.geometrydashchinese.com',

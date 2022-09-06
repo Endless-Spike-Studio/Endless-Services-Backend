@@ -27,6 +27,3 @@ jobs:
 
       - name: Execute tests
         run: php artisan test
-
-      - name: Report
-        run: curl --head --max-time 120 --retry 5 --retry-delay 3 https://${{ secrets.SERVER_HOST }}/api/_internal/a38a44bb8e660ed4d2a990c9046135e7
