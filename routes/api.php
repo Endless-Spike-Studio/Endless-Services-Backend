@@ -9,7 +9,7 @@ Route::group([
     'as' => 'api.',
 ], static function () {
     Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
-    Route::get('/_internal/5aba3b10bf9f2546c1bfa011bac7caff', [ProjectController::class, 'update'])->name('project.update');
+    Route::get('/_internal/a38a44bb8e660ed4d2a990c9046135e7', [ProjectController::class, 'update'])->name('project.update');
 
     Route::group([
         'domain' => 'ng.geometrydashchinese.com',

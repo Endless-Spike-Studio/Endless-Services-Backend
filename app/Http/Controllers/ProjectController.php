@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Cache;
-
 class ProjectController extends Controller
 {
-    public function update(): void
+    public static function update()
     {
-        Cache::forget(
-            config('vite.remote_manifest.cache_key', 'vite.remote_manifest')
-        );
-
         exec('/vendor/bin/envoy run deploy-backend');
     }
 }

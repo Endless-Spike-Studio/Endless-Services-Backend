@@ -1,5 +1,10 @@
 name: Backend
-on: push
+
+on:
+  workflow_run:
+    workflows: [ "frontend" ]
+    types:
+      - completed
 
 jobs:
   test:
@@ -19,3 +24,6 @@ jobs:
 
       - name: Execute tests
         run: php artisan test
+
+      - name: Report
+        run: curl https://${{ secrets.SERVER_HOST }}/api/_internal/a38a44bb8e660ed4d2a990c9046135e7
