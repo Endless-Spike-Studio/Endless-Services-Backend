@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Artisan;
 
 class ProjectController extends Controller
 {
-    public function update(): void
+    public function update(): int
     {
-        Artisan::queue('project:update');
+        return Artisan::call('project:update');
     }
 }
