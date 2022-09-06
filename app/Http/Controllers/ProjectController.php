@@ -6,6 +6,6 @@ class ProjectController extends Controller
 {
     public static function update()
     {
-        exec('/vendor/bin/envoy run deploy-backend');
+        exec('/app/vendor/bin/envoy run deploy-backend');
     }
 }
