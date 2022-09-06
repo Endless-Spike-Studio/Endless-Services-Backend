@@ -1,0 +1,35 @@
+name: Frontend
+
+on:
+  push:
+    paths:
+      - /resources
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout
+      - uses: actions/setup-node
+      - uses: pnpm/action-setup
+      - uses: shivammathur/setup-php
+      - uses: ramsey/composer-install
+      - uses: yizhoumo/setup-ossutil
+        with:
+          endpoint: ${{ secrets.OSS_GDCN_ENDPOINT }}
+          access-key-id: ${{ secrets.OSS_GDCN_ACCESS_KEY_ID }}
+          access-key-secret: ${{ secrets.OSS_GDCN_ACCESS_KEY_SECRET }}
+
+      - name: Install packages
+        run: |
+          pnpm install
+          composer install
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Deploy to oss
+        run: |
+          ossutil rm -rf ${{ secrets.OSS_PATH }}
+          ossutil cp -rf dist ${{ secrets.OSS_PATH }}

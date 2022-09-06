@@ -1,0 +1,21 @@
+name: Backend
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout
+      - uses: shivammathur/setup-php
+      - uses: ramsey/composer-install
+
+      - name: Install packages
+        run: composer install
+
+      - name: Initialize project
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+
+      - name: Execute tests
+        run: php artisan test
