@@ -1,7 +1,7 @@
 FROM registry.cn-shanghai.aliyuncs.com/woshizhazha120/app-runtime:latest
-WORKDIR /app
 
-RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese.git
+RUN cp -rf /tmp /app
+WORKDIR /app
 
 COPY files/supervisord.conf /etc/supervisord.conf
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
