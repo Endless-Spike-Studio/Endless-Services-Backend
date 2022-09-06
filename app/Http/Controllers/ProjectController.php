@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Symfony\Component\Process\Process;
+
 class ProjectController extends Controller
 {
-    public static function update()
+    public static function update(): int
     {
-        exec('/app/vendor/bin/envoy run deploy-backend');
+        $process = new Process(['/app/vendor/bin/envoy', 'run', 'deploy-backend']);
+        return $process->run();
     }
 }
