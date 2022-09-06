@@ -10,12 +10,12 @@ jobs:
     name: Build and deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout
-      - uses: actions/setup-node
-      - uses: pnpm/action-setup
-      - uses: shivammathur/setup-php
-      - uses: ramsey/composer-install
-      - uses: yizhoumo/setup-ossutil
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v2
+      - uses: shivammathur/setup-php@v2
+      - uses: ramsey/composer-install@v2
+      - uses: yizhoumo/setup-ossutil@v1
         with:
           endpoint: ${{ secrets.OSS_GDCN_ENDPOINT }}
           access-key-id: ${{ secrets.OSS_GDCN_ACCESS_KEY_ID }}
