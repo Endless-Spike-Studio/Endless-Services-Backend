@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\Process\Process;
 
 class ProjectController extends Controller
 {
-    public function update(): void
+    public function update(): int
     {
-        Artisan::queue('project:update');
+        $process = new Process(['/app/vendor/bin/envoy', 'run', 'deploy-backend']);
+        return $process->run();
     }
 }
