@@ -1,6 +1,9 @@
 name: Backend
 
 on:
+  push:
+    paths-ignore:
+      - /resources
   workflow_run:
     workflows: [ "frontend" ]
     types:
