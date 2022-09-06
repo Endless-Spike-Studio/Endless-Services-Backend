@@ -8,7 +8,7 @@ class ProjectController extends Controller
 {
     public function update(): int
     {
-        $process = new Process(['/app/vendor/bin/envoy', 'run', 'deploy-backend']);
+        $process = new Process(['vendor/bin/envoy', 'run', 'deploy-backend'], '/app');
         return $process->run();
     }
 }
