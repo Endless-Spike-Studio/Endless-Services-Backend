@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Artisan;
+
 class ProjectController extends Controller
 {
     public function update(): void
     {
-        dispatch(function () {
-            shell_exec('/app/vendor/bin/envoy run deploy-backend');
-        })->afterResponse();
+        Artisan::queue('project:update');
     }
 }
