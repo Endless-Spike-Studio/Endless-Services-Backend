@@ -1,4 +1,4 @@
-FROM registry-internal.cn-shanghai.aliyuncs.com/woshizhazha120/app-runtime:latest
+FROM registry-vpc.cn-shanghai.aliyuncs.com/woshizhazha120/app-runtime:latest
 WORKDIR /app
 
 RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese.git
