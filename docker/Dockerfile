@@ -7,7 +7,7 @@ COPY files/supervisord.conf /etc/supervisord.conf
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY --from=spiralscout/roadrunner:latest /usr/bin/rr /app/rr
 
-RUN php /app/composer.phar install --no-dev --optimize-autoloader --prefer-dist
+RUN php /usr/bin/composer install --no-dev --optimize-autoloader --prefer-dist
 RUN php /app/artisan storage:link
 
 ENTRYPOINT /usr/bin/supervisord --nodaemon --configuration /etc/supervisord.conf
