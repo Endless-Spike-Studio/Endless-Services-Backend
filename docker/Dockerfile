@@ -1,4 +1,4 @@
-FROM registry.cn-shanghai.aliyuncs.com/woshizhazha120/app-runtime:latest
+FROM registry-internal.cn-shanghai.aliyuncs.com/woshizhazha120/app-runtime:latest
 
 RUN cp -rf /tmp /app
 WORKDIR /app
