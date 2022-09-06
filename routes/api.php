@@ -1,26 +1,15 @@
 <?php
 
-use App\Http\Controllers\ApiController;
 use App\Http\Controllers\NGProxy\SongController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Tightenco\Ziggy\Ziggy;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 Route::group([
     'as' => 'api.',
 ], static function () {
     Route::get('/routes', [Ziggy::class, 'toArray'])->name('ziggy.routes');
-    Route::get('/_internal/bdb58739787c90e980458df6d36e6928', [ApiController::class, 'removeOutdatedManifestCache'])->name('manifest_cache.remove');
+    Route::get('/_internal/5aba3b10bf9f2546c1bfa011bac7caff', [ProjectController::class, 'update'])->name('project.update');
 
     Route::group([
         'domain' => 'ng.geometrydashchinese.com',
