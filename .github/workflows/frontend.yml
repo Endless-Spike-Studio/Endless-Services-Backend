@@ -1,9 +1,5 @@
 name: Frontend
-
-on:
-  push:
-    paths:
-      - /resources
+on: push
 
 jobs:
   deploy:
