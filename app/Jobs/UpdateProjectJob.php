@@ -19,8 +19,8 @@ class UpdateProjectJob implements ShouldQueue, ShouldBeUnique
     public function handle(): int
     {
         return (new RunCommand)->execute(new ArrayInput([
-            'path' => '/app',
-            'task' => 'deploy-backend'
+            '--path' => '/app',
+            '--task' => 'deploy-backend'
         ]), new NullOutput);
     }
 }
