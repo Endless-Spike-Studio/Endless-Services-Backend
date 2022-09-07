@@ -1,10 +1,5 @@
 name: Backend
-
-on:
-  workflow_run:
-    workflows: [ "frontend" ]
-    types:
-      - completed
+on: push
 
 jobs:
   test:
