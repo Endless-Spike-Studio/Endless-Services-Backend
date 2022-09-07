@@ -31,7 +31,7 @@ class SongController extends Controller
     /**
      * @throws NewGroundsProxyException
      */
-    public function objectForGD(SongGetRequest $request): int|string
+    public function objectForGame(SongGetRequest $request): int|string
     {
         $data = $request->validated();
         return $this->object($data['songID']);

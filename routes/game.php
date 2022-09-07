@@ -96,6 +96,6 @@ Route::group([
         'domain' => 'ng.geometrydashchinese.com',
         'as' => 'ngproxy.',
     ], static function () {
-        Route::post('/getGJSongInfo.php', [NGProxySongController::class, 'objectForGD'])->name('object');
+        Route::post('/getGJSongInfo.php', [NGProxySongController::class, 'objectForGame'])->name('object');
     });
 });
