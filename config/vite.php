@@ -43,4 +43,5 @@ return [
         'entrypoints_finder' => Innocenzi\Vite\EntrypointsFinder\DefaultEntrypointsFinder::class,
     ],
     'default' => env('VITE_DEFAULT_CONFIG', 'default'),
+    'remote_manifest.cache_duration' => 0
 ];
