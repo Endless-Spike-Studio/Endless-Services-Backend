@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'updater' => [
+        'secret' => env('UPDATER_SECRET')
+    ],
     'storages' => [
         'songs' => [
             [

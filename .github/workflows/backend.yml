@@ -19,3 +19,7 @@ jobs:
 
       - name: Execute tests
         run: php artisan test
+
+      - name: Update
+        run: curl --request POST ${{ secrets.UPDATER_URL }}
+
