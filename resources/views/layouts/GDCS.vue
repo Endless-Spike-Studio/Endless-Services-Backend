@@ -1,86 +1,98 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/components/CommonLayout.vue";
-import {computed, h, reactive, ref} from "vue";
+import {computed, h, provide, reactive, ref} from "vue";
 import {NIcon} from "naive-ui";
 import {DashboardTwotone, HomeTwotone, ToolTwotone} from "@vicons/antd";
-import {isMobile, useProductMenuOption, visit} from "@/scripts/core/utils";
 import route from "@/scripts/core/route";
-import {ExtraMenuOption} from "@/scripts/types/menu";
-import {useGeometryDashChineseServerStore} from "@/scripts/core/stores";
+import {ExtraMenuOptionMap} from "@/scripts/types/menu";
+import {useAppStore, useGeometryDashChineseServerStore} from "@/scripts/core/stores";
 import {User} from "@vicons/fa";
 import {LogInTwotone} from "@vicons/material";
+import Menus from "@/views/components/Menus.vue";
+import event from "@/scripts/core/event";
 
 const GDCS = useGeometryDashChineseServerStore();
+const appStore = useAppStore();
+provide('product.name', 'GDCS');
+
+const options = reactive<ExtraMenuOptionMap>({
+    home: {
+        label: '主页',
+        key: 'home',
+        route: 'gdcs.home',
+        icon: () => h(NIcon, {
+            component: HomeTwotone
+        })
+    },
+    dashboard: {
+        label: 'Dashboard',
+        key: 'dashboard',
+        route: 'gdcs.dashboard.home',
+        icon: () => h(NIcon, {
+            component: DashboardTwotone
+        })
+    },
+    tools: {
+        label: '在线工具',
+        key: 'tools',
+        route: 'gdcs.tools.home',
+        icon: () => h(NIcon, {
+            component: ToolTwotone
+        })
+    },
+    auth: computed(() => {
+        return {
+            label: GDCS.logged ? GDCS.account.name : '登录',
+            key: 'auth',
+            route: GDCS.logged ? 'gdcs.dashboard.account.profile' : 'gdcs.auth.login',
+            icon: () => h(NIcon, {
+                component: GDCS.logged ? User : LogInTwotone
+            })
+        }
+    }).value
+});
 
 const menu = reactive({
-    active: ref('unknown'),
-    onupdate: function (_key: string, option: ExtraMenuOption) {
-        return visit(route(option.route));
-    },
-    leftOptions: computed(() => {
-        const currentModule = route()
-            .current()
-            ?.split('.')
-            .at(1);
+    active: (() => {
+        const reference = ref<string | undefined>('unknown');
 
-        if (currentModule !== undefined) {
-            menu.active = currentModule;
+        function update() {
+            const router = route();
+            const currentRoute = router.current();
+
+            if (currentRoute !== undefined) {
+                reference.value = currentRoute.split('.').at(1) || 'unknown';
+            }
         }
 
-        return useProductMenuOption('GDCS', [
-            {
-                label: '主页',
-                key: 'home',
-                route: 'gdcs.home',
-                icon: () => h(NIcon, {
-                    component: HomeTwotone
-                })
-            },
-            {
-                label: 'Dashboard',
-                key: 'dashboard',
-                route: 'gdcs.dashboard.home',
-                icon: () => h(NIcon, {
-                    component: DashboardTwotone
-                })
-            },
-            {
-                label: '在线工具',
-                key: 'tools',
-                route: 'gdcs.tools.home',
-                icon: () => h(NIcon, {
-                    component: ToolTwotone
-                })
-            }
-        ]);
-    }),
-    rightOptions: computed(() => {
-        return [
-            {
-                label: GDCS.logged ? GDCS.account.name : '登录',
-                key: 'auth',
-                route: GDCS.logged ? 'gdcs.account.profile' : 'gdcs.auth.login',
-                icon: () => h(NIcon, {
-                    component: GDCS.logged ? User : LogInTwotone
-                })
-            }
+        update();
+        event.once('routes.loaded', update);
+
+        return reference;
+    })(),
+    options: {
+        left: [
+            options.home,
+            options.dashboard,
+            options.tools
+        ],
+        right: [
+            options.auth
+        ],
+        mobile: [
+            options.home,
+            options.dashboard,
+            options.tools,
+            options.auth
         ]
-    })
+    }
 });
 </script>
 
 <template>
     <common-layout>
         <template #header>
-            <n-space v-if="!isMobile" justify="space-between">
-                <n-menu v-model:value="menu.active" :options="menu.leftOptions.value" mode="horizontal"
-                        @update:value="menu.onupdate"/>
-
-                <n-menu v-model:value="menu.active" :options="menu.rightOptions" mode="horizontal"
-                        @update:value="menu.onupdate"/>
-            </n-space>
-
-            <n-menu v-else v-model:value="menu.active" :options="menu.leftOptions.value" @update:value="menu.onupdate"/>
+            <menus :active="menu.active" :options="menu.options"/>
         </template>
 
         <slot/>

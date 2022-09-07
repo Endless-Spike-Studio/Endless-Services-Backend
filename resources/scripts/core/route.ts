@@ -1,6 +1,7 @@
 import axios from "axios";
 import route, {Config, RouteParamsWithQueryOverload} from "ziggy-js";
 import {ref} from "vue";
+import event from "@/scripts/core/event";
 
 export const routes = ref<Config>({
     url: location.href,
@@ -11,6 +12,7 @@ export const routes = ref<Config>({
 axios.get('/api/routes')
     .then(response => {
         routes.value = response.data;
+        event.emit('routes.loaded');
     });
 
 // @ts-ignore

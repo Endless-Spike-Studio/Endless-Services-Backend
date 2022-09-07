@@ -8,7 +8,12 @@ return [
         'command' => [
             'not_found' => 'Command not found',
             'unavailable' => 'Command not available',
-            'worked' => 'worked!'
+            'worked' => 'worked!',
+            'no_permission' => 'Permission denied',
+            'level_rate_failed_invalid_stars_value' => 'Failed: ":data" is invalid stars value',
+            'level_rate_failed_invalid_face_value' => 'Failed: ":data" is invalid face value',
+            'level_rate_success' => 'rated!',
+            'level_rate_delete_success' => 'unrated!'
         ],
         'error' => [
             'request_authorization_failed' => '[请求] 授权失败',

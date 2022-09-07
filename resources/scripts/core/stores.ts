@@ -6,10 +6,23 @@ import {App} from "@/scripts/types/backend";
 
 export const useAppStore = defineStore('app', {
     state: () => ({
-        theme: computed(() => {
-            return useOsTheme().value === 'light' ? null : darkTheme;
-        })
-    })
+        theme: useOsTheme().value
+    }),
+    getters: {
+        themeRef(store) {
+            return computed(() => {
+                return store.theme === 'light' ? null : darkTheme;
+            })
+        }
+    },
+    actions: {
+        toggleTheme() {
+            this.theme = this.theme === 'light' ? 'dark' : 'light';
+        }
+    },
+    persist: {
+        enabled: true
+    }
 });
 
 export const useGeometryDashChineseServerStore = defineStore('GDCS', {
