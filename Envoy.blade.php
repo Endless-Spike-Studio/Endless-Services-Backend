@@ -12,7 +12,9 @@ git pull
 @endtask
 
 @task('update-backend-packages')
+if [ -n "$(git diff composer.lock)" ]; then
 composer update --no-dev
+fi
 @endtask
 
 @task('update-backend')
@@ -28,12 +30,6 @@ php artisan octane:reload
 @story('deploy-backend')
 update-code
 update-backend-packages
-update-backend
-restart-server
-@endstory
-
-@story('deploy-backend-without-package-update')
-update-code
 update-backend
 restart-server
 @endstory
