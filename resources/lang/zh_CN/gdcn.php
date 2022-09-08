@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'error' => [
-        'response_invalid' => '[响应] 内容无效'
-    ],
     'game' => [
         'command' => [
             'not_found' => 'Command not found',
@@ -151,6 +148,11 @@ return [
             'level_weekly_fetch_success' => '[关卡] 每周关卡获取成功'
         ]
     ],
+    'response' => [
+        'error' => [
+            'invalid' => '[响应] 内容无效'
+        ]
+    ],
     'storage' => [
         'error' => [
             'invalid_config' => '[存储] 配置解析失败, 无效的配置',
@@ -165,6 +167,11 @@ return [
             'process_failed_remote_not_found' => '[歌曲] 处理失败, 远程报错 404',
             'fetch_failed_disabled' => '[歌曲] 获取失败, 已被禁用',
             'fetch_failed_wrong_song_object' => '[歌曲] 获取失败, 错误的歌曲对象'
+        ]
+    ],
+    'updater' => [
+        'action' => [
+            'project_updated' => '[项目] 更新成功'
         ]
     ]
 ];

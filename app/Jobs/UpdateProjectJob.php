@@ -8,19 +8,25 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Laravel\Envoy\Console\RunCommand;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\Process\Process;
 
 class UpdateProjectJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): int
+    public function handle(): void
     {
-        return (new RunCommand)->execute(new ArrayInput([
-            '--path' => '/app',
-            '--task' => 'deploy-backend'
-        ]), new NullOutput);
+        $process = new Process(['vendor/bin/envoy', 'run', 'clean-logs']);
+        $process->setTimeout(600);
+
+        $process->run(function ($type, $buffer) use (&$result) {
+            $result[] = $buffer;
+        });
+
+        Log::channel('gdcn')
+            ->info(__('project_updated'), [
+                'output' => implode(PHP_EOL, $result)
+            ]);
     }
 }
