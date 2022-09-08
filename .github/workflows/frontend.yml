@@ -1,6 +1,10 @@
 name: Frontend
 on: push
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: Build and deploy

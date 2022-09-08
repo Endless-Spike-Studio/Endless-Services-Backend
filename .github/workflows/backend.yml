@@ -1,5 +1,9 @@
 name: Backend
-on: push
+on:
+  workflow_run:
+    workflows: [ "Frontend" ]
+    types:
+      - completed
 
 jobs:
   test:
