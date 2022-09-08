@@ -7,6 +7,10 @@ import {ref, useSlots} from "vue";
 import route from "@/scripts/core/route";
 import event from "@/scripts/core/event";
 
+const globalThis = window as unknown as { git_commit_hash: string };
+const frontend_git_commit_hash = globalThis.git_commit_hash || '未知';
+const backend_git_commit_hash = useProp<string>('git_commit_hash');
+
 const versions = useProp<{
     php: string;
     laravel: string;
@@ -25,8 +29,6 @@ const router = (() => {
     return reference;
 })();
 
-const globalThis = window as unknown as { git_commit_hash: string };
-const git_commit_hash = globalThis.git_commit_hash || '未知';
 const slots = useSlots();
 const appStore = useAppStore();
 </script>
@@ -119,7 +121,19 @@ const appStore = useAppStore();
                                                 <n-icon :component="CommitRound"/>
                                             </template>
 
-                                            {{ git_commit_hash }}
+                                            <n-grid :cols="1">
+                                                <n-grid-item title="前端">
+                                                    <n-text type="info">
+                                                        {{ frontend_git_commit_hash }}
+                                                    </n-text>
+                                                </n-grid-item>
+
+                                                <n-grid-item title="后端">
+                                                    <n-text type="success">
+                                                        {{ backend_git_commit_hash }}
+                                                    </n-text>
+                                                </n-grid-item>
+                                            </n-grid>
                                         </n-button>
                                     </n-grid-item>
                                 </n-grid>

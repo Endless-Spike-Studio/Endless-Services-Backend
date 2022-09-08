@@ -6,6 +6,7 @@ use App\Models\GDCS\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
@@ -16,6 +17,13 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $data = [];
+
+        $data['git_commit_hash'] = Cache::get('git_commit_hash', static function () {
+            $hash = exec('git log --pretty="%h" -n1 HEAD');
+            Cache::set('git_commit_hash', $hash);
+
+            return $hash;
+        });
 
         $data['versions'] = [
             'php' => PHP_VERSION,
