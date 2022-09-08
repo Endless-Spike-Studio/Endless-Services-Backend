@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: 'HarmonyOS Sans SC';
-    src: local('HarmonyOS Sans SC'), url(../fonts/HarmonyOS_Sans_SC_Regular.ttf) format('truetype');
-}
-
 html, body, #app {
     @apply h-full;
-    font-family: 'HarmonyOS Sans SC', sans-serif;
 }
