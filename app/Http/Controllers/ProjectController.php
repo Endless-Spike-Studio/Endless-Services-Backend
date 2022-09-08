@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\UpdateProjectJob;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\Process\Process;
 
 class ProjectController extends Controller
 {
@@ -12,6 +13,17 @@ class ProjectController extends Controller
             abort(403);
         }
 
-        UpdateProjectJob::dispatchSync();
+        $result = [];
+        $process = new Process(['vendor/bin/envoy', 'run', 'deploy-backend'], '/app');
+        $process->setTimeout(600);
+
+        $process->run(function ($type, $buffer) use (&$result) {
+            $result[] = $buffer;
+        });
+
+        Log::channel('gdcn')
+            ->info(__('gdcn.updater.action.project_updated'), [
+                'output' => implode(PHP_EOL, $result)
+            ]);
     }
 }
