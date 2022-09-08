@@ -26,7 +26,7 @@ class UpdateProjectJob implements ShouldQueue, ShouldBeUnique
         });
 
         Log::channel('gdcn')
-            ->info(__('project_updated'), [
+            ->info(__('gdcn.updater.action.project_updated'), [
                 'output' => implode(PHP_EOL, $result)
             ]);
     }
