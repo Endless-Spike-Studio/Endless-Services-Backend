@@ -17,7 +17,7 @@ class UpdateProjectJob implements ShouldQueue, ShouldBeUnique
 
     public function handle(): void
     {
-        $process = new Process(['vendor/bin/envoy', 'run', 'clean-logs']);
+        $process = new Process(['vendor/bin/envoy', 'run', 'clean-logs'], '/app');
         $process->setTimeout(600);
 
         $process->run(function ($type, $buffer) use (&$result) {
