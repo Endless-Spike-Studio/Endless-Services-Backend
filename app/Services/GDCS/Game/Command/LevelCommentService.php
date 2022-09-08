@@ -5,6 +5,7 @@ namespace App\Services\GDCS\Game\Command;
 use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\Game\LevelRatingDifficulty;
 use App\Services\Game\LevelRatingService;
+use App\Services\Storage\GameLevelDataStorageService;
 use Illuminate\Support\Str;
 
 class LevelCommentService extends BaseCommandService
@@ -128,5 +129,17 @@ class LevelCommentService extends BaseCommandService
         }
 
         return __('gdcn.game.command.level_rate_success');
+    }
+
+    protected function delete(): string
+    {
+        if (!$this->level->creator->is($this->account->user) && !$this->account->can('rate-level')) {
+            return __('gdcn.game.command.no_permission');
+        }
+
+        $this->level->delete();
+        (new GameLevelDataStorageService)->delete(['id' => $this->level->id]);
+
+        return __('gdcn.game.command.level_delete_success');
     }
 }
