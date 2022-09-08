@@ -13,10 +13,10 @@ class ProjectController extends Controller
             abort(403);
         }
 
-        $result = [];
         $process = new Process(['vendor/bin/envoy', 'run', 'deploy-backend'], '/app');
         $process->setTimeout(600);
 
+        $result = [];
         $process->run(function ($type, $buffer) use (&$result) {
             $result[] = $buffer;
         });
