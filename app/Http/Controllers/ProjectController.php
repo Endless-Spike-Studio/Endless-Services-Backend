@@ -12,6 +12,6 @@ class ProjectController extends Controller
             abort(403);
         }
 
-        UpdateProjectJob::dispatchAfterResponse();
+        UpdateProjectJob::dispatchSync();
     }
 }
