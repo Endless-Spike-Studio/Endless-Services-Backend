@@ -7,10 +7,6 @@ import {ref, useSlots} from "vue";
 import route from "@/scripts/core/route";
 import event from "@/scripts/core/event";
 
-const globalThis = window as unknown as { git_commit_hash: string };
-const frontend_git_commit_hash = globalThis.git_commit_hash || '未知';
-const backend_git_commit_hash = useProp<string>('git_commit_hash');
-
 const versions = useProp<{
     php: string;
     laravel: string;
@@ -31,6 +27,9 @@ const router = (() => {
 
 const slots = useSlots();
 const appStore = useAppStore();
+const globalThis = window as unknown as { frontend_git_commit_hash: string }
+const frontend_git_commit_hash = globalThis.frontend_git_commit_hash || '未知';
+const backend_git_commit_hash = useProp<string>('git_commit_hash');
 </script>
 
 <template>

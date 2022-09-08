@@ -40,6 +40,6 @@ export default defineConfig({
         })
     ],
     define: {
-        git_commit_hash: ` '${short()}' `.trim()
+        frontend_git_commit_hash: ` '${short()}' `.trim()
     }
 })
