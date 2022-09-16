@@ -66,7 +66,8 @@ defineProps<{
 
                     <template #footer>
                         <n-space>
-                            <n-button href="https://qm.qq.com/cgi-bin/qm/qr?k=wtUcckkOelZWhD24Tg5HLLr3HNS4XjOv" tag="a">
+                            <n-button href="https://qm.qq.com/cgi-bin/qm/qr?k=wtUcckkOelZWhD24Tg5HLLr3HNS4XjOv"
+                                      tag="a">
                                 加入讨论群
                             </n-button>
 
@@ -91,7 +92,7 @@ defineProps<{
                     <br>
 
                     <n-text>只需将地址设为&nbsp;</n-text>
-                    <n-text type="primary">https://gf.geometrydashchinese.com</n-text>
+                    <n-text type="info">https://gf.geometrydashchinese.com</n-text>
                     <n-text>&nbsp;就好了</n-text>
 
                     <template #footer>

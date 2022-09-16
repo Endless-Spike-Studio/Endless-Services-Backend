@@ -26,7 +26,6 @@ createInertiaApp({
     }
 }).then(() => {
     InertiaProgress.init();
-
     axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-TOKEN': useProp<string>('csrf_token').value

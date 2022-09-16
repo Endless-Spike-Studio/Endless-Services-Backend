@@ -21,14 +21,20 @@ export const useAppStore = defineStore('app', {
         }
     },
     persist: {
-        enabled: true
+        enabled: true,
+        strategies: [
+            {
+                storage: localStorage,
+                paths: ['theme']
+            }
+        ]
     }
 });
 
 export const useGeometryDashChineseServerStore = defineStore('GDCS', {
     state: () => ({
-        account: useProp<App.Models.GDCS.Account>('gdcs.account'),
-        user: useProp<App.Models.GDCS.User>('gdcs.user'),
+        account: useProp<App.Models.GDCS.Account>('GDCS.account'),
+        user: useProp<App.Models.GDCS.User>('GDCS.user'),
     }),
     getters: {
         logged(store) {

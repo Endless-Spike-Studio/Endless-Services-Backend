@@ -6,6 +6,7 @@ import {CommitRound} from "@vicons/material";
 import {ref, useSlots} from "vue";
 import route from "@/scripts/core/route";
 import event from "@/scripts/core/event";
+import BackendMessageReceiver from "@/views/components/BackendMessageReceiver.vue";
 
 const versions = useProp<{
     php: string;
@@ -120,7 +121,8 @@ const backend_git_commit_hash = useProp<string>('git_commit_hash');
                                                 <n-icon :component="CommitRound"/>
                                             </template>
 
-                                            <n-grid :cols="1">
+                                            <n-grid v-if="frontend_git_commit_hash !== backend_git_commit_hash"
+                                                    :cols="1">
                                                 <n-grid-item title="前端">
                                                     <n-text type="info">
                                                         {{ frontend_git_commit_hash }}
@@ -133,11 +135,15 @@ const backend_git_commit_hash = useProp<string>('git_commit_hash');
                                                     </n-text>
                                                 </n-grid-item>
                                             </n-grid>
+
+                                            <n-text v-else>{{ backend_git_commit_hash }}</n-text>
                                         </n-button>
                                     </n-grid-item>
                                 </n-grid>
                             </n-layout-footer>
                         </n-layout>
+
+                        <BackendMessageReceiver/>
                     </n-loading-bar-provider>
                 </n-notification-provider>
             </n-dialog-provider>

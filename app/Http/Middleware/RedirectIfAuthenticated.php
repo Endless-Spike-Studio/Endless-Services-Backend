@@ -17,7 +17,10 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return back();
+                return match ($guard) {
+                    'gdcs' => to_route('gdcs.home'),
+                    default => abort(403)
+                };
             }
         }
 

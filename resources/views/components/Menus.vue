@@ -1,24 +1,39 @@
 <script lang="ts" setup>
 import {MenuOption, NImage} from "naive-ui";
 import {isMobile, visit} from "@/scripts/core/utils";
-import {computed, defineProps, h, inject, ref, watch} from "vue";
+import {defineProps, h, inject, ref, watch} from "vue";
 import Logo from "@/images/Logo.png";
 import {products} from "@/scripts/core/client";
 import {useAppStore} from "@/scripts/core/stores";
-import {ExtraMenuOption} from "@/scripts/types/menu";
+import {ExtraMenuOption, Menus} from "@/scripts/types/menu";
 import route from "@/scripts/core/route";
+import {cloneDeep} from "lodash-es";
 
 const props = defineProps<{
     active: string;
-    options: {
-        left: MenuOption[];
-        right: MenuOption[];
-        mobile: MenuOption[];
-    },
+    options: Menus,
     onUpdate?: (key: string, option: ExtraMenuOption) => void;
 }>();
 
 const appStore = useAppStore();
+const productName = inject<string>('product.name', 'unknown');
+
+const productSwitcherOption = {
+    label: productName,
+    key: 'product-switcher',
+    icon: () => h(NImage, {
+        src: Logo,
+        imgProps: {
+            class: 'w-full'
+        }
+    })
+} as MenuOption;
+
+const themeSwitcherOption = {
+    label: () => appStore.theme === 'light' ? '深色' : '浅色',
+    key: 'theme-switcher'
+} as MenuOption;
+
 const active = (() => {
     const reference = ref();
 
@@ -32,46 +47,38 @@ const active = (() => {
     return reference;
 })();
 
-const processedOptions = computed(() => {
-    const menu = Object.assign({}, props.options);
-    const productName = inject<string>('product.name', 'unknown');
+const processedOptions = (() => {
+    const reference = ref();
 
-    const productSwitcherOption = {
-        label: productName,
-        key: 'product-switcher',
-        icon: () => h(NImage, {
-            src: Logo,
-            imgProps: {
-                class: 'w-full'
-            }
-        })
-    } as MenuOption;
+    function update() {
+        const items = cloneDeep(props.options);
 
-    const themeSwitcherOption = {
-        label: () => appStore.theme === 'light' ? '深色' : '浅色',
-        key: 'theme-switcher'
-    } as MenuOption;
+        if (isMobile.value) {
+            items.mobile.unshift(themeSwitcherOption);
+            productSwitcherOption.children = items.mobile;
+            items.mobile = [productSwitcherOption];
+        } else {
+            productSwitcherOption.children = products.filter(product => productName !== product.name)
+                .map(product => {
+                    return {
+                        label: product.name,
+                        key: product.name.toLowerCase(),
+                        route: product.route
+                    }
+                });
 
-    if (isMobile.value) {
-        menu.mobile.unshift(themeSwitcherOption);
-        productSwitcherOption.children = menu.mobile;
-        menu.mobile = [productSwitcherOption];
-    } else {
-        productSwitcherOption.children = products.filter(product => productName !== product.name)
-            .map(product => {
-                return {
-                    label: product.name,
-                    key: product.name.toLowerCase(),
-                    route: product.route
-                }
-            });
+            items.left.unshift(productSwitcherOption);
+            items.right.unshift(themeSwitcherOption);
+        }
 
-        menu.left.unshift(productSwitcherOption);
-        menu.right.unshift(themeSwitcherOption);
+        reference.value = items;
     }
 
-    return menu;
-});
+    update();
+    watch(props, update);
+
+    return reference;
+})();
 
 function handleUpdate(key: string, option: ExtraMenuOption) {
     if (key === 'theme-switcher') {
@@ -92,9 +99,9 @@ function handleUpdate(key: string, option: ExtraMenuOption) {
 
 <template>
     <n-space v-if="!isMobile" justify="space-between">
-        <n-menu :options="processedOptions.left" :value="active" mode="horizontal" @update:value="handleUpdate"/>
-        <n-menu :options="processedOptions.right" :value="active" mode="horizontal" @update:value="handleUpdate"/>
+        <n-menu :options="processedOptions['left']" :value="active" mode="horizontal" @update:value="handleUpdate"/>
+        <n-menu :options="processedOptions['right']" :value="active" mode="horizontal" @update:value="handleUpdate"/>
     </n-space>
 
-    <n-menu v-else :options="processedOptions.mobile" :value="active" @update:value="handleUpdate"/>
+    <n-menu v-else :options="processedOptions['mobile']" :value="active" @update:value="handleUpdate"/>
 </template>

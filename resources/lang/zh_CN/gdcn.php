@@ -173,5 +173,14 @@ return [
         'action' => [
             'project_updated' => '[项目] 更新成功'
         ]
+    ],
+    'web' => [
+        'action' => [
+            'login_success' => '[网页] 登录成功!',
+            'logout_success' => '[网页] 登出成功!'
+        ],
+        'error' => [
+            'login_failed' => '[网页] 登录失败!'
+        ]
     ]
 ];

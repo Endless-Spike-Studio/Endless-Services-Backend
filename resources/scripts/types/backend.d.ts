@@ -1,3 +1,10 @@
+import {MessageOptions} from "naive-ui/es/message/src/types";
+
+export interface Message {
+    content: string;
+    options: MessageOptions;
+}
+
 export interface Model {
     id: number;
     created_at: string;

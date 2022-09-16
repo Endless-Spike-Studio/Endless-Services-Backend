@@ -1,9 +1,14 @@
 import {computed, ComputedRef, ref} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
 import {Inertia} from "@inertiajs/inertia";
+import {get} from "lodash-es";
 
 export function useProp<TValue = unknown>(key: string, defaultValue?: any): ComputedRef<TValue> {
-    return computed(() => usePage().props.value[key] || defaultValue);
+    return computed(() => {
+        const $page = usePage();
+        const props = $page.props.value;
+        return get(props, key, defaultValue);
+    });
 }
 
 export const isMobile = (() => {
