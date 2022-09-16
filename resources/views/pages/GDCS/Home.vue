@@ -126,21 +126,28 @@ defineProps<{
 
             <n-grid :x-gap="10" :y-gap="10" cols="1 768:2">
                 <n-grid-item>
-                    <n-descriptions :bordered="true" :column="isMobile ? 1 : 3" title="渣渣120">
-                        <n-descriptions-item label="QQ">
-                            <n-button href="https://wpa.qq.com/msgrd?uin=2331281251" tag="a" text>
-                                2331281251
-                            </n-button>
-                        </n-descriptions-item>
-                        <n-descriptions-item label="职责">
-                            开发 | 运维 | 管理
-                        </n-descriptions-item>
-                        <n-descriptions-item label="哔哩哔哩">
-                            <n-button href="https://space.bilibili.com/24267334" tag="a" text>
-                                24267334
-                            </n-button>
-                        </n-descriptions-item>
-                    </n-descriptions>
+                    <n-thing>
+                        <template #header>
+                            <n-text>渣渣120</n-text>
+                            <n-text :depth="3" class="text-lg ml-2.5">服主</n-text>
+                        </template>
+
+                        <n-descriptions :bordered="true" :column="isMobile ? 1 : 3">
+                            <n-descriptions-item label="QQ">
+                                <n-button href="https://wpa.qq.com/msgrd?uin=2331281251" tag="a" text>
+                                    2331281251
+                                </n-button>
+                            </n-descriptions-item>
+                            <n-descriptions-item label="职责">
+                                开发 | 运维 | 管理
+                            </n-descriptions-item>
+                            <n-descriptions-item label="哔哩哔哩">
+                                <n-button href="https://space.bilibili.com/24267334" tag="a" text>
+                                    24267334
+                                </n-button>
+                            </n-descriptions-item>
+                        </n-descriptions>
+                    </n-thing>
                 </n-grid-item>
 
                 <n-grid-item v-if="isMobile">
@@ -148,21 +155,28 @@ defineProps<{
                 </n-grid-item>
 
                 <n-grid-item>
-                    <n-descriptions :bordered="true" :column="isMobile ? 1 : 3" title="xyzlol">
-                        <n-descriptions-item label="QQ">
-                            <n-button href="https://wpa.qq.com/msgrd?uin=1292866784" tag="a" text>
-                                1292866784
-                            </n-button>
-                        </n-descriptions-item>
-                        <n-descriptions-item label="职责">
-                            运维 | 管理 | 规则制定
-                        </n-descriptions-item>
-                        <n-descriptions-item label="哔哩哔哩">
-                            <n-button href="https://space.bilibili.com/93653653" tag="a" text>
-                                93653653
-                            </n-button>
-                        </n-descriptions-item>
-                    </n-descriptions>
+                    <n-thing>
+                        <template #header>
+                            <n-text>xyzlol</n-text>
+                            <n-text :depth="3" class="text-lg ml-2.5">副服主</n-text>
+                        </template>
+
+                        <n-descriptions :bordered="true" :column="isMobile ? 1 : 3">
+                            <n-descriptions-item label="QQ">
+                                <n-button href="https://wpa.qq.com/msgrd?uin=1292866784" tag="a" text>
+                                    1292866784
+                                </n-button>
+                            </n-descriptions-item>
+                            <n-descriptions-item label="职责">
+                                运维 | 管理 | 规则制定
+                            </n-descriptions-item>
+                            <n-descriptions-item label="哔哩哔哩">
+                                <n-button href="https://space.bilibili.com/93653653" tag="a" text>
+                                    93653653
+                                </n-button>
+                            </n-descriptions-item>
+                        </n-descriptions>
+                    </n-thing>
                 </n-grid-item>
             </n-grid>
         </n-card>
