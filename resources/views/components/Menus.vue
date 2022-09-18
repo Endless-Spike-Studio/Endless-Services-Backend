@@ -87,7 +87,11 @@ function handleUpdate(key: string, option: ExtraMenuOption) {
     }
 
     active.value = key;
-    if (option.route !== undefined) {
+    if ('url' in option) {
+        return visit(option.url);
+    }
+
+    if ('route' in option) {
         return visit(
             route(option.route)
         );

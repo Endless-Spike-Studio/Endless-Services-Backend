@@ -12,7 +12,7 @@ use Inertia\Response;
 
 class HomePresenter
 {
-    public function renderHome(): Response
+    public function render(): Response
     {
         return Inertia::render('GDCS/Home', [
             'count' => [

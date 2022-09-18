@@ -29,4 +29,17 @@ declare module App.Models {
             udid: string;
         }
     }
+
+    module NGProxy {
+        export interface Song extends Model {
+            song_id: number;
+            name: string;
+            size: number;
+            artist_id: number;
+            artist_name: string;
+            disabled: boolean;
+            original_download_url: string;
+            download_url?: string;
+        }
+    }
 }

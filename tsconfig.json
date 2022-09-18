@@ -23,6 +23,8 @@
         }
     },
     "include": [
-        "resources/**/*"
+        "resources/**/*",
+        "auto-imports.d.ts",
+        "components.d.ts"
     ]
 }
