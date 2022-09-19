@@ -1,13 +1,30 @@
 <script lang="ts" setup>
 import {App} from "@/scripts/types/backend";
-import {isMobile} from "@/scripts/core/utils";
+import {isMobile, visit} from "@/scripts/core/utils";
+import route from "@/scripts/core/route";
 
 const props = defineProps<{
     song?: App.Models.NGProxy.Song;
 }>();
 
-const songID = ref(props.song?.song_id);
+const songID = ref<number>();
 const {decodeURIComponent} = window;
+
+if (props.song !== undefined) {
+    songID.value = props.song.song_id;
+}
+
+function querySong() {
+    if (songID.value === undefined || songID.value <= 0) {
+        return false;
+    }
+
+    visit(
+        route('ngproxy.home', {
+            song: songID.value
+        })
+    );
+}
 </script>
 
 <template layout="NGProxy">
@@ -15,7 +32,7 @@ const {decodeURIComponent} = window;
         <n-space justify="center">
             <n-input-number v-model:value="songID" :min="1" :step="1" placeholder="歌曲ID"/>
 
-            <n-button :href="('/' + songID)" tag="a">
+            <n-button @click="querySong">
                 查询
             </n-button>
         </n-space>
