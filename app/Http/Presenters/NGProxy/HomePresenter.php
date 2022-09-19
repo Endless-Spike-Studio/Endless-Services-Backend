@@ -2,16 +2,24 @@
 
 namespace App\Http\Presenters\NGProxy;
 
-use App\Models\NGProxy\Song;
+use App\Exceptions\NewGroundsProxyException;
+use App\Services\NGProxy\SongService;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class HomePresenter
 {
-    public function render(?Song $song): Response
+    /**
+     * @throws NewGroundsProxyException
+     */
+    public function render(string $id): Response
     {
+        if (is_numeric($id) && $id > 0) {
+            $song = app(SongService::class)->find($id);
+        }
+
         return Inertia::render('NGProxy/Home', [
-            'song' => $song->exists ? $song->toArray() : null
+            'song' => !empty($song) ? $song->toArray() : null
         ]);
     }
 }
