@@ -14,7 +14,11 @@ import {short} from "git-rev-sync";
 export default defineConfig({
     base: 'https://cdn.geometrydashchinese.com/static/website/',
     build: {
-        outDir: 'dist'
+        outDir: 'dist',
+        minify: 'terser',
+        terserOptions: {
+            mangle: true
+        }
     },
     plugins: [
         inertia(),
