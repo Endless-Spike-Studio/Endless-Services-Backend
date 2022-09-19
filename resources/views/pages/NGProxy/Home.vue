@@ -4,13 +4,13 @@ import {isMobile, visit} from "@/scripts/core/utils";
 import route from "@/scripts/core/route";
 
 const props = defineProps<{
-    song?: App.Models.NGProxy.Song;
+    song: App.Models.NGProxy.Song | null;
 }>();
 
 const songID = ref<number>();
 const {decodeURIComponent} = window;
 
-if (props.song !== undefined) {
+if (props.song !== null) {
     songID.value = props.song.song_id;
 }
 
