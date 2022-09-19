@@ -21,7 +21,7 @@ function querySong() {
 
     visit(
         route('ngproxy.home', {
-            song: songID.value
+            id: songID.value
         })
     );
 }
