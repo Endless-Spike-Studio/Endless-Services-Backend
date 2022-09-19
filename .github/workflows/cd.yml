@@ -17,30 +17,39 @@ jobs:
             frontend:
               - 'resources/**'
 
+      - uses: actions/setup-node@v3
         if: steps.path_changed.outputs.frontend == 'true'
 
-      - uses: actions/setup-node@v3
       - uses: pnpm/action-setup@v2
+        if: steps.path_changed.outputs.frontend == 'true'
         with:
           version: latest
 
       - uses: shivammathur/setup-php@v2
+        if: steps.path_changed.outputs.frontend == 'true'
+
       - uses: ramsey/composer-install@v2
+        if: steps.path_changed.outputs.frontend == 'true'
+
       - uses: yizhoumo/setup-ossutil@v1
+        if: steps.path_changed.outputs.frontend == 'true'
         with:
           endpoint: ${{ secrets.OSS_GDCN_ENDPOINT }}
           access-key-id: ${{ secrets.OSS_GDCN_ACCESS_KEY_ID }}
           access-key-secret: ${{ secrets.OSS_GDCN_ACCESS_KEY_SECRET }}
 
       - name: Install packages
+        if: steps.path_changed.outputs.frontend == 'true'
         run: |
           pnpm install
           composer install
 
       - name: Build
+        if: steps.path_changed.outputs.frontend == 'true'
         run: pnpm run build
 
       - name: Deploy to oss
+        if: steps.path_changed.outputs.frontend == 'true'
         run: |
           ossutil rm -rf ${{ secrets.OSS_PATH }}
           ossutil cp -rf dist ${{ secrets.OSS_PATH }}
