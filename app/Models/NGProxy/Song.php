@@ -2,13 +2,16 @@
 
 namespace App\Models\NGProxy;
 
+use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\StorageException;
 use App\Services\Game\ObjectService;
+use App\Services\ProxyService;
 use App\Services\Storage\SongStorageService;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Psr\Http\Client\ClientExceptionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Song extends Model
@@ -28,9 +31,12 @@ class Song extends Model
 
     public function data(): Attribute
     {
+        $storage = app(SongStorageService::class);
+        $data = ['id' => $this->song_id];
+
         return new Attribute(
-            fn() => app(SongStorageService::class)->get(['id' => $this->song_id]),
-            fn(string $value) => app(SongStorageService::class)->put(['id' => $this->song_id], $value)
+            fn() => $storage->get($data),
+            fn(string $value) => $storage->put($data, $value)
         );
     }
 
@@ -51,14 +57,44 @@ class Song extends Model
         ], '~|~');
     }
 
-    public function download(): StreamedResponse|RedirectResponse
+    public function download(): StreamedResponse
     {
+        $url = urldecode($this->original_download_url);
+        $storage = app(SongStorageService::class);
+        $data = ['id' => $this->song_id];
+
         try {
-            return app(SongStorageService::class)->download(['id' => $this->song_id]);
+            return $storage->download($data);
         } catch (StorageException) {
-            return Redirect::away(
-                urldecode($this->original_download_url)
-            );
+            return Response::streamDownload(function () use ($data, $storage, $url) {
+                try {
+                    $response = ProxyService::instance()
+                        ->asForm()
+                        ->withUserAgent(null)
+                        ->withOptions([
+                            RequestOptions::DECODE_CONTENT => false
+                        ])
+                        ->get($url)
+                        ->onError(function () {
+                            abort(500);
+                        });
+
+                    if (!$response->successful()) {
+                        throw new NewGroundsProxyException(__('gdcn.song.error.process_failed'));
+                    }
+
+                    $blob = $response->body();
+                    $storage->put($data, $blob);
+
+                    echo $blob;
+                } catch (ClientExceptionInterface $ex) {
+                    throw new NewGroundsProxyException(
+                        __('gdcn.song.error.process_failed_request_error', [
+                            'reason' => $ex->getMessage()
+                        ])
+                    );
+                }
+            }, $this->song_id . '.mp3');
         }
     }
 }

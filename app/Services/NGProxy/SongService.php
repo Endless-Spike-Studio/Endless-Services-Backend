@@ -9,16 +9,10 @@ use App\Models\NGProxy\Song;
 use App\Services\Game\ObjectService;
 use App\Services\Game\ResponseService;
 use App\Services\ProxyService;
-use App\Services\Storage\SongStorageService;
-use GuzzleHttp\RequestOptions;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Arr;
-use Psr\Http\Client\ClientExceptionInterface;
 
 class SongService
 {
-    use DispatchesJobs;
-
     /**
      * @throws NewGroundsProxyException
      */
@@ -37,7 +31,6 @@ class SongService
                 );
             }
 
-            $this->process($song);
             return $song;
         }
 
@@ -90,7 +83,7 @@ class SongService
             );
         }
 
-        $song = Song::query()
+        return Song::query()
             ->create([
                 'song_id' => $songObject[1],
                 'name' => $songObject[2],
@@ -100,39 +93,5 @@ class SongService
                 'disabled' => $disabled,
                 'original_download_url' => $songObject[10],
             ]);
-
-        $this->process($song);
-        return $song;
-    }
-
-    /**
-     * @throws NewGroundsProxyException
-     */
-    protected function process(Song $song): void
-    {
-        if (!app(SongStorageService::class)->allValid(['id' => $song->song_id])) {
-            try {
-                $url = urldecode($song->original_download_url);
-                $response = ProxyService::instance()
-                    ->asForm()
-                    ->withUserAgent(null)
-                    ->withOptions([
-                        RequestOptions::DECODE_CONTENT => false
-                    ])
-                    ->get($url);
-
-                if (!$response->successful()) {
-                    throw new NewGroundsProxyException(__('gdcn.song.error.process_failed'));
-                }
-
-                $song->data = $response->body();
-            } catch (ClientExceptionInterface $ex) {
-                throw new NewGroundsProxyException(
-                    __('gdcn.song.error.process_failed_request_error', [
-                        'reason' => $ex->getMessage()
-                    ])
-                );
-            }
-        }
     }
 }
