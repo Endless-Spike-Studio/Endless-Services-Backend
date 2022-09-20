@@ -40,6 +40,7 @@ declare module App.Models {
             disabled: boolean;
             original_download_url: string;
             download_url?: string;
+            valid?: boolean;
         }
     }
 }

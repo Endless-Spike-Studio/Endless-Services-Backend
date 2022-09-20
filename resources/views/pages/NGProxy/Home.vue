@@ -77,7 +77,7 @@ function querySong() {
                     </n-button>
                 </n-descriptions-item>
                 <n-descriptions-item label="下载地址">
-                    <n-button :href="song.download_url" tag="a" text>
+                    <n-button :disabled="!song.valid" :href="song.download_url" tag="a" text>
                         <n-ellipsis class="!max-w-[300px]">
                             {{ song.download_url }}
                         </n-ellipsis>

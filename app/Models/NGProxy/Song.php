@@ -22,6 +22,7 @@ class Song extends Model
         return [
             ...parent::toArray(),
             'download_url' => $this->download_url,
+            'valid' => app(SongStorageService::class)->allValid(['id' => $this->song_id])
         ];
     }
 
