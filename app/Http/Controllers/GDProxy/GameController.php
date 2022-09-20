@@ -22,8 +22,9 @@ class GameController
         }
 
         return ProxyService::instance()
+            ->asForm()
             ->withUserAgent(null)
-            ->post(rtrim(config('gdcn.proxy.base'), '/') . $uri)
+            ->post(rtrim(config('gdcn.proxy.base'), '/') . $uri, $data)
             ->body();
     }
 }

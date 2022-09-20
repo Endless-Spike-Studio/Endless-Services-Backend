@@ -43,6 +43,7 @@ class SongService
 
         try {
             $response = ProxyService::instance()
+                ->asForm()
                 ->withUserAgent(null)
                 ->post(config('gdcn.proxy.base') . '/getGJSongInfo.php', [
                     'songID' => $id,
@@ -57,6 +58,7 @@ class SongService
             }
 
             $response = ProxyService::instance()
+                ->asForm()
                 ->withUserAgent(null)
                 ->post(config('gdcn.proxy.base') . '/getGJLevels21.php', [
                     'song' => $id,
