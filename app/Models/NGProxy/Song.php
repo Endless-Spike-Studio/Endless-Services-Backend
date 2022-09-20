@@ -66,6 +66,8 @@ class Song extends Model
         try {
             return $storage->download($data);
         } catch (StorageException) {
+            $url = str_replace('https://', 'http://', $url);
+
             return Response::streamDownload(function () use ($data, $storage, $url) {
                 try {
                     $response = ProxyService::instance()
