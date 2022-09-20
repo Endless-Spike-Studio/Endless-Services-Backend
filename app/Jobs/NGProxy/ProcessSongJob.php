@@ -13,7 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
 use Psr\Http\Client\ClientExceptionInterface;
 
 class ProcessSongJob implements ShouldQueue, ShouldBeUnique
@@ -40,20 +39,21 @@ class ProcessSongJob implements ShouldQueue, ShouldBeUnique
                 $decodedUrl = urldecode($this->song->original_download_url);
                 $url = str_replace('https://', 'http://', $decodedUrl);
 
-                $blob = ProxyService::instance()
+                $response = ProxyService::instance()
+                    ->asForm()
+                    ->withUserAgent(null)
                     ->withOptions([
                         RequestOptions::DECODE_CONTENT => false
                     ])
                     ->retry(3, 1000)
                     ->timeout(600)
-                    ->get($url)
-                    ->body();
+                    ->get($url);
 
-                if (Str::contains($blob, ['404', 'Not Found'])) {
+                if ($response->status() === 404) {
                     throw new NewGroundsProxyException(__('gdcn.song.error.process_failed_remote_not_found'));
                 }
 
-                $this->song->data = $blob;
+                $this->song->data = $response->body();
             } catch (ClientExceptionInterface $ex) {
                 throw new NewGroundsProxyException(
                     __('gdcn.song.error.process_failed_request_error', [
