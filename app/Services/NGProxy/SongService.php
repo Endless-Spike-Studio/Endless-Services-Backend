@@ -121,10 +121,8 @@ class SongService
                     ])
                     ->get($url);
 
-                if (!$response->ok()) {
-                    throw new NewGroundsProxyException(__('gdcn.song.error.process_failed'), log_context: [
-                        'response' => $response
-                    ]);
+                if (!$response->successful()) {
+                    throw new NewGroundsProxyException(__('gdcn.song.error.process_failed'));
                 }
 
                 $song->data = $response->body();
