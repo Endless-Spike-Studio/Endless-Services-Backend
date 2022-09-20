@@ -49,5 +49,7 @@ Route::group([
     'domain' => 'ng.geometrydashchinese.com',
     'as' => 'ngproxy.'
 ], static function () {
-    Route::get('/{id?}', [NGProxy_HomePresenter::class, 'render'])->name('home');
+    Route::get('/{id?}', [NGProxy_HomePresenter::class, 'render'])
+        ->where('id', '\d+')
+        ->name('home');
 });

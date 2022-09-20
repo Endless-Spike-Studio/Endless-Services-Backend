@@ -16,6 +16,7 @@ import {ExtraMenuOption} from "@/scripts/types/menu";
 import {useGeometryDashChineseServerStore} from "@/scripts/core/stores";
 import Menus from "@/views/components/Menus.vue";
 import event from "@/scripts/core/event";
+import {Inertia} from "@inertiajs/inertia";
 
 const GDCS = useGeometryDashChineseServerStore();
 provide('product.name', 'GDCS');
@@ -47,7 +48,7 @@ const options = {
     },
     login: {
         label: '登录',
-        key: 'login',
+        key: 'auth',
         route: 'gdcs.auth.login',
         icon: () => h(NIcon, {
             component: LoginOutlined
@@ -95,6 +96,7 @@ const menu = reactive({
 
         update();
         event.once('routes.loaded', update);
+        Inertia.on('finish', update);
 
         return reference;
     })(),

@@ -12,7 +12,7 @@ class HomePresenter
     /**
      * @throws NewGroundsProxyException
      */
-    public function render(string $id): Response
+    public function render(int $id = 0): Response
     {
         if (is_numeric($id) && $id > 0) {
             $song = app(SongService::class)->find($id);

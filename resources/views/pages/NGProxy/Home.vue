@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import {App} from "@/scripts/types/backend";
-import {isMobile, visit} from "@/scripts/core/utils";
+import {isMobile} from "@/scripts/core/utils";
 import route from "@/scripts/core/route";
+import {useForm} from "@inertiajs/inertia-vue3";
 
 const props = defineProps<{
     song: App.Models.NGProxy.Song | null;
 }>();
 
 const songID = ref<number>();
+const form = useForm({});
 const {decodeURIComponent} = window;
 
 if (props.song !== null) {
@@ -19,7 +21,7 @@ function querySong() {
         return false;
     }
 
-    visit(
+    form.get(
         route('ngproxy.home', {
             id: songID.value
         })
@@ -32,7 +34,7 @@ function querySong() {
         <n-space justify="center">
             <n-input-number v-model:value="songID" :min="1" :step="1" placeholder="歌曲ID"/>
 
-            <n-button @click="querySong">
+            <n-button :disabled="form.processing" @click="querySong">
                 查询
             </n-button>
         </n-space>
