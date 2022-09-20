@@ -16,7 +16,7 @@ class ResponseService extends BaseGameService
             empty($data)
             || Str::startsWith($data, 'error')
             || Str::startsWith($data, '<')
-            || Str::matchAll('/^(-)(\d+)$/', $data)->isNotEmpty()
+            || (is_numeric($data) && $data <= 0)
         ) {
             throw new ResponseException(__('gdcn.response.error.invalid'), log_context: ['data' => $data]);
         }
