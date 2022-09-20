@@ -3,6 +3,7 @@
 namespace App\Services\Storage;
 
 use App\Exceptions\StorageException;
+use DateTimeInterface;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -128,5 +129,26 @@ class BaseStorageService
         }
 
         throw new StorageException(__('gdcn.storage.error.download_failed_not_found'), http_code: 404);
+    }
+
+    /**
+     * @throws StorageException
+     */
+    public function getTemporaryUrl(array $data, DateTimeInterface $expiration): string
+    {
+        foreach ($this->storages as $storage) {
+            $disk = Storage::disk($storage['disk']);
+            $path = $storage['format'];
+
+            foreach ($data as $key => $value) {
+                $path = Str::replace('{' . $key . '}', $value, $path);
+            }
+
+            if ($disk->exists($path)) {
+                return $disk->temporaryUrl($path, $expiration);
+            }
+        }
+
+        throw new StorageException(__('gdcn.storage.error.fetch_failed_not_found'), http_code: 404);
     }
 }
