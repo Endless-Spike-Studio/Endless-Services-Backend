@@ -49,11 +49,13 @@ class ProcessSongJob implements ShouldQueue, ShouldBeUnique
                     ->timeout(600)
                     ->get($url);
 
-                if ($response->status() === 404) {
-                    throw new NewGroundsProxyException(__('gdcn.song.error.process_failed_remote_not_found'));
+                if ($response->ok()) {
+                    $this->song->data = $response->body();
                 }
 
-                $this->song->data = $response->body();
+                throw new NewGroundsProxyException(__('gdcn.song.error.process_failed'), log_context: [
+                    'response' => $response
+                ]);
             } catch (ClientExceptionInterface $ex) {
                 throw new NewGroundsProxyException(
                     __('gdcn.song.error.process_failed_request_error', [

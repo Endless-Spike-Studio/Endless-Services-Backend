@@ -163,8 +163,8 @@ return [
     'song' => [
         'error' => [
             'fetch_failed' => '[歌曲] 获取失败',
+            'process_failed' => '[歌曲] 处理失败',
             'process_failed_request_error' => '[歌曲] 处理失败, 请求错误: :reason',
-            'process_failed_remote_not_found' => '[歌曲] 处理失败, 远程报错 404',
             'fetch_failed_disabled' => '[歌曲] 获取失败, 已被禁用',
             'fetch_failed_wrong_song_object' => '[歌曲] 获取失败, 错误的歌曲对象'
         ]
