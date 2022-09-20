@@ -119,8 +119,6 @@ class SongService
                     ->withOptions([
                         RequestOptions::DECODE_CONTENT => false
                     ])
-                    ->retry(3, 1000)
-                    ->timeout(600)
                     ->get($url);
 
                 if ($response->ok()) {
