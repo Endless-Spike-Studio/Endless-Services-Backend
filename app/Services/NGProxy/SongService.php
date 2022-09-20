@@ -5,13 +5,15 @@ namespace App\Services\NGProxy;
 use App\Enums\Response;
 use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\ResponseException;
-use App\Jobs\NGProxy\ProcessSongJob;
 use App\Models\NGProxy\Song;
 use App\Services\Game\ObjectService;
 use App\Services\Game\ResponseService;
 use App\Services\ProxyService;
+use App\Services\Storage\SongStorageService;
+use GuzzleHttp\RequestOptions;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Arr;
+use Psr\Http\Client\ClientExceptionInterface;
 
 class SongService
 {
@@ -35,7 +37,7 @@ class SongService
                 );
             }
 
-            ProcessSongJob::dispatch($song);
+            $this->process($song);
             return $song;
         }
 
@@ -99,7 +101,42 @@ class SongService
                 'original_download_url' => $songObject[10],
             ]);
 
-        ProcessSongJob::dispatch($song);
+        $this->process($song);
         return $song;
+    }
+
+    /**
+     * @throws NewGroundsProxyException
+     */
+    protected function process(Song $song): void
+    {
+        if (!app(SongStorageService::class)->allValid(['id' => $song->song_id])) {
+            try {
+                $url = urldecode($song->original_download_url);
+                $response = ProxyService::instance()
+                    ->asForm()
+                    ->withUserAgent(null)
+                    ->withOptions([
+                        RequestOptions::DECODE_CONTENT => false
+                    ])
+                    ->retry(3, 1000)
+                    ->timeout(600)
+                    ->get($url);
+
+                if ($response->ok()) {
+                    $song->data = $response->body();
+                }
+
+                throw new NewGroundsProxyException(__('gdcn.song.error.process_failed'), log_context: [
+                    'response' => $response
+                ]);
+            } catch (ClientExceptionInterface $ex) {
+                throw new NewGroundsProxyException(
+                    __('gdcn.song.error.process_failed_request_error', [
+                        'reason' => $ex->getMessage()
+                    ])
+                );
+            }
+        }
     }
 }
