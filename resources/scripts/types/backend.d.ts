@@ -21,12 +21,14 @@ declare module App.Models {
             mod_level: number;
             comment_color: string;
             remember_token: string;
+            user?: User;
         }
 
         export interface User extends Model {
             name: string;
             uuid: string;
             udid: string;
+            levels_count?: number;
         }
     }
 

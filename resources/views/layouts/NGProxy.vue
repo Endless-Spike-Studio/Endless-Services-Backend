@@ -5,6 +5,7 @@ import {NIcon} from "naive-ui";
 import {ApiTwotone, HomeTwotone} from "@vicons/antd";
 import {ExtraMenuOption} from "@/scripts/types/menu";
 import Menus from "@/views/components/Menus.vue";
+import {visit, visit_route} from "@/scripts/core/utils";
 
 provide('product.name', 'NGProxy');
 
@@ -12,7 +13,9 @@ const options = {
     home: {
         label: '主页',
         key: 'home',
-        route: 'ngproxy.home',
+        onSelect: () => {
+            visit_route('ngproxy.home')
+        },
         icon: () => h(NIcon, {
             component: HomeTwotone
         })
@@ -20,7 +23,9 @@ const options = {
     api: {
         label: 'Api',
         key: 'api',
-        url: 'https://docs.geometrydashchinese.com/NGProxy/api',
+        onSelect: () => {
+            visit('https://docs.geometrydashchinese.com/NGProxy/api');
+        },
         icon: () => h(NIcon, {
             component: ApiTwotone
         })

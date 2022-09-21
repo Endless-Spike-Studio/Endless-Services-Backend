@@ -2,6 +2,7 @@ import {computed, ComputedRef, ref} from "vue";
 import {usePage} from "@inertiajs/inertia-vue3";
 import {Inertia} from "@inertiajs/inertia";
 import {get} from "lodash-es";
+import route from "@/scripts/core/route";
 
 export function useProp<TValue = unknown>(key: string, defaultValue?: any): ComputedRef<TValue> {
     return computed(() => {
@@ -29,5 +30,12 @@ export function visit(url: string) {
         return Inertia.visit(url);
     }
 
-    location.href = url;
+    location.replace(url);
+}
+
+export function visit_route(...args: unknown[]) {
+    return visit(
+        // @ts-ignore
+        route(...args)
+    );
 }

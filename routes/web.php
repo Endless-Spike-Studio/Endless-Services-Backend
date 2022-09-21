@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GDCS\Web\AuthController;
+use App\Http\Presenters\GDCS\DashboardPresenter;
 use App\Http\Presenters\GDCS\HomePresenter as GDCS_HomePresenter;
 use App\Http\Presenters\NGProxy\HomePresenter as NGProxy_HomePresenter;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,7 @@ Route::group([
         'middleware' => ['auth:gdcs']
     ], static function () {
         Route::inertia('/', 'GDCS/Tools/Home')->name('home');
+        Route::get('/account/{account}', [DashboardPresenter::class, 'renderAccountInfo'])->name('info.account');
     });
 
     Route::group([

@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import {MenuOption, NImage} from "naive-ui";
-import {isMobile, visit} from "@/scripts/core/utils";
+import {isMobile} from "@/scripts/core/utils";
 import {defineProps, h, inject, ref, watch} from "vue";
 import Logo from "@/images/Logo.png";
 import {products} from "@/scripts/core/client";
 import {useAppStore} from "@/scripts/core/stores";
 import {ExtraMenuOption, Menus} from "@/scripts/types/menu";
-import route from "@/scripts/core/route";
 import {cloneDeep} from "lodash-es";
 
 const props = defineProps<{
@@ -88,14 +87,8 @@ function handleUpdate(key: string, option: ExtraMenuOption) {
     }
 
     active.value = key;
-    if ('url' in option) {
-        return visit(option.url);
-    }
-
-    if ('route' in option) {
-        return visit(
-            route(option.route)
-        );
+    if (option.onSelect !== undefined) {
+        return option.onSelect();
     }
 
     return props.onUpdate?.(key, option);

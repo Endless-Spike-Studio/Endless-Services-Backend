@@ -17,6 +17,7 @@ import {useGeometryDashChineseServerStore} from "@/scripts/core/stores";
 import Menus from "@/views/components/Menus.vue";
 import event from "@/scripts/core/event";
 import {Inertia} from "@inertiajs/inertia";
+import {visit_route} from "@/scripts/core/utils";
 
 const GDCS = useGeometryDashChineseServerStore();
 provide('product.name', 'GDCS');
@@ -25,7 +26,9 @@ const options = {
     home: {
         label: '主页',
         key: 'home',
-        route: 'gdcs.home',
+        onSelect: () => {
+            visit_route('gdcs.home');
+        },
         icon: () => h(NIcon, {
             component: HomeTwotone
         })
@@ -33,7 +36,9 @@ const options = {
     dashboard: {
         label: 'Dashboard',
         key: 'dashboard',
-        route: 'gdcs.dashboard.home',
+        onSelect: () => {
+            visit_route('gdcs.dashboard.home');
+        },
         icon: () => h(NIcon, {
             component: DashboardTwotone
         })
@@ -41,7 +46,9 @@ const options = {
     tools: {
         label: '在线工具',
         key: 'tools',
-        route: 'gdcs.tools.home',
+        onSelect: () => {
+            visit_route('gdcs.tools.home');
+        },
         icon: () => h(NIcon, {
             component: ToolTwotone
         })
@@ -49,7 +56,9 @@ const options = {
     login: {
         label: '登录',
         key: 'auth',
-        route: 'gdcs.auth.login',
+        onSelect: () => {
+            visit_route('gdcs.auth.login');
+        },
         icon: () => h(NIcon, {
             component: LoginOutlined
         })
@@ -64,7 +73,9 @@ const options = {
             {
                 label: '个人资料',
                 key: 'account.profile',
-                route: 'gdcs.dashboard.account.profile',
+                onSelect: () => {
+                    visit_route('gdcs.dashboard.account.profile');
+                },
                 icon: () => h(NIcon, {
                     component: ProfileTwotone
                 })
@@ -72,7 +83,9 @@ const options = {
             {
                 label: '登出',
                 key: 'account.logout',
-                route: 'gdcs.auth.logout.api',
+                onSelect: () => {
+                    visit_route('gdcs.auth.logout.api');
+                },
                 icon: () => h(NIcon, {
                     component: LogoutOutlined
                 })
