@@ -14,7 +14,8 @@ class DashboardPresenter
     {
         return Inertia::render('GDCS/Dashboard/Account/Info', [
             'account' => $account->load([
-                'user:id' . (Auth::guard('gdcs')->user()->is($account) ? ',uuid,udid' : null),
+                'user:id,uuid' . (Auth::guard('gdcs')->user()->is($account) ? ',udid' : null),
+                'user.score:user_id,stars,demons,creator_points',
                 'user.levels:id,name,user_id,created_at',
                 'comments:account_id,comment,created_at'
             ])->only(['id', 'name', 'created_at', 'user', 'comments']),

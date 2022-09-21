@@ -8,9 +8,10 @@ import {visit_route} from "@/scripts/core/utils";
 import {useGeometryDashChineseServerStore} from "@/scripts/core/stores";
 
 const GDCS = useGeometryDashChineseServerStore();
-const props = defineProps<{
+
+defineProps<{
     account: App.Models.GDCS.Account;
-    friends: App.Models.GDCS.Account[];
+    friends: App.Models.GDCS.AccountFriend[];
     comments_count: number;
     levels_count: number;
 }>();
@@ -128,16 +129,47 @@ const aside = reactive({
                     <n-space vertical>
                         <n-space justify="center">
                             <n-text>ID: {{ account.id }}</n-text>
+                            <n-text>UID: {{ account.user.id ?? '未知' }}</n-text>
                             <n-text>注册时间: {{ new Date(account.created_at).toLocaleString() ?? '未知' }}</n-text>
                         </n-space>
 
                         <n-divider/>
 
-                        <n-space justify="space-evenly">
-                            <n-statistic :value="friends.length" label="好友"/>
-                            <n-statistic :value="comments_count" label="评论"/>
-                            <n-statistic :value="levels_count" label="关卡"/>
-                        </n-space>
+                        <n-grid :x-gap="10" :y-gap="10" cols="3">
+                            <n-grid-item>
+                                <n-statistic :value="friends.length.toString()" label="好友"/>
+                            </n-grid-item>
+
+                            <n-grid-item>
+                                <n-statistic :value="comments_count.toString()" label="评论"/>
+                            </n-grid-item>
+
+                            <n-grid-item>
+                                <n-statistic :value="levels_count.toString()" label="关卡"/>
+                            </n-grid-item>
+
+                            <n-grid-item>
+                                <n-statistic :value="account.user.score.stars.toString()" label="星星"/>
+                            </n-grid-item>
+
+                            <n-grid-item>
+                                <n-statistic :value="account.user.score.demons.toString()" label="恶魔"/>
+                            </n-grid-item>
+
+                            <n-grid-item>
+                                <n-statistic :value="account.user.score.creator_points.toString()">
+                                    <template #label>
+                                        <n-popover>
+                                            <template #trigger>
+                                                <n-text type="info">CP</n-text>
+                                            </template>
+
+                                            <n-text>Creator Points</n-text>
+                                        </n-popover>
+                                    </template>
+                                </n-statistic>
+                            </n-grid-item>
+                        </n-grid>
 
                         <n-el v-if="GDCS.account.id === account.id">
                             <n-divider/>

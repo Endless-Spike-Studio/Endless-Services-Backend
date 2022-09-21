@@ -74,7 +74,9 @@ const options = {
                 label: '个人资料',
                 key: 'account.profile',
                 onSelect: () => {
-                    visit_route('gdcs.dashboard.account.profile');
+                    visit_route('gdcs.dashboard.info.account', {
+                        account: GDCS.account.id
+                    });
                 },
                 icon: () => h(NIcon, {
                     component: ProfileTwotone
