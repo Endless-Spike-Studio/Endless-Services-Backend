@@ -10,10 +10,8 @@ use App\Services\Storage\SongStorageService;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Redirect;
 use Psr\Http\Client\ClientExceptionInterface;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Song extends Model
 {
@@ -62,7 +60,7 @@ class Song extends Model
      * @throws NewGroundsProxyException
      * @throws StorageException
      */
-    public function download(): RedirectResponse
+    public function download(): StreamedResponse
     {
         try {
             $url = str_replace('https://', 'http://', urldecode($this->original_download_url));
@@ -84,12 +82,7 @@ class Song extends Model
                 $this->data = $response->body();
             }
 
-            return Redirect::away(
-                $storage->temporaryUrl(
-                    $data,
-                    Carbon::now()->addMinutes(30)
-                )
-            );
+            return $storage->download($data);
         } catch (ClientExceptionInterface $ex) {
             throw new NewGroundsProxyException(
                 __('gdcn.song.error.process_failed_request_error', [
