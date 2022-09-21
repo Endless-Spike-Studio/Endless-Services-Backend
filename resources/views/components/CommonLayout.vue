@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useProp} from "@/scripts/core/utils";
+import {isMobile, useProp} from "@/scripts/core/utils";
 import {Laravel, Php} from "@vicons/fa";
 import {useAppStore} from "@/scripts/core/stores";
 import {CommitRound} from "@vicons/material";
@@ -57,7 +57,7 @@ const backend_git_commit_hash = useProp<string>('git_commit_hash');
                             <n-layout-footer
                                 class="p-2.5 transition-all hover:!bottom-0 lg:!bottom-0 !bottom-[-75px] hover"
                                 position="absolute">
-                                <n-grid :x-gap="10" :y-gap="10" cols="1 768:3">
+                                <n-grid :x-gap="10" :y-gap="10" cols="1 768:2">
                                     <n-grid-item class="lg:float-left lg:text-left text-center">
                                         <n-text>&copy; 2022 - {{ new Date().getFullYear() }}</n-text>
                                         <n-divider vertical/>
@@ -69,27 +69,6 @@ const backend_git_commit_hash = useProp<string>('git_commit_hash');
                                         <n-divider vertical/>
                                         <n-button href="https://beian.miit.gov.cn" tag="a" text>
                                             吉ICP备18006293号
-                                        </n-button>
-                                    </n-grid-item>
-
-                                    <n-grid-item class="lg:mx-auto text-center">
-                                        <n-button :type="(router.current('gdcs.*') ? 'success' : undefined)"
-                                                  href="https://gf.geometrydashchinese.com" tag="a" text>
-                                            GDCS
-                                        </n-button>
-
-                                        <n-divider vertical/>
-
-                                        <n-button :type="(router.current('gdproxy.*') ? 'success' : undefined)"
-                                                  href="https://dl.geometrydashchinese.com" tag="a" text>
-                                            GDProxy
-                                        </n-button>
-
-                                        <n-divider vertical/>
-
-                                        <n-button :type="(router.current('ngproxy.*') ? 'success'  : undefined)"
-                                                  href="https://ng.geometrydashchinese.com" tag="a" text>
-                                            NGProxy
                                         </n-button>
                                     </n-grid-item>
 
@@ -137,6 +116,27 @@ const backend_git_commit_hash = useProp<string>('git_commit_hash');
                                             </n-grid>
 
                                             <n-text v-else>{{ backend_git_commit_hash }}</n-text>
+                                        </n-button>
+                                    </n-grid-item>
+
+                                    <n-grid-item v-if="isMobile" class="lg:mx-auto text-center">
+                                        <n-button :type="(router.current('gdcs.*') ? 'success' : undefined)"
+                                                  href="https://gf.geometrydashchinese.com" tag="a" text>
+                                            GDCS
+                                        </n-button>
+
+                                        <n-divider vertical/>
+
+                                        <n-button :type="(router.current('gdproxy.*') ? 'success' : undefined)"
+                                                  href="https://dl.geometrydashchinese.com" tag="a" text>
+                                            GDProxy
+                                        </n-button>
+
+                                        <n-divider vertical/>
+
+                                        <n-button :type="(router.current('ngproxy.*') ? 'success'  : undefined)"
+                                                  href="https://ng.geometrydashchinese.com" tag="a" text>
+                                            NGProxy
                                         </n-button>
                                     </n-grid-item>
                                 </n-grid>
