@@ -12,9 +12,18 @@ class DashboardPresenter
 {
     public function renderAccountInfo(Account $account): Response
     {
+        $extraUserLoad = null;
+        $isOwner = Auth::guard('gdcs')
+            ->user()
+            ->is($account);
+
+        if ($isOwner) {
+            $extraUserLoad = ',udid';
+        }
+
         return Inertia::render('GDCS/Dashboard/Account/Info', [
             'account' => $account->load([
-                'user:id,uuid' . (Auth::guard('gdcs')->user()->is($account) ? ',udid' : null),
+                'user:id,uuid' . $extraUserLoad,
                 'user.score:user_id,stars,demons,creator_points',
                 'user.levels:id,name,user_id,created_at',
                 'comments:account_id,comment,created_at'
