@@ -7,14 +7,15 @@ import {NIcon} from "naive-ui";
 import {visit_route} from "@/scripts/core/utils";
 import {useGeometryDashChineseServerStore} from "@/scripts/core/stores";
 
-const GDCS = useGeometryDashChineseServerStore();
-
-defineProps<{
+const props = defineProps<{
     account: App.Models.GDCS.Account;
     friends: App.Models.GDCS.AccountFriend[];
     comments_count: number;
     levels_count: number;
 }>();
+
+const GDCS = useGeometryDashChineseServerStore();
+const isOwner = GDCS.account.id === props.account.id;
 
 const aside = reactive({
     active: ref('profile'),
@@ -130,6 +131,7 @@ const aside = reactive({
                         <n-space justify="center">
                             <n-text>ID: {{ account.id }}</n-text>
                             <n-text>UID: {{ account.user.id ?? '未知' }}</n-text>
+                            <n-text v-if="isOwner">UUID: {{ account.user.uuid }}</n-text>
                             <n-text>注册时间: {{ new Date(account.created_at).toLocaleString() ?? '未知' }}</n-text>
                         </n-space>
 
@@ -171,19 +173,12 @@ const aside = reactive({
                             </n-grid-item>
                         </n-grid>
 
-                        <n-el v-if="GDCS.account.id === account.id">
+                        <n-el v-if="isOwner">
                             <n-divider/>
-
-                            <n-space justify="center">
-                                <n-text>
-                                    UUID: {{ account.user.uuid }}
-                                </n-text>
-
-                                <n-text>
-                                    UDID:
-                                    <n-ellipsis class="!max-w-[75%]">{{ account.user.udid }}</n-ellipsis>
-                                </n-text>
-                            </n-space>
+                            <n-text v-if="isOwner">
+                                UDID:
+                                <n-ellipsis class="!max-w-[75%]">{{ account.user.udid }}</n-ellipsis>
+                            </n-text>
                         </n-el>
                     </n-space>
                 </n-card>
