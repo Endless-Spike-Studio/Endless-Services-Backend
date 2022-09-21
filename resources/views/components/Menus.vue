@@ -51,14 +51,15 @@ const processedOptions = (() => {
     const reference = ref();
 
     function update() {
+        const productSwitcher = cloneDeep(productSwitcherOption);
         const items = cloneDeep(props.options);
 
         if (isMobile.value) {
             items.mobile.unshift(themeSwitcherOption);
-            productSwitcherOption.children = items.mobile;
-            items.mobile = [productSwitcherOption];
+            productSwitcher.children = items.mobile;
+            items.mobile = [productSwitcher];
         } else {
-            productSwitcherOption.children = products.filter(product => productName !== product.name)
+            productSwitcher.children = products.filter(product => productName !== product.name)
                 .map(product => {
                     return {
                         label: product.name,
@@ -67,7 +68,7 @@ const processedOptions = (() => {
                     }
                 });
 
-            items.left.unshift(productSwitcherOption);
+            items.left.unshift(productSwitcher);
             items.right.unshift(themeSwitcherOption);
         }
 
