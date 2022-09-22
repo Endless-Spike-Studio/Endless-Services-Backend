@@ -28,4 +28,3 @@ yarn-error.log
 /storage/*.key
 rr
 .rr.yaml
-components.d.ts

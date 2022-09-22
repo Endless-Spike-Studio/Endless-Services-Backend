@@ -67,7 +67,7 @@ jobs:
 
       - name: Initialize project
         run: |
-          cp .env.ci .env
+          cp .env.example .env
           php artisan key:generate
 
       - name: Execute tests
