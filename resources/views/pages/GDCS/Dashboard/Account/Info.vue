@@ -2,10 +2,11 @@
 import {App} from "@/scripts/types/backend";
 import {decode as DecodeBase64} from "js-base64";
 import {ExtraMenuOption} from "@/scripts/types/menu";
-import {UserOutlined, UserSwitchOutlined} from "@vicons/antd";
+import {MailOutlined, UserAddOutlined, UserDeleteOutlined, UserOutlined, UserSwitchOutlined} from "@vicons/antd";
 import {NIcon} from "naive-ui";
 import {visit_route} from "@/scripts/core/utils";
 import {useGeometryDashChineseServerStore} from "@/scripts/core/stores";
+import {BlockTwotone} from "@vicons/material";
 
 const props = defineProps<{
     account: App.Models.GDCS.Account;
@@ -14,11 +15,14 @@ const props = defineProps<{
     levels_count: number;
 }>();
 
+const $message = useMessage();
 const GDCS = useGeometryDashChineseServerStore();
 const isOwner = GDCS.account.id === props.account.id;
+const isFriend = props.friends.find(friend => friend.account_id === GDCS.account.id || friend.friend_account_id === GDCS.account.id);
 
 const aside = reactive({
     active: ref('profile'),
+    action: ref('unknown'),
     options: [
         {
             label: '基本资料',
@@ -34,8 +38,59 @@ const aside = reactive({
                 component: UserSwitchOutlined
             })
         }
+    ] as ExtraMenuOption[],
+    actions: [
+        {
+            label: '发送私信',
+            key: 'message.send',
+            disabled: isOwner,
+            icon: () => h(NIcon, {
+                component: MailOutlined
+            }),
+            onSelect: () => {
+                $message.info('未完成');
+            }
+        },
+        {
+            label: () => isFriend ? '删除好友' : '发送好友请求',
+            key: 'friend.add',
+            disabled: isOwner && !isFriend,
+            icon: () => h(NIcon, {
+                component: isFriend ? UserDeleteOutlined : UserAddOutlined
+            }),
+            onSelect: () => {
+                $message.info('未完成');
+            }
+        },
+        {
+            label: '拉黑',
+            key: 'block',
+            disabled: isOwner,
+            icon: () => h(NIcon, {
+                component: BlockTwotone
+            }),
+            onSelect: () => {
+                $message.info('未完成');
+            }
+        }
     ] as ExtraMenuOption[]
 });
+
+function handleAsideUpdate(_key: string, option: ExtraMenuOption) {
+    if (option.onSelect !== undefined) {
+        return option.onSelect();
+    }
+}
+
+function handleAsideActionUpdate(_key: string, option: ExtraMenuOption) {
+    setTimeout(() => {
+        aside.action = 'unknown';
+    }, 250);
+
+    if (option.onSelect !== undefined) {
+        return option.onSelect();
+    }
+}
 </script>
 
 <template layout="GDCS">
@@ -43,7 +98,13 @@ const aside = reactive({
         <n-grid :x-gap="10" :y-gap="10" cols="1 768:4">
             <n-grid-item class="text-left">
                 <n-card content-style="padding: 0;">
-                    <n-menu v-model:value="aside.active" :options="aside.options"/>
+                    <n-menu v-model:value="aside.active" :options="aside.options" @update:value="handleAsideUpdate"/>
+                    <n-divider>操作</n-divider>
+
+                    <n-menu v-model:value="aside.action"
+                            :options="aside.actions"
+                            inverted
+                            @update:value="handleAsideActionUpdate"/>
                 </n-card>
             </n-grid-item>
 
