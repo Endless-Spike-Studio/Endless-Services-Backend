@@ -221,7 +221,7 @@ class LevelController extends Controller
                     break;
                 default:
                     $query->whereHas('rating', function ($query) use ($data) {
-                        $query->whereIn('difficulty', str_replace(',', '0,', $data['diff']) . '0');
+                        $query->whereIn('difficulty', explode(',', str_replace(',', '0,', $data['diff']) . '0'));
                     });
                     break;
             }
