@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {MenuOption, NImage} from "naive-ui";
-import {isMobile} from "@/scripts/core/utils";
+import {isMobile, visit_route} from "@/scripts/core/utils";
 import {defineProps, h, inject, ref, watch} from "vue";
 import Logo from "@/images/Logo.png";
 import {products} from "@/scripts/core/client";
@@ -63,8 +63,10 @@ const processedOptions = (() => {
                     return {
                         label: product.name,
                         key: product.name.toLowerCase(),
-                        route: product.route
-                    }
+                        onSelect: () => {
+                            visit_route(product.route);
+                        }
+                    } as ExtraMenuOption;
                 });
 
             items.left.unshift(productSwitcher);

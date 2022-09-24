@@ -3,6 +3,7 @@
 use App\Http\Controllers\GDCS\Web\AuthController;
 use App\Http\Presenters\GDCS\DashboardPresenter;
 use App\Http\Presenters\GDCS\HomePresenter as GDCS_HomePresenter;
+use App\Http\Presenters\GDProxy\HomePresenter as GDProxy_HomePresenter;
 use App\Http\Presenters\NGProxy\HomePresenter as NGProxy_HomePresenter;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +46,13 @@ Route::group([
     ], static function () {
         Route::inertia('/', 'GDCS/Tools/Home')->name('home');
     });
+});
+
+Route::group([
+    'domain' => 'dl.geometrydashchinese.com',
+    'as' => 'gdproxy.'
+], static function () {
+    Route::get('/', [GDProxy_HomePresenter::class, 'render'])->name('home');
 });
 
 Route::group([

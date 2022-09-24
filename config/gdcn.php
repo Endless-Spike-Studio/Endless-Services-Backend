@@ -27,7 +27,11 @@ return [
         ],
     ],
     'proxy' => [
-        'url' => env('PROXY_URL'),
+        'url' => env('CLASH_URL'),
+        'api' => [
+            'url' => env('CLASH_API'),
+            'secret' => env('CLASH_API_SECRET')
+        ],
         'base' => 'http://www.boomlings.com/database'
     ],
     'game' => [
