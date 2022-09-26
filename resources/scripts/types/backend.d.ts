@@ -23,6 +23,16 @@ declare module App.Models {
             remember_token: string;
             user?: User;
             comments?: AccountComment[];
+            links?: AccountLink[];
+        }
+
+        export interface AccountLink extends Model {
+            account?: Account;
+            account_id: number;
+            server: string;
+            target_name: string;
+            target_account_id: number;
+            target_user_id: number;
         }
 
         export interface AccountComment extends Model {

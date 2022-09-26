@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {MenuOption, NImage} from "naive-ui";
 import {isMobile, visit_route} from "@/scripts/core/utils";
-import {defineProps, h, inject, ref, watch} from "vue";
+import {h, inject, ref, watch} from "vue";
 import Logo from "@/images/Logo.png";
 import {products} from "@/scripts/core/client";
 import {useAppStore} from "@/scripts/core/stores";
@@ -77,7 +77,7 @@ const processedOptions = (() => {
     }
 
     update();
-    watch(props, update);
+    watch([isMobile, props], update);
 
     return reference;
 })();

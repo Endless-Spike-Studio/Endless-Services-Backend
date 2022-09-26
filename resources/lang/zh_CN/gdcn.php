@@ -182,5 +182,17 @@ return [
         'error' => [
             'login_failed' => '[网页] 登录失败!'
         ]
+    ],
+    'tools' => [
+        'action' => [
+            'account_link_delete_success' => '[账号链接] 删除成功!',
+            'account_link_create_success' => '[账号链接] 创建成功!'
+        ],
+        'error' => [
+            'account_link_delete_failed_not_owner' => '[账号链接] 删除失败, 该链接不属于你',
+            'account_link_create_failed_request_error' => '[账号链接] 创建失败, 请求错误',
+            'account_link_create_failed_response_error' => '[账号链接] 创建失败, 响应错误',
+            'account_link_create_failed_already_linked' => '[账号链接] 创建失败, 目标账号已经被链接过了'
+        ]
     ]
 ];

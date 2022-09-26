@@ -2,7 +2,7 @@
 import {FormInst, FormRules} from 'naive-ui'
 import {useForm} from '@inertiajs/inertia-vue3'
 import route from '@/scripts/core/route'
-import {visit} from '@/scripts/core/utils'
+import {visit_route} from '@/scripts/core/utils'
 import {ref, watch} from "vue";
 
 const el = ref<FormInst>();
@@ -13,7 +13,7 @@ const form = useForm({
 
 watch([el, form], () => {
     el.value?.validate();
-})
+});
 
 const rules = {
     name: {
@@ -27,6 +27,12 @@ const rules = {
         validator: () => Promise.reject(form.errors.password)
     }
 } as FormRules;
+
+function login() {
+    form.post(
+        route('gdcs.auth.login.api')
+    );
+}
 </script>
 
 <template layout="GDCS">
@@ -41,8 +47,8 @@ const rules = {
             </n-form-item>
 
             <n-space justify="space-between">
-                <n-button :disabled="form.processing" @click="form.post(route('gdcs.auth.login.api'))">登录</n-button>
-                <n-button text @click="visit(route('gdcs.auth.register'))">没有账号? 去注册</n-button>
+                <n-button :disabled="form.processing" :loading="form.processing" @click="login">登录</n-button>
+                <n-button text @click="visit_route('gdcs.auth.register')">没有账号? 去注册</n-button>
             </n-space>
         </n-form>
     </n-card>
