@@ -3,8 +3,9 @@ import {App} from "@/scripts/types/backend";
 import {DataTableColumn} from "naive-ui";
 import Action from "./Action.vue";
 import Create from "./Create.vue";
+import {useProp} from "@/scripts/core/utils";
 
-defineProps<{
+const props = defineProps<{
     links: App.Models.GDCS.AccountLink[]
 }>();
 
@@ -36,6 +37,13 @@ function createLink() {
         title: '创建账号链接',
         showIcon: false,
         content: () => h(Create)
+    });
+
+    const cancelWatch = watch(useProp<App.Models.GDCS.AccountLink[]>('links'), (newLinks, oldLinks) => {
+        if (newLinks.length > oldLinks.length) {
+            cancelWatch();
+            dialog.destroy();
+        }
     });
 }
 </script>
