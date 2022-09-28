@@ -62,8 +62,8 @@ declare module App.Models {
         }
 
         export interface Level extends Model {
+            user?: User;
             user_id: number;
-            user: User;
             name: string;
             desc: string;
             downloads: number;
@@ -72,10 +72,10 @@ declare module App.Models {
             length: number;
             password: number;
             audio_track: number;
+            song?: NGProxy.Song;
             song_id: number;
-            song: NGProxy.Song;
+            original?: Level;
             original_level_id: number;
-            original: Level;
             two_player: boolean;
             objects: number;
             coins: number;
@@ -84,15 +84,16 @@ declare module App.Models {
             ldm: boolean;
             created_at: string;
             updated_at: string;
-            rating: LevelRating;
-            comments: LevelComment[];
-            daily: DailyLevel;
-            weekly: WeeklyLevel;
+            rating?: LevelRating;
+            comments?: LevelComment[];
+            daily?: DailyLevel;
+            weekly?: WeeklyLevel;
         }
 
         export interface LevelComment extends Model {
+            account?: Account;
             account_id: number;
-            account: Account;
+            level?: Level;
             level_id: number;
             comment: string;
             likes: number;
@@ -100,6 +101,7 @@ declare module App.Models {
         }
 
         export interface LevelRating extends Model {
+            level?: Level;
             level_id: number;
             difficulty: number;
             featured_score: number;
@@ -112,11 +114,13 @@ declare module App.Models {
         }
 
         export interface DailyLevel extends Model {
+            level?: Level;
             level_id: number;
             apply_at: string;
         }
 
         export interface WeeklyLevel extends Model {
+            level?: Level;
             level_id: number;
             apply_at: string;
         }
@@ -144,6 +148,15 @@ declare module App.Models {
             acc_spider: number;
             acc_explosion: number;
             creator_points: number;
+        }
+
+        export interface CustomSong extends Model {
+            account?: Account;
+            account_id: number;
+            name: string;
+            artist_name: string;
+            size: number;
+            download_url: string;
         }
     }
 

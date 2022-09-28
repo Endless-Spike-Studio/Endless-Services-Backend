@@ -2,16 +2,15 @@
 
 namespace App\Http\Requests;
 
-class PaginationRequest extends Request{
+class PaginationRequest extends Request
+{
     public function rules(): array
     {
         return [
-            //
+            'page' => [
+                'required',
+                'integer'
+            ]
         ];
-    }
-
-    public function authorize(): bool
-    {
-        return true;
     }
 }

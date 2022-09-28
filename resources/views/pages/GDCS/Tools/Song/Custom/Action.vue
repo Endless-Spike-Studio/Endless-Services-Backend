@@ -1,13 +1,13 @@
-<template>
-$END$
-</template>
+<script lang="ts" setup>
+import {App} from "@/scripts/types/backend";
 
-<script>
-export default {
-name: "Action"
-}
+defineProps<{
+    item: App.Models.GDCS.CustomSong;
+}>();
 </script>
 
-<style scoped>
-
-</style>
+<template>
+    <n-space>
+        <n-button :href="item.download_url" tag="a">试听</n-button>
+    </n-space>
+</template>

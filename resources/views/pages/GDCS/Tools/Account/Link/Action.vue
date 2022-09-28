@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import {App} from "@/scripts/types/backend";
-import {visit} from "@/scripts/core/utils";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 
@@ -21,7 +20,7 @@ function deleteLink() {
 
 <template>
     <n-space>
-        <n-button @click="visit('https://gdbrowser.com/u/' + item.target_name)">
+        <n-button :href="('https://gdbrowser.com/u/' + item.target_name)" tag="a">
             <n-text>查看</n-text>
         </n-button>
 

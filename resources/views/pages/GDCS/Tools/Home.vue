@@ -91,7 +91,7 @@ function handleAsideUpdate(_key: string, option: ExtraMenuOption) {
                     <n-tab-pane name="song">
                         <n-card>
                             <n-space>
-                                <n-button>
+                                <n-button @click="visit_route('gdcs.tools.song.custom.home')">
                                     <template #icon>
                                         <n-icon :component="LibraryMusicRound"/>
                                     </template>

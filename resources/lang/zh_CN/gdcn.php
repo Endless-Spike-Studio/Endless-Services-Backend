@@ -186,13 +186,18 @@ return [
     'tools' => [
         'action' => [
             'account_link_delete_success' => '[账号链接] 删除成功!',
-            'account_link_create_success' => '[账号链接] 创建成功!'
+            'account_link_create_success' => '[账号链接] 创建成功!',
+            'custom_song_create_success' => '[自定义歌曲] 创建成功!'
         ],
         'error' => [
             'account_link_delete_failed_not_owner' => '[账号链接] 删除失败, 该链接不属于你',
             'account_link_create_failed_request_error' => '[账号链接] 创建失败, 请求错误',
             'account_link_create_failed_response_error' => '[账号链接] 创建失败, 响应错误',
-            'account_link_create_failed_already_linked' => '[账号链接] 创建失败, 目标账号已经被链接过了'
+            'account_link_create_failed_already_linked' => '[账号链接] 创建失败, 目标账号已经被链接过了',
+            'custom_song_create_failed_already_exists_with_id' => '[自定义歌曲] 创建失败, 目标歌曲已经被上传过了, 歌曲ID: :id',
+            'custom_song_create_failed_target_music_not_found' => '[自定义歌曲] 创建失败, 目标音乐未找到 (或不存在)',
+            'custom_song_create_failed_request_error' => '[自定义歌曲] 创建失败, 请求错误',
+            'custom_song_create_failed_content_invalid' => '[自定义歌曲] 创建失败, 内容无效'
         ]
     ]
 ];

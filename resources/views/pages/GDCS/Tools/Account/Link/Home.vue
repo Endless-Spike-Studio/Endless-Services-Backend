@@ -3,7 +3,7 @@ import {App} from "@/scripts/types/backend";
 import {DataTableColumn} from "naive-ui";
 import Action from "./Action.vue";
 import Create from "./Create.vue";
-import {useProp} from "@/scripts/core/utils";
+import {isMobile, useProp} from "@/scripts/core/utils";
 
 const props = defineProps<{
     links: App.Models.GDCS.AccountLink[]
@@ -49,13 +49,15 @@ function createLink() {
 </script>
 
 <template layout="GDCS">
-    <n-el class="lg:w-1/2 mx-auto">
+    <n-el class="lg:w-2/3 mx-auto">
         <n-card title="账号链接">
             <template #header-extra>
-                <n-button class="float-right" @click="createLink">创建</n-button>
+                <n-button @click="createLink">创建</n-button>
             </template>
 
-            <n-data-table :columns="columns" :data="links"/>
+            <n-data-table :columns="columns" :data="links"
+                          :max-height="500"
+                          :pagination="{ pageSize: 10 }" :scroll-x="1000" :virtual-scroll="isMobile"/>
         </n-card>
     </n-el>
 </template>
