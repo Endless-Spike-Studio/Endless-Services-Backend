@@ -33,12 +33,6 @@ const aside = reactive({
         }
     ] as ExtraMenuOption[]
 });
-
-function handleAsideUpdate(_key: string, option: ExtraMenuOption) {
-    if (option.onSelect !== undefined) {
-        return option.onSelect();
-    }
-}
 </script>
 
 <template layout="GDCS">
@@ -46,7 +40,7 @@ function handleAsideUpdate(_key: string, option: ExtraMenuOption) {
         <n-grid :x-gap="10" :y-gap="10" cols="1 768:3">
             <n-grid-item class="text-left">
                 <n-card content-style="padding: 0;">
-                    <n-menu v-model:value="aside.active" :options="aside.options" @update:value="handleAsideUpdate"/>
+                    <n-menu v-model:value="aside.active" :options="aside.options"/>
                 </n-card>
             </n-grid-item>
 
@@ -69,7 +63,7 @@ function handleAsideUpdate(_key: string, option: ExtraMenuOption) {
                     <n-tab-pane name="level">
                         <n-card>
                             <n-space>
-                                <n-button>
+                                <n-button @click="visit_route('gdcs.tools.level.transfer.home')">
                                     <template #icon>
                                         <n-icon :component="SwitchHorizontal"/>
                                     </template>

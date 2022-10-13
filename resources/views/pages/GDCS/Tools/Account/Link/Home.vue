@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import {App} from "@/scripts/types/backend";
 import {DataTableColumn} from "naive-ui";
-import Action from "./Action.vue";
-import Create from "./Create.vue";
+import Action from "@/views/pages/GDCS/Tools/Account/Link/Action.vue";
+import Create from "@/views/pages/GDCS/Tools/Account/Link/Create.vue";
 import {isMobile, useProp} from "@/scripts/core/utils";
 
 const props = defineProps<{
@@ -20,12 +20,10 @@ const columns = [
     },
     {
         title: '绑定账号',
-        key: 'target_account',
         render: (item: App.Models.GDCS.AccountLink) => `${item.target_name} [${item.target_account_id}, ${item.target_user_id}]`
     },
     {
         title: '操作',
-        key: 'action',
         render: (item: App.Models.GDCS.AccountLink) => h(Action, {item})
     }
 ] as DataTableColumn[];
@@ -56,8 +54,9 @@ function createLink() {
             </template>
 
             <n-data-table :columns="columns" :data="links"
-                          :max-height="500"
-                          :pagination="{ pageSize: 10 }" :scroll-x="1000" :virtual-scroll="isMobile"/>
+                          :max-height="isMobile ? 500 : undefined"
+                          :pagination="{ pageSize: 10 }" :scroll-x="isMobile ? 1000 : undefined"
+                          :virtual-scroll="isMobile"/>
         </n-card>
     </n-el>
 </template>

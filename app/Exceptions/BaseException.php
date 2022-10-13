@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\GDCS\WebException;
 use App\Http\Traits\HasMessage;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -50,14 +51,14 @@ class BaseException extends Exception
 
     /**
      * @return HttpResponse|RedirectResponse|void
+     * @throws WebException
      */
     public function render()
     {
         $message = $this->formatMessage($this->message);
 
         if (Request::hasHeader('X-Inertia')) {
-            $this->pushErrorMessage($message);
-            return back();
+            throw new WebException($message);
         }
 
         if (Request::has('secret')) {

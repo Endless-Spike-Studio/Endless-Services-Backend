@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {App} from "@/scripts/types/backend";
 import {DataTableColumn, NButton, NDataTable} from "naive-ui";
-import Action from "./Action.vue";
+import Action from "@/views/pages/GDCS/Tools/Song/Custom/Action.vue";
 import {isMobile, useProp, visit_route} from "@/scripts/core/utils";
-import Create from "./Create.vue";
+import Create from "@/views/pages/GDCS/Tools/Song/Custom/Create.vue";
 
 const props = defineProps<{
     offset: number;
@@ -18,7 +18,6 @@ const columns = [
     },
     {
         title: '上传者',
-        key: 'account',
         render: (item: App.Models.GDCS.CustomSong) => {
             if (!item.account) {
                 return '未知';
@@ -35,7 +34,6 @@ const columns = [
     },
     {
         title: '歌曲ID',
-        key: 'song_id',
         render: (item: App.Models.GDCS.CustomSong) => props.offset + item.id
     },
     {
@@ -48,7 +46,6 @@ const columns = [
     },
     {
         title: '大小',
-        key: 'size',
         sorter: 'default',
         render: (item: App.Models.GDCS.CustomSong) => item.size + ' MB'
     },
@@ -59,7 +56,6 @@ const columns = [
     },
     {
         title: '操作',
-        key: 'action',
         render: (item: App.Models.GDCS.CustomSong) => h(Action, {item})
     }
 ] as DataTableColumn[];
@@ -89,8 +85,9 @@ function createSong() {
                 <n-button @click="createSong">创建</n-button>
             </template>
 
-            <n-data-table :columns="columns" :data="songs" :max-height="500" :pagination="{ pageSize: 10 }"
-                          :scroll-x="1000"
+            <n-data-table :columns="columns" :data="songs"
+                          :max-height="isMobile ? 500 : undefined"
+                          :pagination="{ pageSize: 10 }" :scroll-x="isMobile ? 1000 : undefined"
                           :virtual-scroll="isMobile"/>
         </n-card>
     </n-el>

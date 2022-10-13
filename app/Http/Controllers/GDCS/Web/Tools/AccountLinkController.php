@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Web\Tools;
 
+use App\Exceptions\GDCS\WebException;
 use App\Exceptions\ResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\Tools\AccountLinkCreateRequest;
@@ -18,6 +19,9 @@ class AccountLinkController extends Controller
 {
     use HasMessage;
 
+    /**
+     * @throws WebException
+     */
     public function create(AccountLinkCreateRequest $request)
     {
         $data = $request->validated();
@@ -34,11 +38,7 @@ class AccountLinkController extends Controller
 
         try {
             if (!$request->ok()) {
-                $this->pushErrorMessage(
-                    __('gdcn.tools.error.account_link_create_failed_request_error')
-                );
-
-                return back();
+                throw new WebException(__('gdcn.tools.error.account_link_create_failed_request_error'));
             }
 
             $response = $request->body();
@@ -46,11 +46,7 @@ class AccountLinkController extends Controller
             $dataArray = explode(',', $response);
 
             if (!Arr::has($dataArray, [0, 1])) {
-                $this->pushErrorMessage(
-                    __('gdcn.tools.error.account_link_create_failed_response_error')
-                );
-
-                return back();
+                throw new WebException(__('gdcn.tools.error.account_link_create_failed_response_error'));
             }
 
             /** @var Account $account */
@@ -67,11 +63,7 @@ class AccountLinkController extends Controller
                 })->exists();
 
             if ($alreadyLinked) {
-                $this->pushErrorMessage(
-                    __('gdcn.tools.error.account_link_create_failed_already_linked')
-                );
-
-                return back();
+                throw new WebException(__('gdcn.tools.error.account_link_create_failed_already_linked'));
             }
 
             $account->links()
@@ -82,34 +74,28 @@ class AccountLinkController extends Controller
                     'target_user_id' => $userId
                 ]);
 
-            $this->pushSuccessMessage(
-                __('gdcn.tools.action.account_link_create_success')
-            );
+            $this->pushSuccessMessage(__('gdcn.tools.action.account_link_create_success'));
         } catch (ResponseException) {
-            $this->pushErrorMessage(
-                __('gdcn.tools.error.account_link_create_failed_response_error')
-            );
+            throw new WebException(__('gdcn.tools.error.account_link_create_failed_response_error'));
         }
 
         return back();
     }
 
+    /**
+     * @throws WebException
+     */
     public function delete(AccountLink $link)
     {
         /** @var Account $account */
         $account = Auth::guard('gdcs')->user();
 
-        if ($link->account->is($account)) {
-            $link->delete();
-
-            $this->pushSuccessMessage(
-                __('gdcn.tools.action.account_link_delete_success')
-            );
-        } else {
-            $this->pushErrorMessage(
-                __('gdcn.tools.error.account_link_delete_failed_not_owner')
-            );
+        if ($link->account->isNot($account)) {
+            throw new WebException(__('gdcn.tools.error.account_link_delete_failed_not_owner'));
         }
+
+        $link->delete();
+        $this->pushSuccessMessage(__('gdcn.tools.action.account_link_delete_success'));
 
         return back();
     }

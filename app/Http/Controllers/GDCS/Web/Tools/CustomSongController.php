@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Web\Tools;
 
+use App\Exceptions\GDCS\WebException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\Tools\CustomSongCreateFromLinkRequest;
 use App\Http\Requests\GDCS\Web\Tools\CustomSongCreateFromNeteaseRequest;
@@ -16,6 +17,9 @@ class CustomSongController extends Controller
 {
     use HasMessage;
 
+    /**
+     * @throws WebException
+     */
     public function createFromLink(CustomSongCreateFromLinkRequest $request)
     {
         $data = $request->validated();
@@ -27,13 +31,11 @@ class CustomSongController extends Controller
             ->where('download_url', $data['link']);
 
         if ($query->exists()) {
-            $this->pushErrorMessage(
+            throw new WebException(
                 __('gdcn.tools.error.custom_song_create_failed_already_exists_with_id', [
                     'id' => config('gdcn.game.custom_song_offset') + $query->value('id')
                 ])
             );
-
-            return back();
         }
 
         $headers = ProxyService::instance()
@@ -42,20 +44,12 @@ class CustomSongController extends Controller
             ->headers();
 
         if (!Arr::has($headers['Content-Type'], 0) || !Arr::has($headers['Content-Length'], 0)) {
-            $this->pushErrorMessage(
-                __('gdcn.tools.error.custom_song_create_failed_request_error')
-            );
-
-            return back();
+            throw new WebException(__('gdcn.tools.error.custom_song_create_failed_request_error'));
         }
 
         $types = explode('/', $headers['Content-Type'][0]);
         if (!Arr::has($types, 0) || $types[0] !== 'audio') {
-            $this->pushErrorMessage(
-                __('gdcn.tools.error.custom_song_create_failed_content_invalid')
-            );
-
-            return back();
+            throw new WebException(__('gdcn.tools.error.custom_song_create_failed_content_invalid'));
         }
 
         $account->uploadedCustomSongs()
@@ -66,15 +60,13 @@ class CustomSongController extends Controller
                 'download_url' => $data['link']
             ]);
 
-        $this->pushSuccessMessage(
-            __('gdcn.tools.action.custom_song_create_success')
-        );
-
+        $this->pushSuccessMessage(__('gdcn.tools.action.custom_song_create_success'));
         return back();
     }
 
     /**
      * @see https://music.163.com
+     * @throws WebException
      */
     public function createFromNetease(CustomSongCreateFromNeteaseRequest $request)
     {
@@ -88,13 +80,11 @@ class CustomSongController extends Controller
             ->where('download_url', $downloadUrl);
 
         if ($query->exists()) {
-            $this->pushErrorMessage(
+            throw new WebException(
                 __('gdcn.tools.error.custom_song_create_failed_already_exists_with_id', [
                     'id' => config('gdcn.game.custom_song_offset') + $query->value('id')
                 ])
             );
-
-            return back();
         }
 
         $songInfo = ProxyService::instance()
@@ -103,11 +93,7 @@ class CustomSongController extends Controller
             ->json('songs.0');
 
         if (empty($songInfo)) {
-            $this->pushErrorMessage(
-                __('gdcn.tools.error.custom_song_create_failed_target_music_not_found')
-            );
-
-            return back();
+            throw new WebException(__('gdcn.tools.error.custom_song_create_failed_target_music_not_found'));
         }
 
         $account->uploadedCustomSongs()
@@ -120,10 +106,7 @@ class CustomSongController extends Controller
                 'download_url' => $downloadUrl
             ]);
 
-        $this->pushSuccessMessage(
-            __('gdcn.tools.action.custom_song_create_success')
-        );
-
+        $this->pushSuccessMessage(__('gdcn.tools.action.custom_song_create_success'));
         return back();
     }
 }

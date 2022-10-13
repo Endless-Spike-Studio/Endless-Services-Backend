@@ -174,3 +174,10 @@ declare module App.Models {
         }
     }
 }
+
+export interface RemoteLevel {
+    id: number;
+    name: string;
+    desc: string;
+    transferred: boolean;
+}
