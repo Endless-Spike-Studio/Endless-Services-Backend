@@ -92,13 +92,31 @@ Route::group([
                 'as' => 'transfer.'
             ], static function () {
                 Route::get('/', [LevelTransferPresenter::class, 'renderHome'])->name('home');
-                Route::get('/in/{link}', [LevelTransferController::class, 'loadLevels'])
-                    ->middleware('throttle:gdcs_remote')
-                    ->name('in.levels.load');
 
-                Route::post('/in', [LevelTransferController::class, 'fromRemote'])
-                    ->middleware('throttle:gdcs_remote')
-                    ->name('in.api');
+                Route::group([
+                    'prefix' => 'in',
+                    'as' => 'in.'
+                ], static function () {
+                    Route::get('/{link}', [LevelTransferController::class, 'loadRemoteLevelsForTransferIn'])
+                        ->middleware('throttle:gdcs_remote')
+                        ->name('levels.load');
+
+                    Route::post('/', [LevelTransferController::class, 'transferInFromRemote'])
+                        ->middleware('throttle:gdcs_remote')
+                        ->name('api');
+                });
+
+                Route::group([
+                    'prefix' => 'out',
+                    'as' => 'out.'
+                ], static function () {
+                    Route::get('/{level}', [LevelTransferController::class, 'loadLinksForTransferOut'])
+                        ->name('links.load');
+
+                    Route::post('/', [LevelTransferController::class, 'transferOutToRemote'])
+                        ->middleware('throttle:gdcs_remote')
+                        ->name('api');
+                });
             });
         });
     });

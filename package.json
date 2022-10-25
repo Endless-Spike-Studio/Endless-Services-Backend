@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "dev": "vite --debug",
+        "dev": "vite",
         "build": "vite build"
     },
     "devDependencies": {

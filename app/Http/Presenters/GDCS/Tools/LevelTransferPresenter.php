@@ -14,8 +14,14 @@ class LevelTransferPresenter
         /** @var Account $account */
         $account = Auth::guard('gdcs')->user();
 
+        $levels = [];
+        if (!empty($user = $account->user)) {
+            $levels = $user->levels;
+        }
+
         return Inertia::render('GDCS/Tools/Level/Transfer/Home', [
-            'links' => $account->links
+            'links' => $account->links,
+            'levels' => $levels
         ]);
     }
 }

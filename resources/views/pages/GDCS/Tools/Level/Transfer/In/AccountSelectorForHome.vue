@@ -31,7 +31,7 @@ const accountColumns = [
 const links = useProp<App.Models.GDCS.AccountLink[]>('links');
 </script>
 
-<template layout="GDCS">
+<template>
     <n-data-table :columns="accountColumns" :data="links"
                   :max-height="isMobile ? 500 : undefined"
                   :pagination="{ pageSize: 10 }" :scroll-x="isMobile ? 1000 : undefined"

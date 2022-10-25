@@ -29,7 +29,7 @@ const levelColumns = [
         render: (item: RemoteLevel) => {
             const form = useForm({
                 linkID: props.linkID,
-                levelID: null
+                levelID: -1
             });
 
             return h(LevelSelectAction, {
@@ -48,7 +48,6 @@ const levels = useProp<App.Models.GDCS.Level[]>('levels');
 
 <template layout="GDCS">
     <n-card class="lg:w-1/2 mx-auto" title="关卡转入">
-
         <n-data-table :columns="levelColumns" :data="levels"
                       :max-height="isMobile ? 500 : undefined"
                       :pagination="{ pageSize: 10 }" :scroll-x="isMobile ? 1000 : undefined"

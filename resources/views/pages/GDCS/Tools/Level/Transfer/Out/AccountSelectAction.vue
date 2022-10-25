@@ -22,6 +22,6 @@ watch(props, () => {
 <template>
     <n-button :disabled="processing"
               :loading="processing" @click="handleSelect">
-        转入
+        转出
     </n-button>
 </template>

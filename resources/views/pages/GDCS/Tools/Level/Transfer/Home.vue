@@ -2,9 +2,9 @@
 import {NIcon} from "naive-ui";
 import {ExtraMenuOption} from "@/scripts/types/menu";
 import {ArrowBarToLeft, ArrowBarToRight} from "@vicons/tabler";
-import Out from "@/views/pages/GDCS/Tools/Level/Transfer/Direction/Out.vue";
 import {App} from "@/scripts/types/backend";
-import AccountSelectorForTransferIn from "@/views/pages/GDCS/Tools/Level/Transfer/In/AccountSelector.vue";
+import AccountSelectorForTransferIn from "@/views/pages/GDCS/Tools/Level/Transfer/In/AccountSelectorForHome.vue";
+import LevelSelectorForTransferOut from "@/views/pages/GDCS/Tools/Level/Transfer/Out/LevelSelectorForHome.vue";
 
 defineProps<{
     links: App.Models.GDCS.AccountLink[]
@@ -49,7 +49,9 @@ const aside = reactive({
                     </n-tab-pane>
 
                     <n-tab-pane name="out">
-                        <out/>
+                        <n-card>
+                            <LevelSelectorForTransferOut/>
+                        </n-card>
                     </n-tab-pane>
                 </n-tabs>
             </n-grid-item>

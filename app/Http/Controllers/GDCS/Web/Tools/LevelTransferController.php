@@ -7,6 +7,7 @@ use App\Exceptions\GDCS\WebException;
 use App\Exceptions\ResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\Tools\LevelTransferInRequest;
+use App\Http\Requests\GDCS\Web\Tools\LevelTransferOutRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountLink;
@@ -17,6 +18,7 @@ use App\Services\Game\ResponseService;
 use App\Services\ProxyService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Psr\Http\Client\ClientExceptionInterface;
 
@@ -27,7 +29,7 @@ class LevelTransferController extends Controller
     /**
      * @throws WebException
      */
-    public function loadLevels(AccountLink $link)
+    public function loadRemoteLevelsForTransferIn(AccountLink $link)
     {
         try {
             /** @var Account $account */
@@ -89,7 +91,7 @@ class LevelTransferController extends Controller
     /**
      * @throws WebException
      */
-    public function fromRemote(LevelTransferInRequest $request)
+    public function transferInFromRemote(LevelTransferInRequest $request)
     {
         try {
             $data = $request->validated();
@@ -203,5 +205,103 @@ class LevelTransferController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * @throws WebException
+     */
+    public function loadLinksForTransferOut(Level $level)
+    {
+        /** @var Account $account */
+        $account = Auth::guard('gdcs')->user();
+
+        if ($level->creator()->isNot($account->user)) {
+            throw new WebException(__('gdcn.tools.error.level_transfer_link_load_failed_not_level_owner'));
+        }
+
+        return Inertia::render('GDCS/Tools/Level/Transfer/Out/AccountSelector', [
+            'levelID' => $level->id,
+            'links' => $account->links
+        ]);
+    }
+
+    /**
+     * @throws WebException
+     */
+    public function transferOutToRemote(LevelTransferOutRequest $request)
+    {
+        try {
+            $data = $request->validated();
+            $link = AccountLink::query()
+                ->find($data['linkID']);
+
+            if (empty($link)) {
+                throw new WebException(__('gdcn.tools.error.level_transfer_out_failed_link_not_found'));
+            }
+
+            $level = Level::query()
+                ->find($data['levelID']);
+
+            if (empty($level)) {
+                throw new WebException(__('gdcn.tools.error.level_transfer_out_failed_level_not_found'));
+            }
+
+            $request = ProxyService::instance()
+                ->asForm()
+                ->withUserAgent(null)
+                ->post($link->server . '/uploadGJLevel21.php', [
+                    'gameVersion' => $level->game_version,
+                    'binaryVersion' => 35,
+                    'gdw' => false,
+                    'accountID' => $link->target_account_id,
+                    'gjp' => AlgorithmService::encode($data['password'], Keys::ACCOUNT_PASSWORD->value, sha1: false),
+                    'userName' => $link->target_name,
+                    'levelID' => 0,
+                    'levelName' => $level->name,
+                    'levelDesc' => $level->desc,
+                    'levelVersion' => $level->version,
+                    'levelLength' => $level->length,
+                    'audioTrack' => $level->audio_track,
+                    'auto' => false,
+                    'password' => $level->password,
+                    'original' => $level->original_level_id,
+                    'twoPlayer' => $level->two_player,
+                    'songID' => $level->song_id,
+                    'objects' => $level->objects,
+                    'coins' => $level->coins,
+                    'requestedStars' => $level->requested_stars,
+                    'unlisted' => $level->unlisted,
+                    'ldm' => $level->ldm,
+                    'levelString' => $level->data,
+                    'wt' => 0,
+                    'wt2' => 0,
+                    'seed' => Str::random(),
+                    'seed2' => AlgorithmService::encode(
+                        AlgorithmService::genLevelDivided($level->data, 50, 49),
+                        Keys::LEVEL_SEED->value,
+                        sha1: false
+                    ),
+                    'extraString' => $level->extra_string,
+                    'levelInfo' => $level->level_info,
+                    'secret' => 'Wmfd2893gb7',
+                ]);
+
+            if (!$request->ok()) {
+                throw new WebException(__('gdcn.tools.error.level_transfer_out_failed_request_error'));
+            }
+
+            $response = $request->body();
+            ResponseService::check($response);
+
+            $this->pushSuccessMessage(
+                __('gdcn.tools.action.level_transfer_out_success')
+            );
+
+            return back();
+        } catch (ClientExceptionInterface) {
+            throw new WebException(__('gdcn.tools.error.level_transfer_out_failed_request_exception'));
+        } catch (ResponseException) {
+            throw new WebException(__('gdcn.tools.error.level_transfer_out_failed_response_error'));
+        }
     }
 }
