@@ -25,12 +25,12 @@ class LevelCommentService extends BaseCommandService
             ->rating()
             ->firstOrNew();
 
-        if ($this->parameters[0] === 'delete') {
+        if ($this->parameters[1] === 'delete') {
             $rating->delete();
             return __('gdcn.game.command.level_rate_delete_success');
         }
 
-        $stars = (int)($this->parameters[0] ?? $this->arguments['stars']);
+        $stars = (int)($this->arguments['stars'] ?? $this->parameters[1]);
         if (empty($stars) || !is_numeric($stars) || $stars < 1 || $stars > 10) {
             return __('gdcn.game.command.level_rate_failed_invalid_stars_value', [
                 'data' => $stars
