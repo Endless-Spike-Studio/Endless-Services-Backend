@@ -128,6 +128,7 @@ class LevelCommentService extends BaseCommandService
             $rating->demon = $stars >= 10;
         }
 
+        $rating->save();
         return __('gdcn.game.command.level_rate_success');
     }
 
