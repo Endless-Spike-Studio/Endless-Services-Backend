@@ -37,6 +37,7 @@ class LevelCommentService extends BaseCommandService
             ]);
         }
 
+        $rating->stars = $stars;
         foreach ($this->parameters as $parameter) {
             if (!Str::startsWith($parameter, ['+', '-'])) {
                 continue;
