@@ -10,8 +10,8 @@ use App\Services\Storage\SongStorageService;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Psr\Http\Client\ClientExceptionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Throwable;
 
 class Song extends Model
 {
@@ -72,7 +72,8 @@ class Song extends Model
                     ->asForm()
                     ->withUserAgent(null)
                     ->withOptions([
-                        RequestOptions::DECODE_CONTENT => false
+                        RequestOptions::DECODE_CONTENT => false,
+                        RequestOptions::TIMEOUT => 0
                     ])->get($url);
 
                 if (!$response->successful()) {
@@ -83,7 +84,7 @@ class Song extends Model
             }
 
             return $storage->download($data);
-        } catch (ClientExceptionInterface $ex) {
+        } catch (Throwable $ex) {
             throw new NewGroundsProxyException(
                 __('gdcn.song.error.process_failed_request_error', [
                     'reason' => $ex->getMessage()
