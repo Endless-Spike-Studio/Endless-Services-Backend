@@ -39,47 +39,71 @@ class LevelTransferController extends Controller
                 throw new WebException(__('gdcn.tools.error.level_transfer_level_load_failed_not_link_owner'));
             }
 
-            $request = ProxyService::instance()
-                ->asForm()
-                ->withUserAgent(null)
-                ->post($link->server . '/getGJLevels21.php', [
-                    'type' => 5,
-                    'str' => $link->target_user_id,
-                    'secret' => 'Wmfd2893gb7'
-                ]);
+            $currentPage = 0;
+            $levels = [];
 
-            if (!$request->ok()) {
-                throw new WebException(__('gdcn.tools.error.level_transfer_level_load_failed_request_error'));
-            }
+            while (true) {
+                $request = ProxyService::instance()
+                    ->asForm()
+                    ->withUserAgent(null)
+                    ->post($link->server . '/getGJLevels21.php', [
+                        'type' => 5,
+                        'page' => $currentPage,
+                        'str' => $link->target_user_id,
+                        'secret' => 'Wmfd2893gb7'
+                    ]);
 
-            $response = $request->body();
-            ResponseService::check($response);
-
-            $levels = collect(
-                explode('|', Arr::get(explode('#', $response), 0))
-            )->map(function ($level) use ($account, $link) {
-                $level = ObjectService::split($level, ':');
-
-                if (!Arr::has($level, [1, 2, 3])) {
-                    return null;
+                if (!$request->ok()) {
+                    throw new WebException(__('gdcn.tools.error.level_transfer_level_load_failed_request_error'));
                 }
 
-                return [
-                    'id' => $level[1],
-                    'name' => $level[2],
-                    'desc' => $level[3],
-                    'transferred' => $account->levelTransferRecords()
-                        ->where('server', $link->server)
-                        ->where('original_level_id', $level[1])
-                        ->exists()
-                ];
-            })->filter(function ($item) {
-                return !empty($item);
-            })->toArray();
+                $response = $request->body();
+                ResponseService::check($response);
+
+                $parts = explode('#', $response);
+                $levelsData = $parts[0] ?? null;
+                $pageInfo = $parts[3] ?? null;
+
+                if (!empty($levelsData)) {
+                    foreach (explode('|', $levelsData) as $level) {
+                        $levels[] = $level;
+                    }
+                }
+
+                if (!empty($pageInfo)) {
+                    [$total, , $perPage] = explode(':', $pageInfo);
+                    $pageCount = ceil($total / $perPage);
+                    $lastPage = $pageCount - 1;
+
+                    if ($currentPage >= $lastPage) {
+                        break;
+                    }
+                }
+
+                $currentPage++;
+            }
 
             return Inertia::render('GDCS/Tools/Level/Transfer/In/LevelSelector', [
                 'linkID' => $link->id,
-                'levels' => $levels
+                'levels' => collect($levels)->map(function ($level) use ($account, $link) {
+                    $level = ObjectService::split($level, ':');
+
+                    if (!Arr::has($level, [1, 2, 3])) {
+                        return null;
+                    }
+
+                    return [
+                        'id' => $level[1],
+                        'name' => $level[2],
+                        'desc' => $level[3],
+                        'transferred' => $account->levelTransferRecords()
+                            ->where('server', $link->server)
+                            ->where('original_level_id', $level[1])
+                            ->exists()
+                    ];
+                })->filter(function ($item) {
+                    return !empty($item);
+                })->toArray()
             ]);
         } catch (ClientExceptionInterface) {
             throw new WebException(__('gdcn.tools.error.level_transfer_level_load_failed_request_exception'));
