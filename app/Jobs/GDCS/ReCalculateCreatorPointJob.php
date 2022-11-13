@@ -3,6 +3,7 @@
 namespace App\Jobs\GDCS;
 
 use App\Models\GDCS\LevelRating;
+use App\Models\GDCS\UserScore;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -19,14 +20,18 @@ class ReCalculateCreatorPointJob implements ShouldQueue
             ->with('level.creator.score')
             ->get();
 
+        UserScore::query()
+            ->where('creator_points', '>', 0)
+            ->update([
+                'creator_points' => 0
+            ]);
+
         foreach ($ratings as $rating) {
-            $score = $rating->level?->creator?->score;
+            $score = $rating->level->creator->score;
 
             if (empty($score)) {
                 continue;
             }
-
-            $score->creator_points = 0;
 
             if ($rating->stars > 0) {
                 $score->creator_points += config('gdcn.game.creator_points.rated', 1);
