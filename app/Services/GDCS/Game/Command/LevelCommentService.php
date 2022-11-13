@@ -4,12 +4,27 @@ namespace App\Services\GDCS\Game\Command;
 
 use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\Game\LevelRatingDifficulty;
+use App\Models\GDCS\Account;
+use App\Models\GDCS\CustomSong;
+use App\Models\GDCS\Level;
 use App\Services\Game\LevelRatingService;
 use App\Services\Storage\GameLevelDataStorageService;
 use Illuminate\Support\Str;
 
 class LevelCommentService extends BaseCommandService
 {
+    protected bool $currentOperatorIsLevelOwner;
+
+    public function __construct(
+        protected string  $data,
+        protected Account $account,
+        protected ?Level  $level = null
+    )
+    {
+        parent::__construct($data, $account, $level);
+        $this->currentOperatorIsLevelOwner = $this->level->creator->is($this->account->user);
+    }
+
     protected function test(): string
     {
         return __('gdcn.game.command.worked');
@@ -33,7 +48,7 @@ class LevelCommentService extends BaseCommandService
         $stars = (int)($this->arguments['stars'] ?? $this->parameters[1]);
         if (empty($stars) || !is_numeric($stars) || $stars < 1 || $stars > 10) {
             return __('gdcn.game.command.level_rate_failed_invalid_stars_value', [
-                'data' => $stars
+                'value' => $stars
             ]);
         }
 
@@ -76,7 +91,7 @@ class LevelCommentService extends BaseCommandService
 
             if ($difficulty === LevelRatingDifficulty::NA) {
                 return __('gdcn.game.command.level_rate_failed_invalid_face_value', [
-                    'data' => $face
+                    'value' => $face
                 ]);
             }
 
@@ -135,7 +150,7 @@ class LevelCommentService extends BaseCommandService
 
     protected function delete(): string
     {
-        if (!$this->level->creator->is($this->account->user) && !$this->account->can('rate-level')) {
+        if (!$this->currentOperatorIsLevelOwner && !$this->account->can('delete-level')) {
             return __('gdcn.game.command.no_permission');
         }
 
@@ -143,5 +158,47 @@ class LevelCommentService extends BaseCommandService
         (new GameLevelDataStorageService)->delete(['id' => $this->level->id]);
 
         return __('gdcn.game.command.level_delete_success');
+    }
+
+    protected function setAudioTrack(): string
+    {
+        if (!$this->currentOperatorIsLevelOwner && !$this->account->can('mod-level')) {
+            return __('gdcn.game.command.no_permission');
+        }
+
+        $availableValue = [-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37];
+        $newValue = (int)($this->arguments['value'] ?? $this->parameters[1]);
+
+        if (!in_array($newValue, $availableValue)) {
+            return __('gdcn.game.command.level_mod_failed_invalid_value', [
+                'value' => $newValue
+            ]);
+        }
+
+        $this->level->audio_track = $newValue;
+        $this->level->song = 0;
+
+        return __('gdcn.game.command.level_update_success');
+    }
+
+    protected function setSong(): string
+    {
+        if (!$this->currentOperatorIsLevelOwner && !$this->account->can('mod-level')) {
+            return __('gdcn.game.command.no_permission');
+        }
+
+        $newValue = (int)($this->arguments['value'] ?? $this->parameters[1]);
+        $customSongOffset = config('gdcn.game.custom_song_offset', 10000000);
+
+        if ($newValue >= $customSongOffset && !CustomSong::where('id', $newValue - $customSongOffset)->exists()) {
+            return __('gdcn.game.command.level_song_update_failed_custom_not_found', [
+                'value' => $newValue
+            ]);
+        }
+
+        $this->level->audio_track = 0;
+        $this->level->song = $newValue;
+
+        return __('gdcn.game.command.level_update_success');
     }
 }

@@ -12,7 +12,7 @@ class BaseCommandService
     protected int $time = 98978399;
     protected array $arguments = [];
     protected array $parameters = [];
-    protected array $disabled_commands = [];
+    protected array $internalFunctions = [];
 
     public function __construct(
         protected string  $data,
@@ -48,7 +48,7 @@ class BaseCommandService
 
     public function execute(): string
     {
-        $unavailableCommands = array_merge(['__construct', 'valid', 'formatMessage', 'execute'], $this->disabled_commands);
+        $unavailableCommands = array_merge(['__construct', 'valid', 'formatMessage', 'execute'], $this->internalFunctions);
 
         if (!$this->valid || in_array($this->name, $unavailableCommands, true)) {
             return $this->formatMessage(__('gdcn.game.command.unavailable'));

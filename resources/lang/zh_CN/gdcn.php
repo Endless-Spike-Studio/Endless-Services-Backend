@@ -7,11 +7,14 @@ return [
             'unavailable' => 'Command not available',
             'worked' => 'worked!',
             'no_permission' => 'Permission denied',
-            'level_rate_failed_invalid_stars_value' => 'Failed: ":data" is invalid stars value',
-            'level_rate_failed_invalid_face_value' => 'Failed: ":data" is invalid face value',
+            'level_rate_failed_invalid_stars_value' => 'Failed: ":value" is invalid stars value',
+            'level_rate_failed_invalid_face_value' => 'Failed: ":value" is invalid face value',
             'level_rate_success' => 'rated!',
             'level_rate_delete_success' => 'unrated!',
-            'level_delete_success' => 'deleted!'
+            'level_delete_success' => 'deleted!',
+            'level_update_success' => 'updated!',
+            'level_audio_track_update_failed_invalid_value' => 'Failed: ":value" is invalid audio track',
+            'level_song_update_failed_custom_not_found' => 'Failed: custom song with id ":value" is not found'
         ],
         'error' => [
             'request_authorization_failed' => '[请求] 授权失败',
