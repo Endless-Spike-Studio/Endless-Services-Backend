@@ -1,5 +1,5 @@
 import axios from "axios";
-import route, {Config, RouteParamsWithQueryOverload} from "ziggy-js";
+import route, {Config} from "ziggy-js";
 import {ref} from "vue";
 import event from "@/scripts/core/event";
 
@@ -9,11 +9,18 @@ export const routes = ref<Config>({
     defaults: {}
 });
 
-axios.get('/api/routes')
-    .then(response => {
-        routes.value = response.data;
-        event.emit('routes.loaded');
-    });
+axios.get('/api/routes', {
+    headers: {
+        'X-Auth': '3a8fac65d497fd23b4038df87e5a597670d287cd'
+    }
+}).then(response => {
+    routes.value = response.data;
+    event.emit('routes.loaded');
+});
 
-// @ts-ignore
-export default (name?: string, params?: RouteParamsWithQueryOverload, absolute?: boolean) => route(name, params, absolute, routes.value);
+export default (...args: unknown[]) => {
+    args[3] = routes.value;
+
+    // @ts-ignore
+    return route(...args);
+};
