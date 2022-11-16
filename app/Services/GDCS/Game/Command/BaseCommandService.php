@@ -31,7 +31,9 @@ class BaseCommandService
             foreach ($parts as $part) {
                 if (str_starts_with($part, $argumentStart)) {
                     [$key, $value] = explode($argumentDelimiter, $part);
-                    $this->arguments[$key] = $value;
+                    $keyName = ltrim($key, $argumentStart);
+
+                    $this->arguments[$keyName] = $value;
                 } else {
                     $this->parameters[] = $part;
                 }
