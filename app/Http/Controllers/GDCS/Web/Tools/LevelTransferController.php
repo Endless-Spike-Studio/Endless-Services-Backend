@@ -8,6 +8,7 @@ use App\Exceptions\ResponseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\Tools\LevelTransferInRequest;
 use App\Http\Requests\GDCS\Web\Tools\LevelTransferOutRequest;
+use App\Http\Requests\GDCS\Web\Tools\RemoteLevelLoadRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountLink;
@@ -29,9 +30,12 @@ class LevelTransferController extends Controller
     /**
      * @throws WebException
      */
-    public function loadRemoteLevelsForTransferIn(AccountLink $link)
+    public function loadRemoteLevelsForTransferIn(RemoteLevelLoadRequest $request, AccountLink $link)
     {
         try {
+            $data = $request->validated();
+            $currentPage = $data['page'] ?? 1;
+
             /** @var Account $account */
             $account = Auth::guard('gdcs')->user();
 
@@ -39,52 +43,44 @@ class LevelTransferController extends Controller
                 throw new WebException(__('gdcn.tools.error.level_transfer_level_load_failed_not_link_owner'));
             }
 
-            $currentPage = 0;
             $levels = [];
+            $request = ProxyService::instance()
+                ->asForm()
+                ->withUserAgent(null)
+                ->post($link->server . '/getGJLevels21.php', [
+                    'type' => 5,
+                    'page' => $currentPage - 1,
+                    'str' => $link->target_user_id,
+                    'secret' => 'Wmfd2893gb7'
+                ]);
 
-            while (true) {
-                $request = ProxyService::instance()
-                    ->asForm()
-                    ->withUserAgent(null)
-                    ->post($link->server . '/getGJLevels21.php', [
-                        'type' => 5,
-                        'page' => $currentPage,
-                        'str' => $link->target_user_id,
-                        'secret' => 'Wmfd2893gb7'
-                    ]);
+            if (!$request->ok()) {
+                throw new WebException(__('gdcn.tools.error.level_transfer_level_load_failed_request_error'));
+            }
 
-                if (!$request->ok()) {
-                    throw new WebException(__('gdcn.tools.error.level_transfer_level_load_failed_request_error'));
+            $response = $request->body();
+            ResponseService::check($response);
+
+            $parts = explode('#', $response);
+            $levelsData = $parts[0] ?? null;
+            $pageInfo = $parts[3] ?? null;
+
+            if (!empty($levelsData)) {
+                foreach (explode('|', $levelsData) as $level) {
+                    $levels[] = $level;
                 }
+            }
 
-                $response = $request->body();
-                ResponseService::check($response);
-
-                $parts = explode('#', $response);
-                $levelsData = $parts[0] ?? null;
-                $pageInfo = $parts[3] ?? null;
-
-                if (!empty($levelsData)) {
-                    foreach (explode('|', $levelsData) as $level) {
-                        $levels[] = $level;
-                    }
-                }
-
-                if (!empty($pageInfo)) {
-                    [$total, , $perPage] = explode(':', $pageInfo);
-                    $pageCount = ceil($total / $perPage);
-                    $lastPage = $pageCount - 1;
-
-                    if ($currentPage >= $lastPage) {
-                        break;
-                    }
-                }
-
-                $currentPage++;
+            $pageCount = 1;
+            if (!empty($pageInfo)) {
+                [$total, , $perPage] = explode(':', $pageInfo);
+                $pageCount = ceil($total / $perPage);
             }
 
             return Inertia::render('GDCS/Tools/Level/Transfer/In/LevelSelector', [
                 'linkID' => $link->id,
+                'currentPage' => $currentPage,
+                'pageCount' => $pageCount,
                 'levels' => collect($levels)->map(function ($level) use ($account, $link) {
                     $level = ObjectService::split($level, ':');
 
