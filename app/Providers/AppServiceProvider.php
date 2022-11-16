@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
             $account = Auth::guard('gdcs')->user();
             $key = 'gdcs_remote:' . (empty($account) ? Request::ip() : $account->id);
 
-            return Limit::perMinutes(10, 3)
+            return Limit::perHour(50)
                 ->by($key)
                 ->response(function () {
                     throw new WebException(
