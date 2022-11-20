@@ -5,7 +5,7 @@ RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese /ap
 WORKDIR /app
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer install --no-dev --optimize-autoloader --prefer-dist --ignore-platform-req
+RUN composer install --no-dev --optimize-autoloader --prefer-dist --ignore-platform-reqs
 
 RUN php /app/artisan key:generate
 RUN php /app/artisan storage:link
