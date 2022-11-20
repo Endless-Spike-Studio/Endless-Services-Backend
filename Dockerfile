@@ -7,10 +7,6 @@ WORKDIR /app
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --ignore-platform-reqs
 
-COPY /app/.env.example /app/.env
-RUN php /app/artisan key:generate
 RUN php /app/artisan storage:link
-RUN php /app/artisan optimize
-
 ENTRYPOINT /usr/bin/supervisord --nodaemon --configuration /etc/supervisord.conf
 EXPOSE 60101
