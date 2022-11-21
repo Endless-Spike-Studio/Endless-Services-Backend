@@ -11,11 +11,10 @@ import {
     ToolTwotone,
     UserOutlined
 } from "@vicons/antd";
-import route from "@/scripts/core/route";
+import route, {routes} from "@/scripts/core/route";
 import {ExtraMenuOption} from "@/scripts/types/menu";
 import {useGeometryDashChineseServerStore} from "@/scripts/core/stores";
 import Menus from "@/views/components/Menus.vue";
-import event from "@/scripts/core/event";
 import {Inertia} from "@inertiajs/inertia";
 import {visit_route} from "@/scripts/core/utils";
 
@@ -110,9 +109,12 @@ const menu = reactive({
         }
 
         update();
-        event.once('routes.loaded', update);
-        Inertia.on('finish', update);
+        const stopWatch = watch(routes, () => {
+            update();
+            stopWatch();
+        });
 
+        Inertia.on('finish', update);
         return reference;
     })(),
     options: computed(() => {

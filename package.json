@@ -22,7 +22,6 @@
         "axios": "^1.1.3",
         "git-rev-sync": "^3.0.2",
         "js-base64": "^3.7.3",
-        "js-event-bus": "^1.1.1",
         "laravel-vite": "^0.0.24",
         "lodash-es": "^4.17.21",
         "naive-ui": "^2.34.0",

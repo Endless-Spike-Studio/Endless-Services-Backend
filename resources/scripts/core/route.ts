@@ -1,7 +1,6 @@
 import axios from "axios";
 import route, {Config} from "ziggy-js";
 import {ref} from "vue";
-import event from "@/scripts/core/event";
 
 export const routes = ref<Config>({
     url: location.href,
@@ -15,7 +14,6 @@ axios.get('/api/routes', {
     }
 }).then(response => {
     routes.value = response.data;
-    event.emit('routes.loaded');
 });
 
 export default (...args: unknown[]) => {

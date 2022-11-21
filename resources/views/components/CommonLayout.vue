@@ -4,8 +4,7 @@ import {Laravel, Php} from "@vicons/fa";
 import {useAppStore} from "@/scripts/core/stores";
 import {CommitRound} from "@vicons/material";
 import {ref, useSlots} from "vue";
-import route from "@/scripts/core/route";
-import event from "@/scripts/core/event";
+import route, {routes} from "@/scripts/core/route";
 import BackendMessageReceiver from "@/views/components/BackendMessageReceiver.vue";
 
 const versions = useProp<{
@@ -21,7 +20,10 @@ const router = (() => {
     }
 
     update();
-    event.once('routes.loaded', update);
+    const stopWatch = watch(routes, () => {
+        update();
+        stopWatch();
+    });
 
     return reference;
 })();
