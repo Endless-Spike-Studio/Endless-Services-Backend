@@ -4,6 +4,7 @@ namespace App\Services\GDCS\Game\Command;
 
 use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\Game\LevelRatingDifficulty;
+use App\Events\LevelRated;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\CustomSong;
 use App\Models\GDCS\Level;
@@ -145,6 +146,8 @@ class LevelCommentService extends BaseCommandService
         }
 
         $rating->save();
+        event(new LevelRated($this->level));
+
         return __('gdcn.game.command.level_rate_success');
     }
 
