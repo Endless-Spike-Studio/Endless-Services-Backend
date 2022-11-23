@@ -105,13 +105,13 @@ const backend_git_commit_hash = useProp<string>('git_commit_hash');
                                             <n-grid v-if="frontend_git_commit_hash !== backend_git_commit_hash"
                                                     :cols="1">
                                                 <n-grid-item title="前端">
-                                                    <n-text type="info">
+                                                    <n-text>
                                                         {{ frontend_git_commit_hash }}
                                                     </n-text>
                                                 </n-grid-item>
 
                                                 <n-grid-item title="后端">
-                                                    <n-text type="success">
+                                                    <n-text>
                                                         {{ backend_git_commit_hash }}
                                                     </n-text>
                                                 </n-grid-item>
