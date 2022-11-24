@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #app {
-    @apply h-full font-sans;
+* {
+    @apply font-sans;
 }

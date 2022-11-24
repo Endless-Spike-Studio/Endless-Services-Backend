@@ -8,7 +8,7 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "baseUrl": ".",
+        "allowSyntheticDefaultImports": true,
         "lib": [
             "esnext",
             "dom"
@@ -16,18 +16,24 @@
         "types": [
             "vite/client"
         ],
+        "baseUrl": ".",
         "paths": {
             "@/*": [
                 "resources/*"
             ]
         }
     },
+    "vueCompilerOptions": {
+        "experimentalSuppressInvalidJsxElementTypeErrors": true
+    },
     "include": [
-        "src/**/*.ts",
-        "src/**/*.d.ts",
-        "src/**/*.tsx",
-        "src/**/*.vue",
+        "resources/**/*",
         "auto-imports.d.ts",
         "components.d.ts"
+    ],
+    "exclude": [
+        "public/**/*",
+        "node_modules",
+        "vendor"
     ]
 }

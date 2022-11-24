@@ -6,9 +6,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import {NaiveUiResolver} from "unplugin-vue-components/resolvers";
-import InertiaLayoutApplier from "./resources/scripts/vite/inertia-layout";
-import {short} from "git-rev-sync";
-import {resolve as resolvePath} from "path";
+import hybridly from "hybridly/vite";
 
 export default defineConfig({
     build: {
@@ -18,17 +16,7 @@ export default defineConfig({
             mangle: true
         }
     },
-    esbuild: {
-        jsxFactory: 'h',
-        jsxFragment: 'Fragment'
-    },
-    resolve: {
-        alias: {
-            '@': resolvePath(__dirname, 'resources')
-        }
-    },
     plugins: [
-        InertiaLayoutApplier(),
         AutoImport({
             imports: [
                 'vue',
@@ -56,6 +44,7 @@ export default defineConfig({
             }
         }),
         vueJsx(),
+        hybridly(),
         legacy({
             targets: [
                 'defaults',
@@ -70,8 +59,5 @@ export default defineConfig({
             input: ['resources/scripts/main.ts'],
             buildDirectory: 'build/../'
         })
-    ],
-    define: {
-        frontend_git_commit_hash: ` '${short()}' `.trim()
-    }
+    ]
 });

@@ -2,13 +2,11 @@
 
 use App\Http\Controllers\NGProxy\SongController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\RouteController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
     'as' => 'api.',
 ], static function () {
-    Route::get('/routes', [RouteController::class, 'ziggy'])->name('ziggy.routes');
     Route::post('/_internal/a7f3add05c9cc2cdd54b80cf8208fad7/{secret}', [ProjectController::class, 'update'])
         ->name('project.update');
 

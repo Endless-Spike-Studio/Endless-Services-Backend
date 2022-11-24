@@ -30,5 +30,6 @@ rr
 
 /storage/*.key
 /public/manifest.json
+/resources/types/routes.d.ts
 auto-imports.d.ts
 components.d.ts

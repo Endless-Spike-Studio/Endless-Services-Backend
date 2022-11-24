@@ -2,6 +2,6 @@
 
 </script>
 
-<template layout="GDCS">
-
+<template>
+    Hello World!
 </template>
