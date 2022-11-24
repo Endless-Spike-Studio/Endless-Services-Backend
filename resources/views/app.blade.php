@@ -10,6 +10,6 @@
     @vite(['resources/styles/main.scss', 'resources/scripts/main.ts'])
 </head>
 <body>
-@inertia
+    @inertia
 </body>
 </html>
