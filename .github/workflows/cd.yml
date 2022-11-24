@@ -20,15 +20,15 @@ jobs:
               - 'package.json'
               - 'pnpm-lock.yaml'
 
-      - uses: actions/setup-node@v3
-        if: steps.path_changed.outputs.frontend == 'true'
-        with:
-          cache: 'pnpm'
-
       - uses: pnpm/action-setup@v2
         if: steps.path_changed.outputs.frontend == 'true'
         with:
           version: latest
+
+      - uses: actions/setup-node@v3
+        if: steps.path_changed.outputs.frontend == 'true'
+        with:
+          cache: 'pnpm'
 
       - uses: yizhoumo/setup-ossutil@v1
         if: steps.path_changed.outputs.frontend == 'true'
