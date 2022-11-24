@@ -66,7 +66,9 @@ export default defineConfig({
                 'regenerator-runtime/runtime'
             ]
         }),
-        laravel(['resources/scripts/main.ts'])
+        laravel({
+            input: ['resources/scripts/main.ts']
+        })
     ],
     define: {
         frontend_git_commit_hash: ` '${short()}' `.trim()
