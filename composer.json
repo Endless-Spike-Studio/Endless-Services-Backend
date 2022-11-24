@@ -21,6 +21,7 @@
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.2",
         "silber/bouncer": "^1.0",
+        "spatie/laravel-backup": "^8.1",
         "spiral/roadrunner": "^2.11",
         "spomky-labs/base64url": "^2.0",
         "tightenco/ziggy": "^1.4"
