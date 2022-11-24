@@ -22,17 +22,13 @@ jobs:
 
       - uses: actions/setup-node@v3
         if: steps.path_changed.outputs.frontend == 'true'
+        with:
+          cache: 'pnpm'
 
       - uses: pnpm/action-setup@v2
         if: steps.path_changed.outputs.frontend == 'true'
         with:
           version: latest
-
-      - uses: shivammathur/setup-php@v2
-        if: steps.path_changed.outputs.frontend == 'true'
-
-      - uses: ramsey/composer-install@v2
-        if: steps.path_changed.outputs.frontend == 'true'
 
       - uses: yizhoumo/setup-ossutil@v1
         if: steps.path_changed.outputs.frontend == 'true'
@@ -43,9 +39,7 @@ jobs:
 
       - name: Install packages
         if: steps.path_changed.outputs.frontend == 'true'
-        run: |
-          pnpm install
-          composer install
+        run: pnpm install
 
       - name: Build
         if: steps.path_changed.outputs.frontend == 'true'
