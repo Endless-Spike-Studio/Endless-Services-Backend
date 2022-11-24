@@ -29,12 +29,6 @@ export default defineConfig({
     },
     plugins: [
         InertiaLayoutApplier(),
-        laravel([
-            'resources/styles/main.scss',
-            'resources/scripts/main.ts',
-        ]),
-        vue(),
-        vueJsx(),
         AutoImport({
             imports: [
                 'vue',
@@ -53,6 +47,8 @@ export default defineConfig({
                 NaiveUiResolver()
             ]
         }),
+        vue(),
+        vueJsx(),
         legacy({
             targets: [
                 'defaults',
@@ -62,7 +58,11 @@ export default defineConfig({
             additionalLegacyPolyfills: [
                 'regenerator-runtime/runtime'
             ]
-        })
+        }),
+        laravel([
+            'resources/styles/main.scss',
+            'resources/scripts/main.ts',
+        ])
     ],
     define: {
         frontend_git_commit_hash: ` '${short()}' `.trim()
