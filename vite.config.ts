@@ -68,8 +68,7 @@ export default defineConfig({
             ]
         }),
         laravel({
-            input: ['resources/scripts/main.ts'],
-            buildDirectory: ''
+            input: ['resources/scripts/main.ts']
         })
     ],
     define: {
