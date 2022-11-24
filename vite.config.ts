@@ -47,7 +47,14 @@ export default defineConfig({
                 NaiveUiResolver()
             ]
         }),
-        vue(),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                }
+            }
+        }),
         vueJsx(),
         legacy({
             targets: [
@@ -59,10 +66,7 @@ export default defineConfig({
                 'regenerator-runtime/runtime'
             ]
         }),
-        laravel([
-            'resources/styles/main.scss',
-            'resources/scripts/main.ts',
-        ])
+        laravel(['resources/scripts/main.ts'])
     ],
     define: {
         frontend_git_commit_hash: ` '${short()}' `.trim()
