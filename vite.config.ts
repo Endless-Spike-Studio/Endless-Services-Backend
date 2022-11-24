@@ -11,6 +11,7 @@ import {short} from "git-rev-sync";
 import {resolve as resolvePath} from "path";
 
 export default defineConfig({
+    base: 'https://cdn.geometrydashchinese.com/static/gdcn/',
     build: {
         outDir: 'dist',
         minify: 'terser',

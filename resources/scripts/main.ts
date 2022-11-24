@@ -13,7 +13,7 @@ if (import.meta.env.PROD && location.protocol === 'http:') {
 }
 
 createInertiaApp({
-    resolve: (name: string) => resolvePageComponent(`/resources/views/Pages/${name}.vue`, import.meta.glob('@/views/Pages/**/*.vue') as Record<string, () => Promise<DefineComponent>>),
+    resolve: (name: string) => resolvePageComponent(`../views/Pages/${name}.vue`, import.meta.glob('../views/Pages/**/*.vue') as Record<string, () => Promise<DefineComponent>>),
     setup({el, app, props, plugin}) {
         const instance = createApp({
             render: () => h(app, props)
