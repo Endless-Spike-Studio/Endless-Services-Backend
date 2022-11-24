@@ -67,4 +67,4 @@ export default defineConfig({
     define: {
         frontend_git_commit_hash: ` '${short()}' `.trim()
     }
-})
+});

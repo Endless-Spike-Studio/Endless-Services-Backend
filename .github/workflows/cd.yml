@@ -16,6 +16,9 @@ jobs:
           filters: |
             frontend:
               - 'resources/**'
+              - 'vite.config.ts'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
 
       - uses: actions/setup-node@v3
         if: steps.path_changed.outputs.frontend == 'true'
