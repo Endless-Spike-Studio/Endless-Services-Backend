@@ -21,8 +21,7 @@ class SyncManifestCommand extends Command
             mkdir($path, 0777, true);
         }
 
-        fwrite(fopen($fileName, 'w+'), $content);
-
+        file_put_contents($fileName, $content);
         return Command::SUCCESS;
     }
 }
