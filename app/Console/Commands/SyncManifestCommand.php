@@ -14,7 +14,7 @@ class SyncManifestCommand extends Command
     public function handle(): int
     {
         $content = Storage::disk('oss')->get('/static/website/manifest.json');
-        file_put_contents(public_path('build/manifest.json'), $content);
+        fwrite(fopen(public_path('build/manifest.json'), 'w+'), $content);
 
         return Command::SUCCESS;
     }
