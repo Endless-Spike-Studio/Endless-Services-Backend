@@ -8,6 +8,7 @@
         "sourceMap": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "baseUrl": ".",
         "lib": [
             "esnext",
             "dom"
@@ -15,7 +16,6 @@
         "types": [
             "vite/client"
         ],
-        "baseUrl": ".",
         "paths": {
             "@/*": [
                 "resources/*"
@@ -23,7 +23,10 @@
         }
     },
     "include": [
-        "resources/**/*",
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
         "auto-imports.d.ts",
         "components.d.ts"
     ]

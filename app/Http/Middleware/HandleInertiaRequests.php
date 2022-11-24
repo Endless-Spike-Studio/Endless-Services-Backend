@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
-use Innocenzi\Vite\Vite;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -46,10 +45,5 @@ class HandleInertiaRequests extends Middleware
         $data['csrf_token'] = Session::token();
 
         return array_merge(parent::share($request), $data);
-    }
-
-    public function version(Request $request): ?string
-    {
-        return app(Vite::class)->getHash();
     }
 }

@@ -1,15 +1,14 @@
 import {defineConfig} from "vite";
-import tailwindcss from "tailwindcss";
 import legacy from "@vitejs/plugin-legacy";
-import autoprefixer from "autoprefixer";
-import laravel from "vite-plugin-laravel";
+import laravel from "laravel-vite-plugin";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import {NaiveUiResolver} from "unplugin-vue-components/resolvers";
-import inertia from "./resources/scripts/vite/inertia-layout";
+import InertiaLayoutApplier from "./resources/scripts/vite/inertia-layout";
 import {short} from "git-rev-sync";
+import {resolve as resolvePath} from "path";
 
 export default defineConfig({
     base: 'https://cdn.geometrydashchinese.com/static/website/',
@@ -20,8 +19,21 @@ export default defineConfig({
             mangle: true
         }
     },
+    esbuild: {
+        jsxFactory: 'h',
+        jsxFragment: 'Fragment'
+    },
+    resolve: {
+        alias: {
+            '@': resolvePath(__dirname, 'resources')
+        }
+    },
     plugins: [
-        inertia(),
+        InertiaLayoutApplier(),
+        laravel([
+            'resources/styles/main.scss',
+            'resources/scripts/main.ts',
+        ]),
         vue(),
         vueJsx(),
         AutoImport({
@@ -50,12 +62,6 @@ export default defineConfig({
             ],
             additionalLegacyPolyfills: [
                 'regenerator-runtime/runtime'
-            ]
-        }),
-        laravel({
-            postcss: [
-                tailwindcss(),
-                autoprefixer()
             ]
         })
     ],
