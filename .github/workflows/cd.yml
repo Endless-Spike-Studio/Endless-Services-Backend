@@ -41,6 +41,14 @@ jobs:
         if: steps.path_changed.outputs.frontend == 'true'
         run: pnpm install
 
+      - name: Copy .env
+        if: steps.path_changed.outputs.frontend == 'true'
+        run: cp .env.example .env
+
+      - name: Add ASSET_URL
+        if: steps.path_changed.outputs.frontend == 'true'
+        run: echo 'ASSET_URL=${{ secrets.ASSET_URL }}' >> .env
+
       - name: Build
         if: steps.path_changed.outputs.frontend == 'true'
         run: pnpm run build
