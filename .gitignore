@@ -25,6 +25,10 @@ yarn-error.log
 /public/hot
 /public/storage
 
-/storage/*.key
 rr
 .rr.yaml
+
+/storage/*.key
+/public/manifest.json
+auto-imports.d.ts
+components.d.ts
