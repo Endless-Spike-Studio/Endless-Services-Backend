@@ -9,7 +9,7 @@ FROM registry.cn-shanghai.aliyuncs.com/gdcn/app-runtime:latest
 COPY --from=0 /app /app
 
 COPY docker/start.sh /_app/start.sh
-RUN chmox +x /_app/start.sh
+RUN chmod +x /_app/start.sh
 
 COPY docker/supervisord.conf /_app/supervisord.conf
 RUN php /app/artisan storage:link
