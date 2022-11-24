@@ -7,8 +7,12 @@ RUN composer install --no-dev --optimize-autoloader --prefer-dist --ignore-platf
 FROM registry.cn-shanghai.aliyuncs.com/gdcn/app-runtime:latest
 
 COPY --from=0 /app /app
-COPY docker/supervisord.conf /etc/supervisord.conf
+
+COPY docker/start.sh /_app/start.sh
+RUN chmox +x /_app/start.sh
+
+COPY docker/supervisord.conf /_app/supervisord.conf
 RUN php /app/artisan storage:link
 
-ENTRYPOINT /usr/bin/supervisord --nodaemon --configuration /etc/supervisord.conf
+ENTRYPOINT sh /_app/start.sh
 EXPOSE 60101
