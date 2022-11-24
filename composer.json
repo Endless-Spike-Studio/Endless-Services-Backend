@@ -18,7 +18,6 @@
         "laravel/octane": "^1.2",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "overtrue/laravel-lang": "^6.0",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.2",
         "silber/bouncer": "^1.0",
@@ -28,6 +27,9 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "laravel-lang/attributes": "^2.0",
+        "laravel-lang/lang": "^12.5",
+        "laravel-lang/publisher": "^14.4",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
