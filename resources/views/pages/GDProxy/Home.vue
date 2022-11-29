@@ -4,6 +4,6 @@ import CommonLayout from "@/views/layouts/Common.vue";
 
 <template>
     <CommonLayout>
-        123
+        
     </CommonLayout>
 </template>
