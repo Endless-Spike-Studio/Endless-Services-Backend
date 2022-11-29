@@ -22,6 +22,8 @@
         "pestphp/pest-plugin-laravel": "^1.2",
         "silber/bouncer": "^1.0",
         "spatie/laravel-backup": "^8.1",
+        "spatie/laravel-data": "^2.0",
+        "spatie/laravel-typescript-transformer": "^2.1",
         "spiral/roadrunner": "^2.11",
         "spomky-labs/base64url": "^2.0"
     },

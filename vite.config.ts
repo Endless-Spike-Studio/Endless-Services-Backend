@@ -6,7 +6,11 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import {NaiveUiResolver} from "unplugin-vue-components/resolvers";
+import hybridlyImports from "hybridly/auto-imports";
+import hybridlyResolver from "hybridly/resolver";
+import {resolve as resolvePath} from "path";
 import hybridly from "hybridly/vite";
+import run from "vite-plugin-run";
 
 export default defineConfig({
     build: {
@@ -16,10 +20,20 @@ export default defineConfig({
             mangle: true
         }
     },
+    esbuild: {
+        jsxFactory: 'h',
+        jsxFragment: 'Fragment'
+    },
+    resolve: {
+        alias: {
+            '@': resolvePath(__dirname, 'resources')
+        }
+    },
     plugins: [
         AutoImport({
             imports: [
                 'vue',
+                hybridlyImports,
                 {
                     'naive-ui': [
                         'useDialog',
@@ -32,8 +46,11 @@ export default defineConfig({
         }),
         Components({
             resolvers: [
-                NaiveUiResolver()
-            ]
+                NaiveUiResolver(),
+                hybridlyResolver()
+            ],
+            dirs: ['./resources/views/components'],
+            directoryAsNamespace: true
         }),
         vue({
             template: {
@@ -44,7 +61,18 @@ export default defineConfig({
             }
         }),
         vueJsx(),
-        hybridly(),
+        hybridly({
+            layout: {
+                directory: resolvePath(__dirname, 'resources/views/layouts')
+            }
+        }),
+        run({
+            name: 'generate typescript',
+            run: ['php', 'artisan', 'typescript:transform'],
+            condition: (file) => ['Data.php', 'Enums'].some(kw => {
+                return file.includes(kw);
+            })
+        }),
         legacy({
             targets: [
                 'defaults',
