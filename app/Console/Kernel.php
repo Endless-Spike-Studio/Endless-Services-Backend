@@ -15,7 +15,6 @@ class Kernel extends ConsoleKernel
         $schedule->job(CleanUnverifiedAccountJob::class)->hourly();
         $schedule->job(CleanUnusedTempLevelUploadAccessJob::class)->hourly();
         $schedule->job(ReCalculateCreatorPointJob::class)->daily();
-        $schedule->command('backup:run --only-db')->daily();
     }
 
     protected function commands(): void
