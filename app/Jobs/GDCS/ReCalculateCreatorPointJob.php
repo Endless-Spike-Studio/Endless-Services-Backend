@@ -38,7 +38,14 @@ class ReCalculateCreatorPointJob implements ShouldQueue
             }
 
             if ($rating->featured_score > 0) {
-                $score->creator_points += config('gdcn.game.creator_points.featured.reward', 2) * (config('gdcn.game.creator_points.featured.multiply_with_score', false) ? $rating->featured_score : 1);
+                $multiplyWithScore = config('gdcn.game.creator_points.featured.multiply_with_score', false);
+                $featuredReward = config('gdcn.game.creator_points.featured.reward', 2);
+
+                if ($multiplyWithScore) {
+                    $score->creator_points += $featuredReward * $rating->featured_score;
+                } else {
+                    $score->creator_points += $featuredReward;
+                }
             }
 
             if ($rating->epic) {

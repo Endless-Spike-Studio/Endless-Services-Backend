@@ -6,23 +6,15 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import {NaiveUiResolver} from "unplugin-vue-components/resolvers";
-import hybridlyImports from "hybridly/auto-imports";
-import hybridlyResolver from "hybridly/resolver";
+import InertiaLayoutApplier from "./resources/scripts/vite/layout";
 import {resolve as resolvePath} from "path";
-import hybridly from "hybridly/vite";
-import run from "vite-plugin-run";
 
 export default defineConfig({
     build: {
-        outDir: 'dist',
         minify: 'terser',
         terserOptions: {
             mangle: true
         }
-    },
-    esbuild: {
-        jsxFactory: 'h',
-        jsxFragment: 'Fragment'
     },
     resolve: {
         alias: {
@@ -30,10 +22,15 @@ export default defineConfig({
         }
     },
     plugins: [
+        laravel({
+            input: ['resources/scripts/main.ts']
+        }),
+        vue(),
+        vueJsx(),
+        InertiaLayoutApplier(),
         AutoImport({
             imports: [
                 'vue',
-                hybridlyImports,
                 {
                     'naive-ui': [
                         'useDialog',
@@ -46,46 +43,15 @@ export default defineConfig({
         }),
         Components({
             resolvers: [
-                NaiveUiResolver(),
-                hybridlyResolver()
-            ],
-            dirs: ['./resources/views/components'],
-            directoryAsNamespace: true
-        }),
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                }
-            }
-        }),
-        vueJsx(),
-        hybridly({
-            layout: {
-                directory: resolvePath(__dirname, 'resources/views/layouts')
-            }
-        }),
-        run({
-            name: 'generate typescript',
-            run: ['php', 'artisan', 'typescript:transform'],
-            condition: (file) => ['Data.php', 'Enums'].some(kw => {
-                return file.includes(kw);
-            })
+                NaiveUiResolver()
+            ]
         }),
         legacy({
             targets: [
                 'defaults',
                 'chrome 52',
                 'ie >= 11'
-            ],
-            additionalLegacyPolyfills: [
-                'regenerator-runtime/runtime'
             ]
-        }),
-        laravel({
-            input: ['resources/scripts/main.ts'],
-            buildDirectory: 'build/../'
         })
     ]
 });

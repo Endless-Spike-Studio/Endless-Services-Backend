@@ -1,9 +1,10 @@
-export const isMobile = (() => {
-    const reference = ref();
+import {computed, ComputedRef} from "vue";
+import {usePage} from "@inertiajs/inertia-vue3";
 
-    const _update = () => reference.value = screen.width <= 768;
-    window.addEventListener('resize', _update);
-    _update();
+export function useProp<T = unknown>(key: string, defaultValue?: T): ComputedRef<T> {
+    const $page = usePage();
 
-    return reference;
-})();
+    return computed(() => {
+        return ($page.props.value[key] ?? defaultValue) as T;
+    });
+}
