@@ -14,7 +14,7 @@ class SyncManifestCommand extends Command
     public function handle(): int
     {
         $content = Storage::disk('oss')->get('/static/gdcn/build/manifest.json');
-        $fileName = public_path('manifest.json');
+        $fileName = public_path('build/manifest.json');
 
         $path = dirname($fileName);
         if (!file_exists($path)) {
