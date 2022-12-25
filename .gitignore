@@ -1,5 +1,6 @@
 .vscode
 .idea
+*.imi
 
 dump.rdb
 _ide_helper.php

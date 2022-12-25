@@ -6,7 +6,6 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import {NaiveUiResolver} from "unplugin-vue-components/resolvers";
-import InertiaLayoutApplier from "./resources/scripts/vite/layout";
 import {resolve as resolvePath} from "path";
 
 export default defineConfig({
@@ -22,12 +21,11 @@ export default defineConfig({
         }
     },
     plugins: [
+        vue(),
+        vueJsx(),
         laravel({
             input: ['resources/scripts/main.ts']
         }),
-        vue(),
-        vueJsx(),
-        InertiaLayoutApplier(),
         AutoImport({
             imports: [
                 'vue',

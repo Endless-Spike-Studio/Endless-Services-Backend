@@ -7,8 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ config('app.name') }}</title>
     @vite(['resources/styles/main.scss', 'resources/scripts/main.ts'])
+    @inertiaHead
 </head>
 <body>
-@hybridly
+@inertia
 </body>
 </html>

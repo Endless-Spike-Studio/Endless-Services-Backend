@@ -9,6 +9,9 @@ module.exports = {
         extend: {
             fontFamily: {
                 'sans': ['Harmony Sans SC', 'Harmony Sans', ...require('tailwindcss/defaultTheme').fontFamily.sans]
+            },
+            transitionProperty: {
+                'width': 'width'
             }
         }
     },

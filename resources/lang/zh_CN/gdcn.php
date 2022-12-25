@@ -183,7 +183,9 @@ return [
             'logout_success' => '[网页] 登出成功!'
         ],
         'error' => [
-            'login_failed' => '[网页] 登录失败!'
+            'need_login' => '[网页] 需要登录',
+            'login_failed' => '[网页] 登录失败!',
+            'already_logged' => '[网页] 您已经登录过了'
         ]
     ],
     'tools' => [

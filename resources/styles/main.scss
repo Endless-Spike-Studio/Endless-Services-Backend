@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-    @apply font-sans;
-}
+@layer {
+    * {
+        @apply font-sans;
+    }
 
-html, body, #root {
-    @apply h-full;
+    html, body, #app {
+        @apply h-full;
+    }
 }

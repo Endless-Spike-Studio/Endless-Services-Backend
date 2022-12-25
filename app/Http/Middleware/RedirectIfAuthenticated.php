@@ -17,6 +17,10 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
+                if ($request->inertia()) {
+                    $this->pushErrorMessage(__('gdcn.web.error.already_logged'));
+                }
+
                 return match ($guard) {
                     'gdcs' => to_route('gdcs.home'),
                     default => abort(403)
