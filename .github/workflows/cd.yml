@@ -57,7 +57,7 @@ jobs:
         if: steps.path_changed.outputs.frontend == 'true'
         run: |
           ossutil rm -rf ${{ secrets.OSS_PATH }}
-          ossutil cp -rf dist ${{ secrets.OSS_PATH }}
+          ossutil cp -rf public/build ${{ secrets.OSS_PATH }}
   backend:
     runs-on: ubuntu-latest
     needs:
