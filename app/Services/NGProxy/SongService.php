@@ -35,15 +35,15 @@ class SongService
         }
 
         $disabled = false;
+        $proxy = ProxyService::instance()
+            ->asForm()
+            ->withUserAgent(null);
 
         try {
-            $response = ProxyService::instance()
-                ->asForm()
-                ->withUserAgent(null)
-                ->post(config('gdcn.proxy.base') . '/getGJSongInfo.php', [
-                    'songID' => $id,
-                    'secret' => 'Wmfd2893gb7',
-                ])->body();
+            $response = $proxy->post(config('gdcn.proxy.base') . '/getGJSongInfo.php', [
+                'songID' => $id,
+                'secret' => 'Wmfd2893gb7',
+            ])->body();
 
             ResponseService::check($response);
             $songObject = ObjectService::split($response, '~|~');
@@ -52,14 +52,11 @@ class SongService
                 $disabled = true;
             }
 
-            $response = ProxyService::instance()
-                ->asForm()
-                ->withUserAgent(null)
-                ->post(config('gdcn.proxy.base') . '/getGJLevels21.php', [
-                    'song' => $id,
-                    'customSong' => true,
-                    'secret' => 'Wmfd2893gb7',
-                ])->body();
+            $response = $proxy->post(config('gdcn.proxy.base') . '/getGJLevels21.php', [
+                'song' => $id,
+                'customSong' => true,
+                'secret' => 'Wmfd2893gb7',
+            ])->body();
 
             try {
                 ResponseService::check($response);
