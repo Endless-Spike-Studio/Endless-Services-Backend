@@ -179,7 +179,7 @@ class LevelCommentService extends BaseCommandService
         }
 
         $this->level->audio_track = $newValue;
-        $this->level->song = 0;
+        $this->level->song_id = 0;
         $this->level->save();
 
         return __('gdcn.game.command.level_update_success');
@@ -201,7 +201,7 @@ class LevelCommentService extends BaseCommandService
         }
 
         $this->level->audio_track = 0;
-        $this->level->song = $newValue;
+        $this->level->song_id = $newValue;
         $this->level->save();
 
         return __('gdcn.game.command.level_update_success');
