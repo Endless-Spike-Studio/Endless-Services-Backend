@@ -16,14 +16,14 @@ class SongService
     /**
      * @throws NewGroundsProxyException
      */
-    public function find(int $id): Song
+    public function find(int $id, bool $ignoreDisable = false): Song
     {
         $song = Song::query()
             ->where('song_id', $id)
             ->first();
 
         if (!empty($song)) {
-            if ($song->disabled) {
+            if (!$ignoreDisable && $song->disabled) {
                 throw new NewGroundsProxyException(
                     __('gdcn.song.error.fetch_failed_disabled'),
                     http_code: 403,
