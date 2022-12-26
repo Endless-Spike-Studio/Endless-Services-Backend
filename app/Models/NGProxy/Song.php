@@ -3,14 +3,14 @@
 namespace App\Models\NGProxy;
 
 use App\Exceptions\NewGroundsProxyException;
-use App\Exceptions\StorageException;
 use App\Services\Game\ObjectService;
 use App\Services\ProxyService;
 use App\Services\Storage\SongStorageService;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
 use Throwable;
 
 class Song extends Model
@@ -57,10 +57,10 @@ class Song extends Model
     }
 
     /**
+     * @return RedirectResponse
      * @throws NewGroundsProxyException
-     * @throws StorageException
      */
-    public function download(): StreamedResponse
+    public function download(): RedirectResponse
     {
         try {
             $url = str_replace('https://', 'http://', urldecode($this->original_download_url));
@@ -69,8 +69,6 @@ class Song extends Model
 
             if (!$storage->allValid($data)) {
                 $response = ProxyService::instance()
-                    ->asForm()
-                    ->withUserAgent(null)
                     ->withOptions([
                         RequestOptions::DECODE_CONTENT => false,
                         RequestOptions::TIMEOUT => 0
@@ -83,7 +81,7 @@ class Song extends Model
                 $this->data = $response->body();
             }
 
-            return $storage->download($data);
+            return Redirect::away($storage->url($data));
         } catch (Throwable $ex) {
             throw new NewGroundsProxyException(
                 __('gdcn.song.error.process_failed_request_error', [
