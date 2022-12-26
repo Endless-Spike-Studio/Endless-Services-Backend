@@ -181,7 +181,8 @@ return [
     'web' => [
         'action' => [
             'login_success' => '[网页] 登录成功!',
-            'logout_success' => '[网页] 登出成功!'
+            'logout_success' => '[网页] 登出成功!',
+            'account_verify_success' => '[账号] 验证成功!'
         ],
         'error' => [
             'need_login' => '[网页] 需要登录',

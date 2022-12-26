@@ -22,7 +22,12 @@ Route::group([
             Route::post('/login', [AuthController::class, 'login'])->name('login.api');
         });
 
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout.api');
+        Route::group([
+            'middleware' => 'auth:gdcs'
+        ], static function () {
+            Route::get('/verify/{_}', [AuthController::class, 'verify'])->name('verify');
+            Route::post('/logout', [AuthController::class, 'logout'])->name('logout.api');
+        });
     });
 
     Route::group([

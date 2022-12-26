@@ -21,8 +21,8 @@ class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
             $notifiable->getEmailForVerification(),
         ]);
 
-        return URL::signedRoute('gdcs.account.verify', [
-            '_' => Crypt::encryptString($hash),
+        return URL::signedRoute('gdcs.auth.verify', [
+            '_' => Crypt::encryptString($hash)
         ]);
     }
 }
