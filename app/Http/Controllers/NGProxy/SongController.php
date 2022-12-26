@@ -24,7 +24,7 @@ class SongController extends Controller
      */
     public function info(int $id): array
     {
-        return $this->service->find($id)->toArray();
+        return $this->service->find($id, true)->toArray();
     }
 
     /**
