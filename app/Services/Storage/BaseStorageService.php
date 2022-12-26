@@ -112,6 +112,27 @@ class BaseStorageService
     /**
      * @throws StorageException
      */
+    public function url(array $data): string
+    {
+        foreach ($this->storages as $storage) {
+            $disk = Storage::disk($storage['disk']);
+            $path = $storage['format'];
+
+            foreach ($data as $key => $value) {
+                $path = Str::replace('{' . $key . '}', $value, $path);
+            }
+
+            if ($disk->exists($path)) {
+                return $disk->url($path);
+            }
+        }
+
+        throw new StorageException(__('gdcn.storage.error.url_get_failed_not_found'), http_code: 404);
+    }
+
+    /**
+     * @throws StorageException
+     */
     public function download(array $data): StreamedResponse
     {
         foreach ($this->storages as $storage) {

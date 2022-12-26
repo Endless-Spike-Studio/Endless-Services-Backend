@@ -160,7 +160,8 @@ return [
         'error' => [
             'invalid_config' => '[存储] 配置解析失败, 无效的配置',
             'fetch_failed_not_found' => '[存储] 内容获取失败, 文件不存在',
-            'download_failed_not_found' => '[存储] 内容下载失败, 文件不存在'
+            'download_failed_not_found' => '[存储] 内容下载失败, 文件不存在',
+            'url_get_failed_not_found' => '[存储] URL获取失败, 文件不存在'
         ]
     ],
     'song' => [
