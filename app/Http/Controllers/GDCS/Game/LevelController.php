@@ -346,7 +346,7 @@ class LevelController extends Controller
                                 $songs[$level->song_id] = $customSong->object;
                             }
                         } else {
-                            $songs[$level->song_id] = $song->find($level->song_id)->object;
+                            $songs[$level->song_id] = $song->find($level->song_id, true)->object;
                         }
                     }
 
