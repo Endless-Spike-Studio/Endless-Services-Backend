@@ -173,58 +173,26 @@ return [
             'fetch_failed_wrong_song_object' => '[歌曲] 获取失败, 错误的歌曲对象'
         ]
     ],
-    'updater' => [
-        'action' => [
-            'project_updated' => '[项目] 更新成功'
-        ]
-    ],
     'web' => [
         'action' => [
             'login_success' => '[网页] 登录成功!',
             'logout_success' => '[网页] 登出成功!',
-            'account_verify_success' => '[账号] 验证成功!'
+            'account_verify_success' => '[账号] 验证成功!',
+            'account_verification_email_resend_success' => '[账号] 验证邮件重发成功!'
         ],
         'error' => [
             'need_login' => '[网页] 需要登录',
             'login_failed' => '[网页] 登录失败!',
-            'already_logged' => '[网页] 您已经登录过了'
+            'already_logged' => '[网页] 您已经登录过了',
+            'account_verification_email_resend_failed_already_verified' => '[账号] 验证邮件重发失败, 您已经验证过了'
         ]
     ],
     'tools' => [
         'action' => [
-            'account_link_delete_success' => '[账号链接] 删除成功!',
-            'account_link_create_success' => '[账号链接] 创建成功!',
-            'custom_song_create_success' => '[自定义歌曲] 创建成功!',
-            'level_transfer_in_success' => '[关卡转移] 转入成功! ID: :id',
-            'level_transfer_out_success' => '[关卡转移] 转出成功, ID: :id'
+
         ],
         'error' => [
-            'too_many_request' => '请求过于频繁, 请 :seconds 秒后再试',
-            'account_link_delete_failed_not_owner' => '[账号链接] 删除失败, 该链接不属于你',
-            'account_link_create_failed_request_error' => '[账号链接] 创建失败, 请求错误',
-            'account_link_create_failed_response_error' => '[账号链接] 创建失败, 响应错误',
-            'account_link_create_failed_already_linked' => '[账号链接] 创建失败, 目标账号已经被链接过了',
-            'custom_song_create_failed_already_exists_with_id' => '[自定义歌曲] 创建失败, 目标歌曲已经被上传过了, 歌曲ID: :id',
-            'custom_song_create_failed_target_music_not_found' => '[自定义歌曲] 创建失败, 目标音乐未找到 (或不存在)',
-            'custom_song_create_failed_request_error' => '[自定义歌曲] 创建失败, 请求错误',
-            'custom_song_create_failed_content_invalid' => '[自定义歌曲] 创建失败, 内容无效',
-            'level_transfer_level_load_failed_not_link_owner' => '[关卡转移] 关卡加载失败, 该链接不属于你',
-            'level_transfer_level_load_failed_request_error' => '[关卡转移] 关卡加载失败, 请求错误',
-            'level_transfer_level_load_failed_request_exception' => '[关卡转移] 关卡加载失败, 请求异常',
-            'level_transfer_level_load_failed_response_error' => '[关卡转移] 关卡加载失败, 响应错误',
-            'level_transfer_in_failed_link_not_found' => '[关卡转移] 关卡转入失败, 链接不存在',
-            'level_transfer_in_failed_not_link_owner' => '[关卡转移] 关卡转入失败, 该链接不属于你',
-            'level_transfer_in_failed_already_transferred' => '[关卡转移] 关卡转入失败, 已经转入过了, ID: :id',
-            'level_transfer_in_failed_request_error' => '[关卡转移] 关卡转入失败, 请求错误',
-            'level_transfer_in_failed_request_exception' => '[关卡转移] 关卡转入失败, 请求异常',
-            'level_transfer_in_failed_response_error' => '[关卡转移] 关卡转入失败, 响应错误',
-            'level_transfer_in_failed_invalid_object' => '[关卡转移] 关卡转入失败, 无效对象',
-            'level_transfer_link_load_failed_not_level_owner' => '[关卡转移] 链接加载失败, 该关卡不属于你',
-            'level_transfer_out_failed_link_not_found' => '[关卡转移] 关卡转出失败, 链接不存在',
-            'level_transfer_out_failed_level_not_found' => '[关卡转移] 关卡转出失败, 关卡不存在',
-            'level_transfer_out_failed_request_error' => '[关卡转移] 关卡转出失败, 请求错误',
-            'level_transfer_out_failed_request_exception' => '[关卡转移] 关卡转出失败, 请求异常',
-            'level_transfer_out_failed_response_error' => '[关卡转移] 关卡转出失败, 响应错误'
+
         ]
     ]
 ];

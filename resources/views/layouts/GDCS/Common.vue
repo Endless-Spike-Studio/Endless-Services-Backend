@@ -117,7 +117,7 @@ const menu = reactive({
                                 component: ProfileTwotone
                             }),
                             onSelect() {
-                                return to_route('gdcs.dashboard.account.profile');
+                                return to_route('gdcs.account.profile');
                             }
                         },
                         {

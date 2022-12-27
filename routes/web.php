@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\GDCS\Web\AccountController;
 use App\Http\Controllers\GDCS\Web\AuthController;
+use App\Http\Presenters\GDCS\AccountPresenter;
 use App\Http\Presenters\GDCS\HomePresenter;
 use Illuminate\Support\Facades\Route;
 
@@ -34,17 +36,19 @@ Route::group([
         'middleware' => 'auth:gdcs'
     ], static function () {
         Route::group([
+            'prefix' => 'account',
+            'as' => 'account.'
+        ], static function () {
+            Route::get('/profile', [AccountPresenter::class, 'renderProfile'])->name('profile');
+            Route::post('/resendVerificationEmail', [AccountController::class, 'resendVerificationEmail'])->name('resendVerificationEmail.api');
+            Route::get('/{account}', [AccountPresenter::class, 'renderInfo'])->name('info');
+        });
+
+        Route::group([
             'prefix' => 'dashboard',
             'as' => 'dashboard.'
         ], static function () {
             Route::inertia('/', 'GDCS/Dashboard/Home')->name('home');
-
-            Route::group([
-                'prefix' => 'account',
-                'as' => 'account.'
-            ], static function () {
-                Route::inertia('/profile', 'GDCS/Dashboard/AccountProfile')->name('profile');
-            });
         });
 
         Route::group([

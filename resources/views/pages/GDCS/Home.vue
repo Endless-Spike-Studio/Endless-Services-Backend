@@ -58,7 +58,7 @@ function handleAppleDownload() {
 
 <template>
     <CommonLayout>
-        <n-space class="lg:w-3/5 lg:mx-auto mx-2.5 mt-10" vertical>
+        <n-space class="lg:w-3/5 lg:mx-auto mx-2.5 mt-2.5" vertical>
             <n-space vertical>
                 <n-space justify="center">
                     <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.apk" tag="a">

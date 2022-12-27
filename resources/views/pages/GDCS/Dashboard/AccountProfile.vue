@@ -1,9 +1,0 @@
-<script lang="ts" setup>
-import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-</script>
-
-<template>
-    <CommonLayout>
-
-    </CommonLayout>
-</template>

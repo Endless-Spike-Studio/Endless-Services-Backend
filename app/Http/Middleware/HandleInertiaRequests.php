@@ -16,7 +16,7 @@ class HandleInertiaRequests extends Middleware
             'messages' => $request->session()
                 ->pull('messages', []),
             'gdcs' => [
-                'account' => $account
+                'account' => $account->only(['name'])
             ]
         ]);
     }

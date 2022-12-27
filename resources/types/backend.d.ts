@@ -15,11 +15,23 @@ declare namespace App.Models {
     export interface Account extends Model {
         name: string;
         email: string;
+        email_verified_at: string | null;
+        user: User;
     }
 
     export interface User extends Model {
         name: string;
         uuid: string;
         udid: string;
+        account: Account;
+        score: UserScore;
+    }
+
+    export interface UserScore extends Model {
+        user_id: number;
+        stars: number;
+        demons: number;
+        creator_points: number;
+        user: User;
     }
 }
