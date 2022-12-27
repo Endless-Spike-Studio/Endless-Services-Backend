@@ -11,7 +11,7 @@ class SyncManifestCommand extends Command
 
     protected $description = 'Sync manifest file';
 
-    public function handle(): int
+    public function handle()
     {
         $content = Storage::disk('oss')->get('/static/gdcn/build/manifest.json');
         $fileName = public_path('build/manifest.json');
@@ -22,6 +22,5 @@ class SyncManifestCommand extends Command
         }
 
         file_put_contents($fileName, $content);
-        return Command::SUCCESS;
     }
 }
