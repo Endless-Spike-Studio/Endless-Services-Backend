@@ -27,7 +27,10 @@ Route::group([
         Route::group([
             'middleware' => 'auth:gdcs'
         ], static function () {
-            Route::get('/verify/{_}', [AuthController::class, 'verify'])->name('verify');
+            Route::get('/verify/{_}', [AuthController::class, 'verify'])
+                ->middleware(['signed'])
+                ->name('verify');
+
             Route::post('/logout', [AuthController::class, 'logout'])->name('logout.api');
         });
     });
