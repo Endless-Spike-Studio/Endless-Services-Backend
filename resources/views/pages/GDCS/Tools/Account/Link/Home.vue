@@ -3,7 +3,7 @@ import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {App} from "@/types/backend";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
-import {to_route} from "@/scripts/core/utils";
+import {formatTime, to_route} from "@/scripts/core/utils";
 
 const props = defineProps<{
     links: App.Models.AccountLink[]
@@ -37,6 +37,12 @@ const forms = props.links.reduce((data, link) => {
                                       @click="showExtraRefs[link.id].value = !showExtraRefs[link.id].value">
                                 {{ link.target_name }}
                             </n-button>
+                        </template>
+
+                        <template #header-extra>
+                            <n-text :depth="3" class="text-sm">
+                                链接于 {{ formatTime(link.created_at) }}
+                            </n-text>
                         </template>
 
                         <template #description>
