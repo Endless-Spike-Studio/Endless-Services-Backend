@@ -4,9 +4,10 @@ import {App} from "@/types/backend";
 import {useBackendStore} from "@/scripts/core/stores";
 import {MenuOption, NIcon, NText} from "naive-ui";
 import {InboxOutlined} from "@vicons/antd";
-import DynamicTab from "@/views/pages/GDCS/Account/tabs/Dynamic.vue";
+import DynamicTab from "@/views/pages/GDCS/Account/Tabs/Dynamic.vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
+import {formatTime} from "@/scripts/core/utils";
 
 const props = defineProps<{
     account: App.Models.Account;
@@ -53,8 +54,8 @@ function resendVerificationEmail() {
                 </n-grid-item>
 
                 <n-grid-item :span="2">
-                    <n-tabs :tab-style="{ display: 'none' }">
-                        <n-tab-pane v-for="option in menu.options" :tab="option.key">
+                    <n-tabs v-model:value="menu.active" :tab-style="{ display: 'none' }" animated pane-class="!p-0">
+                        <n-tab-pane v-for="option in menu.options" :name="option.key">
                             <Component :is="option.render"/>
                         </n-tab-pane>
                     </n-tabs>
@@ -68,10 +69,7 @@ function resendVerificationEmail() {
                                     <n-text>ID: {{ account.id }}</n-text>
                                     <n-text>UID: {{ account.user.id ?? '未知' }}</n-text>
                                     <n-text v-if="is_owner">UUID: {{ account.user.uuid }}</n-text>
-                                    <n-text>注册时间: {{
-                                            new Date(account.created_at).toLocaleString() ?? '未知'
-                                        }}
-                                    </n-text>
+                                    <n-text>注册时间: {{ formatTime(account.created_at) }}</n-text>
                                 </n-space>
 
                                 <n-divider/>
@@ -140,6 +138,7 @@ function resendVerificationEmail() {
                         <n-card>
                             <n-el v-if="is_owner && !account.email_verified_at">
                                 <n-button :disabled="resendVerificationEmailForm.processing"
+                                          :loading="resendVerificationEmailForm.processing"
                                           class="w-full text-center" @click="resendVerificationEmail">
                                     重发验证邮件
                                 </n-button>

@@ -189,10 +189,13 @@ return [
     ],
     'tools' => [
         'action' => [
-
+            'account_link_delete_success' => '[账号链接] 解绑成功!',
+            'account_link_create_success' => '[账号链接] 创建成功!'
         ],
         'error' => [
-
+            'account_link_delete_failed_not_owner' => '[账号链接] 解绑失败, 您不是该链接的所有者',
+            'account_link_create_failed_already_exists' => '[账号链接] 创建失败, 链接已存在',
+            'account_link_create_failed_login_failed' => '[账号链接] 创建失败, 请检查用户名及密码是否正确'
         ]
     ]
 ];

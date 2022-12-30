@@ -5,6 +5,7 @@ namespace App\Exceptions\GDCS;
 use App\Http\Traits\HasMessage;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 
 class WebException extends Exception
@@ -27,7 +28,7 @@ class WebException extends Exception
     {
         $currentAndPreviousIsSame = URL::previous() === URL::current();
 
-        if ($currentAndPreviousIsSame) {
+        if ($currentAndPreviousIsSame && !Request::isMethodSafe()) {
             return to_route(self::FALLBACK_ROUTE);
         }
 

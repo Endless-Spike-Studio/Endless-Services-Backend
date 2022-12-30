@@ -16,15 +16,24 @@ declare namespace App.Models {
         name: string;
         email: string;
         email_verified_at: string | null;
-        user: User;
+        user?: User;
+        links?: AccountLink[];
+    }
+
+    export interface AccountLink extends Model {
+        account_id: number;
+        server: string;
+        target_name: string;
+        target_account_id: number;
+        target_user_id: number;
     }
 
     export interface User extends Model {
         name: string;
         uuid: string;
         udid: string;
-        account: Account;
-        score: UserScore;
+        account?: Account;
+        score?: UserScore;
     }
 
     export interface UserScore extends Model {
@@ -32,6 +41,6 @@ declare namespace App.Models {
         stars: number;
         demons: number;
         creator_points: number;
-        user: User;
+        user?: User;
     }
 }

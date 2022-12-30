@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Web;
 
+use App\Exceptions\GDCS\WebException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\LoginRequest;
 use App\Http\Traits\HasMessage;
@@ -14,13 +15,15 @@ class AuthController extends Controller
 {
     use HasMessage;
 
+    /**
+     * @throws WebException
+     */
     public function login(LoginRequest $request)
     {
         $data = $request->validated();
 
         if (!Auth::guard('gdcs')->attempt($data)) {
-            $this->pushErrorMessage(__('gdcn.web.error.login_failed'));
-            return back();
+            throw new WebException(__('gdcn.web.error.login_failed'));
         }
 
         $this->pushSuccessMessage(__('gdcn.web.action.login_success'));

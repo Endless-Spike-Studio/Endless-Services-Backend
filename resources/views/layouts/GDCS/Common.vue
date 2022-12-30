@@ -1,9 +1,16 @@
 <script lang="ts" setup>
 import CommonWrapper from "@/views/layouts/CommonWrapper.vue";
 import {MenuOption, NIcon, NImage} from "naive-ui";
-import {DashboardTwotone, HomeTwotone, ProfileTwotone, ToolTwotone, UserOutlined} from "@vicons/antd";
+import {
+    DashboardTwotone,
+    HomeTwotone,
+    LoginOutlined,
+    LogoutOutlined,
+    ProfileTwotone,
+    ToolTwotone,
+    UserOutlined
+} from "@vicons/antd";
 import Logo from "@/images/logo.png";
-import {LogInTwotone, LogOutTwotone} from "@vicons/material";
 import {to_route} from "@/scripts/core/utils";
 import route, {routes} from "@/scripts/core/route";
 import {useApiStore, useBackendStore} from "@/scripts/core/stores";
@@ -19,7 +26,7 @@ function to_home(routeName = 'gdcs.home') {
 
     menu.active = 'home';
     if (route().current(routeName)) {
-        return apiStore.$message.error('别点了 你已经在首页了');
+        return apiStore.$message.info('别点了 你已经在首页了');
     }
 
     return to_route(routeName);
@@ -96,7 +103,7 @@ const menu = reactive({
                     title: '登录',
                     key: 'auth',
                     icon: () => h(NIcon, {
-                        component: LogInTwotone
+                        component: LoginOutlined
                     }),
                     onSelect() {
                         return to_route('gdcs.auth.login');
@@ -124,7 +131,7 @@ const menu = reactive({
                             title: '登出',
                             key: 'logout',
                             icon: () => h(NIcon, {
-                                component: LogOutTwotone
+                                component: LogoutOutlined
                             }),
                             onSelect() {
                                 return Inertia.post(route('gdcs.auth.logout.api'));

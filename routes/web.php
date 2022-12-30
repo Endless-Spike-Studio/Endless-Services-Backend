@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\GDCS\Web\AccountController;
+use App\Http\Controllers\GDCS\Web\AccountLinkToolController;
 use App\Http\Controllers\GDCS\Web\AuthController;
+use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
 use App\Http\Presenters\GDCS\AccountPresenter;
 use App\Http\Presenters\GDCS\HomePresenter;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +61,21 @@ Route::group([
             'as' => 'tools.'
         ], static function () {
             Route::inertia('/', 'GDCS/Tools/Home')->name('home');
+
+            Route::group([
+                'prefix' => 'account',
+                'as' => 'account.'
+            ], static function () {
+                Route::group([
+                    'prefix' => 'link',
+                    'as' => 'link.'
+                ], static function () {
+                    Route::get('/', [AccountLinkToolPresenter::class, 'renderIndex'])->name('index');
+                    Route::inertia('/create', 'GDCS/Tools/Account/Link/Create')->name('create');
+                    Route::post('/create', [AccountLinkToolController::class, 'create'])->name('create.api');
+                    Route::delete('/{link}', [AccountLinkToolController::class, 'delete'])->name('delete.api');
+                });
+            });
         });
     });
 });

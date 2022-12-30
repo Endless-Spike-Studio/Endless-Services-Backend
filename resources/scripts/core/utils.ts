@@ -16,3 +16,7 @@ export function useProp<T = unknown>(key: string, defaultValue?: T): ComputedRef
 export function to_route(name: string, params?: RouteParamsWithQueryOverload | RouteParam, absolute?: boolean, options?: VisitOptions) {
     Inertia.visit(route(name, params, absolute), options);
 }
+
+export function formatTime(_: string, defaultValue = '未知') {
+    return new Date(_).toLocaleString() ?? defaultValue;
+}
