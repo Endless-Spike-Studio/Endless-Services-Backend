@@ -4,20 +4,21 @@ import {App} from "@/types/backend";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 import {formatTime, to_route} from "@/scripts/core/utils";
+import {servers} from "@/scripts/core/shared";
+import {find} from "lodash-es";
 
 const props = defineProps<{
     links: App.Models.AccountLink[]
 }>();
 
-const showExtraRefs = props.links.reduce((data, link) => {
-    data[link.id] = ref(false);
-    return data;
-}, {} as Record<number, unknown>);
-
-const forms = props.links.reduce((data, link) => {
+const forms = props.links.reduce(function (data, link) {
     data[link.id] = useForm({});
     return data;
 }, {} as Record<number, unknown>);
+
+function guessServer(address: string) {
+    return find(servers, {address})?.name ?? address;
+}
 </script>
 
 <template>
@@ -33,48 +34,15 @@ const forms = props.links.reduce((data, link) => {
                 <n-list-item v-for="link in links">
                     <n-thing>
                         <template #header>
-                            <n-button text type="primary"
-                                      @click="showExtraRefs[link.id].value = !showExtraRefs[link.id].value">
-                                {{ link.target_name }}
-                            </n-button>
-                        </template>
-
-                        <template #header-extra>
-                            <n-text :depth="3" class="text-sm">
-                                链接于 {{ formatTime(link.created_at) }}
-                            </n-text>
+                            {{ link.target_name }}
                         </template>
 
                         <template #description>
-                            <n-collapse-transition :show="showExtraRefs[link.id].value">
-                                <n-popover>
-                                    <template #trigger>
-                                        <n-text type="info">{{ link.server }}</n-text>
-                                    </template>
-
-                                    链接的服务器
-                                </n-popover>
-
-                                <n-divider vertical/>
-
-                                <n-popover>
-                                    <template #trigger>
-                                        <n-text type="info">{{ link.target_account_id }}</n-text>
-                                    </template>
-
-                                    链接的账号 ID
-                                </n-popover>
-
-                                <n-divider vertical/>
-
-                                <n-popover>
-                                    <template #trigger>
-                                        <n-text type="info">{{ link.target_user_id }}</n-text>
-                                    </template>
-
-                                    链接的玩家 ID
-                                </n-popover>
-                            </n-collapse-transition>
+                            <n-text :depth="3" class="text-sm">
+                                {{ guessServer(link.server) }} [{{ link.target_account_id }}, {{ link.target_user_id }}]
+                                <br>
+                                链接于 {{ formatTime(link.created_at) }}
+                            </n-text>
                         </template>
                     </n-thing>
 

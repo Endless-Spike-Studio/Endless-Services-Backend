@@ -3,9 +3,11 @@
 use App\Http\Controllers\GDCS\Web\AccountController;
 use App\Http\Controllers\GDCS\Web\AccountLinkToolController;
 use App\Http\Controllers\GDCS\Web\AuthController;
+use App\Http\Controllers\GDCS\Web\LevelTempUploadAccessToolController;
 use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
 use App\Http\Presenters\GDCS\AccountPresenter;
 use App\Http\Presenters\GDCS\HomePresenter;
+use App\Http\Presenters\GDCS\LevelTempUploadAccessToolPresenter;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -74,6 +76,20 @@ Route::group([
                     Route::inertia('/create', 'GDCS/Tools/Account/Link/Create')->name('create');
                     Route::post('/create', [AccountLinkToolController::class, 'create'])->name('create.api');
                     Route::delete('/{link}', [AccountLinkToolController::class, 'delete'])->name('delete.api');
+                });
+            });
+
+            Route::group([
+                'prefix' => 'level',
+                'as' => 'level.'
+            ], static function () {
+                Route::group([
+                    'prefix' => 'tempUploadAccess',
+                    'as' => 'temp_upload_access.'
+                ], static function () {
+                    Route::get('/', [LevelTempUploadAccessToolPresenter::class, 'renderIndex'])->name('index');
+                    Route::post('/create', [LevelTempUploadAccessToolController::class, 'create'])->name('create.api');
+                    Route::delete('/{access}', [LevelTempUploadAccessToolController::class, 'delete'])->name('delete.api');
                 });
             });
         });

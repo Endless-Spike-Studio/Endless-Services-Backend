@@ -62,7 +62,7 @@ const menu = reactive({
                         component: SafetyOutlined
                     }),
                     onSelect() {
-                        to_route('gdcs.tools.level.temp_upload_access')
+                        to_route('gdcs.tools.level.temp_upload_access.index')
                     }
                 }
             ] as Tool[]

@@ -26,6 +26,13 @@ declare namespace App.Models {
         target_name: string;
         target_account_id: number;
         target_user_id: number;
+        account?: Account;
+    }
+
+    export interface LevelTempUploadAccess extends Model {
+        account_id: number;
+        ip: string;
+        account?: Account;
     }
 
     export interface User extends Model {
