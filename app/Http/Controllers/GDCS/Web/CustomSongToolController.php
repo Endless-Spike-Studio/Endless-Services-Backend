@@ -22,6 +22,21 @@ class CustomSongToolController extends Controller
     /**
      * @throws WebException
      */
+    public function delete(CustomSong $song)
+    {
+        $account = Auth::guard('gdcs')->user();
+
+        if ($song->account->isNot($account)) {
+            throw new WebException(__('gdcn.tools.error.custom_song_delete_failed_not_owner'));
+        }
+
+        $song->delete();
+        return back();
+    }
+
+    /**
+     * @throws WebException
+     */
     public function createUsingLink(CustomSongToolCreateUsingLinkRequest $request)
     {
         $data = $request->validated();

@@ -11,8 +11,11 @@ class CustomSongToolPresenter
 {
     public function renderIndex(): Response
     {
+        $account = Auth::guard('gdcs')->user();
+
         return Inertia::render('GDCS/Tools/Song/Custom/Home', [
             'offset' => config('gdcn.game.custom_song_offset'),
+            'currentAccountID' => $account->id,
             'songs' => CustomSong::query()
                 ->select(['id', 'account_id', 'name', 'artist_name', 'size', 'download_url', 'created_at'])
                 ->with(['account:id,name'])
@@ -22,11 +25,12 @@ class CustomSongToolPresenter
 
     public function renderUploaded(): Response
     {
+        $account = Auth::guard('gdcs')->user();
+
         return Inertia::render('GDCS/Tools/Song/Custom/Home', [
             'offset' => config('gdcn.game.custom_song_offset'),
-            'songs' => Auth::guard('gdcs')
-                ->user()
-                ->uploadedCustomSongs()
+            'currentAccountID' => $account->id,
+            'songs' => $account->uploadedCustomSongs()
                 ->select(['id', 'account_id', 'name', 'artist_name', 'size', 'download_url', 'created_at'])
                 ->with(['account:id,name'])
                 ->paginate()

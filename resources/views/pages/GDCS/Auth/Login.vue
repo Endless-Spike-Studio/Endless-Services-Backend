@@ -16,7 +16,7 @@ function submit() {
 
 <template>
     <CommonLayout>
-        <n-card class="lg:mx-auto mx-2.5 mt-2.5 lg:w-1/3">
+        <n-card>
             <n-form-item label="用户名">
                 <n-input v-model:value="form.name"/>
             </n-form-item>

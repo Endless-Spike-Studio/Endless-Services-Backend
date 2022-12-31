@@ -119,6 +119,7 @@ Route::group([
                     Route::get('/', [CustomSongToolPresenter::class, 'renderIndex'])->name('index');
                     Route::get('/uploaded', [CustomSongToolPresenter::class, 'renderUploaded'])->name('uploaded');
                     Route::inertia('/create', 'GDCS/Tools/Song/Custom/Create')->name('create');
+                    Route::delete('/{song}', [CustomSongToolController::class, 'delete'])->name('delete.api');
                     Route::post('/create/link', [CustomSongToolController::class, 'createUsingLink'])->name('create.link.api');
                     Route::post('/create/file', [CustomSongToolController::class, 'createUsingFile'])->name('create.file.api');
                     Route::post('/create/netease', [CustomSongToolController::class, 'createUsingNetease'])->name('create.netease.api');
