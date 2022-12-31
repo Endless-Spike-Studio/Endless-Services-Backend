@@ -194,7 +194,8 @@ return [
             'level_temp_upload_access_create_success' => '[关卡临时上传许可] 创建成功!',
             'level_temp_upload_access_delete_success' => '[关卡临时上传许可] 销毁成功!',
             'level_transfer_success_with_id' => '[关卡转移] 操作成功! ID: :id',
-            'custom_song_create_success_with_id' => '[自定义歌曲] 创建成功! ID: :id'
+            'custom_song_create_success_with_id' => '[自定义歌曲] 创建成功! ID: :id',
+            'custom_song_delete_success' => '[自定义歌曲] 删除成功!'
         ],
         'error' => [
             'account_link_delete_failed_not_owner' => '[账号链接] 解绑失败, 您不是该链接的所有者',

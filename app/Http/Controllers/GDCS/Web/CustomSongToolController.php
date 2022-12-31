@@ -31,6 +31,8 @@ class CustomSongToolController extends Controller
         }
 
         $song->delete();
+        $this->pushSuccessMessage(__('gdcn.tools.action.custom_song_delete_success'));
+
         return back();
     }
 
