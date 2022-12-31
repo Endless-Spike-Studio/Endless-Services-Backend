@@ -48,6 +48,10 @@ class LevelTransferToolController extends Controller
             ResponseService::check($response);
             $levelObject = ObjectService::split(Arr::get(explode('#', $response), 0), ':');
 
+            if ($levelObject[6] !== (string)$link->target_user_id) {
+                throw new WebException(__('gdcn.tools.error.level_transfer_failed_not_level_owner'));
+            }
+
             $level = Level::query()
                 ->firstOrCreate([
                     'level_info' => json_encode([
