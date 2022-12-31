@@ -21,7 +21,6 @@ class ReCalculateCreatorPointJob implements ShouldQueue
             ->get();
 
         UserScore::query()
-            ->where('creator_points', '>', 0)
             ->update([
                 'creator_points' => 0
             ]);
@@ -29,7 +28,7 @@ class ReCalculateCreatorPointJob implements ShouldQueue
         foreach ($ratings as $rating) {
             $score = $rating->level?->creator?->score;
 
-            if (empty($score)) {
+            if (empty($rating->level) || empty($score)) {
                 continue;
             }
 
