@@ -78,7 +78,6 @@ class LevelTransferToolController extends Controller
 
             $record = $account->levelTransferRecords()
                 ->firstOrCreate([
-                    'type' => LevelTransferType::IN,
                     'server' => $link->server,
                     'original_level_id' => $levelObject[1]
                 ], [
