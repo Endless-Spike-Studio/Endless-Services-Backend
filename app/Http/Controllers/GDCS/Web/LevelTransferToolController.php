@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\GDCS\Web;
 
 use App\Enums\GDCS\Game\Algorithm\Keys;
-use App\Enums\GDCS\Game\LevelTransferType;
 use App\Exceptions\GDCS\WebException;
 use App\Exceptions\ResponseException;
 use App\Http\Controllers\Controller;
