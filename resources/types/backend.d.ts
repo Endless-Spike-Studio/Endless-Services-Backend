@@ -29,6 +29,15 @@ declare namespace App.Models {
         account?: Account;
     }
 
+    export interface CustomSong extends Model {
+        account_id: number;
+        name: string;
+        artist_name: string;
+        size: number;
+        download_url: string;
+        account?: Account;
+    }
+
     export interface Level extends Model {
         name: string;
         desc: string;

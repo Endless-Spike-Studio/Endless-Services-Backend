@@ -3,10 +3,12 @@
 use App\Http\Controllers\GDCS\Web\AccountController;
 use App\Http\Controllers\GDCS\Web\AccountLinkToolController;
 use App\Http\Controllers\GDCS\Web\AuthController;
+use App\Http\Controllers\GDCS\Web\CustomSongToolController;
 use App\Http\Controllers\GDCS\Web\LevelTempUploadAccessToolController;
 use App\Http\Controllers\GDCS\Web\LevelTransferToolController;
 use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
 use App\Http\Presenters\GDCS\AccountPresenter;
+use App\Http\Presenters\GDCS\CustomSongToolPresenter;
 use App\Http\Presenters\GDCS\HomePresenter;
 use App\Http\Presenters\GDCS\LevelTempUploadAccessToolPresenter;
 use App\Http\Presenters\GDCS\LevelTransferToolPresenter;
@@ -103,6 +105,23 @@ Route::group([
                     Route::get('/', [LevelTempUploadAccessToolPresenter::class, 'renderIndex'])->name('index');
                     Route::post('/create', [LevelTempUploadAccessToolController::class, 'create'])->name('create.api');
                     Route::delete('/{access}', [LevelTempUploadAccessToolController::class, 'delete'])->name('delete.api');
+                });
+            });
+
+            Route::group([
+                'prefix' => 'song',
+                'as' => 'song.'
+            ], static function () {
+                Route::group([
+                    'prefix' => 'custom',
+                    'as' => 'custom.'
+                ], static function () {
+                    Route::get('/', [CustomSongToolPresenter::class, 'renderIndex'])->name('index');
+                    Route::get('/uploaded', [CustomSongToolPresenter::class, 'renderUploaded'])->name('uploaded');
+                    Route::inertia('/create', 'GDCS/Tools/Song/Custom/Create')->name('create');
+                    Route::post('/create/link', [CustomSongToolController::class, 'createUsingLink'])->name('create.link.api');
+                    Route::post('/create/file', [CustomSongToolController::class, 'createUsingFile'])->name('create.file.api');
+                    Route::post('/create/netease', [CustomSongToolController::class, 'createUsingNetease'])->name('create.netease.api');
                 });
             });
         });

@@ -30,7 +30,8 @@ function handlePageUpdate(newPage: number) {
     Inertia.reload({
         data: {
             page: newPage - 1
-        }
+        },
+        only: ['levels']
     });
 }
 </script>

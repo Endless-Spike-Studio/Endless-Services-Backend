@@ -192,7 +192,7 @@ class LevelCommentService extends BaseCommandService
         }
 
         $newValue = (int)($this->arguments['value'] ?? $this->parameters[1]);
-        $customSongOffset = config('gdcn.game.custom_song_offset', 10000000);
+        $customSongOffset = config('gdcn.game.custom_song_offset');
 
         if ($newValue >= $customSongOffset && !CustomSong::where('id', $newValue - $customSongOffset)->exists()) {
             return __('gdcn.game.command.level_song_update_failed_custom_not_found', [

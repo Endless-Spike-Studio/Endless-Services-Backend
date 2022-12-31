@@ -1,30 +1,33 @@
 <?php
 
 return [
-    'updater' => [
-        'secret' => env('UPDATER_SECRET')
-    ],
     'storages' => [
         'songs' => [
             [
                 'disk' => 'oss',
-                'format' => 'storages/songs/{id}.mp3',
-            ],
+                'format' => 'storages/songs/{id}.mp3'
+            ]
+        ],
+        'customSongs' => [
+            [
+                'disk' => 'oss',
+                'format' => 'storages/customSongs/{id}.mp3'
+            ]
         ],
         'game' => [
             'accounts' => [
                 [
                     'disk' => 'oss',
-                    'format' => 'storages/game/accounts/{id}.dat',
-                ],
+                    'format' => 'storages/game/accounts/{id}.dat'
+                ]
             ],
             'levels' => [
                 [
                     'disk' => 'oss',
-                    'format' => 'storages/game/levels/{id}.dat',
-                ],
-            ],
-        ],
+                    'format' => 'storages/game/levels/{id}.dat'
+                ]
+            ]
+        ]
     ],
     'proxy' => [
         'url' => env('CLASH_URL'),

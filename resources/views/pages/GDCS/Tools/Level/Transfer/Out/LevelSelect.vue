@@ -6,13 +6,13 @@ import {Base64} from "js-base64";
 
 const levels = useProp<PaginatedData<App.Models.Level>>('levels');
 const page = ref(0);
-const key = ref(0);
 
 function handlePageUpdate(newPage: number) {
     Inertia.reload({
         data: {
             page: newPage
-        }
+        },
+        only: ['levels']
     });
 }
 

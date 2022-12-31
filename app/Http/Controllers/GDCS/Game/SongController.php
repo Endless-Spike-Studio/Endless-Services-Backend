@@ -27,7 +27,7 @@ class SongController extends Controller
     {
         try {
             $data = $request->validated();
-            $customSongOffset = config('gdcn.game.custom_song_offset', 10000000);
+            $customSongOffset = config('gdcn.game.custom_song_offset');
 
             if ($data['songID'] >= $customSongOffset) {
                 $song = CustomSong::query()
@@ -50,7 +50,7 @@ class SongController extends Controller
     public function fetchTopArtists(TopArtistFetchRequest $request): string
     {
         $data = $request->validated();
-        $customSongOffset = config('gdcn.game.custom_song_offset', 10000000);
+        $customSongOffset = config('gdcn.game.custom_song_offset');
 
         $query = Level::query()
             ->selectRaw('song_id, count(*) as times')

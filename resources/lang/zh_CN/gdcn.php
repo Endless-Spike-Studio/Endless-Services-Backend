@@ -193,7 +193,8 @@ return [
             'account_link_create_success' => '[账号链接] 创建成功!',
             'level_temp_upload_access_create_success' => '[关卡临时上传许可] 创建成功!',
             'level_temp_upload_access_delete_success' => '[关卡临时上传许可] 销毁成功!',
-            'level_transfer_success_with_id' => '[关卡转移] 操作成功! ID: :id'
+            'level_transfer_success_with_id' => '[关卡转移] 操作成功! ID: :id',
+            'custom_song_create_success_with_id' => '[自定义歌曲] 创建成功! ID: :id'
         ],
         'error' => [
             'account_link_delete_failed_not_owner' => '[账号链接] 解绑失败, 您不是该链接的所有者',
@@ -206,6 +207,11 @@ return [
             'level_transfer_failed_level_already_transferred_with_id' => '[关卡转移] 操作失败, 该关卡已经被搬运过了, ID: :id',
             'level_transfer_failed_not_level_owner' => '[关卡转移] 操作失败, 您不是该关卡的所有者',
             'level_transfer_failed_level_upload_failed' => '[关卡转移] 操作失败, 关卡上传失败, 请稍后再试',
+            'custom_song_create_failed_invalid_response_headers' => '[自定义歌曲] 创建失败, 响应头部无效',
+            'custom_song_create_failed_invalid_content_type' => '[自定义歌曲] 创建失败, 无效的内容类型',
+            'custom_song_create_failed_netease_detected' => '[自定义歌曲] 创建失败, 检测到网易云音乐链接, 您用错工具了',
+            'custom_song_create_failed_already_exists_with_id' => '[自定义歌曲] 创建失败, 歌曲已存在, ID: :id',
+            'custom_song_create_failed_music_info_fetch_failed' => '[自定义歌曲] 创建失败, 音乐信息获取失败'
         ]
     ]
 ];
