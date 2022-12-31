@@ -6,6 +6,7 @@ import route from "@/scripts/core/route";
 import {PaginatedData} from "@/types/backend";
 
 const props = defineProps<{
+    linkID: number;
     levels: PaginatedData<{
         id: number;
         name: string;
