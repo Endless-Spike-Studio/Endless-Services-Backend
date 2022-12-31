@@ -20,7 +20,7 @@ const forms = computed(() => {
 
 <template>
     <CommonLayout>
-        <n-card class="lg:w-3/5 lg:mx-auto mx-2.5 mt-2.5" title="临时关卡上传许可">
+        <n-card title="临时关卡上传许可">
             <template #header-extra>
                 <n-button @click="Inertia.post(route('gdcs.tools.level.temp_upload_access.create.api'))">
                     创建新许可
@@ -44,13 +44,11 @@ const forms = computed(() => {
                     </n-thing>
 
                     <template #suffix>
-                        <n-space>
-                            <n-button :disabled="forms[access.id].processing" :loading="forms[access.id].processing"
-                                      type="error"
-                                      @click="forms[access.id].delete(route('gdcs.tools.level.temp_upload_access.delete.api', access.id))">
-                                销毁
-                            </n-button>
-                        </n-space>
+                        <n-button :disabled="forms[access.id].processing" :loading="forms[access.id].processing"
+                                  type="error"
+                                  @click="forms[access.id].delete(route('gdcs.tools.level.temp_upload_access.delete.api', access.id))">
+                            销毁
+                        </n-button>
                     </template>
                 </n-list-item>
             </n-list>

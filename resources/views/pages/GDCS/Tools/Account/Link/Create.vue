@@ -28,7 +28,7 @@ function submit() {
 
 <template>
     <CommonLayout>
-        <n-card class="lg:w-3/5 lg:mx-auto mx-2.5 mt-2.5" title="链接创建">
+        <n-card title="链接创建">
             <n-form-item label="服务器">
                 <n-select v-model:value="form.server" :options="serverOptions"/>
             </n-form-item>

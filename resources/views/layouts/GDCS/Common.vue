@@ -197,7 +197,7 @@ const {width} = useWindowSize();
                 </slot>
             </n-layout-header>
 
-            <n-layout-content class="mb-16">
+            <n-layout-content class="lg:w-3/5 lg:mx-auto mx-2.5 mt-2.5 mb-16">
                 <slot/>
             </n-layout-content>
 

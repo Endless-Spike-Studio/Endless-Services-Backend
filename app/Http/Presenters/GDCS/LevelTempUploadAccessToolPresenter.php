@@ -14,7 +14,8 @@ class LevelTempUploadAccessToolPresenter
 
         return Inertia::render('GDCS/Tools/Level/TempUploadAccess/Home', [
             'accesses' => $account->tempLevelUploadAccesses()
-                ->get(['id', 'account_id', 'ip', 'created_at'])
+                ->select(['id', 'account_id', 'ip', 'created_at'])
+                ->get()
         ]);
     }
 }

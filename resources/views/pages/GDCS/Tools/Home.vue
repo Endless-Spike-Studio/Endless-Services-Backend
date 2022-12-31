@@ -53,7 +53,7 @@ const menu = reactive({
                         component: RetweetOutlined
                     }),
                     onSelect() {
-                        to_route('gdcs.tools.level.transfer')
+                        to_route('gdcs.tools.level.transfer.home')
                     }
                 },
                 {
@@ -91,7 +91,7 @@ const menu = reactive({
 
 <template>
     <CommonLayout>
-        <n-space class="lg:w-3/5 lg:mx-auto mx-2.5 mt-2.5" vertical>
+        <n-space vertical>
             <n-grid :x-gap="10" :y-gap="10" cols="1 768:4">
                 <n-grid-item>
                     <n-card :content-style="{ padding: 0 }">

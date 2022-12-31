@@ -4,10 +4,12 @@ use App\Http\Controllers\GDCS\Web\AccountController;
 use App\Http\Controllers\GDCS\Web\AccountLinkToolController;
 use App\Http\Controllers\GDCS\Web\AuthController;
 use App\Http\Controllers\GDCS\Web\LevelTempUploadAccessToolController;
+use App\Http\Controllers\GDCS\Web\LevelTransferToolController;
 use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
 use App\Http\Presenters\GDCS\AccountPresenter;
 use App\Http\Presenters\GDCS\HomePresenter;
 use App\Http\Presenters\GDCS\LevelTempUploadAccessToolPresenter;
+use App\Http\Presenters\GDCS\LevelTransferToolPresenter;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -83,6 +85,17 @@ Route::group([
                 'prefix' => 'level',
                 'as' => 'level.'
             ], static function () {
+                Route::group([
+                    'prefix' => 'transfer',
+                    'as' => 'transfer.'
+                ], static function () {
+                    Route::get('/', [LevelTransferToolPresenter::class, 'renderHome'])->name('home');
+                    Route::get('/in/{link}', [LevelTransferToolPresenter::class, 'renderIn'])->name('in');
+                    Route::post('/in/{link}', [LevelTransferToolController::class, 'in'])->name('in.api');
+                    Route::get('/out/{level}', [LevelTransferToolPresenter::class, 'renderOut'])->name('out');
+                    Route::post('/out/{level}', [LevelTransferToolController::class, 'out'])->name('out.api');
+                });
+
                 Route::group([
                     'prefix' => 'tempUploadAccess',
                     'as' => 'temp_upload_access.'

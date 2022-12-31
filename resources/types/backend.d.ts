@@ -29,6 +29,11 @@ declare namespace App.Models {
         account?: Account;
     }
 
+    export interface Level extends Model {
+        name: string;
+        desc: string;
+    }
+
     export interface LevelTempUploadAccess extends Model {
         account_id: number;
         ip: string;
@@ -50,4 +55,12 @@ declare namespace App.Models {
         creator_points: number;
         user?: User;
     }
+}
+
+export interface PaginatedData<T extends unknown> {
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
+    data: T[];
 }

@@ -61,6 +61,9 @@ class AccountLinkToolController extends Controller
         return to_route('gdcs.tools.account.link.index');
     }
 
+    /**
+     * @throws WebException
+     */
     public function delete(AccountLink $link)
     {
         $currentAccountID = Auth::guard('gdcs')->id();
@@ -69,7 +72,7 @@ class AccountLinkToolController extends Controller
             $link->delete();
             $this->pushSuccessMessage(__('gdcn.tools.action.account_link_delete_success'));
         } else {
-            $this->pushErrorMessage(__('gdcn.tools.error.account_link_delete_failed_not_owner'));
+            throw new WebException(__('gdcn.tools.error.account_link_delete_failed_not_owner'));
         }
 
         return back();
