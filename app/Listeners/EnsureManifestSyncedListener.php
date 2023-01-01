@@ -4,9 +4,9 @@ namespace App\Listeners;
 
 use Illuminate\Support\Facades\Artisan;
 
-class EnsureSyncManifestListener
+class EnsureManifestSyncedListener
 {
-    public function handle()
+    public function handle(): void
     {
         Artisan::call('manifest:sync');
     }
