@@ -51,7 +51,7 @@ function submit() {
             </n-form>
 
             <n-space class="w-full" justify="space-between">
-                <n-button :disabled="form.processing" :loading="form.processing" @click="submit()">登录</n-button>
+                <n-button :disabled="form.processing" :loading="form.processing" @click="submit">注册</n-button>
                 <n-button text @click="to_route('gdcs.auth.login')">已有账号? 去登录</n-button>
             </n-space>
         </n-card>

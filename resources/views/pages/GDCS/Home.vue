@@ -81,7 +81,7 @@ function handleAppleDownload() {
                     </n-dropdown>
 
                     <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.ipa"
-                              @click="handleAppleDownload()">
+                              @click="handleAppleDownload">
                         <template #icon>
                             <n-icon :component="AppleOutlined"/>
                         </template>

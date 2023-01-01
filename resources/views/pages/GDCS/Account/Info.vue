@@ -68,13 +68,13 @@ function resendVerificationEmail() {
                                 <n-space justify="center">
                                     <n-text>ID: {{ account.id }}</n-text>
                                     <n-text>UID: {{ account.user.id ?? '未知' }}</n-text>
-                                    <n-text v-if="is_owner">UUID: {{ account.user.uuid }}</n-text>
+                                    <n-text v-if="is_owner && account.user.uuid">UUID: {{ account.user.uuid }}</n-text>
                                     <n-text>注册时间: {{ formatTime(account.created_at) }}</n-text>
                                 </n-space>
 
-                                <n-divider/>
+                                <n-divider v-if="account.user.score"/>
 
-                                <n-grid :x-gap="10" :y-gap="10" cols="3">
+                                <n-grid v-if="account.user.score" :x-gap="10" :y-gap="10" cols="3">
                                     <n-grid-item>
                                         <n-statistic :value="statistic.friends.toString()" label="好友"/>
                                     </n-grid-item>
@@ -120,7 +120,7 @@ function resendVerificationEmail() {
                                             </n-button>
                                         </n-descriptions-item>
 
-                                        <n-descriptions-item label="UDID">
+                                        <n-descriptions-item v-if="account.user.udid" label="UDID">
                                             <n-ellipsis class="!max-w-[120px]">
                                                 {{ account.user.udid }}
                                             </n-ellipsis>
@@ -135,16 +135,12 @@ function resendVerificationEmail() {
                             </n-space>
                         </n-card>
 
-                        <n-card>
-                            <n-el v-if="is_owner && !account.email_verified_at">
-                                <n-button :disabled="resendVerificationEmailForm.processing"
-                                          :loading="resendVerificationEmailForm.processing"
-                                          class="w-full text-center" @click="resendVerificationEmail">
-                                    重发验证邮件
-                                </n-button>
-                            </n-el>
-
-                            <n-empty v-else/>
+                        <n-card v-if="is_owner && !account.email_verified_at">
+                            <n-button :disabled="resendVerificationEmailForm.processing"
+                                      :loading="resendVerificationEmailForm.processing"
+                                      class="w-full text-center" @click="resendVerificationEmail">
+                                重发验证邮件
+                            </n-button>
                         </n-card>
                     </n-space>
                 </n-grid-item>

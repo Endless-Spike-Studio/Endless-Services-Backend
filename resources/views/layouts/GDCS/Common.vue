@@ -205,7 +205,7 @@ const {width} = useWindowSize();
                 <slot name="footer">
                     <n-text>&copy; 2022 - {{ new Date().getFullYear() }}</n-text>
                     <n-divider vertical/>
-                    <n-button text @click="to_home()">GDCS</n-button>
+                    <n-button text @click="to_home">GDCS</n-button>
                     <n-divider vertical/>
                     <n-button href="https://beian.miit.gov.cn" tag="a" text>吉ICP备18006293号</n-button>
                 </slot>
