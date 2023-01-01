@@ -24,13 +24,13 @@ class AuthController extends Controller
         $data = $request->validated();
 
         $account = Account::create([
-            'name' => $data['userName'],
+            'name' => $data['name'],
             'password' => Hash::make($data['password']),
             'email' => $data['email']
         ]);
 
         event(new AccountRegistered($account));
-        Auth::login($account);
+        Auth::guard('gdcs')->login($account);
 
         return Redirect::intended();
     }
