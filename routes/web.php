@@ -9,6 +9,7 @@ use App\Http\Controllers\GDCS\Web\LevelTransferToolController;
 use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
 use App\Http\Presenters\GDCS\AccountPresenter;
 use App\Http\Presenters\GDCS\CustomSongToolPresenter;
+use App\Http\Presenters\GDCS\DashboardPresenter;
 use App\Http\Presenters\GDCS\HomePresenter;
 use App\Http\Presenters\GDCS\LevelTempUploadAccessToolPresenter;
 use App\Http\Presenters\GDCS\LevelTransferToolPresenter;
@@ -60,7 +61,8 @@ Route::group([
             'prefix' => 'dashboard',
             'as' => 'dashboard.'
         ], static function () {
-            Route::inertia('/', 'GDCS/Dashboard/Home')->name('home');
+            Route::get('/', [DashboardPresenter::class, 'renderHome'])->name('home');
+            Route::get('/level/{level}', [DashboardPresenter::class, 'renderLevelInfo'])->name('level.info');
         });
 
         Route::group([

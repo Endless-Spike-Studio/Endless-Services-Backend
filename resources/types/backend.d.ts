@@ -41,12 +41,65 @@ declare namespace App.Models {
     export interface Level extends Model {
         name: string;
         desc: string;
+        coins: number;
+        audio_track: number;
+        song_id: number;
+        length: number;
+        objects: number;
+        requested_stars: number;
+        unlisted: boolean;
+        rating?: LevelRating;
+        user?: User;
+        creator?: User;
+        song?: Song;
+        scores?: LevelScore[];
+        comments?: LevelComment[];
+    }
+
+    export interface LevelScore extends Model {
+        account_id: number;
+        level_id: number;
+        percent: number;
+        attempts: number;
+        coins: number;
+        account?: Account;
+        level?: Level;
+    }
+
+    export interface LevelComment extends Model {
+        account_id: number;
+        level_id: number;
+        comment: string;
+        percent: number;
+        likes: number;
+        span: boolean;
+        account?: Account;
+        level?: Level;
+    }
+
+    export interface LevelRating extends Model {
+        level_id: number;
+        stars: number;
+        difficulty: number;
+        featured_score: number;
+        epic: boolean;
+        auto: boolean;
+        demon: boolean;
+        demon_difficulty: number;
+        coin_verified: boolean;
+        level?: Level;
     }
 
     export interface LevelTempUploadAccess extends Model {
         account_id: number;
         ip: string;
         account?: Account;
+    }
+
+    export interface Song extends Model {
+        name: string;
+        artist_name: string;
+        size: number;
     }
 
     export interface User extends Model {

@@ -66,6 +66,11 @@ class Level extends Model
         return $this->belongsTo(__CLASS__, 'original_level_id', 'id');
     }
 
+    public function scores(): HasMany
+    {
+        return $this->hasMany(LevelScore::class, 'level_id');
+    }
+
     public function daily(): HasOne
     {
         return $this->hasOne(DailyLevel::class);

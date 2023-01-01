@@ -57,3 +57,37 @@ export function createRules<T extends object>(form: InertiaForm<T>, items?: Reco
         return data;
     }, {} as Record<keyof T, FormItemRule[]>);
 }
+
+export function createRange(i: number) {
+    const result = new Array<number>;
+
+    for (let j = 0; j < i; j++) {
+        result.push(j);
+    }
+
+    return result;
+}
+
+export function guessDifficultyNameFromStars(stars: number) {
+    switch (stars) {
+        case 1:
+            return 'Auto';
+        case 2:
+            return 'Easy';
+        case 3:
+            return 'Normal';
+        case 4:
+        case 5:
+            return 'Hard';
+        case 6:
+        case 7:
+            return 'Harder';
+        case 8:
+        case 9:
+            return 'Insane';
+        case 10:
+            return 'Demon';
+        default:
+            return 'N/A';
+    }
+}
