@@ -28,6 +28,7 @@ Route::group([
             'middleware' => 'guest:gdcs'
         ], static function () {
             Route::inertia('/register', 'GDCS/Auth/Register')->name('register');
+            Route::post('/register', [AuthController::class, 'register'])->name('register.api');
             Route::inertia('/login', 'GDCS/Auth/Login')->name('login');
             Route::post('/login', [AuthController::class, 'login'])->name('login.api');
         });

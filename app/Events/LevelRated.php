@@ -11,7 +11,7 @@ class LevelRated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(protected Level $level)
+    public function __construct(readonly Level $level)
     {
 
     }

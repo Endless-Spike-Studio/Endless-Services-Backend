@@ -37,7 +37,7 @@ const forms = computed(() => {
             </n-space>
 
             <n-space v-if="links && links.length > 0" vertical>
-                <n-input v-model:value="password" placeholder="密码" type="password"/>
+                <n-input v-model:value="password" placeholder="密码" show-password-on="click" type="password"/>
 
                 <n-list bordered>
                     <n-list-item v-for="link in links">

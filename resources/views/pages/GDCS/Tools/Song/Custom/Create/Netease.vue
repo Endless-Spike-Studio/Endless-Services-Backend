@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
+import {FormInst} from "naive-ui";
+import {createRules} from "@/scripts/core/utils";
 
 const content = ref();
 type MusicID = string | number | null;
@@ -22,6 +24,22 @@ watch(content, newContent => {
 const form = useForm({
     music_id: null as MusicID
 });
+
+const formRef = ref<FormInst>();
+const rules = createRules(form);
+
+function submit() {
+    formRef.value?.validate(errors => {
+        if (!errors) {
+            form.post(route('gdcs.tools.song.custom.create.netease.api'), {
+                onFinish: () => {
+                    formRef.value?.validate();
+                    form.clearErrors();
+                }
+            });
+        }
+    });
+}
 </script>
 
 <template>
@@ -35,7 +53,7 @@ const form = useForm({
 
         <n-form-item>
             <n-button :disabled="form.processing" :loading="form.processing"
-                      @click="form.post(route('gdcs.tools.song.custom.create.netease.api'))">
+                      @click="submit">
                 提交
             </n-button>
         </n-form-item>

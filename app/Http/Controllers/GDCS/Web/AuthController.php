@@ -2,18 +2,38 @@
 
 namespace App\Http\Controllers\GDCS\Web;
 
+use App\Events\AccountRegistered;
 use App\Exceptions\GDCS\WebException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\LoginRequest;
+use App\Http\Requests\GDCS\Web\RegisterRequest;
 use App\Http\Traits\HasMessage;
+use App\Models\GDCS\Account;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
 class AuthController extends Controller
 {
     use HasMessage;
+
+    public function register(RegisterRequest $request)
+    {
+        $data = $request->validated();
+
+        $account = Account::create([
+            'name' => $data['userName'],
+            'password' => Hash::make($data['password']),
+            'email' => $data['email']
+        ]);
+
+        event(new AccountRegistered($account));
+        Auth::login($account);
+
+        return Redirect::intended();
+    }
 
     /**
      * @throws WebException

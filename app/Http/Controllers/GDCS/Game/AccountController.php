@@ -5,6 +5,7 @@ namespace App\Http\Controllers\GDCS\Game;
 use App\Enums\GDCS\Game\FriendState;
 use App\Enums\GDCS\Game\Objects\UserObject;
 use App\Enums\Response;
+use App\Events\AccountRegistered;
 use App\Exceptions\GeometryDashChineseServerException;
 use App\Http\Requests\GDCS\Game\AccountInfoFetchRequest;
 use App\Http\Requests\GDCS\Game\AccountLoginRequest;
@@ -35,9 +36,9 @@ class AccountController extends Controller
             'email' => $data['email']
         ]);
 
+        event(new AccountRegistered($account));
         $this->logGame(__('gdcn.game.action.account_register_success'));
 
-        $account->sendEmailVerificationNotification();
         return Response::GAME_ACCOUNT_REGISTER_SUCCESS->value;
     }
 
