@@ -38,10 +38,12 @@ jobs:
                     composer clear-cache
                     composer install --no-interaction --prefer-dist
                     composer dump-autoload
+
             -   name: Prepare Laravel
                 run: |
                     cp .env.example .env
                     php artisan key:generate
+
             -   name: Run tests
                 run: |
                     php artisan test --ci --order-by random
