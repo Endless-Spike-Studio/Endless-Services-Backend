@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import {useAppStore} from "@/scripts/core/stores";
+import {dateZhCN, zhCN} from "naive-ui";
 import GlobalApiInjector from "@/views/components/GlobalApiInjector.vue";
 import BackendMessageReceiver from "@/views/components/BackendMessageReceiver.vue";
 
@@ -7,7 +8,7 @@ const appStore = useAppStore();
 </script>
 
 <template>
-    <n-config-provider :theme="appStore.themeRef" class="h-full">
+    <n-config-provider :date-locale="dateZhCN" :locale="zhCN" :theme="appStore.themeRef" class="h-full">
         <n-message-provider>
             <n-dialog-provider>
                 <n-notification-provider>
