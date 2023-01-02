@@ -43,16 +43,17 @@ class DashboardPresenter
                     ->latest()
                     ->paginate(pageName: 'page_accounts'),
                 'levels' => Level::query()
-                    ->select(['id', 'name', 'desc', 'created_at'])
+                    ->select(['id', 'name', 'desc', 'user_id', 'created_at'])
+                    ->with(['creator:id,uuid', 'creator.account:id,name'])
                     ->whereNot('unlisted', true)
                     ->latest()
                     ->paginate(pageName: 'page_levels'),
                 'ratedLevels' => Level::query()
-                    ->with('rating:level_id,stars,featured_score,epic,demon_difficulty')
+                    ->with(['rating:level_id,stars,featured_score,epic,demon_difficulty,created_at', 'creator:id,uuid', 'creator.account:id,name'])
                     ->whereHas('rating', function ($query) {
                         $query->where('stars', '>', 0);
                     })
-                    ->select(['id', 'name', 'desc', 'created_at'])
+                    ->select(['id', 'name', 'desc', 'user_id', 'created_at'])
                     ->whereNot('unlisted', true)
                     ->latest()
                     ->paginate(pageName: 'page_ratedLevels')

@@ -106,8 +106,23 @@ function handlePageUpdate() {
                                         <template #header>
                                             <n-button text type="primary"
                                                       @click="to_route('gdcs.dashboard.level.info', level.id)">
-                                                {{ level.name }} [{{ level.id }}]
+                                                {{ level.name }}
                                             </n-button>
+
+                                            <n-text v-if="level.creator" :depth="3" class="text-sm">
+                                                By
+                                                <n-button v-if="level.creator.account" text type="primary"
+                                                          @click="to_route('gdcs.account.info', level.creator.account.id)">
+                                                    {{ level.creator.account.name }}
+                                                </n-button>
+
+                                                <n-text v-else-if="level.creator.name">{{ level.creator.name }}</n-text>
+                                                <n-text v-else>未知</n-text>
+                                            </n-text>
+                                        </template>
+
+                                        <template #header-extra>
+                                            #{{ level.id }}
                                         </template>
 
                                         <template #description>
@@ -137,8 +152,21 @@ function handlePageUpdate() {
                                         <template #header>
                                             <n-button text type="primary"
                                                       @click="to_route('gdcs.dashboard.level.info', level.id)">
-                                                {{ level.name }} [{{ level.id }}]
+                                                {{ level.name }}
                                             </n-button>
+
+                                            <n-text v-if="level.creator" :depth="3" class="text-sm">
+                                                By
+                                                <n-button v-if="level.creator.account" text type="primary"
+                                                          @click="to_route('gdcs.account.info', level.creator.account.id)">
+                                                    {{ level.creator.account.name }}
+                                                </n-button>
+
+                                                <n-text v-else-if="level.creator.name">{{ level.creator.name }}</n-text>
+                                                <n-text v-else>未知</n-text>
+                                            </n-text>
+
+                                            <n-text :depth="3" class="text-sm"> [{{ level.id }}]</n-text>
                                         </template>
 
                                         <template #header-extra>
@@ -151,6 +179,8 @@ function handlePageUpdate() {
                                                 {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
                                                 <br>
                                                 发布于 {{ formatTime(level.created_at) }}
+                                                <br>
+                                                Rate时间: {{ formatTime(level.rating.created_at) }}
                                             </n-text>
                                         </template>
                                     </n-thing>

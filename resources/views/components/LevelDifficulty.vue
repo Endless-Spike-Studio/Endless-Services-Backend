@@ -75,11 +75,5 @@ const name = computed(() => {
 </script>
 
 <template>
-    <n-space size="small">
-        <n-text :depth="3" class="text-sm text-center">{{ name }} {{ rating.stars }}</n-text>
-
-        <n-el class="mx-auto text-center">
-            <n-image :src="url" :width="size" preview-disabled/>
-        </n-el>
-    </n-space>
+    <n-image :src="url" :title="name + ' ' + rating.stars" :width="size" preview-disabled/>
 </template>
