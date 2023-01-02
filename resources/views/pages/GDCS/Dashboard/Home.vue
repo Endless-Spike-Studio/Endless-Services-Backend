@@ -70,7 +70,7 @@ function handlePageUpdate() {
 
             <n-grid :x-gap="10" :y-gap="10" cols="1 768:3">
                 <n-grid-item>
-                    <n-card class="h-full max-h-[50%] overflow-auto" title="新账号">
+                    <n-card class="h-full lg:max-h-[50%] overflow-auto" title="新账号">
                         <n-space vertical>
                             <n-list bordered>
                                 <n-list-item v-for="account in latest.accounts.data">
@@ -98,7 +98,7 @@ function handlePageUpdate() {
                 </n-grid-item>
 
                 <n-grid-item>
-                    <n-card class="h-full max-h-[50%] overflow-auto" title="新关卡">
+                    <n-card class="h-full lg:max-h-[50%] overflow-auto" title="新关卡">
                         <n-space vertical>
                             <n-list bordered>
                                 <n-list-item v-for="level in latest.levels.data">
