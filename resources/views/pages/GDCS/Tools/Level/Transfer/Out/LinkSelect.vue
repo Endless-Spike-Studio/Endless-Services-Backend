@@ -1,18 +1,21 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {formatTime, guessServer, to_route} from "@/scripts/core/utils";
-import {App} from "@/types/backend";
+import {App, PaginatedData} from "@/types/backend";
 import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
+import {Inertia} from "@inertiajs/inertia";
 
 const props = defineProps<{
     levelID: number;
-    links: App.Models.AccountLink[]
+    links: PaginatedData<App.Models.AccountLink>
 }>();
 
 const password = ref();
+const page = ref(props.links.current_page);
+
 const forms = computed(() => {
-    return props.links.reduce(function (data, link) {
+    return props.links?.data.reduce(function (data, link) {
         data[link.id] = useForm({
             linkID: link.id,
             password: password.value
@@ -21,6 +24,15 @@ const forms = computed(() => {
         return data;
     }, {} as Record<number, unknown>);
 });
+
+function handlePageUpdate(newPage: number) {
+    Inertia.reload({
+        only: ['links'],
+        data: {
+            page: newPage
+        }
+    });
+}
 
 function transferOut(id: number) {
     (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.tools.level.transfer.out.api', props.levelID));
@@ -40,11 +52,11 @@ function transferOut(id: number) {
 
             </n-space>
 
-            <n-space v-if="links && links.length > 0" vertical>
+            <n-space v-if="links && links.data?.length > 0" vertical>
                 <n-input v-model:value="password" placeholder="密码" show-password-on="click" type="password"/>
 
                 <n-list bordered>
-                    <n-list-item v-for="link in links">
+                    <n-list-item v-for="link in links.data">
                         <n-thing>
                             <template #header>
                                 {{ link.target_name }}
@@ -69,6 +81,9 @@ function transferOut(id: number) {
                         </template>
                     </n-list-item>
                 </n-list>
+
+                <n-pagination v-model:page="page" :page-count="links.last_page"
+                              @update:page="handlePageUpdate"/>
             </n-space>
 
             <n-empty v-else/>

@@ -40,15 +40,13 @@ class DashboardPresenter
             'latest' => [
                 'accounts' => Account::query()
                     ->select(['id', 'name', 'created_at'])
-                    ->limit(15)
                     ->latest()
-                    ->get(),
+                    ->paginate(pageName: 'page_accounts'),
                 'levels' => Level::query()
                     ->select(['id', 'name', 'desc', 'created_at'])
                     ->whereNot('unlisted', true)
-                    ->limit(15)
                     ->latest()
-                    ->get(),
+                    ->paginate(pageName: 'page_levels'),
                 'ratedLevels' => Level::query()
                     ->with('rating:level_id,stars,featured_score,epic,demon_difficulty')
                     ->whereHas('rating', function ($query) {
@@ -56,9 +54,8 @@ class DashboardPresenter
                     })
                     ->select(['id', 'name', 'desc', 'created_at'])
                     ->whereNot('unlisted', true)
-                    ->limit(15)
                     ->latest()
-                    ->get()
+                    ->paginate(pageName: 'page_ratedLevels')
             ]
         ]);
     }
@@ -73,14 +70,14 @@ class DashboardPresenter
                 return $level->comments()
                     ->select(['account_id', 'level_id', 'comment', 'percent', 'likes', 'created_at'])
                     ->with('account:id,name')
-                    ->get();
+                    ->paginate();
             }),
             'scores' => Inertia::lazy(function () use ($level) {
                 return $level->scores()
                     ->select(['account_id', 'level_id', 'attempts', 'percent', 'coins', 'created_at'])
                     ->orderByDesc('percent')
                     ->with('account:id,name')
-                    ->get();
+                    ->paginate();
             })
         ]);
     }

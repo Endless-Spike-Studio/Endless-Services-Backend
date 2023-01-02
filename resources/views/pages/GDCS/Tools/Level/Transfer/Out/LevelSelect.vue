@@ -5,7 +5,7 @@ import {App, PaginatedData} from "@/types/backend";
 import {Base64} from "js-base64";
 
 const levels = useProp<PaginatedData<App.Models.Level>>('levels');
-const page = ref(0);
+const page = ref();
 
 function handlePageUpdate(newPage: number) {
     Inertia.reload({
@@ -20,7 +20,7 @@ nextTick(() => {
     Inertia.reload({
         only: ['levels'],
         onFinish() {
-            page.value = levels.value.current_page;
+            page.value = levels.value?.current_page;
         }
     });
 });

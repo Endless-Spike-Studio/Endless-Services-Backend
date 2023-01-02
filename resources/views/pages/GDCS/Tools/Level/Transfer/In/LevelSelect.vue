@@ -43,7 +43,7 @@ function transferIn(id: number) {
 <template>
     <CommonLayout>
         <n-card title="关卡选择">
-            <n-space v-if="levels.data.length > 0" vertical>
+            <n-space v-if="levels && levels.data?.length > 0" vertical>
                 <n-list bordered>
                     <n-list-item v-for="level in levels.data">
                         <n-thing>

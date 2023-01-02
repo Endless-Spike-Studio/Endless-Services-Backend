@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {App} from "@/types/backend";
+import {App, PaginatedData} from "@/types/backend";
 import {formatTime, to_route} from "@/scripts/core/utils";
 import {Base64} from "js-base64";
 import LevelDifficulty from "@/views/components/LevelDifficulty.vue";
 import {defaultLevelDesc} from "@/scripts/core/shared";
+import {Inertia} from "@inertiajs/inertia";
 
-defineProps<{
+const props = defineProps<{
     account: App.Models.Account;
     statistic: {
         comments: number;
@@ -14,11 +15,28 @@ defineProps<{
         likes: number;
     }
     latest: {
-        accounts: App.Models.Account[];
-        levels: App.Models.Level[];
-        ratedLevels: App.Models.Level[];
+        accounts: PaginatedData<App.Models.Account>;
+        levels: PaginatedData<App.Models.Level>;
+        ratedLevels: PaginatedData<App.Models.Level>;
     }
 }>();
+
+const pages = reactive({
+    accounts: ref(props.latest.accounts.current_page),
+    levels: ref(props.latest.levels.current_page),
+    ratedLevels: ref(props.latest.ratedLevels.current_page)
+});
+
+function handlePageUpdate() {
+    Inertia.reload({
+        data: {
+            page_accounts: pages.accounts,
+            page_levels: pages.levels,
+            page_ratedLevels: pages.ratedLevels
+        },
+        only: ['latest']
+    });
+}
 </script>
 
 <template>
@@ -53,80 +71,95 @@ defineProps<{
             <n-grid :x-gap="10" :y-gap="10" cols="1 768:3">
                 <n-grid-item>
                     <n-card class="h-full max-h-[50%] overflow-auto" title="新账号">
-                        <n-list bordered>
-                            <n-list-item v-for="account in latest.accounts">
-                                <n-thing>
-                                    <template #header>
-                                        <n-button text type="primary"
-                                                  @click="to_route('gdcs.account.info', account.id)">
-                                            {{ account.name }}
-                                        </n-button>
-                                    </template>
+                        <n-space vertical>
+                            <n-list bordered>
+                                <n-list-item v-for="account in latest.accounts.data">
+                                    <n-thing>
+                                        <template #header>
+                                            <n-button text type="primary"
+                                                      @click="to_route('gdcs.account.info', account.id)">
+                                                {{ account.name }}
+                                            </n-button>
+                                        </template>
 
-                                    <template #description>
-                                        <n-text :depth="3" class="text-sm">
-                                            注册于 {{ formatTime(account.created_at) }}
-                                        </n-text>
-                                    </template>
-                                </n-thing>
-                            </n-list-item>
-                        </n-list>
+                                        <template #description>
+                                            <n-text :depth="3" class="text-sm">
+                                                注册于 {{ formatTime(account.created_at) }}
+                                            </n-text>
+                                        </template>
+                                    </n-thing>
+                                </n-list-item>
+                            </n-list>
+
+                            <n-pagination v-model:page="pages.accounts" :page-count="latest.accounts.last_page"
+                                          @update:page="handlePageUpdate"/>
+                        </n-space>
                     </n-card>
                 </n-grid-item>
 
                 <n-grid-item>
                     <n-card class="h-full max-h-[50%] overflow-auto" title="新关卡">
-                        <n-list bordered>
-                            <n-list-item v-for="level in latest.levels">
-                                <n-thing>
-                                    <template #header>
-                                        <n-button text type="primary"
-                                                  @click="to_route('gdcs.dashboard.level.info', level.id)">
-                                            {{ level.name }} [{{ level.id }}]
-                                        </n-button>
-                                    </template>
+                        <n-space vertical>
+                            <n-list bordered>
+                                <n-list-item v-for="level in latest.levels.data">
+                                    <n-thing>
+                                        <template #header>
+                                            <n-button text type="primary"
+                                                      @click="to_route('gdcs.dashboard.level.info', level.id)">
+                                                {{ level.name }} [{{ level.id }}]
+                                            </n-button>
+                                        </template>
 
-                                    <template #description>
-                                        <n-text :depth="3" class="text-sm">
-                                            简介:
-                                            {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
-                                            <br>
-                                            发布于 {{ formatTime(level.created_at) }}
-                                        </n-text>
-                                    </template>
-                                </n-thing>
-                            </n-list-item>
-                        </n-list>
+                                        <template #description>
+                                            <n-text :depth="3" class="text-sm">
+                                                简介:
+                                                {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
+                                                <br>
+                                                发布于 {{ formatTime(level.created_at) }}
+                                            </n-text>
+                                        </template>
+                                    </n-thing>
+                                </n-list-item>
+                            </n-list>
+
+                            <n-pagination v-model:page="pages.levels" :page-count="latest.levels.last_page"
+                                          @update:page="handlePageUpdate"/>
+                        </n-space>
                     </n-card>
                 </n-grid-item>
 
                 <n-grid-item>
                     <n-card class="h-full max-h-[50%] overflow-auto" title="新 Rated 关卡">
-                        <n-list bordered>
-                            <n-list-item v-for="level in latest.ratedLevels">
-                                <n-thing>
-                                    <template #header>
-                                        <n-button text type="primary"
-                                                  @click="to_route('gdcs.dashboard.level.info', level.id)">
-                                            {{ level.name }} [{{ level.id }}]
-                                        </n-button>
-                                    </template>
+                        <n-space vertical>
+                            <n-list bordered>
+                                <n-list-item v-for="level in latest.ratedLevels.data">
+                                    <n-thing>
+                                        <template #header>
+                                            <n-button text type="primary"
+                                                      @click="to_route('gdcs.dashboard.level.info', level.id)">
+                                                {{ level.name }} [{{ level.id }}]
+                                            </n-button>
+                                        </template>
 
-                                    <template #header-extra>
-                                        <LevelDifficulty :rating="level.rating" :size="30"/>
-                                    </template>
+                                        <template #header-extra>
+                                            <LevelDifficulty :rating="level.rating" :size="30"/>
+                                        </template>
 
-                                    <template #description>
-                                        <n-text :depth="3" class="text-sm">
-                                            简介:
-                                            {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
-                                            <br>
-                                            发布于 {{ formatTime(level.created_at) }}
-                                        </n-text>
-                                    </template>
-                                </n-thing>
-                            </n-list-item>
-                        </n-list>
+                                        <template #description>
+                                            <n-text :depth="3" class="text-sm">
+                                                简介:
+                                                {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
+                                                <br>
+                                                发布于 {{ formatTime(level.created_at) }}
+                                            </n-text>
+                                        </template>
+                                    </n-thing>
+                                </n-list-item>
+                            </n-list>
+
+                            <n-pagination v-model:page="pages.ratedLevels" :page-count="latest.ratedLevels.last_page"
+                                          @update:page="handlePageUpdate"/>
+                        </n-space>
                     </n-card>
                 </n-grid-item>
             </n-grid>

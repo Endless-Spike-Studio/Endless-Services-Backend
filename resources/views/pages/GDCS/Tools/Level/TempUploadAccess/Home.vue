@@ -1,21 +1,32 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {App} from "@/types/backend";
+import {App, PaginatedData} from "@/types/backend";
 import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 import {formatTime} from "@/scripts/core/utils";
 import {Inertia} from "@inertiajs/inertia";
 
 const props = defineProps<{
-    accesses: App.Models.LevelTempUploadAccess[]
+    accesses: PaginatedData<App.Models.LevelTempUploadAccess>
 }>();
 
 const forms = computed(() => {
-    return props.accesses.reduce(function (data, access) {
+    return props.accesses?.data.reduce(function (data, access) {
         data[access.id] = useForm({});
         return data;
     }, {} as Record<number, unknown>);
 });
+
+const page = ref(props.accesses.current_page);
+
+function handlePageUpdate(newPage: number) {
+    Inertia.reload({
+        only: ['accesses'],
+        data: {
+            page: newPage
+        }
+    });
+}
 
 function deleteAccess(id: number) {
     (forms.value[id] as InertiaForm<{}>)?.delete(route('gdcs.tools.level.temp_upload_access.delete.api', id));
@@ -31,36 +42,42 @@ function deleteAccess(id: number) {
                 </n-button>
             </template>
 
-            <n-list v-if="accesses.length > 0" bordered>
-                <n-list-item v-for="access in accesses">
-                    <n-thing>
-                        <template #header>
-                            {{ access.id }} 号许可
-                        </template>
-
-                        <template #description>
-                            <n-text :depth="3" class="text-sm">
-                                绑定IP: {{ access.ip }}
-                                <br>
-                                创建于 {{ formatTime(access.created_at) }}
-                            </n-text>
-                        </template>
-                    </n-thing>
-
-                    <template #suffix>
-                        <n-popconfirm @positive-click="deleteAccess(access.id)">
-                            <template #trigger>
-                                <n-button :disabled="forms[access.id].processing" :loading="forms[access.id].processing"
-                                          type="error">
-                                    销毁
-                                </n-button>
+            <n-space v-if="accesses && accesses.data?.length > 0" vertical>
+                <n-list bordered>
+                    <n-list-item v-for="access in accesses.data">
+                        <n-thing>
+                            <template #header>
+                                {{ access.id }} 号许可
                             </template>
 
-                            确定销毁吗
-                        </n-popconfirm>
-                    </template>
-                </n-list-item>
-            </n-list>
+                            <template #description>
+                                <n-text :depth="3" class="text-sm">
+                                    绑定IP: {{ access.ip }}
+                                    <br>
+                                    创建于 {{ formatTime(access.created_at) }}
+                                </n-text>
+                            </template>
+                        </n-thing>
+
+                        <template #suffix>
+                            <n-popconfirm @positive-click="deleteAccess(access.id)">
+                                <template #trigger>
+                                    <n-button :disabled="forms[access.id].processing"
+                                              :loading="forms[access.id].processing"
+                                              type="error">
+                                        销毁
+                                    </n-button>
+                                </template>
+
+                                确定销毁吗
+                            </n-popconfirm>
+                        </template>
+                    </n-list-item>
+                </n-list>
+
+                <n-pagination v-model:page="page" :page-count="accesses.last_page"
+                              @update:page="handlePageUpdate"/>
+            </n-space>
 
             <n-empty v-else/>
         </n-card>

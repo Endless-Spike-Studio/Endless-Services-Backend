@@ -21,7 +21,7 @@ class LevelTransferToolPresenter
             'links' => Inertia::lazy(function () use ($account) {
                 return $account->links()
                     ->select(['id', 'account_id', 'server', 'target_name', 'target_account_id', 'target_user_id', 'created_at'])
-                    ->get();
+                    ->paginate();
             }),
             'levels' => Inertia::lazy(function () use ($account) {
                 return $account->user->levels()
@@ -63,7 +63,7 @@ class LevelTransferToolPresenter
             'levelID' => $level->id,
             'links' => $account->links()
                 ->select(['id', 'account_id', 'server', 'target_name', 'target_account_id', 'target_user_id', 'created_at'])
-                ->get()
+                ->paginate()
         ]);
     }
 }
