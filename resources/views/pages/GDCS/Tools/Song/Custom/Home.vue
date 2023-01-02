@@ -4,7 +4,7 @@ import {formatTime, to_route} from "@/scripts/core/utils";
 import {App, PaginatedData} from "@/types/backend";
 import {Inertia} from "@inertiajs/inertia";
 import route from "@/scripts/core/route";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 
 const props = defineProps<{
     offset: number;
@@ -33,6 +33,10 @@ function handlePageUpdate(newPage: number) {
         },
         only: ['songs']
     });
+}
+
+function deleteSong(id: number) {
+    (forms.value[id] as InertiaForm<{}>)?.delete(route('gdcs.tools.song.custom.delete.api', id));
 }
 </script>
 
@@ -82,13 +86,17 @@ function handlePageUpdate(newPage: number) {
 
                         <template #suffix>
                             <n-space>
-                                <n-button
-                                    v-if="song.account_id === currentAccountID"
-                                    :disabled="forms[song.id].processing" :loading="forms[song.id].processing"
-                                    type="error"
-                                    @click="forms[song.id].delete(route('gdcs.tools.song.custom.delete.api', song.id))">
-                                    删除
-                                </n-button>
+                                <n-popconfirm v-if="song.account_id === currentAccountID"
+                                              @positive-click="deleteSong(song.id)">
+                                    <template #trigger>
+                                        <n-button :disabled="forms[song.id].processing"
+                                                  :loading="forms[song.id].processing" type="error">
+                                            删除
+                                        </n-button>
+                                    </template>
+
+                                    确定删除吗
+                                </n-popconfirm>
 
                                 <n-button :href="song.download_url" tag="a">试听</n-button>
                             </n-space>

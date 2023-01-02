@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {App} from "@/types/backend";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 import {formatTime} from "@/scripts/core/utils";
 import {Inertia} from "@inertiajs/inertia";
@@ -16,6 +16,10 @@ const forms = computed(() => {
         return data;
     }, {} as Record<number, unknown>);
 });
+
+function deleteAccess(id: number) {
+    (forms.value[id] as InertiaForm<{}>)?.delete(route('gdcs.tools.level.temp_upload_access.delete.api', id));
+}
 </script>
 
 <template>
@@ -44,11 +48,16 @@ const forms = computed(() => {
                     </n-thing>
 
                     <template #suffix>
-                        <n-button :disabled="forms[access.id].processing" :loading="forms[access.id].processing"
-                                  type="error"
-                                  @click="forms[access.id].delete(route('gdcs.tools.level.temp_upload_access.delete.api', access.id))">
-                            销毁
-                        </n-button>
+                        <n-popconfirm @positive-click="deleteAccess(access.id)">
+                            <template #trigger>
+                                <n-button :disabled="forms[access.id].processing" :loading="forms[access.id].processing"
+                                          type="error">
+                                    销毁
+                                </n-button>
+                            </template>
+
+                            确定销毁吗
+                        </n-popconfirm>
                     </template>
                 </n-list-item>
             </n-list>

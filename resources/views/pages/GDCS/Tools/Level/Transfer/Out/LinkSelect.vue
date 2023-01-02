@@ -2,7 +2,7 @@
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {formatTime, guessServer, to_route} from "@/scripts/core/utils";
 import {App} from "@/types/backend";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 
 const props = defineProps<{
@@ -21,6 +21,10 @@ const forms = computed(() => {
         return data;
     }, {} as Record<number, unknown>);
 });
+
+function transferOut(id: number) {
+    (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.tools.level.transfer.out.api', props.levelID));
+}
 </script>
 
 <template>
@@ -59,8 +63,7 @@ const forms = computed(() => {
 
                         <template #suffix>
                             <n-button :disabled="!password || forms[link.id].processing"
-                                      :loading="forms[link.id].processing"
-                                      @click="forms[link.id].post(route('gdcs.tools.level.transfer.out.api', levelID))">
+                                      :loading="forms[link.id].processing" @click="transferOut(link.id)">
                                 转移
                             </n-button>
                         </template>

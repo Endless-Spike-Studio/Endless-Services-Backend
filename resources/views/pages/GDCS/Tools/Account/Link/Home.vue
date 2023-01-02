@@ -1,18 +1,24 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {App} from "@/types/backend";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/core/route";
+import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import {formatTime, guessServer, to_route} from "@/scripts/core/utils";
+import route from "@/scripts/core/route";
 
 const props = defineProps<{
     links: App.Models.AccountLink[]
 }>();
 
-const forms = props.links.reduce(function (data, link) {
-    data[link.id] = useForm({});
-    return data;
-}, {} as Record<number, unknown>);
+const forms = computed(() => {
+    return props.links.reduce(function (data, link) {
+        data[link.id] = useForm({});
+        return data;
+    }, {} as Record<number, unknown>);
+});
+
+function deleteLink(id: number) {
+    (forms.value[id] as InertiaForm<{}>)?.delete(route('gdcs.tools.account.link.delete.api', id));
+}
 </script>
 
 <template>
@@ -41,11 +47,16 @@ const forms = props.links.reduce(function (data, link) {
                     </n-thing>
 
                     <template #suffix>
-                        <n-button :disabled="forms[link.id].processing" :loading="forms[link.id].processing"
-                                  type="error"
-                                  @click="forms[link.id].delete(route('gdcs.tools.account.link.delete.api', link.id))">
-                            解绑
-                        </n-button>
+                        <n-popconfirm @positive-click="deleteLink(link.id)">
+                            <template #trigger>
+                                <n-button :disabled="forms[link.id].processing" :loading="forms[link.id].processing"
+                                          type="error">
+                                    解绑
+                                </n-button>
+                            </template>
+
+                            确定解绑吗
+                        </n-popconfirm>
                     </template>
                 </n-list-item>
             </n-list>

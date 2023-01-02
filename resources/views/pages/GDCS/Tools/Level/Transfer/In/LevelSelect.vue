@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import {Inertia} from "@inertiajs/inertia";
 import route from "@/scripts/core/route";
 import {PaginatedData} from "@/types/backend";
@@ -34,6 +34,10 @@ function handlePageUpdate(newPage: number) {
         only: ['levels']
     });
 }
+
+function transferIn(id: number) {
+    (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.tools.level.transfer.in.api', props.linkID));
+}
 </script>
 
 <template>
@@ -58,7 +62,7 @@ function handlePageUpdate(newPage: number) {
 
                         <template #suffix>
                             <n-button :disabled="forms[level.id].processing" :loading="forms[level.id].processing"
-                                      @click="forms[level.id].post(route('gdcs.tools.level.transfer.in.api', linkID))">
+                                      @click="transferIn(level.id)">
                                 转移
                             </n-button>
                         </template>
