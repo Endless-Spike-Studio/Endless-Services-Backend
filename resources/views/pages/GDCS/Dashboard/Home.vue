@@ -11,6 +11,7 @@ defineProps<{
     statistic: {
         comments: number;
         levels: number;
+        likes: number;
     }
     latest: {
         accounts: App.Models.Account[];
