@@ -106,7 +106,8 @@ class LevelUploadRequest extends Request
             'original' => [
                 'exclude_if:original,0',
                 'required',
-                'integer'
+                'integer',
+                Rule::exists(Level::class, 'id'),
             ],
             'twoPlayer' => [
                 'required',
