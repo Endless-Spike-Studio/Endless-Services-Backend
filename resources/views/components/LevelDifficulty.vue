@@ -4,7 +4,8 @@ import {App} from "@/types/backend";
 
 const props = defineProps<{
     rating: App.Models.LevelRating;
-    size: number;
+    showName?: boolean;
+    size?: number;
 }>();
 
 const images = import.meta.glob<{
@@ -75,5 +76,17 @@ const name = computed(() => {
 </script>
 
 <template>
-    <n-image :src="url" :title="name + ' ' + rating.stars" :width="size" preview-disabled/>
+    <n-grid :cols="1">
+        <n-grid-item class="mx-auto">
+            <n-image :src="url" :title="name + ' ' + rating.stars" :width="size ?? 30" preview-disabled/>
+        </n-grid-item>
+
+        <n-grid-item v-if="showName" class="text-center">
+            <n-text class="text-sm">
+                {{ name }}
+                <br>
+                {{ rating.stars }}
+            </n-text>
+        </n-grid-item>
+    </n-grid>
 </template>

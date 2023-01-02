@@ -104,34 +104,46 @@ function handlePageUpdate() {
                                 <n-list-item v-for="level in latest.levels.data">
                                     <n-thing>
                                         <template #header>
-                                            <n-button text type="primary"
-                                                      @click="to_route('gdcs.dashboard.level.info', level.id)">
-                                                {{ level.name }}
-                                            </n-button>
+                                            <n-space>
+                                                <LevelDifficulty :rating="level.rating"/>
 
-                                            <n-text v-if="level.creator" :depth="3" class="text-sm">
-                                                By
-                                                <n-button v-if="level.creator.account" text type="primary"
-                                                          @click="to_route('gdcs.account.info', level.creator.account.id)">
-                                                    {{ level.creator.account.name }}
-                                                </n-button>
+                                                <n-el class="leading-none">
+                                                    <n-button text type="primary"
+                                                              @click="to_route('gdcs.dashboard.level.info', level.id)">
+                                                        {{ level.name }}
+                                                    </n-button>
 
-                                                <n-text v-else-if="level.creator.name">{{ level.creator.name }}</n-text>
-                                                <n-text v-else>未知</n-text>
-                                            </n-text>
+                                                    <br>
+
+                                                    <n-text v-if="level.creator" :depth="3" class="text-sm">
+                                                        By
+                                                        <n-button v-if="level.creator.account" text type="primary"
+                                                                  @click="to_route('gdcs.account.info', level.creator.account.id)">
+                                                            {{ level.creator.account.name }}
+                                                        </n-button>
+
+                                                        <n-text v-else-if="level.creator.name">
+                                                            {{ level.creator.name }}
+                                                        </n-text>
+
+                                                        <n-text v-else>未知</n-text>
+                                                    </n-text>
+                                                </n-el>
+                                            </n-space>
                                         </template>
 
                                         <template #header-extra>
-                                            #{{ level.id }}
+                                            <n-text :depth="3">#{{ level.id }}</n-text>
                                         </template>
 
                                         <template #description>
-                                            <n-text :depth="3" class="text-sm">
-                                                简介:
-                                                {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
-                                                <br>
-                                                发布于 {{ formatTime(level.created_at) }}
-                                            </n-text>
+                                            <n-el class="leading-none">
+                                                <n-text :depth="3" class="text-sm">
+                                                    {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
+                                                    <br><br>
+                                                    发布于 {{ formatTime(level.created_at) }}
+                                                </n-text>
+                                            </n-el>
                                         </template>
                                     </n-thing>
                                 </n-list-item>
@@ -150,38 +162,48 @@ function handlePageUpdate() {
                                 <n-list-item v-for="level in latest.ratedLevels.data">
                                     <n-thing>
                                         <template #header>
-                                            <n-button text type="primary"
-                                                      @click="to_route('gdcs.dashboard.level.info', level.id)">
-                                                {{ level.name }}
-                                            </n-button>
+                                            <n-space>
+                                                <LevelDifficulty :rating="level.rating"/>
 
-                                            <n-text v-if="level.creator" :depth="3" class="text-sm">
-                                                By
-                                                <n-button v-if="level.creator.account" text type="primary"
-                                                          @click="to_route('gdcs.account.info', level.creator.account.id)">
-                                                    {{ level.creator.account.name }}
-                                                </n-button>
+                                                <n-el class="leading-none">
+                                                    <n-button text type="primary"
+                                                              @click="to_route('gdcs.dashboard.level.info', level.id)">
+                                                        {{ level.name }}
+                                                    </n-button>
 
-                                                <n-text v-else-if="level.creator.name">{{ level.creator.name }}</n-text>
-                                                <n-text v-else>未知</n-text>
-                                            </n-text>
+                                                    <br>
 
-                                            <n-text :depth="3" class="text-sm"> [{{ level.id }}]</n-text>
+                                                    <n-text v-if="level.creator" :depth="3" class="text-sm">
+                                                        By
+                                                        <n-button v-if="level.creator.account" text type="primary"
+                                                                  @click="to_route('gdcs.account.info', level.creator.account.id)">
+                                                            {{ level.creator.account.name }}
+                                                        </n-button>
+
+                                                        <n-text v-else-if="level.creator.name">
+                                                            {{ level.creator.name }}
+                                                        </n-text>
+
+                                                        <n-text v-else>未知</n-text>
+                                                    </n-text>
+                                                </n-el>
+                                            </n-space>
                                         </template>
 
                                         <template #header-extra>
-                                            <LevelDifficulty :rating="level.rating" :size="30"/>
+                                            <n-text :depth="3">#{{ level.id }}</n-text>
                                         </template>
 
                                         <template #description>
-                                            <n-text :depth="3" class="text-sm">
-                                                简介:
-                                                {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
-                                                <br>
-                                                发布于 {{ formatTime(level.created_at) }}
-                                                <br>
-                                                Rate时间: {{ formatTime(level.rating.created_at) }}
-                                            </n-text>
+                                            <n-el class="leading-none">
+                                                <n-text :depth="3" class="text-sm">
+                                                    {{ level.desc ? Base64.decode(level.desc) : defaultLevelDesc }}
+                                                    <br><br>
+                                                    发布于 {{ formatTime(level.created_at) }}
+                                                    <br>
+                                                    Rate时间: {{ formatTime(level.rating.created_at) }}
+                                                </n-text>
+                                            </n-el>
                                         </template>
                                     </n-thing>
                                 </n-list-item>
