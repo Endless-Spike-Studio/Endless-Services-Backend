@@ -7,7 +7,7 @@ import {find, get} from "lodash-es";
 import {servers} from "@/scripts/core/shared";
 import {FormItemRule} from "naive-ui";
 
-export function useProp<T = unknown>(key: string, defaultValue?: T): ComputedRef<T> {
+export function useProp<T extends unknown>(key: string, defaultValue?: T): ComputedRef<T> {
     const $page = usePage();
 
     return computed(() => {

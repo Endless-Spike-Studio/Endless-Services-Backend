@@ -46,8 +46,8 @@ export const useApiStore = defineStore('api', {
 export const useBackendStore = defineStore('backend', {
     state: () => ({
         gdcs: {
-            account: useProp<App.Models.Account>('gdcs.account').value,
-            user: useProp<App.Models.User>('gdcs.user').value
+            account: useProp<App.Models.Account>('gdcs.account') as unknown as App.Models.Account,
+            user: useProp<App.Models.User>('gdcs.user') as unknown as App.Models.User
         }
     })
 });
