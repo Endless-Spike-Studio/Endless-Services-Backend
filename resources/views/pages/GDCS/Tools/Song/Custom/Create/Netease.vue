@@ -44,18 +44,20 @@ function submit() {
 
 <template>
     <n-card>
-        <n-form-item label="音乐ID / 分享链接">
-            <n-space class="w-full" vertical>
-                <n-input v-model:value="content"/>
-                <n-text v-if="form.music_id">解析结果: {{ form.music_id }}</n-text>
-            </n-space>
-        </n-form-item>
+        <n-form ref="formRef" :model="form" :rules="rules">
+            <n-form-item label="音乐ID / 分享链接">
+                <n-space class="w-full" vertical>
+                    <n-input v-model:value="content"/>
+                    <n-text v-if="form.music_id">解析结果: {{ form.music_id }}</n-text>
+                </n-space>
+            </n-form-item>
 
-        <n-form-item>
-            <n-button :disabled="form.processing" :loading="form.processing"
-                      @click="submit">
-                提交
-            </n-button>
-        </n-form-item>
+            <n-form-item>
+                <n-button :disabled="form.processing" :loading="form.processing"
+                          @click="submit">
+                    提交
+                </n-button>
+            </n-form-item>
+        </n-form>
     </n-card>
 </template>
