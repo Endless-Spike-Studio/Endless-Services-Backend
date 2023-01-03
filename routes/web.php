@@ -10,16 +10,17 @@ use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
 use App\Http\Presenters\GDCS\AccountPresenter;
 use App\Http\Presenters\GDCS\CustomSongToolPresenter;
 use App\Http\Presenters\GDCS\DashboardPresenter;
-use App\Http\Presenters\GDCS\HomePresenter;
+use App\Http\Presenters\GDCS\HomePresenter as GDCS_HomePresenter;
 use App\Http\Presenters\GDCS\LevelTempUploadAccessToolPresenter;
 use App\Http\Presenters\GDCS\LevelTransferToolPresenter;
+use App\Http\Presenters\NGProxy\HomePresenter as NGProxy_HomePresenter;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
     'domain' => 'gf.geometrydashchinese.com',
     'as' => 'gdcs.'
 ], static function () {
-    Route::get('/', [HomePresenter::class, 'render'])->name('home');
+    Route::get('/', [GDCS_HomePresenter::class, 'render'])->name('home');
 
     Route::group([
         'prefix' => 'auth',
@@ -130,4 +131,21 @@ Route::group([
             });
         });
     });
+});
+
+Route::group([
+    'domain' => 'dl.geometrydashchinese.com',
+    'as' => 'gdproxy.'
+], static function () {
+    Route::inertia('/', 'GDProxy/Home')->name('home');
+});
+
+Route::group([
+    'domain' => 'ng.geometrydashchinese.com',
+    'as' => 'ngproxy.'
+], static function () {
+    Route::inertia('/', 'NGProxy/Home')->name('home');
+    Route::get('/{id}', [NGProxy_HomePresenter::class, 'renderInfo'])
+        ->where('song', '\d+')
+        ->name('info');
 });

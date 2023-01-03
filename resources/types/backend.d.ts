@@ -100,9 +100,12 @@ declare namespace App.Models {
     }
 
     export interface Song extends Model {
+        song_id: number;
         name: string;
         artist_name: string;
         size: number;
+        disabled: boolean;
+        download_url: string;
     }
 
     export interface User extends Model {

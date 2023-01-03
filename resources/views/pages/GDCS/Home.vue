@@ -27,7 +27,6 @@ defineProps<{
     }
 }>();
 
-const {width} = useWindowSize();
 const windowsDownloadDropdown = reactive({
     options: [
         {
@@ -54,6 +53,8 @@ function handleAppleDownload() {
     const apiStore = useApiStore();
     apiStore.$message.error('没有');
 }
+
+const {width} = useWindowSize();
 </script>
 
 <template>
