@@ -46,7 +46,21 @@ class AccountPresenter
                         ->where('account_id', $account->id)
                         ->count()
                 ])
-            ]
+            ],
+            'comments' => Inertia::lazy(function () use ($account) {
+                return $account->comments()
+                    ->select(['account_id', 'comment', 'likes', 'created_at'])
+                    ->paginate();
+            }),
+            'levels' => Inertia::lazy(function () use ($account) {
+                return $account->user
+                    ->levels()
+                    ->with(['rating:level_id,difficulty,stars,featured_score,epic,auto,demon,demon_difficulty,created_at', 'creator:id,uuid', 'creator.account:id,name'])
+                    ->select(['id', 'name', 'desc', 'user_id', 'created_at'])
+                    ->whereNot('unlisted', true)
+                    ->latest()
+                    ->paginate();
+            })
         ]);
     }
 }

@@ -29,7 +29,7 @@ function submit() {
     formRef.value?.validate(errors => {
         if (!errors) {
             form.post(route('gdcs.tools.account.link.create.api'), {
-                onFinish: () => {
+                onFinish() {
                     formRef.value?.validate();
                     form.clearErrors();
                 }

@@ -37,7 +37,7 @@ function submit() {
         if (!errors && form.file !== null && checkFile(form.file)) {
             form.post(route('gdcs.tools.song.custom.create.file.api'), {
                 forceFormData: true,
-                onFinish: () => {
+                onFinish() {
                     formRef.value?.validate();
                     form.clearErrors();
                 }

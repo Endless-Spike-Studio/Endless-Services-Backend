@@ -17,9 +17,6 @@ function handlePageUpdate(newPage: number) {
         only: ['links'],
         data: {
             page: newPage
-        },
-        onFinish() {
-            page.value = links.value?.current_page;
         }
     });
 }

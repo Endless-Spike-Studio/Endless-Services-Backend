@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import {Inertia} from "@inertiajs/inertia";
-import {formatTime, to_route, useProp} from "@/scripts/core/utils";
+import {formatTime, useProp} from "@/scripts/core/utils";
 import {App, PaginatedData} from "@/types/backend";
 import {LikeTwotone} from "@vicons/antd";
 import {Base64} from "js-base64";
 
 const page = ref();
-const level = useProp<App.Models.Level>('level');
 const comments = useProp<PaginatedData<App.Models.LevelComment>>('comments');
 
 nextTick(() => {
@@ -32,13 +31,7 @@ function handlePageUpdate(newPage: number) {
                 <n-list-item v-for="comment in comments.data">
                     <n-thing>
                         <template #header>
-                            <n-button text type="primary" @click="to_route('gdcs.account.info', comment.account_id)">
-                                {{ comment.account.name }}
-                            </n-button>
-
-                            <n-text v-if="comment.percent > 0" :depth="3" class="text-sm">
-                                &nbsp;{{ comment.percent }}%
-                            </n-text>
+                            {{ Base64.decode(comment.comment) }}
                         </template>
 
                         <template #header-extra>
@@ -51,8 +44,6 @@ function handlePageUpdate(newPage: number) {
                                 评论于 {{ formatTime(comment.created_at) }}
                             </n-text>
                         </template>
-
-                        {{ Base64.decode(comment.comment) }}
                     </n-thing>
                 </n-list-item>
             </n-list>

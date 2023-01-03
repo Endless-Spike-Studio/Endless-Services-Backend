@@ -32,7 +32,7 @@ function submit() {
     formRef.value?.validate(errors => {
         if (!errors) {
             form.post(route('gdcs.tools.song.custom.create.netease.api'), {
-                onFinish: () => {
+                onFinish() {
                     formRef.value?.validate();
                     form.clearErrors();
                 }

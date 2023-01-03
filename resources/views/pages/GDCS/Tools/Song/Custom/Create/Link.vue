@@ -17,7 +17,7 @@ function submit() {
     formRef.value?.validate(errors => {
         if (!errors) {
             form.post(route('gdcs.tools.song.custom.create.link.api'), {
-                onFinish: () => {
+                onFinish() {
                     formRef.value?.validate();
                     form.clearErrors();
                 }

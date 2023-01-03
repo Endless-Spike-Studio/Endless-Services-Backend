@@ -20,9 +20,6 @@ function handlePageUpdate(newPage: number) {
         only: ['comments'],
         data: {
             page: newPage
-        },
-        onFinish() {
-            page.value = scores.value?.current_page;
         }
     });
 }

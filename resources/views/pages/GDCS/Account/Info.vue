@@ -3,11 +3,13 @@ import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {App} from "@/types/backend";
 import {useBackendStore} from "@/scripts/core/stores";
 import {MenuOption, NIcon, NText} from "naive-ui";
-import {InboxOutlined} from "@vicons/antd";
-import DynamicTab from "@/views/pages/GDCS/Account/Tabs/Dynamic.vue";
+import CommentsTab from "@/views/pages/GDCS/Account/Tabs/Comments.vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 import {formatTime} from "@/scripts/core/utils";
+import {CommentRegular} from "@vicons/fa";
+import {Box} from "@vicons/tabler";
+import LevelsTab from "@/views/pages/GDCS/Account/Tabs/Levels.vue";
 
 const props = defineProps<{
     account: App.Models.Account;
@@ -20,15 +22,23 @@ const props = defineProps<{
 }>();
 
 const menu = reactive({
-    active: ref('dynamic'),
+    active: ref('comments'),
     options: [
         {
-            label: '动态',
-            key: 'dynamic',
+            label: '评论',
+            key: 'comments',
             icon: () => h(NIcon, {
-                component: InboxOutlined
+                component: CommentRegular
             }),
-            render: () => h(DynamicTab)
+            render: () => h(CommentsTab)
+        },
+        {
+            label: '关卡',
+            key: 'levels',
+            icon: () => h(NIcon, {
+                component: Box
+            }),
+            render: () => h(LevelsTab)
         }
     ] as MenuOption[]
 });
