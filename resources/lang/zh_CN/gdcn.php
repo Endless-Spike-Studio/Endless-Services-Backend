@@ -213,7 +213,8 @@ return [
             'custom_song_create_failed_netease_detected' => '[自定义歌曲] 创建失败, 检测到网易云音乐链接, 您用错工具了',
             'custom_song_create_failed_already_exists_with_id' => '[自定义歌曲] 创建失败, 歌曲已存在, ID: :id',
             'custom_song_create_failed_music_info_fetch_failed' => '[自定义歌曲] 创建失败, 音乐信息获取失败',
-            'custom_song_delete_failed_not_owner' => '[自定义歌曲] 删除失败, 您不是该歌曲的所有者'
+            'custom_song_delete_failed_not_owner' => '[自定义歌曲] 删除失败, 您不是该歌曲的所有者',
+            'custom_song_delete_failed_in_use' => '[自定义歌曲] 删除失败, 有关卡正在使用该歌曲'
         ]
     ]
 ];

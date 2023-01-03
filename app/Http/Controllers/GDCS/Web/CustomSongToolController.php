@@ -9,6 +9,7 @@ use App\Http\Requests\GDCS\Web\CustomSongToolCreateUsingLinkRequest;
 use App\Http\Requests\GDCS\Web\CustomSongToolCreateUsingNeteaseRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\CustomSong;
+use App\Models\GDCS\Level;
 use App\Services\Game\CustomSongService;
 use App\Services\ProxyService;
 use App\Services\Storage\CustomSongStorageService;
@@ -29,6 +30,14 @@ class CustomSongToolController extends Controller
 
         if ($song->account->isNot($account)) {
             throw new WebException(__('gdcn.tools.error.custom_song_delete_failed_not_owner'));
+        }
+
+        $alreadyInUse = Level::query()
+            ->where('song_id', CustomSongService::$offset + $song->id)
+            ->exists();
+
+        if ($alreadyInUse) {
+            throw new WebException(__('gdcn.tools.error.custom_song_delete_failed_in_use'));
         }
 
         $song->delete();
