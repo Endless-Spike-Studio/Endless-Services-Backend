@@ -44,7 +44,10 @@ declare namespace App.Models {
         coins: number;
         audio_track: number;
         song_id: number;
+        downloads: number;
+        likes: number;
         length: number;
+        version: number;
         objects: number;
         requested_stars: number;
         unlisted: boolean;

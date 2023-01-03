@@ -69,7 +69,7 @@ class DashboardPresenter
         return Inertia::render('GDCS/Dashboard/Level/Info', [
             'customSongOffset' => CustomSongService::$offset,
             'level' => $level->load(['rating:level_id,difficulty,stars,featured_score,epic,coin_verified,auto,demon,demon_difficulty', 'creator:id,uuid', 'creator.account:id,name'])
-                ->only(['id', 'name', 'desc', 'length', 'objects', 'requested_stars', 'unlisted', 'coins', 'audio_track', 'song_id', 'created_at', 'rating', 'creator']),
+                ->only(['id', 'name', 'desc', 'length', 'downloads', 'likes', 'objects', 'requested_stars', 'version', 'unlisted', 'coins', 'audio_track', 'song_id', 'created_at', 'rating', 'creator']),
             'song' => Inertia::lazy(function () use ($level) {
                 if ($level->song_id > CustomSongService::$offset) {
                     return CustomSong::query()
