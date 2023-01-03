@@ -27,6 +27,7 @@ use App\Models\GDCS\LevelGauntlet;
 use App\Models\GDCS\WeeklyLevel;
 use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
+use App\Services\Game\CustomSongService;
 use App\Services\Game\ObjectService;
 use App\Services\NGProxy\SongService;
 use App\Services\Storage\GameLevelDataStorageService;
@@ -83,10 +84,7 @@ class LevelController extends Controller
         $query = Level::query()
             ->with('user');
 
-        $song = new SongService();
-        $customSongOffset = config('gdcn.game.custom_song_offset');
         $showUnlisted = false;
-
         if (!empty($data['gauntlet'])) {
             $gauntlet = LevelGauntlet::query()
                 ->find($data['gauntlet']);
@@ -296,7 +294,7 @@ class LevelController extends Controller
         return implode('#', [
             $query->forPage(++$data['page'], BaseGameService::$perPage)
                 ->get()
-                ->map(function (Level $level) use ($data, $song, $customSongOffset, &$users, &$songs, &$hashes) {
+                ->map(function (Level $level) use ($data, &$users, &$songs, &$hashes) {
                     $levelInfo = [
                         LevelObject::ID => $level->id,
                         LevelObject::NAME => $level->name,
@@ -338,15 +336,15 @@ class LevelController extends Controller
                     }
 
                     if ($level->song_id > 0 && !array_key_exists($level->song_id, $songs)) {
-                        if ($level->song_id >= $customSongOffset) {
+                        if ($level->song_id >= CustomSongService::$offset) {
                             $customSong = CustomSong::query()
-                                ->find($level->song_id - $customSongOffset);
+                                ->find($level->song_id - CustomSongService::$offset);
 
                             if (!empty($customSong)) {
                                 $songs[$level->song_id] = $customSong->object;
                             }
                         } else {
-                            $songs[$level->song_id] = $song->find($level->song_id, true)->object;
+                            $songs[$level->song_id] = app(SongService::class)->find($level->song_id, true)->object;
                         }
                     }
 

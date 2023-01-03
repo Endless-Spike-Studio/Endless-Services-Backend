@@ -21,43 +21,163 @@ export const lengths = {
 }
 
 export const tracks = {
-    '-1': 'Practice: Stay Inside Me By OcularNebula',
-    0: 'Stereo Madness By Foreverbound',
-    1: 'Back on Track By DJVI',
-    2: 'Polargeist By Step',
-    3: 'Dry Out By DJVI',
-    4: 'Base after Base By DJVI',
-    5: 'Cant Let Go By DJVI',
-    6: 'Jumper By Waterflame',
-    7: 'Time Machine By Waterflame',
-    8: 'Cycles By DJVI',
-    9: 'xStep By DJVI',
-    10: 'Clutterfunk By Waterflame',
-    11: 'Theory of Everything By DJ-Nate',
-    12: 'Electroman Adventures By Waterflame',
-    13: 'Clubstep By DJ-Nate',
-    14: 'Electrodynamix By DJ-Nate',
-    15: 'Hexagon Force By Waterflame',
-    16: 'Blast Processing By Waterflame',
-    17: 'Theory of Everything 2 By DJ-Nate',
-    18: 'Geometrical Dominator By Waterflame',
-    19: 'Deadlocked By F-777',
-    20: 'Fingerdash By MDK',
-    21: 'The Seven Seas By F-777',
-    22: 'Viking Arena By F-777',
-    23: 'Airborne Robots By F-777',
-    24: 'The Challenge By RobTop',
-    25: 'Payload By Dex Arson',
-    26: 'Beast Mode By Dex Arson',
-    27: 'Machina By Dex Arson',
-    28: 'Years By Dex Arson',
-    29: 'Frontlines By Dex Arson',
-    30: 'Space Pirates By Waterflame',
-    31: 'Striker By Waterflame',
-    32: 'Embers By Dex Arson',
-    33: 'Round 1 By Dex Arson',
-    34: 'Monster Dance Off By F-777',
-    35: 'Press Start By MDK',
-    36: 'Nock Em By Bossfight',
-    37: 'Power Trip By Boom Kitty'
-} as Record<number, string>;
+    '-1': {
+        name: 'Practice: Stay Inside Me',
+        artist_name: 'OcularNebula'
+    },
+    0: {
+        name: 'Stereo Madness',
+        artist_name: 'Foreverbound'
+    },
+    1: {
+        name: 'Back on Track',
+        artist_name: 'DJVI'
+    },
+    2: {
+        name: 'Polargeist',
+        artist_name: 'Step'
+    },
+    3: {
+        name: 'Dry Out',
+        artist_name: 'DJVI'
+    },
+    4: {
+        name: 'Base after Base',
+        artist_name: 'DJVI'
+    },
+    5: {
+        name: 'Cant Let Go',
+        artist_name: 'DJVI'
+    },
+    6: {
+        name: 'Jumper',
+        artist_name: 'Waterflame'
+    },
+    7: {
+        name: 'Time Machine',
+        artist_name: 'Waterflame'
+    },
+    8: {
+        name: 'Cycles',
+        artist_name: 'DJVI'
+    },
+    9: {
+        name: 'xStep',
+        artist_name: 'DJVI'
+    },
+    10: {
+        name: 'Clutterfunk',
+        artist_name: 'Waterflame'
+    },
+    11: {
+        name: 'Theory of Everything',
+        artist_name: 'DJ-Nate'
+    },
+    12: {
+        name: 'Electroman Adventures',
+        artist_name: 'Waterflame'
+    },
+    13: {
+        name: 'Clubstep',
+        artist_name: 'DJ-Nate'
+    },
+    14: {
+        name: 'Electrodynamix',
+        artist_name: 'DJ-Nate'
+    },
+    15: {
+        name: 'Hexagon Force',
+        artist_name: 'Waterflame'
+    },
+    16: {
+        name: 'Blast Processing',
+        artist_name: 'Waterflame'
+    },
+    17: {
+        name: 'Theory of Everything 2',
+        artist_name: 'DJ-Nate'
+    },
+    18: {
+        name: 'Geometrical Dominator',
+        artist_name: 'Waterflame'
+    },
+    19: {
+        name: 'Deadlocked',
+        artist_name: 'F-777'
+    },
+    20: {
+        name: 'Fingerdash',
+        artist_name: 'MDK'
+    },
+    21: {
+        name: 'The Seven Seas',
+        artist_name: 'F-777'
+    },
+    22: {
+        name: 'Viking Arena',
+        artist_name: 'F-777'
+    },
+    23: {
+        name: 'Airborne Robots',
+        artist_name: 'F-777'
+    },
+    24: {
+        name: 'The Challenge',
+        artist_name: 'RobTop'
+    },
+    25: {
+        name: 'Payload',
+        artist_name: 'Dex Arson'
+    },
+    26: {
+        name: 'Beast Mode',
+        artist_name: 'Dex Arson'
+    },
+    27: {
+        name: 'Machina',
+        artist_name: 'Dex Arson'
+    },
+    28: {
+        name: 'Years',
+        artist_name: 'Dex Arson'
+    },
+    29: {
+        name: 'Frontlines',
+        artist_name: 'Dex Arson'
+    },
+    30: {
+        name: 'Space Pirates',
+        artist_name: 'Waterflame'
+    },
+    31: {
+        name: 'Striker',
+        artist_name: 'Waterflame'
+    },
+    32: {
+        name: 'Embers',
+        artist_name: 'Dex Arson'
+    },
+    33: {
+        name: 'Round 1',
+        artist_name: 'Dex Arson'
+    },
+    34: {
+        name: 'Monster Dance Off',
+        artist_name: 'F-777'
+    },
+    35: {
+        name: 'Press Start',
+        artist_name: 'MDK'
+    },
+    36: {
+        name: 'Nock Em',
+        artist_name: 'Bossfight'
+    },
+    37: {
+        name: 'Power Trip',
+        artist_name: 'Boom Kitty'
+    }
+} as Record<number, {
+    name: string;
+    artist_name: string;
+}>;

@@ -13,6 +13,7 @@ use App\Http\Traits\GameLog;
 use App\Models\GDCS\CustomSong;
 use App\Models\GDCS\Level;
 use App\Services\Game\BaseGameService;
+use App\Services\Game\CustomSongService;
 use App\Services\Game\ObjectService;
 use App\Services\NGProxy\SongService;
 
@@ -27,11 +28,10 @@ class SongController extends Controller
     {
         try {
             $data = $request->validated();
-            $customSongOffset = config('gdcn.game.custom_song_offset');
 
-            if ($data['songID'] >= $customSongOffset) {
+            if ($data['songID'] >= CustomSongService::$offset) {
                 $song = CustomSong::query()
-                    ->find($data['songID'] - $customSongOffset);
+                    ->find($data['songID'] - CustomSongService::$offset);
 
                 if (!$song) {
                     throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_not_found_custom'), game_response: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM->value);
@@ -50,11 +50,10 @@ class SongController extends Controller
     public function fetchTopArtists(TopArtistFetchRequest $request): string
     {
         $data = $request->validated();
-        $customSongOffset = config('gdcn.game.custom_song_offset');
 
         $query = Level::query()
             ->selectRaw('song_id, count(*) as times')
-            ->where('song_id', '<', $customSongOffset)
+            ->where('song_id', '<', CustomSongService::$offset)
             ->where('song_id', '!=', 0)
             ->groupBy('song_id')
             ->orderByDesc('times');

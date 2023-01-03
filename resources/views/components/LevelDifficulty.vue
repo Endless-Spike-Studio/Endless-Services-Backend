@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-
 import {App} from "@/types/backend";
 
 const props = defineProps<{
     rating: App.Models.LevelRating;
-    showName?: boolean;
     size?: number;
 }>();
 
@@ -19,38 +17,39 @@ const featured = computed(() => {
 });
 
 const faceID = computed(() => {
-    switch (props.rating.stars) {
-        case 1:
-            return 1;
-        case 2:
-            return 2;
-        case 3:
-            return 3;
-        case 4:
-        case 5:
-            return 4;
-        case 6:
-        case 7:
-            return 5;
-        case 8:
-        case 9:
-            return 6;
+    switch (props.rating.difficulty) {
         case 10:
-            switch (props.rating.demon_difficulty) {
-                case 3:
-                    return 7;
-                case 4:
-                    return 8;
-                case 5:
-                    return 10;
-                case 6:
-                    return 11;
-                default:
-                    return 9;
-            }
+            return 2;
+        case 20:
+            return 3;
+        case 30:
+            return 4;
+        case 40:
+            return 5;
+        case 50:
+            return 6;
         default:
-            return 0;
+            if (props.rating.auto) {
+                return 1;
+            }
+
+            if (props.rating.demon) {
+                switch (props.rating.demon_difficulty) {
+                    case 3:
+                        return 7;
+                    case 4:
+                        return 8;
+                    case 5:
+                        return 10;
+                    case 6:
+                        return 11;
+                    default:
+                        return 9;
+                }
+            }
     }
+
+    return 0;
 });
 
 const url = computed(() => {
@@ -58,35 +57,50 @@ const url = computed(() => {
 });
 
 const name = computed(() => {
-    return {
-        0: 'N/A',
-        1: 'Auto',
-        2: 'Easy',
-        3: 'Normal',
-        4: 'Hard',
-        5: 'Harder',
-        6: 'Insane',
-        7: 'Easy Demon',
-        8: 'Medium Demon',
-        9: 'Hard Demon',
-        10: 'Insane Demon',
-        11: 'Extreme Demon'
-    }[faceID.value];
+    switch (props.rating.difficulty) {
+        case 10:
+            return 'Easy';
+        case 20:
+            return 'Normal';
+        case 30:
+            return 'Hard';
+        case 40:
+            return 'Harder';
+        case 50:
+            return 'Insane';
+        default:
+            if (props.rating.auto) {
+                return 'Auto';
+            }
+
+            if (props.rating.demon) {
+                switch (props.rating.demon_difficulty) {
+                    case 3:
+                        return 'Easy Demon';
+                    case 4:
+                        return 'Medium Demon';
+                    case 1:
+                        return 'Hard Demon';
+                    case 5:
+                        return 'Insane Demon';
+                    case 6:
+                        return 'Extreme Demon';
+                    default:
+                        return 'Demon';
+                }
+            }
+    }
+
+    return 'N/A';
 });
 </script>
 
 <template>
-    <n-grid :cols="1">
-        <n-grid-item class="mx-auto">
-            <n-image :src="url" :title="name + ' ' + rating.stars" :width="size ?? 30" preview-disabled/>
-        </n-grid-item>
+    <n-popover>
+        <template #trigger>
+            <n-image :src="url" :width="size ?? 30" preview-disabled/>
+        </template>
 
-        <n-grid-item v-if="showName" class="text-center">
-            <n-text class="text-sm">
-                {{ name }}
-                <br>
-                {{ rating.stars }}
-            </n-text>
-        </n-grid-item>
-    </n-grid>
+        {{ name }} {{ rating.stars }}
+    </n-popover>
 </template>

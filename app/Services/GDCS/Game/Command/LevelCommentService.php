@@ -8,6 +8,7 @@ use App\Events\LevelRated;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\CustomSong;
 use App\Models\GDCS\Level;
+use App\Services\Game\CustomSongService;
 use App\Services\Game\LevelRatingService;
 use App\Services\Storage\GameLevelDataStorageService;
 use Illuminate\Support\Str;
@@ -192,9 +193,7 @@ class LevelCommentService extends BaseCommandService
         }
 
         $newValue = (int)($this->arguments['value'] ?? $this->parameters[1]);
-        $customSongOffset = config('gdcn.game.custom_song_offset');
-
-        if ($newValue >= $customSongOffset && !CustomSong::where('id', $newValue - $customSongOffset)->exists()) {
+        if ($newValue >= CustomSongService::$offset && !CustomSong::where('id', $newValue - CustomSongService::$offset)->exists()) {
             return __('gdcn.game.command.level_song_update_failed_custom_not_found', [
                 'value' => $newValue
             ]);

@@ -9,6 +9,7 @@ use App\Http\Requests\GDCS\Web\CustomSongToolCreateUsingLinkRequest;
 use App\Http\Requests\GDCS\Web\CustomSongToolCreateUsingNeteaseRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\CustomSong;
+use App\Services\Game\CustomSongService;
 use App\Services\ProxyService;
 use App\Services\Storage\CustomSongStorageService;
 use Illuminate\Support\Arr;
@@ -73,7 +74,7 @@ class CustomSongToolController extends Controller
 
         $this->pushSuccessMessage(
             __('gdcn.tools.action.custom_song_create_success_with_id', [
-                'id' => config('gdcn.game.custom_song_offset') + $song->id
+                'id' => CustomSongService::$offset + $song->id
             ])
         );
 
@@ -106,7 +107,7 @@ class CustomSongToolController extends Controller
 
         $this->pushSuccessMessage(
             __('gdcn.tools.action.custom_song_create_success_with_id', [
-                'id' => config('gdcn.game.custom_song_offset') + $song->id
+                'id' => CustomSongService::$offset + $song->id
             ])
         );
 
@@ -128,7 +129,7 @@ class CustomSongToolController extends Controller
         if ($query->exists()) {
             throw new WebException(
                 __('gdcn.tools.error.custom_song_create_failed_already_exists_with_id', [
-                    'id' => config('gdcs.custom_song_offset') + $query->value('id')
+                    'id' => CustomSongService::$offset + $query->value('id')
                 ])
             );
         }
@@ -153,7 +154,7 @@ class CustomSongToolController extends Controller
 
         $this->pushSuccessMessage(
             __('gdcn.tools.action.custom_song_create_success_with_id', [
-                'id' => config('gdcn.game.custom_song_offset') + $song->id
+                'id' => CustomSongService::$offset + $song->id
             ])
         );
 
