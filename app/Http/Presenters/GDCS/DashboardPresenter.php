@@ -78,7 +78,9 @@ class DashboardPresenter
                         ->with(['account:id,name'])
                         ->first();
                 } else if ($level->song_id > 0) {
-                    return app(SongService::class)->find($level->song_id, true);
+                    return app(SongService::class)
+                        ->find($level->song_id, true)
+                        ->only(['name', 'artist_name', 'size']);
                 }
 
                 return null;
