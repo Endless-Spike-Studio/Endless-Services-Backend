@@ -284,7 +284,7 @@ function handleAppleDownload() {
                 </n-grid-item>
 
                 <n-grid-item>
-                    <n-card title="自定义歌曲">
+                    <n-card title="关卡转移">
                         使用
                         <n-button text type="primary" @click="to_route('gdcs.tools.home')">在线工具</n-button>
                         可以将
