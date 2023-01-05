@@ -16,7 +16,13 @@ export function useProp<T extends unknown>(key: string, defaultValue?: T): Compu
 }
 
 export function to_route(name: string, params?: RouteParamsWithQueryOverload | RouteParam, absolute?: boolean, options?: VisitOptions) {
-    Inertia.visit(route(name, params, absolute), options);
+    const targetURL = route(name, params, absolute);
+
+    if (new URL(location.href).hostname !== new URL(targetURL).hostname) {
+        return open(targetURL);
+    }
+
+    Inertia.visit(targetURL, options);
 }
 
 export function formatTime(_: string, defaultValue = '未知') {

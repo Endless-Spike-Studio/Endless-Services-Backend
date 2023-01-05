@@ -29,6 +29,23 @@ declare namespace App.Models {
         account?: Account;
     }
 
+    export interface Contest extends Model {
+        account_id: number;
+        name: string;
+        desc: string;
+        rules: string;
+        account?: Account;
+    }
+
+    export interface ContestParticipant extends Model {
+        contest_id: number;
+        account_id: number;
+        level_id: number;
+        contest?: Contest;
+        account?: Account;
+        level?: Level;
+    }
+
     export interface CustomSong extends Model {
         account_id: number;
         name: string;

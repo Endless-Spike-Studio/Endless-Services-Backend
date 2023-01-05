@@ -195,7 +195,8 @@ return [
             'level_temp_upload_access_delete_success' => '[关卡临时上传许可] 销毁成功!',
             'level_transfer_success_with_id' => '[关卡转移] 操作成功! ID: :id',
             'custom_song_create_success_with_id' => '[自定义歌曲] 创建成功! ID: :id',
-            'custom_song_delete_success' => '[自定义歌曲] 删除成功!'
+            'custom_song_delete_success' => '[自定义歌曲] 删除成功!',
+            'contest_submit_success' => '[比赛] 提交成功!'
         ],
         'error' => [
             'account_link_delete_failed_not_owner' => '[账号链接] 解绑失败, 您不是该链接的所有者',
@@ -214,7 +215,11 @@ return [
             'custom_song_create_failed_already_exists_with_id' => '[自定义歌曲] 创建失败, 歌曲已存在, ID: :id',
             'custom_song_create_failed_music_info_fetch_failed' => '[自定义歌曲] 创建失败, 音乐信息获取失败',
             'custom_song_delete_failed_not_owner' => '[自定义歌曲] 删除失败, 您不是该歌曲的所有者',
-            'custom_song_delete_failed_in_use' => '[自定义歌曲] 删除失败, 有关卡正在使用该歌曲'
+            'custom_song_delete_failed_in_use' => '[自定义歌曲] 删除失败, 有关卡正在使用该歌曲',
+            'contest_submit_failed_not_level_owner' => '[比赛] 提交失败, 您不是该关卡的所有者',
+            'contest_submit_failed_account_already_submitted' => '[比赛] 提交失败, 该账号已经参加过了',
+            'contest_submit_failed_level_already_submitted' => '[比赛] 提交失败, 该关卡已经参加过了',
+            'contest_submit_failed_level_already_submitted_in_other_contest' => '[比赛] 提交失败, 该关卡已经参加过其他比赛了'
         ]
     ]
 ];

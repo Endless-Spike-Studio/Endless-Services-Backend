@@ -3,6 +3,7 @@
 use App\Http\Controllers\GDCS\Web\AccountController;
 use App\Http\Controllers\GDCS\Web\AccountLinkToolController;
 use App\Http\Controllers\GDCS\Web\AuthController;
+use App\Http\Controllers\GDCS\Web\ContestController;
 use App\Http\Controllers\GDCS\Web\CustomSongToolController;
 use App\Http\Controllers\GDCS\Web\LevelTempUploadAccessToolController;
 use App\Http\Controllers\GDCS\Web\LevelTransferToolController;
@@ -63,7 +64,21 @@ Route::group([
             'as' => 'dashboard.'
         ], static function () {
             Route::get('/', [DashboardPresenter::class, 'renderHome'])->name('home');
-            Route::get('/level/{level}', [DashboardPresenter::class, 'renderLevelInfo'])->name('level.info');
+
+            Route::group([
+                'prefix' => 'level',
+                'as' => 'level.'
+            ], static function () {
+                Route::get('/{level}', [DashboardPresenter::class, 'renderLevelInfo'])->name('info');
+            });
+
+            Route::group([
+                'prefix' => 'contest',
+                'as' => 'contest.'
+            ], static function () {
+                Route::get('/{contest}', [DashboardPresenter::class, 'renderContestInfo'])->name('info');
+                Route::post('/{contest}/submit', [ContestController::class, 'submit'])->name('submit.api');
+            });
         });
 
         Route::group([

@@ -2,7 +2,9 @@
 
 namespace App\Http\Presenters\GDCS;
 
+use App\Enums\GDCS\Game\ContestRule;
 use App\Models\GDCS\Account;
+use App\Models\GDCS\Contest;
 use App\Models\GDCS\CustomSong;
 use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelComment;
@@ -45,6 +47,10 @@ class DashboardPresenter
                     ->select(['id', 'name', 'created_at'])
                     ->latest()
                     ->paginate(pageName: 'page_accounts'),
+                'contests' => Contest::query()
+                    ->select('id', 'name', 'desc')
+                    ->latest()
+                    ->paginate(),
                 'levels' => Level::query()
                     ->with(['rating:level_id,difficulty,stars,featured_score,epic,auto,demon,demon_difficulty,created_at', 'creator:id,uuid', 'creator.account:id,name'])
                     ->select(['id', 'name', 'desc', 'user_id', 'created_at'])
@@ -98,6 +104,48 @@ class DashboardPresenter
                     ->with('account:id,name')
                     ->paginate();
             })
+        ]);
+    }
+
+    public function renderContestInfo(Contest $contest): Response
+    {
+        $account = Auth::guard('gdcs')->user();
+
+        return Inertia::render('GDCS/Dashboard/Contest/Info', [
+            'contest' => $contest->load(['account:id,name'])
+                ->only(['id', 'name', 'desc', 'rules', 'account', 'created_at']),
+            'participants' => Inertia::lazy(function () use ($contest) {
+                return $contest->participants()
+                    ->select(['contest_id', 'account_id', 'level_id', 'created_at'])
+                    ->with(['account:id,name', 'level:id,name,desc,length,downloads,likes,objects,requested_stars,version,unlisted,coins,audio_track,song_id,user_id,created_at', 'level.rating:level_id,difficulty,stars,featured_score,epic,coin_verified,auto,demon,demon_difficulty', 'level.creator:id,uuid', 'level.creator.account:id,name'])
+                    ->paginate();
+            }),
+            'levels' => Inertia::lazy(function () use ($account) {
+                return $account->user
+                    ->levels()
+                    ->select(['id', 'name', 'desc', 'length', 'downloads', 'likes', 'objects', 'requested_stars', 'version', 'unlisted', 'coins', 'audio_track', 'song_id', 'created_at'])
+                    ->with(['rating:level_id,difficulty,stars,featured_score,epic,coin_verified,auto,demon,demon_difficulty'])
+                    ->paginate();
+            }),
+            'can' => [
+                'submit' => function () use ($account, $contest) {
+                    $rules = $contest->rules();
+
+                    if ($rules->contains(ContestRule::EDITABLE)) {
+                        return true;
+                    }
+
+                    $accountAlreadySubmitted = $contest->participants()
+                        ->where('account_id', $account->id)
+                        ->exists();
+
+                    if ($rules->contains(ContestRule::UNIQUE_ACCOUNT) && $accountAlreadySubmitted) {
+                        return false;
+                    }
+
+                    return true;
+                }
+            ]
         ]);
     }
 }
