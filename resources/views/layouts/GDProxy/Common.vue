@@ -15,7 +15,7 @@ function to_home(routeName = 'gdproxy.home') {
     const apiStore = useApiStore();
 
     menu.active = 'home';
-    if (route().current(routeName)) {
+    if (route().current() === routeName) {
         return apiStore.$message.info('别点了 你已经在首页了');
     }
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import CommonLayout from "@/views/layouts/GDProxy/Common.vue";
+import CommonLayout from "@/views/layouts/NGProxy/Common.vue";
 import {GithubOutlined, HeartTwotone, UsergroupAddOutlined} from "@vicons/antd";
 import {useWindowSize} from "@vueuse/core";
 import {useForm} from "@inertiajs/inertia-vue3";
