@@ -1,11 +1,22 @@
-FROM composer:latest AS builder
+FROM composer:latest AS builder-backend
 
 ADD . /app
+WORKDIR /app
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --ignore-platform-reqs
+
+FROM node:current-alpine AS builder-frontend
+
+COPY --from=builder-backend /app /app
+WORKDIR /app
+
+RUN npm install --global pnpm
+RUN pnpm install
+RUN pnpm run build
 
 FROM registry.cn-shanghai.aliyuncs.com/gdcn/app-runtime:latest
 
-COPY --from=builder /app /app
+COPY --from=builder-frontend /app /app
+WORKDIR /app
 RUN mkdir /_
 
 COPY docker/start.sh /_/start.sh
