@@ -1,18 +1,18 @@
-FROM composer:latest
+FROM composer:latest AS builder
 
-WORKDIR /app
-RUN git clone https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese /app
+ADD . /app
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --ignore-platform-reqs
 
 FROM registry.cn-shanghai.aliyuncs.com/gdcn/app-runtime:latest
 
-COPY --from=0 /app /app
+COPY --from=builder /app /app
+RUN mkdir /_
 
-COPY docker/start.sh /_app/start.sh
-RUN chmod +x /_app/start.sh
+COPY docker/start.sh /_/start.sh
+RUN chmod +x /_/start.sh
 
-COPY docker/supervisord.conf /_app/supervisord.conf
+COPY docker/supervisord.conf /_/supervisord.conf
 RUN php /app/artisan storage:link
 
-ENTRYPOINT sh /_app/start.sh
+ENTRYPOINT sh /_/start.sh
 EXPOSE 60101
