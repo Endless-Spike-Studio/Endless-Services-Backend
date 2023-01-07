@@ -29,7 +29,7 @@ class WebException extends Exception
         $currentAndPreviousIsSame = URL::previous() === URL::current();
 
         if ($currentAndPreviousIsSame && !Request::isMethodSafe()) {
-            return to_route(self::FALLBACK_ROUTE);
+            return to_route(static::FALLBACK_ROUTE);
         }
 
         return back();

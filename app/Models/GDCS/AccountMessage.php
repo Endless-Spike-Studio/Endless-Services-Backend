@@ -13,7 +13,7 @@ class AccountMessage extends Model
 
     public static function findBetween(int $accountID, int $targetAccountID): Builder|AccountMessage
     {
-        return self::query()
+        return static::query()
             ->where('account_id', $accountID)
             ->where('target_account_id', $targetAccountID)
             ->orWhere('account_id', $targetAccountID)

@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Jobs\GDCS\CleanUnusedTempLevelUploadAccessJob;
 use App\Jobs\GDCS\CleanUnverifiedAccountJob;
 use App\Jobs\GDCS\ReCalculateCreatorPointJob;
+use App\Jobs\GDCS\RunAntiCheatServiceJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(CleanUnverifiedAccountJob::class)->hourly();
         $schedule->job(CleanUnusedTempLevelUploadAccessJob::class)->hourly();
         $schedule->job(ReCalculateCreatorPointJob::class)->daily();
+        $schedule->job(RunAntiCheatServiceJob::class)->daily();
     }
 
     protected function commands(): void
