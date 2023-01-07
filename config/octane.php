@@ -1,6 +1,5 @@
 <?php
 
-use App\Listeners\EnsureManifestSyncedListener;
 use Laravel\Octane\Contracts\OperationTerminated;
 use Laravel\Octane\Events\RequestHandled;
 use Laravel\Octane\Events\RequestReceived;
@@ -27,8 +26,7 @@ return [
     'listeners' => [
         WorkerStarting::class => [
             EnsureUploadedFilesAreValid::class,
-            EnsureUploadedFilesCanBeMoved::class,
-            EnsureManifestSyncedListener::class
+            EnsureUploadedFilesCanBeMoved::class
         ],
         RequestReceived::class => [
             ...Octane::prepareApplicationForNextOperation(),

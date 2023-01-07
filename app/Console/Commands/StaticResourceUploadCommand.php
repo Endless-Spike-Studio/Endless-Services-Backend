@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use GuzzleHttp\Promise\Promise;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -35,10 +36,14 @@ class StaticResourceUploadCommand extends Command
                 continue;
             }
 
-            $storage->put(
-                $this->prefix . '/' . $relativePath,
-                file_get_contents($fullPath)
-            );
+            $promise = new Promise(function () use ($storage, $relativePath, $fullPath, &$promise) {
+                $storage->put(
+                    $this->prefix . '/' . $relativePath,
+                    file_get_contents($fullPath)
+                );
+
+                $promise->resolve(true);
+            });
 
             $this->info($fullPath . ' => ' . $this->prefix . $relativePath);
         }
