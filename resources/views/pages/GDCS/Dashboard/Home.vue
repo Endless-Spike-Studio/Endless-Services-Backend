@@ -28,7 +28,7 @@ const pages = reactive({
 });
 
 const latestRatedLevels = computed(() => {
-    const paginate = props.latest.ratedLevels;
+    const paginate = Object.assign({}, props.latest.ratedLevels);
 
     paginate.data = paginate.data.map(rating => {
         if (rating.level) {
