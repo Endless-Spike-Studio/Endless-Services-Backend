@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useProp} from "@/scripts/core/utils";
+import {formatTime, useProp} from "@/scripts/core/utils";
 import {App} from "@/types/backend";
 import {contestRules} from "@/scripts/core/shared";
 
@@ -26,6 +26,11 @@ const contest = useProp<App.Models.Contest>('contest');
                     </n-text>
                 </template>
             </n-thing>
+
+            <n-text :depth="3" class="text-sm" type="info">
+                从 {{ formatTime(contest.created_at) }} 到
+                {{ contest.deadline_at ? formatTime(contest.deadline_at) : '?' }}
+            </n-text>
 
             <n-space>
                 <n-tag v-for="rule in JSON.parse(contest.rules) ?? []">

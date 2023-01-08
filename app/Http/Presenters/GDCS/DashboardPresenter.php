@@ -8,6 +8,7 @@ use App\Models\GDCS\Contest;
 use App\Models\GDCS\CustomSong;
 use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelComment;
+use App\Models\GDCS\LevelRating;
 use App\Services\Game\CustomSongService;
 use App\Services\NGProxy\SongService;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class DashboardPresenter
                     ->latest()
                     ->paginate(pageName: 'page_accounts'),
                 'contests' => Contest::query()
-                    ->select('id', 'name', 'desc')
+                    ->select('id', 'name', 'desc', 'deadline_at', 'created_at')
                     ->latest()
                     ->paginate(),
                 'levels' => Level::query()
@@ -57,13 +58,14 @@ class DashboardPresenter
                     ->whereNot('unlisted', true)
                     ->latest()
                     ->paginate(pageName: 'page_levels'),
-                'ratedLevels' => Level::query()
-                    ->with(['rating:level_id,difficulty,stars,featured_score,epic,auto,demon,demon_difficulty,created_at', 'creator:id,uuid', 'creator.account:id,name'])
-                    ->whereHas('rating', function ($query) {
-                        $query->where('stars', '>', 0);
+                'ratedLevels' => LevelRating::query()
+                    ->where('stars', '>', 0)
+                    ->select(['level_id', 'difficulty', 'stars', 'featured_score', 'epic', 'auto', 'demon', 'demon_difficulty', 'created_at'])
+                    ->with(['level:id,name,desc,user_id,created_at', 'level.creator:id,uuid', 'level.creator.account:id,name'])
+                    ->whereDoesntHave('level', function ($query) {
+                        $query->where('unlisted', true);
                     })
-                    ->select(['id', 'name', 'desc', 'user_id', 'created_at'])
-                    ->whereNot('unlisted', true)
+                    ->whereHas('level')
                     ->latest()
                     ->paginate(pageName: 'page_ratedLevels')
             ]
@@ -113,7 +115,7 @@ class DashboardPresenter
 
         return Inertia::render('GDCS/Dashboard/Contest/Info', [
             'contest' => $contest->load(['account:id,name'])
-                ->only(['id', 'name', 'desc', 'rules', 'account', 'created_at']),
+                ->only(['id', 'name', 'desc', 'rules', 'account', 'deadline_at', 'created_at']),
             'participants' => Inertia::lazy(function () use ($contest) {
                 return $contest->participants()
                     ->select(['contest_id', 'account_id', 'level_id', 'created_at'])

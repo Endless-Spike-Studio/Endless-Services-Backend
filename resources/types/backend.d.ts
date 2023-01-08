@@ -34,6 +34,7 @@ declare namespace App.Models {
         name: string;
         desc: string;
         rules: string;
+        deadline_at: string | null;
         account?: Account;
     }
 

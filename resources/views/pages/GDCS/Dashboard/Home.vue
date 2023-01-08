@@ -16,7 +16,7 @@ const props = defineProps<{
         contests: PaginatedData<App.Models.Contest>;
         accounts: PaginatedData<App.Models.Account>;
         levels: PaginatedData<App.Models.Level>;
-        ratedLevels: PaginatedData<App.Models.Level>;
+        ratedLevels: PaginatedData<App.Models.LevelRating>;
     }
 }>();
 
@@ -25,6 +25,20 @@ const pages = reactive({
     contests: ref(props.latest.contests.current_page),
     levels: ref(props.latest.levels.current_page),
     ratedLevels: ref(props.latest.ratedLevels.current_page)
+});
+
+const latestRatedLevels = computed(() => {
+    const paginate = props.latest.ratedLevels;
+
+    paginate.data = paginate.data.map(rating => {
+        if (rating.level) {
+            rating.level.rating = rating;
+        }
+
+        return rating;
+    });
+
+    return paginate;
 });
 
 function handlePageUpdate() {
@@ -79,9 +93,16 @@ function handlePageUpdate() {
                                 </template>
 
                                 <template #description>
-                                    <n-text :depth="3" class="text-sm whitespace-pre-wrap">
-                                        {{ contest.desc }}
-                                    </n-text>
+                                    <n-space vertical>
+                                        <n-text :depth="3" class="text-sm whitespace-pre-wrap">
+                                            {{ contest.desc }}
+                                        </n-text>
+
+                                        <n-text :depth="3" class="text-sm" type="info">
+                                            从 {{ formatTime(contest.created_at) }} 到
+                                            {{ contest.deadline_at ? formatTime(contest.deadline_at) : '?' }}
+                                        </n-text>
+                                    </n-space>
                                 </template>
                             </n-thing>
 
@@ -148,8 +169,8 @@ function handlePageUpdate() {
                     <n-card title="新 Rated 关卡">
                         <n-space vertical>
                             <n-list bordered>
-                                <n-list-item v-for="level in latest.ratedLevels.data">
-                                    <LevelInfo :level="level"/>
+                                <n-list-item v-for="rating in latestRatedLevels.data">
+                                    <LevelInfo :level="rating.level"/>
                                 </n-list-item>
                             </n-list>
 
