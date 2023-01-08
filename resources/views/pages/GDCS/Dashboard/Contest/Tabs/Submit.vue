@@ -6,6 +6,7 @@ import LevelInfo from "@/views/components/Info/Level.vue";
 import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 
+const $emits = defineEmits(['submitted']);
 const contest = useProp<App.Models.Contest>('contest');
 const levels = useProp<PaginatedData<App.Models.Level>>('levels');
 const page = ref();
@@ -36,7 +37,11 @@ const forms = computed(() => {
 });
 
 function submit(id: number) {
-    (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.dashboard.contest.submit.api', contest.value.id));
+    (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.dashboard.contest.submit.api', contest.value.id), {
+        onFinish() {
+            $emits('submitted');
+        }
+    });
 }
 </script>
 

@@ -41,7 +41,11 @@ const menu = reactive({
             icon: () => h(NIcon, {
                 component: UploadOutlined
             }),
-            render: () => h(SubmitTab)
+            render: () => h(SubmitTab, {
+                onSubmitted() {
+                    menu.active = 'participants';
+                }
+            })
         }
     ] as MenuOption[]
 });

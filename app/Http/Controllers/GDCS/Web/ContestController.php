@@ -72,6 +72,6 @@ class ContestController extends Controller
         }
 
         $this->pushSuccessMessage(__('gdcn.tools.action.contest_submit_success'));
-        return to_route('gdcs.dashboard.contest.info', $contest->id);
+        return back();
     }
 }
