@@ -13,7 +13,7 @@ use App\Models\GDCS\WeeklyLevel;
 
 class AntiCheatService
 {
-    public static function run()
+    public static function run(): void
     {
         $maxStars = static::calculateMaxStars();
 
