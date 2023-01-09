@@ -43,7 +43,7 @@ export function createRules<T extends object>(form: InertiaForm<T>, items?: Reco
             {
                 required: true,
                 validator(rule: FormItemRule, value: string) {
-                    if (!value) {
+                    if (value === '') {
                         return new Error(String(_key) + ` 不能为空`);
                     }
 

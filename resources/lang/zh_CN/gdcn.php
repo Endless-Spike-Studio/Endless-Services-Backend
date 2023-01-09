@@ -196,7 +196,8 @@ return [
             'level_transfer_success_with_id' => '[关卡转移] 操作成功! ID: :id',
             'custom_song_create_success_with_id' => '[自定义歌曲] 创建成功! ID: :id',
             'custom_song_delete_success' => '[自定义歌曲] 删除成功!',
-            'contest_submit_success' => '[比赛] 提交成功!'
+            'contest_submit_success' => '[比赛] 提交成功!',
+            'level_edit_success' => '[关卡] 编辑成功!'
         ],
         'error' => [
             'account_link_delete_failed_not_owner' => '[账号链接] 解绑失败, 您不是该链接的所有者',
@@ -219,7 +220,8 @@ return [
             'contest_submit_failed_not_level_owner' => '[比赛] 提交失败, 您不是该关卡的所有者',
             'contest_submit_failed_account_already_submitted' => '[比赛] 提交失败, 该账号已经参加过了',
             'contest_submit_failed_level_already_submitted' => '[比赛] 提交失败, 该关卡已经参加过了',
-            'contest_submit_failed_level_already_submitted_in_other_contest' => '[比赛] 提交失败, 该关卡已经参加过其他比赛了'
+            'contest_submit_failed_level_already_submitted_in_other_contest' => '[比赛] 提交失败, 该关卡已经参加过其他比赛了',
+            'level_edit_failed_permission_denied' => '[关卡] 编辑失败, 您没有权限编辑该关卡'
         ]
     ]
 ];

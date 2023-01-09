@@ -26,14 +26,16 @@ class Level extends Model
         );
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function creator(): BelongsTo
     {
         return $this->user();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class)->withDefault([
+            'name' => 'Player'
+        ]);
     }
 
     public function song(): HasOne

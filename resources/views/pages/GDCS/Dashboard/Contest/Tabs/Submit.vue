@@ -38,7 +38,7 @@ const forms = computed(() => {
 
 function submit(id: number) {
     (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.dashboard.contest.submit.api', contest.value.id), {
-        onFinish() {
+        onSuccess() {
             $emits('submitted');
         }
     });

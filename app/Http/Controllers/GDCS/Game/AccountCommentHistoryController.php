@@ -29,7 +29,7 @@ class AccountCommentHistoryController extends Controller
 
         $comments = LevelComment::query()
             ->where('account_id', User::query()
-                ->where('id', $data['userID'])
+                ->whereKey($data['userID'])
                 ->value('uuid'));
 
         switch ($data['mode']) {

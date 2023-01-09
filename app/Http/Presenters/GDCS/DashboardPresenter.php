@@ -2,7 +2,6 @@
 
 namespace App\Http\Presenters\GDCS;
 
-use App\Enums\GDCS\Game\ContestRule;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\Contest;
 use App\Models\GDCS\CustomSong;
@@ -74,6 +73,8 @@ class DashboardPresenter
 
     public function renderLevelInfo(Level $level): Response
     {
+        $account = Auth::guard('gdcs')->user();
+
         return Inertia::render('GDCS/Dashboard/Level/Info', [
             'customSongOffset' => CustomSongService::$offset,
             'level' => $level->load(['rating:level_id,difficulty,stars,featured_score,epic,coin_verified,auto,demon,demon_difficulty', 'creator:id,uuid', 'creator.account:id,name'])
@@ -81,7 +82,7 @@ class DashboardPresenter
             'song' => Inertia::lazy(function () use ($level) {
                 if ($level->song_id > CustomSongService::$offset) {
                     return CustomSong::query()
-                        ->where('id', $level->song_id - CustomSongService::$offset)
+                        ->whereKey($level->song_id - CustomSongService::$offset)
                         ->select(['id', 'name', 'account_id', 'artist_name', 'size', 'download_url'])
                         ->with(['account:id,name'])
                         ->first();
@@ -105,6 +106,12 @@ class DashboardPresenter
                     ->orderByDesc('percent')
                     ->with('account:id,name')
                     ->paginate();
+            }),
+            'can' => [
+                'edit' => $account->user->can('edit', $level)
+            ],
+            'settings' => Inertia::lazy(function () use ($level) {
+                return $level->only(['name', 'desc', 'password', 'audio_track', 'song_id', 'unlisted']);
             })
         ]);
     }
@@ -130,23 +137,7 @@ class DashboardPresenter
                     ->paginate();
             }),
             'can' => [
-                'submit' => function () use ($account, $contest) {
-                    $rules = $contest->rules();
-
-                    if ($rules->contains(ContestRule::EDITABLE)) {
-                        return true;
-                    }
-
-                    $accountAlreadySubmitted = $contest->participants()
-                        ->where('account_id', $account->id)
-                        ->exists();
-
-                    if ($rules->contains(ContestRule::UNIQUE_ACCOUNT) && $accountAlreadySubmitted) {
-                        return false;
-                    }
-
-                    return true;
-                }
+                'submit' => $account->can('submit', $contest)
             ]
         ]);
     }

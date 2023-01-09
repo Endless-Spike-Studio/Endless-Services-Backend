@@ -2,15 +2,20 @@
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {App} from "@/types/backend";
 import {MenuOption, NIcon} from "naive-ui";
-import {InfoCircleTwotone} from "@vicons/antd";
+import {InfoCircleTwotone, SettingTwotone} from "@vicons/antd";
 import DetailsTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Details.vue";
 import ScoresTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Scores.vue";
 import CommentsTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Comments.vue";
+import SettingsTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Settings.vue";
 import {LeaderboardTwotone} from "@vicons/material";
 import {CommentRegular} from "@vicons/fa";
+import {uniqueId} from "lodash-es";
 
-defineProps<{
+const props = defineProps<{
     level: App.Models.Level;
+    can: {
+        edit: boolean;
+    }
 }>();
 
 const menu = reactive({
@@ -39,6 +44,23 @@ const menu = reactive({
                 component: LeaderboardTwotone
             }),
             render: () => h(ScoresTab)
+        },
+        {
+            type: 'divider',
+            key: uniqueId()
+        },
+        {
+            label: '设置',
+            key: 'settings',
+            disabled: !props.can.edit,
+            icon: () => h(NIcon, {
+                component: SettingTwotone
+            }),
+            render: () => h(SettingsTab, {
+                onSubmitted() {
+                    menu.active = 'details';
+                }
+            })
         }
     ] as MenuOption[]
 });

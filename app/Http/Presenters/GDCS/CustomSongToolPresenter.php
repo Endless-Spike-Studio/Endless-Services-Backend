@@ -19,14 +19,14 @@ class CustomSongToolPresenter
             'offset' => CustomSongService::$offset,
             'currentAccountID' => $account->id,
             'songs' => function () {
-                $id = Request::get('id');
+                $id = Request::integer('id');
 
                 $query = CustomSong::query()
                     ->select(['id', 'account_id', 'name', 'artist_name', 'size', 'download_url', 'created_at'])
                     ->with(['account:id,name']);
 
                 if (!empty($id)) {
-                    $query->where('id', $id - CustomSongService::$offset);
+                    $query->whereKey($id - CustomSongService::$offset);
                 }
 
                 return $query->paginate();

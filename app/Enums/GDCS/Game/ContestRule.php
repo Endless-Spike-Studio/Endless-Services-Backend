@@ -2,10 +2,10 @@
 
 namespace App\Enums\GDCS\Game;
 
-class ContestRule
+enum ContestRule: string
 {
-    public const EDITABLE = 'editable';
-    public const UNIQUE_ACCOUNT = 'unique_account';
-    public const UNIQUE_LEVEL = 'unique_level';
-    public const UNIQUE_LEVEL_CONTEST = 'unique_level_contest';
+    case EDITABLE = 'editable';
+    case UNIQUE_ACCOUNT = 'unique_account';
+    case UNIQUE_LEVEL = 'unique_level';
+    case UNIQUE_LEVEL_CONTEST = 'unique_level_contest';
 }

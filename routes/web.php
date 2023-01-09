@@ -5,6 +5,7 @@ use App\Http\Controllers\GDCS\Web\AccountLinkToolController;
 use App\Http\Controllers\GDCS\Web\AuthController;
 use App\Http\Controllers\GDCS\Web\ContestController;
 use App\Http\Controllers\GDCS\Web\CustomSongToolController;
+use App\Http\Controllers\GDCS\Web\LevelController;
 use App\Http\Controllers\GDCS\Web\LevelTempUploadAccessToolController;
 use App\Http\Controllers\GDCS\Web\LevelTransferToolController;
 use App\Http\Presenters\GDCS\AccountLinkToolPresenter;
@@ -70,6 +71,7 @@ Route::group([
                 'as' => 'level.'
             ], static function () {
                 Route::get('/{level}', [DashboardPresenter::class, 'renderLevelInfo'])->name('info');
+                Route::post('/{level}/edit', [LevelController::class, 'edit'])->name('edit.api');
             });
 
             Route::group([
