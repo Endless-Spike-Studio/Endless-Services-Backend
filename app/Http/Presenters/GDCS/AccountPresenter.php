@@ -60,6 +60,9 @@ class AccountPresenter
                     ->whereNot('unlisted', true)
                     ->latest()
                     ->paginate();
+            }),
+            'settings' => Inertia::lazy(function () use ($account) {
+                return $account->only(['name', 'email', 'comment_color']);
             })
         ]);
     }

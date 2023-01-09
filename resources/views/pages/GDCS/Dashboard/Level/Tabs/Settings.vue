@@ -85,7 +85,7 @@ function submit() {
                 <n-space vertical>
                     <n-radio-group v-model:value="form.password">
                         <n-radio :value="0">不允许 Copy</n-radio>
-                        <n-radio :value="1">免费 Copy</n-radio>
+                        <n-radio :value="1">Free Copy</n-radio>
                     </n-radio-group>
 
                     <n-input-number v-model:value="form.password" :max="999999" :min="0"/>

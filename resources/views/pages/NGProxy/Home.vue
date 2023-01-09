@@ -56,7 +56,8 @@ const {width} = useWindowSize();
                     <n-space justify="center">
                         <n-input v-model:value="songID" placeholder="歌曲ID"/>
 
-                        <n-button :disabled="form.processing" :loading="form.processing" @click="submit">
+                        <n-button :disabled="!form.isDirty || form.processing" :loading="form.processing"
+                                  @click="submit">
                             查询
                         </n-button>
                     </n-space>

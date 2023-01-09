@@ -9,7 +9,6 @@ import CommentsTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Comments.vue";
 import SettingsTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Settings.vue";
 import {LeaderboardTwotone} from "@vicons/material";
 import {CommentRegular} from "@vicons/fa";
-import {uniqueId} from "lodash-es";
 
 const props = defineProps<{
     level: App.Models.Level;
@@ -47,7 +46,7 @@ const menu = reactive({
         },
         {
             type: 'divider',
-            key: uniqueId()
+            key: '4ca656c85a1711c13e48edc09e1cb41705bfb48f'
         },
         {
             label: '设置',

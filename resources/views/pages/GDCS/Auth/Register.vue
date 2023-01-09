@@ -38,7 +38,7 @@ function submit() {
                 </n-form-item>
 
                 <n-form-item label="邮箱" path="email">
-                    <n-input v-model:value="form.email" :input-props="{ type: 'email' }"/>
+                    <n-input v-model:value="form.email"/>
                 </n-form-item>
 
                 <n-form-item label="密码" path="password">
@@ -51,7 +51,8 @@ function submit() {
             </n-form>
 
             <n-space class="w-full" justify="space-between">
-                <n-button :disabled="form.processing" :loading="form.processing" @click="submit">注册</n-button>
+                <n-button :disabled="!form.isDirty || form.processing" :loading="form.processing" @click="submit">注册
+                </n-button>
                 <n-button text @click="to_route('gdcs.auth.login')">已有账号? 去登录</n-button>
             </n-space>
         </n-card>

@@ -26,7 +26,7 @@ class Account extends Authenticatable implements MustVerifyEmailContract
 
     protected $table = 'gdcs_accounts';
 
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'email_verified_at'];
 
     protected $hidden = ['password', 'remember_token'];
 

@@ -56,7 +56,7 @@ function submit() {
                 </n-form-item>
 
                 <n-form-item>
-                    <n-button :disabled="form.processing" :loading="form.processing" @click="submit">
+                    <n-button :disabled="!form.isDirty || form.processing" :loading="form.processing" @click="submit">
                         提交
                     </n-button>
                 </n-form-item>

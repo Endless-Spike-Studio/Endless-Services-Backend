@@ -58,6 +58,8 @@ Route::group([
             Route::get('/profile', [AccountPresenter::class, 'renderProfile'])->name('profile');
             Route::post('/resendVerificationEmail', [AccountController::class, 'resendVerificationEmail'])->name('resendVerificationEmail.api');
             Route::get('/{account}', [AccountPresenter::class, 'renderInfo'])->name('info');
+            Route::post('/{account}/edit', [AccountController::class, 'edit'])->name('edit.api');
+            Route::post('/{account}/changePassword', [AccountController::class, 'changePassword'])->name('changePassword.api');
         });
 
         Route::group([

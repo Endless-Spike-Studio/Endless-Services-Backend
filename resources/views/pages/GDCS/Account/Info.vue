@@ -10,6 +10,8 @@ import {formatTime} from "@/scripts/core/utils";
 import {CommentRegular} from "@vicons/fa";
 import {Box} from "@vicons/tabler";
 import LevelsTab from "@/views/pages/GDCS/Account/Tabs/Levels.vue";
+import {SettingTwotone} from "@vicons/antd";
+import SettingsTab from "@/views/pages/GDCS/Account/Tabs/Settings.vue";
 
 const props = defineProps<{
     account: App.Models.Account;
@@ -39,6 +41,23 @@ const menu = reactive({
                 component: Box
             }),
             render: () => h(LevelsTab)
+        },
+        {
+            type: 'divider',
+            key: '4ca656c85a1711c13e48edc09e1cb41705bfb48f'
+        },
+        {
+            label: '设置',
+            key: 'settings',
+            disabled: !props.is_owner,
+            icon: () => h(NIcon, {
+                component: SettingTwotone
+            }),
+            render: () => h(SettingsTab, {
+                onSubmitted() {
+                    menu.active = 'comments';
+                }
+            })
         }
     ] as MenuOption[]
 });

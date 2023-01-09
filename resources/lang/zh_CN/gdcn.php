@@ -197,7 +197,10 @@ return [
             'custom_song_create_success_with_id' => '[自定义歌曲] 创建成功! ID: :id',
             'custom_song_delete_success' => '[自定义歌曲] 删除成功!',
             'contest_submit_success' => '[比赛] 提交成功!',
-            'level_edit_success' => '[关卡] 编辑成功!'
+            'level_edit_success' => '[关卡] 编辑成功!',
+            'account_email_edit_success_please_re_verify_email' => '[账号] 邮箱更改成功! 请重新验证邮箱',
+            'account_edit_success' => '[账号] 编辑成功!',
+            'account_password_change_success' => '[账号] 密码修改成功!'
         ],
         'error' => [
             'account_link_delete_failed_not_owner' => '[账号链接] 解绑失败, 您不是该链接的所有者',
