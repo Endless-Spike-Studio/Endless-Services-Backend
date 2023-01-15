@@ -121,7 +121,7 @@ const {width} = useWindowSize();
             </n-space>
 
             <n-card class="text-center" title="到目前, GDCS 拥有了">
-                <n-grid :x-gap="10" :y-gap="10" cols="3 768:9">
+                <n-grid :x-gap="10" :y-gap="10" cols="3 640:9">
                     <n-grid-item>
                         <n-statistic :value="statistic.players.toString()" label="玩家"/>
                     </n-grid-item>
@@ -160,7 +160,7 @@ const {width} = useWindowSize();
                 </n-grid>
             </n-card>
 
-            <n-grid :x-gap="10" :y-gap="10" cols="1 768:2">
+            <n-grid :x-gap="10" :y-gap="10" cols="1 640:2">
                 <n-grid-item>
                     <n-card class="h-full" title="这是什么">
                         GDCS,全称
@@ -193,7 +193,7 @@ const {width} = useWindowSize();
                     <n-card title="管理团队">
                         <n-grid :x-gap="10" :y-gap="10" cols="1 384:2">
                             <n-grid-item>
-                                <n-descriptions :columns="width < 768 ? 1 : 2">
+                                <n-descriptions :columns="width < 640 ? 1 : 2">
                                     <template #header>
                                         <n-text type="info">渣渣120</n-text>
                                         <n-text :depth="3" class="text-sm ml-1">服主</n-text>
@@ -218,7 +218,7 @@ const {width} = useWindowSize();
                             </n-grid-item>
 
                             <n-grid-item>
-                                <n-descriptions :columns="width < 768 ? 1 : 2">
+                                <n-descriptions :columns="width < 640 ? 1 : 2">
                                     <template #header>
                                         <n-text type="info">xyzlol</n-text>
                                         <n-text :depth="3" class="text-sm ml-1">副服主</n-text>
@@ -248,7 +248,7 @@ const {width} = useWindowSize();
 
             <n-divider>特 性</n-divider>
 
-            <n-grid :x-gap="10" :y-gap="10" cols="1 768:2">
+            <n-grid :x-gap="10" :y-gap="10" cols="1 640:2">
                 <n-grid-item>
                     <n-card class="h-full" title="开源可靠">
                         您可以在

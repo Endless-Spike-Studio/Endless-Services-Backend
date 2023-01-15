@@ -28,7 +28,7 @@ class ContestController extends Controller
         $rules = $contest->rules();
 
         if ($level->creator->isNot($account->user)) {
-            throw new WebException(__('gdcn.tools.error.contest_submit_failed_not_level_owner'));
+            throw new WebException(__('gdcn.dashboard.error.contest_submit_failed_not_level_owner'));
         }
 
         if ($rules->contains(ContestRule::EDITABLE)) {
@@ -44,7 +44,7 @@ class ContestController extends Controller
                 ->exists();
 
             if ($rules->contains(ContestRule::UNIQUE_ACCOUNT) && $accountAlreadySubmitted) {
-                throw new WebException(__('gdcn.tools.error.contest_submit_failed_account_already_submitted'));
+                throw new WebException(__('gdcn.dashboard.error.contest_submit_failed_account_already_submitted'));
             }
 
             $levelAlreadySubmitted = $contest->participants()
@@ -52,7 +52,7 @@ class ContestController extends Controller
                 ->exists();
 
             if ($rules->contains(ContestRule::UNIQUE_LEVEL) && $levelAlreadySubmitted) {
-                throw new WebException(__('gdcn.tools.error.contest_submit_failed_level_already_submitted'));
+                throw new WebException(__('gdcn.dashboard.error.contest_submit_failed_level_already_submitted'));
             }
 
             $levelAlreadySubmittedInOtherContest = ContestParticipant::query()
@@ -61,7 +61,7 @@ class ContestController extends Controller
                 ->exists();
 
             if ($rules->contains(ContestRule::UNIQUE_LEVEL_CONTEST) && $levelAlreadySubmittedInOtherContest) {
-                throw new WebException(__('gdcn.tools.error.contest_submit_failed_level_already_submitted_in_other_contest'));
+                throw new WebException(__('gdcn.dashboard.error.contest_submit_failed_level_already_submitted_in_other_contest'));
             }
 
             $contest->participants()
@@ -71,7 +71,7 @@ class ContestController extends Controller
                 ]);
         }
 
-        $this->pushSuccessMessage(__('gdcn.tools.action.contest_submit_success'));
+        $this->pushSuccessMessage(__('gdcn.dashboard.action.contest_submit_success'));
         return back();
     }
 }

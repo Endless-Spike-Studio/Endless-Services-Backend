@@ -39,7 +39,7 @@ const menu = reactive({
 
 <template>
     <CommonLayout>
-        <n-grid :x-gap="10" :y-gap="10" cols="1 768:4">
+        <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
             <n-grid-item>
                 <n-card :content-style="{ padding: 0 }">
                     <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>

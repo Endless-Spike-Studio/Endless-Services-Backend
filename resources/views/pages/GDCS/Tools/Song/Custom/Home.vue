@@ -75,7 +75,8 @@ function deleteSong(id: number) {
                                     大小: {{ song.size }} MB
                                     <br>
                                     <n-button v-if="song.account" text
-                                              type="primary" @click="to_route('gdcs.account.info', song.account.id)">
+                                              type="primary"
+                                              @click="to_route('gdcs.dashboard.account.info', song.account.id)">
                                         {{ song.account.name }}
                                     </n-button>
                                     <span v-else>未知</span>

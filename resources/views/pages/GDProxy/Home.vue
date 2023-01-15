@@ -105,7 +105,7 @@ const {width} = useWindowSize();
                 </n-space>
             </n-space>
 
-            <n-grid :x-gap="10" :y-gap="10" cols="1 768:2">
+            <n-grid :x-gap="10" :y-gap="10" cols="1 640:2">
                 <n-grid-item>
                     <n-card class="h-full" title="这是什么">
                         GDProxy,全称
@@ -136,7 +136,7 @@ const {width} = useWindowSize();
 
                 <n-grid-item>
                     <n-card title="开发者">
-                        <n-descriptions :columns="width < 768 ? 1 : 2">
+                        <n-descriptions :columns="width < 640 ? 1 : 2">
                             <template #header>
                                 <n-text type="info">渣渣120</n-text>
                             </template>

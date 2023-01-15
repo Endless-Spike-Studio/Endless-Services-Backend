@@ -49,10 +49,10 @@ class AccountController extends Controller
             ]);
 
             $account->sendEmailVerificationNotification();
-            $this->pushSuccessMessage(__('gdcn.tools.action.account_email_edit_success_please_re_verify_email'));
+            $this->pushSuccessMessage(__('gdcn.dashboard.action.account_email_edit_success_please_re_verify_email'));
         }
 
-        $this->pushSuccessMessage(__('gdcn.tools.action.account_edit_success'));
+        $this->pushSuccessMessage(__('gdcn.dashboard.action.account_edit_success'));
         return back();
     }
 
@@ -64,7 +64,7 @@ class AccountController extends Controller
             'password' => Hash::make($data['password'])
         ]);
 
-        $this->pushSuccessMessage(__('gdcn.tools.action.account_password_change_success'));
+        $this->pushSuccessMessage(__('gdcn.dashboard.action.account_password_change_success'));
         return back();
     }
 }

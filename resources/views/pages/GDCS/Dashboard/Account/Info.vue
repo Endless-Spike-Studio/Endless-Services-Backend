@@ -3,25 +3,27 @@ import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {App} from "@/types/backend";
 import {useBackendStore} from "@/scripts/core/stores";
 import {MenuOption, NIcon, NText} from "naive-ui";
-import CommentsTab from "@/views/pages/GDCS/Account/Tabs/Comments.vue";
+import CommentsTab from "@/views/pages/GDCS/Dashboard/Account/Tabs/Comments.vue";
 import {useForm} from "@inertiajs/inertia-vue3";
 import route from "@/scripts/core/route";
 import {formatTime} from "@/scripts/core/utils";
 import {CommentRegular} from "@vicons/fa";
 import {Box} from "@vicons/tabler";
-import LevelsTab from "@/views/pages/GDCS/Account/Tabs/Levels.vue";
+import LevelsTab from "@/views/pages/GDCS/Dashboard/Account/Tabs/Levels.vue";
 import {SettingTwotone} from "@vicons/antd";
-import SettingsTab from "@/views/pages/GDCS/Account/Tabs/Settings.vue";
+import SettingsTab from "@/views/pages/GDCS/Dashboard/Account/Tabs/Settings.vue";
 
 const props = defineProps<{
     account: App.Models.Account;
-    is_owner: boolean;
     statistic: {
         friends: number;
         levels: number;
         comments: number;
     }
 }>();
+
+const backendStore = useBackendStore();
+const is_owner = backendStore.gdcs.account.id === props.account.id;
 
 const menu = reactive({
     active: ref('comments'),
@@ -43,31 +45,48 @@ const menu = reactive({
             render: () => h(LevelsTab)
         },
         {
-            type: 'divider',
-            key: '4ca656c85a1711c13e48edc09e1cb41705bfb48f'
-        },
-        {
-            label: '设置',
-            key: 'settings',
-            disabled: !props.is_owner,
-            icon: () => h(NIcon, {
-                component: SettingTwotone
-            }),
-            render: () => h(SettingsTab, {
-                onSubmitted() {
-                    menu.active = 'comments';
+            label: '管理',
+            type: 'group',
+            key: 'manage',
+            show: is_owner,
+            children: [
+                {
+                    label: '设置',
+                    key: 'settings',
+                    icon: () => h(NIcon, {
+                        component: SettingTwotone
+                    }),
+                    render: () => h(SettingsTab, {
+                        onSubmitted() {
+                            menu.active = 'comments';
+                        }
+                    })
                 }
-            })
+            ] as MenuOption[]
         }
-    ] as MenuOption[]
+    ] as MenuOption[],
+    items: computed(() => {
+        const result = new Array<MenuOption>;
+
+        menu.options.forEach(option => {
+            if ('render' in option) {
+                result.push(option as MenuOption);
+            }
+
+            if ('children' in option) {
+                result.push(...option.children as MenuOption[]);
+            }
+        });
+
+        return result;
+    })
 });
 
 const resendVerificationEmailForm = useForm({});
-const backendStore = useBackendStore();
 
 function resendVerificationEmail() {
     resendVerificationEmailForm.post(
-        route('gdcs.account.resendVerificationEmail.api')
+        route('gdcs.dashboard.account.resendVerificationEmail.api')
     );
 }
 </script>
@@ -75,7 +94,7 @@ function resendVerificationEmail() {
 <template>
     <CommonLayout>
         <n-space vertical>
-            <n-grid :x-gap="10" :y-gap="10" cols="1 768:4">
+            <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
                 <n-grid-item>
                     <n-card :content-style="{ padding: 0 }">
                         <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -84,7 +103,7 @@ function resendVerificationEmail() {
 
                 <n-grid-item :span="2">
                     <n-tabs v-model:value="menu.active" :tab-style="{ display: 'none' }" animated pane-class="!p-0">
-                        <n-tab-pane v-for="option in menu.options" :name="option.key">
+                        <n-tab-pane v-for="option in menu.items" :name="option.key">
                             <Component :is="option.render"/>
                         </n-tab-pane>
                     </n-tabs>

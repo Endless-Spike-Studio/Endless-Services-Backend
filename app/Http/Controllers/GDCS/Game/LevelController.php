@@ -32,6 +32,7 @@ use App\Services\Game\ObjectService;
 use App\Services\NGProxy\SongService;
 use App\Services\Storage\GameLevelDataStorageService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class LevelController extends Controller
 {
@@ -497,8 +498,15 @@ class LevelController extends Controller
             throw new GeometryDashChineseServerException(__('gdcn.game.error.level_delete_failed_not_found'), game_response: Response::GAME_LEVEL_DELETE_FAILED_NOT_FOUND->value);
         }
 
-        if ($level->creator->isNot($request->user)) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_delete_failed_not_owner'), game_response: Response::GAME_LEVEL_DELETE_FAILED_NOT_OWNER->value);
+        $policy = Gate::forUser($request->user)->inspect('delete', $level);
+
+        if ($policy->denied()) {
+            throw new GeometryDashChineseServerException(
+                __('gdcn.game.error.level_delete_failed_with_reason', [
+                    'reason' => $policy->message()
+                ]),
+                game_response: Response::GAME_LEVEL_DELETE_FAILED_POLICY_DENIED->value
+            );
         }
 
         (new GameLevelDataStorageService)->delete(['id' => $level->id]);

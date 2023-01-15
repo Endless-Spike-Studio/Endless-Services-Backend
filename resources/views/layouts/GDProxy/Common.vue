@@ -77,7 +77,7 @@ const {width} = useWindowSize();
         <n-layout class="h-full">
             <n-layout-header>
                 <slot name="header">
-                    <n-space v-if="width > 768" justify="space-between">
+                    <n-space v-if="width > 640" justify="space-between">
                         <n-menu v-model:value="menu.active" :options="menu.options.left" mode="horizontal"
                                 @update:value="handleMenuSelect"/>
 

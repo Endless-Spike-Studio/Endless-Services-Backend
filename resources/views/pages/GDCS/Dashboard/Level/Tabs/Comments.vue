@@ -32,7 +32,8 @@ function handlePageUpdate(newPage: number) {
                 <n-list-item v-for="comment in comments.data">
                     <n-thing>
                         <template #header>
-                            <n-button text type="primary" @click="to_route('gdcs.account.info', comment.account_id)">
+                            <n-button text type="primary"
+                                      @click="to_route('gdcs.dashboard.account.info', comment.account_id)">
                                 {{ comment.account.name }}
                             </n-button>
 

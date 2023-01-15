@@ -4,6 +4,12 @@ import {App, PaginatedData} from "@/types/backend";
 import {formatTime, to_route} from "@/scripts/core/utils";
 import {Inertia} from "@inertiajs/inertia";
 import LevelInfo from "@/views/components/Info/Level.vue";
+import star from "@/images/game/star.png";
+import gold_coin from "@/images/game/c0.png";
+import silver_coin from "@/images/game/c2.png";
+import demon from "@/images/difficulties/9.png";
+import cp from "@/images/game/cp.png";
+import {useWindowSize} from "@vueuse/core";
 
 const props = defineProps<{
     account: App.Models.Account;
@@ -17,6 +23,7 @@ const props = defineProps<{
         accounts: PaginatedData<App.Models.Account>;
         levels: PaginatedData<App.Models.Level>;
         ratedLevels: PaginatedData<App.Models.LevelRating>;
+        scores: PaginatedData<App.Models.UserScore>
     }
 }>();
 
@@ -24,7 +31,8 @@ const pages = reactive({
     accounts: ref(props.latest.accounts.current_page),
     contests: ref(props.latest.contests.current_page),
     levels: ref(props.latest.levels.current_page),
-    ratedLevels: ref(props.latest.ratedLevels.current_page)
+    ratedLevels: ref(props.latest.ratedLevels.current_page),
+    scores: ref(props.latest.scores.current_page)
 });
 
 const latestRatedLevels = computed(() => {
@@ -41,17 +49,27 @@ const latestRatedLevels = computed(() => {
     return paginate;
 });
 
+const scoreSorter = reactive({
+    name: ref('stars'),
+    order: ref('desc')
+});
+
 function handlePageUpdate() {
     Inertia.reload({
         data: {
             page_accounts: pages.accounts,
             page_contests: pages.contests,
             page_levels: pages.levels,
-            page_ratedLevels: pages.ratedLevels
+            page_ratedLevels: pages.ratedLevels,
+            page_scores: pages.scores,
+            sort_scores_column: scoreSorter.name,
+            sort_scores_order: scoreSorter.order
         },
         only: ['latest']
     });
 }
+
+const {width} = useWindowSize();
 </script>
 
 <template>
@@ -119,7 +137,7 @@ function handlePageUpdate() {
                 <n-empty v-else/>
             </n-card>
 
-            <n-grid :x-gap="10" :y-gap="10" class="lg:h-[50vh]" cols="1 768:3">
+            <n-grid :x-gap="10" :y-gap="10" class="lg:h-[50vh]" cols="1 640:3">
                 <n-grid-item class="h-full overflow-auto">
                     <n-card title="新账号">
                         <n-space vertical>
@@ -128,7 +146,7 @@ function handlePageUpdate() {
                                     <n-thing>
                                         <template #header>
                                             <n-button text type="primary"
-                                                      @click="to_route('gdcs.account.info', account.id)">
+                                                      @click="to_route('gdcs.dashboard.account.info', account.id)">
                                                 {{ account.name }}
                                             </n-button>
                                         </template>
@@ -181,6 +199,132 @@ function handlePageUpdate() {
                     </n-card>
                 </n-grid-item>
             </n-grid>
+
+            <n-card title="排行榜">
+                <n-space vertical>
+                    <n-space :vertical="width < 640" class="items-center" justify="center">
+                        <n-space class="items-center" justify="center">
+                            <n-text>排序:</n-text>
+
+                            <n-radio-group v-model:value="scoreSorter.name" @update:value="handlePageUpdate">
+                                <n-radio-button value="stars">
+                                    <n-image :img-props="{ class: 'w-[1em]' }" :src="star"
+                                             preview-disabled/>
+                                </n-radio-button>
+
+                                <n-radio-button value="coins">
+                                    <n-image :img-props="{ class: 'w-[1em]' }" :src="gold_coin"
+                                             preview-disabled/>
+                                </n-radio-button>
+
+                                <n-radio-button value="user_coins">
+                                    <n-image :img-props="{ class: 'w-[1em]' }" :src="silver_coin"
+                                             preview-disabled/>
+                                </n-radio-button>
+
+                                <n-radio-button value="demons">
+                                    <n-image :img-props="{ class: 'w-[1em]' }" :src="demon"
+                                             preview-disabled/>
+                                </n-radio-button>
+
+                                <n-radio-button value="creator_points">
+                                    <n-image :img-props="{ class: 'w-[1em]' }" :src="cp"
+                                             preview-disabled/>
+                                </n-radio-button>
+                            </n-radio-group>
+                        </n-space>
+
+                        <n-space class="items-center" justify="center">
+                            <n-text>顺序:</n-text>
+
+                            <n-radio-group v-model:value="scoreSorter.order" @update:value="handlePageUpdate">
+                                <n-radio-button value="asc">
+                                    正序
+                                </n-radio-button>
+
+                                <n-radio-button value="desc">
+                                    逆序
+                                </n-radio-button>
+                            </n-radio-group>
+                        </n-space>
+                    </n-space>
+
+                    <n-list bordered>
+                        <n-list-item v-for="(score, i) in latest.scores.data">
+                            <n-thing>
+                                <template #header>
+                                    {{ score.user.name }}
+                                </template>
+
+                                <template #header-extra>
+                                    <n-text :depth="3">
+                                        #{{ i + (latest.scores.current_page - 1) * latest.scores.per_page + 1 }}
+                                    </n-text>
+                                </template>
+
+                                <n-space vertical>
+                                    <n-grid :cols="5" class="lg:!w-1/2 lg:mx-auto">
+                                        <n-grid-item>
+                                            <n-space justify="center" size="small">
+                                                <n-image :img-props="{ class: 'w-[1.5em]' }" :src="star"
+                                                         preview-disabled/>
+
+                                                <n-text>{{ score.stars }}</n-text>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item>
+                                            <n-space justify="center" size="small">
+                                                <n-image :img-props="{ class: 'w-[1.5em]' }" :src="gold_coin"
+                                                         preview-disabled/>
+
+                                                <n-text>{{ score.coins }}</n-text>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item>
+                                            <n-space justify="center" size="small">
+                                                <n-image :img-props="{ class: 'w-[1.5em]' }" :src="silver_coin"
+                                                         preview-disabled/>
+
+                                                <n-text>{{ score.user_coins }}</n-text>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item>
+                                            <n-space justify="center" size="small">
+                                                <n-image :img-props="{ class: 'w-[1.5em]' }" :src="demon"
+                                                         preview-disabled/>
+
+                                                <n-text>{{ score.demons }}</n-text>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item>
+                                            <n-space justify="center" size="small">
+                                                <n-image :img-props="{ class: 'w-[1.5em]' }" :src="cp"
+                                                         preview-disabled/>
+
+                                                <n-text>{{ score.creator_points }}</n-text>
+                                            </n-space>
+                                        </n-grid-item>
+                                    </n-grid>
+
+                                    <n-el class="text-center">
+                                        <n-text :depth="3" class="text-sm">
+                                            数据更新时间: {{ formatTime(score.updated_at) }}
+                                        </n-text>
+                                    </n-el>
+                                </n-space>
+                            </n-thing>
+                        </n-list-item>
+                    </n-list>
+
+                    <n-pagination v-model:page="pages.scores" :page-count="latest.scores.last_page"
+                                  :page-slot="8"
+                                  @update:page="handlePageUpdate"/>
+                </n-space>
+            </n-card>
         </n-space>
     </CommonLayout>
 </template>

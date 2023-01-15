@@ -32,7 +32,8 @@ function handlePageUpdate(newPage: number) {
                 <n-list-item v-for="score in scores.data">
                     <n-thing>
                         <template #header>
-                            <n-button text type="primary" @click="to_route('gdcs.account.info', score.account_id)">
+                            <n-button text type="primary"
+                                      @click="to_route('gdcs.dashboard.account.info', score.account_id)">
                                 {{ score.account.name }}
                             </n-button>
 

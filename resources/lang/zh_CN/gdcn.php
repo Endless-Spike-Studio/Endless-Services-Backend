@@ -90,7 +90,7 @@ return [
             'level_download_failed_weekly_not_found' => '[关卡] 下载失败, 每周关卡不存在',
             'level_download_failed_not_found' => '[关卡] 下载失败, 关卡不存在',
             'level_delete_failed_not_found' => '[关卡] 删除失败, 关卡不存在',
-            'level_delete_failed_not_owner' => '[关卡] 删除失败, 目标关卡不属于当前操作者',
+            'level_delete_failed_with_reason' => '[关卡] 删除失败, :reason',
             'level_description_update_failed_not_found' => '[关卡] 简介更新失败, 关卡不存在',
             'level_description_update_failed_not_owner' => '[关卡] 简介更新失败, 目标关卡不属于当前操作者',
             'level_daily_fetch_failed_not_found' => '[关卡] 每日关卡获取失败, 数据不存在(或未找到)',
@@ -187,6 +187,25 @@ return [
             'account_verification_email_resend_failed_already_verified' => '[账号] 验证邮件重发失败, 您已经验证过了'
         ]
     ],
+    'dashboard' => [
+        'action' => [
+            'contest_submit_success' => '[比赛] 提交成功!',
+            'level_edit_success' => '[关卡] 编辑成功!',
+            'account_email_edit_success_please_re_verify_email' => '[账号] 邮箱更改成功! 请重新验证邮箱',
+            'account_edit_success' => '[账号] 编辑成功!',
+            'account_password_change_success' => '[账号] 密码修改成功!',
+            'level_delete_success' => '[关卡] 删除成功!'
+        ],
+        'error' => [
+            'invalid_arguments' => '[Dashboard] 参数无效',
+            'level_edit_failed_permission_denied' => '[关卡] 编辑失败, 您没有权限编辑该关卡',
+            'contest_submit_failed_not_level_owner' => '[比赛] 提交失败, 您不是该关卡的所有者',
+            'contest_submit_failed_account_already_submitted' => '[比赛] 提交失败, 该账号已经参加过了',
+            'contest_submit_failed_level_already_submitted' => '[比赛] 提交失败, 该关卡已经参加过了',
+            'contest_submit_failed_level_already_submitted_in_other_contest' => '[比赛] 提交失败, 该关卡已经参加过其他比赛了',
+            'level_delete_failed_with_reason' => '[关卡] 删除失败, :reason'
+        ]
+    ],
     'tools' => [
         'action' => [
             'account_link_delete_success' => '[账号链接] 解绑成功!',
@@ -195,12 +214,7 @@ return [
             'level_temp_upload_access_delete_success' => '[关卡临时上传许可] 销毁成功!',
             'level_transfer_success_with_id' => '[关卡转移] 操作成功! ID: :id',
             'custom_song_create_success_with_id' => '[自定义歌曲] 创建成功! ID: :id',
-            'custom_song_delete_success' => '[自定义歌曲] 删除成功!',
-            'contest_submit_success' => '[比赛] 提交成功!',
-            'level_edit_success' => '[关卡] 编辑成功!',
-            'account_email_edit_success_please_re_verify_email' => '[账号] 邮箱更改成功! 请重新验证邮箱',
-            'account_edit_success' => '[账号] 编辑成功!',
-            'account_password_change_success' => '[账号] 密码修改成功!'
+            'custom_song_delete_success' => '[自定义歌曲] 删除成功!'
         ],
         'error' => [
             'account_link_delete_failed_not_owner' => '[账号链接] 解绑失败, 您不是该链接的所有者',
@@ -219,12 +233,13 @@ return [
             'custom_song_create_failed_already_exists_with_id' => '[自定义歌曲] 创建失败, 歌曲已存在, ID: :id',
             'custom_song_create_failed_music_info_fetch_failed' => '[自定义歌曲] 创建失败, 音乐信息获取失败',
             'custom_song_delete_failed_not_owner' => '[自定义歌曲] 删除失败, 您不是该歌曲的所有者',
-            'custom_song_delete_failed_in_use' => '[自定义歌曲] 删除失败, 有关卡正在使用该歌曲',
-            'contest_submit_failed_not_level_owner' => '[比赛] 提交失败, 您不是该关卡的所有者',
-            'contest_submit_failed_account_already_submitted' => '[比赛] 提交失败, 该账号已经参加过了',
-            'contest_submit_failed_level_already_submitted' => '[比赛] 提交失败, 该关卡已经参加过了',
-            'contest_submit_failed_level_already_submitted_in_other_contest' => '[比赛] 提交失败, 该关卡已经参加过其他比赛了',
-            'level_edit_failed_permission_denied' => '[关卡] 编辑失败, 您没有权限编辑该关卡'
+            'custom_song_delete_failed_in_use' => '[自定义歌曲] 删除失败, 有关卡正在使用该歌曲'
+        ]
+    ],
+    'policy' => [
+        'error' => [
+            'not_level_owner' => '您不是该关卡的所有者',
+            'level_rated' => '关卡已被 Rated'
         ]
     ]
 ];

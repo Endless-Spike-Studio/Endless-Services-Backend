@@ -26,7 +26,7 @@ nextTick(() => {
 function submit() {
     formRef.value?.validate(errors => {
         if (!errors) {
-            (form.value as InertiaForm<{}>)?.post(route('gdcs.account.edit.api', account.value.id), {
+            (form.value as InertiaForm<{}>)?.post(route('gdcs.dashboard.account.edit.api', account.value.id), {
                 onFinish() {
                     formRef.value?.validate();
                     form.value.clearErrors();
@@ -51,7 +51,7 @@ const changePasswordFormRules = createRules(changePasswordForm);
 function changePasswordSubmit() {
     changePasswordFormRef.value?.validate(errors => {
         if (!errors) {
-            changePasswordForm.post(route('gdcs.account.changePassword.api', account.value.id), {
+            changePasswordForm.post(route('gdcs.dashboard.account.changePassword.api', account.value.id), {
                 onFinish() {
                     changePasswordFormRef.value?.validate();
                     changePasswordForm.clearErrors();

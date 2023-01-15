@@ -259,7 +259,7 @@ enum Response: int
     public const GAME_LEVEL_DOWNLOAD_FAILED_WEEKLY_NOT_FOUND = Response::FAILED;
     public const GAME_LEVEL_DOWNLOAD_FAILED_NOT_FOUND = Response::FAILED;
     public const GAME_LEVEL_DELETE_FAILED_NOT_FOUND = Response::FAILED;
-    public const GAME_LEVEL_DELETE_FAILED_NOT_OWNER = Response::FAILED;
+    public const GAME_LEVEL_DELETE_FAILED_POLICY_DENIED = Response::FAILED;
     public const GAME_LEVEL_DELETE_SUCCESS = Response::SUCCESS;
     public const GAME_LEVEL_DESCRIPTION_UPDATE_FAILED_NOT_FOUND = Response::FAILED;
     public const GAME_LEVEL_DESCRIPTION_UPDATE_FAILED_NOT_OWNER = Response::FAILED;

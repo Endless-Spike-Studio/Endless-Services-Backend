@@ -45,29 +45,47 @@ const menu = reactive({
             render: () => h(ScoresTab)
         },
         {
-            type: 'divider',
-            key: '4ca656c85a1711c13e48edc09e1cb41705bfb48f'
-        },
-        {
-            label: '设置',
-            key: 'settings',
-            disabled: !props.can.edit,
-            icon: () => h(NIcon, {
-                component: SettingTwotone
-            }),
-            render: () => h(SettingsTab, {
-                onSubmitted() {
-                    menu.active = 'details';
+            label: '管理',
+            type: 'group',
+            key: 'manage',
+            show: props.can.edit,
+            children: [
+                {
+                    label: '设置',
+                    key: 'settings',
+                    icon: () => h(NIcon, {
+                        component: SettingTwotone
+                    }),
+                    render: () => h(SettingsTab, {
+                        onSubmitted() {
+                            menu.active = 'details';
+                        }
+                    })
                 }
-            })
+            ] as MenuOption[]
         }
-    ] as MenuOption[]
+    ] as MenuOption[],
+    items: computed(() => {
+        const result = new Array<MenuOption>;
+
+        menu.options.forEach(option => {
+            if ('render' in option) {
+                result.push(option as MenuOption);
+            }
+
+            if ('children' in option) {
+                result.push(...option.children as MenuOption[]);
+            }
+        });
+
+        return result;
+    })
 });
 </script>
 
 <template>
     <CommonLayout>
-        <n-grid :x-gap="10" :y-gap="10" cols="1 768:4">
+        <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
             <n-grid-item>
                 <n-card :content-style="{ padding: 0 }">
                     <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -76,7 +94,7 @@ const menu = reactive({
 
             <n-grid-item :span="3">
                 <n-tabs v-model:value="menu.active" :tab-style="{ display: 'none' }" animated pane-class="!p-0">
-                    <n-tab-pane v-for="option in menu.options" :name="option.key">
+                    <n-tab-pane v-for="option in menu.items" :name="option.key">
                         <Component :is="option.render"/>
                     </n-tab-pane>
                 </n-tabs>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\GDCS\Web;
 
 use App\Exceptions\GDCS\WebException;
+use App\Exceptions\StorageException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\CustomSongToolCreateUsingFileRequest;
 use App\Http\Requests\GDCS\Web\CustomSongToolCreateUsingLinkRequest;
@@ -92,6 +93,7 @@ class CustomSongToolController extends Controller
 
     /**
      * @throws WebException
+     * @throws StorageException
      */
     public function createUsingFile(CustomSongToolCreateUsingFileRequest $request, CustomSongStorageService $storage)
     {
@@ -99,7 +101,7 @@ class CustomSongToolController extends Controller
         $file = $request->file('file');
         $account = Auth::guard('gdcs')->user();
 
-        if (Arr::get(explode('/', $file->guessExtension()), 0) !== 'audio') {
+        if ($file->guessExtension() !== 'mp3') {
             throw new WebException(__('gdcn.tools.error.custom_song_create_failed_invalid_content_type'));
         }
 
@@ -108,11 +110,16 @@ class CustomSongToolController extends Controller
                 'name' => $data['name'],
                 'artist_name' => $data['artist_name'],
                 'size' => $file->getSize() / 1024 / 1024,
-                'download_url' => $data['link']
+                'download_url' => null
             ]);
 
         $content = $file->getContent();
-        $storage->put(['id' => $song->id], $content);
+        $data = ['id' => $song->id];
+        $storage->put($data, $content);
+
+        $song->update([
+            'download_url' => $storage->url($data)
+        ]);
 
         $this->pushSuccessMessage(
             __('gdcn.tools.action.custom_song_create_success_with_id', [

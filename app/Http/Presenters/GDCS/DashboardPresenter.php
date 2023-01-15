@@ -2,15 +2,18 @@
 
 namespace App\Http\Presenters\GDCS;
 
+use App\Exceptions\GDCS\WebException;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\Contest;
 use App\Models\GDCS\CustomSong;
 use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelComment;
 use App\Models\GDCS\LevelRating;
+use App\Models\GDCS\UserScore;
 use App\Services\Game\CustomSongService;
 use App\Services\NGProxy\SongService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -66,7 +69,28 @@ class DashboardPresenter
                     })
                     ->whereHas('level')
                     ->latest()
-                    ->paginate(pageName: 'page_ratedLevels')
+                    ->paginate(pageName: 'page_ratedLevels'),
+                'scores' => function () {
+                    $query = UserScore::query()
+                        ->whereDoesntHave('user.ban')
+                        ->select(['user_id', 'stars', 'diamonds', 'coins', 'user_coins', 'demons', 'creator_points', 'updated_at'])
+                        ->with('user:id,name');
+
+                    $sort = [
+                        'column' => Request::get('sort_scores_column', 'stars'),
+                        'order' => Request::get('sort_scores_order', 'desc')
+                    ];
+
+                    if (
+                        !in_array($sort['column'], ['stars', 'coins', 'user_coins', 'demons', 'creator_points'], true) ||
+                        !in_array($sort['order'], ['asc', 'desc'], true)
+                    ) {
+                        throw new WebException(__('gdcn.dashboard.error.invalid_arguments'));
+                    }
+
+                    $query->orderBy($sort['column'], $sort['order']);
+                    return $query->paginate(pageName: 'page_scores');
+                }
             ]
         ]);
     }

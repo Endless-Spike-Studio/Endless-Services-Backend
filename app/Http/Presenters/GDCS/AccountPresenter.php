@@ -10,19 +10,12 @@ use Inertia\Response;
 
 class AccountPresenter
 {
-    public function renderProfile(): Response
-    {
-        $account = Auth::guard('gdcs')->user();
-        return $this->renderInfo($account);
-    }
-
     public function renderInfo(Account $account): Response
     {
-        $isOwner = Auth::guard('gdcs')->id() === $account->id;
         $columns = ['id', 'name', 'created_at', 'user'];
         $userColumns = ['id', 'uuid'];
 
-        if ($isOwner) {
+        if (Auth::guard('gdcs')->id() === $account->id) {
             $columns[] = 'email';
             $columns[] = 'email_verified_at';
             $userColumns[] = 'name';
@@ -31,9 +24,8 @@ class AccountPresenter
 
         $account->load(['user:' . implode(',', $userColumns), 'user.score:user_id,stars,demons,creator_points']);
 
-        return Inertia::render('GDCS/Account/Info', [
+        return Inertia::render('GDCS/Dashboard/Account/Info', [
             'account' => $account->only($columns),
-            'is_owner' => $isOwner,
             'statistic' => [
                 'friends' => $account->friends()
                     ->count(),

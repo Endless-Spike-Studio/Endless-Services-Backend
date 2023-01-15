@@ -8,6 +8,7 @@ import {Base64} from "js-base64";
 import {tracks} from "@/scripts/core/shared";
 import {map} from "lodash-es";
 import route from "@/scripts/core/route";
+import {Trash} from "@vicons/tabler";
 
 const level = useProp<App.Models.Level>('level');
 const settings = useProp<App.Models.Level>('settings');
@@ -68,57 +69,81 @@ function submit() {
         }
     });
 }
+
+const deleteForm = useForm({});
+
+function deleteLevel() {
+    deleteForm.delete(route('gdcs.dashboard.level.delete.api', level.value.id));
+}
 </script>
 
 <template>
-    <n-card>
-        <n-form v-if="settings && form" ref="formRef" :model="form" :rules="rules">
-            <n-form-item label="关卡名" path="name">
-                <n-input v-model:value="form.name"/>
-            </n-form-item>
+    <n-space vertical>
+        <n-card>
+            <n-form v-if="settings && form" ref="formRef" :model="form" :rules="rules">
+                <n-form-item label="关卡名" path="name">
+                    <n-input v-model:value="form.name"/>
+                </n-form-item>
 
-            <n-form-item label="简介" path="desc">
-                <n-input v-model:value="form.desc" type="textarea"/>
-            </n-form-item>
+                <n-form-item label="简介" path="desc">
+                    <n-input v-model:value="form.desc" type="textarea"/>
+                </n-form-item>
 
-            <n-form-item label="密码" path="password">
-                <n-space vertical>
-                    <n-radio-group v-model:value="form.password">
-                        <n-radio :value="0">不允许 Copy</n-radio>
-                        <n-radio :value="1">Free Copy</n-radio>
-                    </n-radio-group>
+                <n-form-item label="密码" path="password">
+                    <n-space vertical>
+                        <n-radio-group v-model:value="form.password">
+                            <n-radio :value="0">不允许 Copy</n-radio>
+                            <n-radio :value="1">Free Copy</n-radio>
+                        </n-radio-group>
 
-                    <n-input-number v-model:value="form.password" :max="999999" :min="0"/>
-                </n-space>
-            </n-form-item>
+                        <n-input-number v-model:value="form.password" :max="999999" :min="0"/>
+                    </n-space>
+                </n-form-item>
 
-            <n-form-item v-if="form.song_id <= 0" label="官方歌曲" path="audio_track">
-                <n-button class="mr-2.5" @click="changeSongType(true)">
-                    使用自定义歌曲
-                </n-button>
-
-                <n-select v-model:value="form.audio_track" :options="audioTrackOptions"/>
-            </n-form-item>
-
-            <n-form-item v-else label="自定义歌曲" path="song_id">
-                <n-space>
-                    <n-button @click="changeSongType(false)">
-                        使用官方歌曲
+                <n-form-item v-if="form.song_id <= 0" label="官方歌曲" path="audio_track">
+                    <n-button class="mr-2.5" @click="changeSongType(true)">
+                        使用自定义歌曲
                     </n-button>
 
-                    <n-input-number v-model:value="form.song_id" :min="1"/>
-                </n-space>
-            </n-form-item>
+                    <n-select v-model:value="form.audio_track" :options="audioTrackOptions"/>
+                </n-form-item>
 
-            <n-form-item label="不公开" path="unlisted">
-                <n-switch v-model:value="form.unlisted"/>
-            </n-form-item>
+                <n-form-item v-else label="自定义歌曲" path="song_id">
+                    <n-space>
+                        <n-button @click="changeSongType(false)">
+                            使用官方歌曲
+                        </n-button>
 
-            <n-button :disabled="!form.isDirty || form.processing" :loading="form.processing" @click="submit">
-                提交
-            </n-button>
-        </n-form>
+                        <n-input-number v-model:value="form.song_id" :min="1"/>
+                    </n-space>
+                </n-form-item>
 
-        <n-empty v-else/>
-    </n-card>
+                <n-form-item label="不公开" path="unlisted">
+                    <n-switch v-model:value="form.unlisted"/>
+                </n-form-item>
+
+                <n-button :disabled="!form.isDirty || form.processing" :loading="form.processing" @click="submit">
+                    提交
+                </n-button>
+            </n-form>
+
+            <n-empty v-else/>
+        </n-card>
+
+        <n-card>
+            <n-popconfirm @positive-click="deleteLevel">
+                <template #trigger>
+                    <n-button :disabled="deleteForm.processing" :loading="deleteForm.processing" type="error">
+                        <template #icon>
+                            <n-icon :component="Trash"/>
+                        </template>
+
+                        删除关卡
+                    </n-button>
+                </template>
+
+                删除后不可恢复, 确定删除吗?
+            </n-popconfirm>
+        </n-card>
+    </n-space>
 </template>

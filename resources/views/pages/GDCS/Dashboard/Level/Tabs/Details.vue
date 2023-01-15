@@ -45,7 +45,7 @@ const track = computed(() => {
                             <n-text v-if="level.creator" :depth="3" class="text-sm">
                                 By
                                 <n-button v-if="level.creator.account" text type="primary"
-                                          @click="to_route('gdcs.account.info', level.creator.account.id)">
+                                          @click="to_route('gdcs.dashboard.account.info', level.creator.account.id)">
                                     {{ level.creator.account.name }}
                                 </n-button>
 

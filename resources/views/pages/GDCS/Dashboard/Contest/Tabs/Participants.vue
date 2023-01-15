@@ -32,7 +32,7 @@ function handlePageUpdate(newPage: number) {
 
                     <n-el class="lg:text-right">
                         <n-button v-if="participant.account" text type="primary"
-                                  @click="to_route('gdcs.account.info', participant.acconut.id)">
+                                  @click="to_route('gdcs.dashboard.account.info', participant.acconut.id)">
                             {{ participant.account.name }}
                         </n-button>
 

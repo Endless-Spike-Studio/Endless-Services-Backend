@@ -52,21 +52,20 @@ Route::group([
         'middleware' => 'auth:gdcs'
     ], static function () {
         Route::group([
-            'prefix' => 'account',
-            'as' => 'account.'
-        ], static function () {
-            Route::get('/profile', [AccountPresenter::class, 'renderProfile'])->name('profile');
-            Route::post('/resendVerificationEmail', [AccountController::class, 'resendVerificationEmail'])->name('resendVerificationEmail.api');
-            Route::get('/{account}', [AccountPresenter::class, 'renderInfo'])->name('info');
-            Route::post('/{account}/edit', [AccountController::class, 'edit'])->name('edit.api');
-            Route::post('/{account}/changePassword', [AccountController::class, 'changePassword'])->name('changePassword.api');
-        });
-
-        Route::group([
             'prefix' => 'dashboard',
             'as' => 'dashboard.'
         ], static function () {
             Route::get('/', [DashboardPresenter::class, 'renderHome'])->name('home');
+
+            Route::group([
+                'prefix' => 'account',
+                'as' => 'account.'
+            ], static function () {
+                Route::post('/resendVerificationEmail', [AccountController::class, 'resendVerificationEmail'])->name('resendVerificationEmail.api');
+                Route::get('/{account}', [AccountPresenter::class, 'renderInfo'])->name('info');
+                Route::post('/{account}/edit', [AccountController::class, 'edit'])->name('edit.api');
+                Route::post('/{account}/changePassword', [AccountController::class, 'changePassword'])->name('changePassword.api');
+            });
 
             Route::group([
                 'prefix' => 'level',
@@ -74,6 +73,7 @@ Route::group([
             ], static function () {
                 Route::get('/{level}', [DashboardPresenter::class, 'renderLevelInfo'])->name('info');
                 Route::post('/{level}/edit', [LevelController::class, 'edit'])->name('edit.api');
+                Route::delete('/{level}', [LevelController::class, 'delete'])->name('delete.api');
             });
 
             Route::group([
