@@ -9,8 +9,11 @@ class LevelRatingService
 {
     public static function reCalculateCreatorPoints(): void
     {
+        $relation = 'level.creator.score';
+
         $ratings = LevelRating::query()
-            ->with('level.creator.score')
+            ->with($relation)
+            ->whereHas($relation)
             ->get();
 
         UserScore::query()
@@ -19,10 +22,10 @@ class LevelRatingService
             ]);
 
         foreach ($ratings as $rating) {
-            $amount = 0;
+            $score = $rating->level->creator->score;
 
             if ($rating->stars > 0) {
-                $amount += config('gdcn.game.creator_points.rated');
+                $score->creator_points += config('gdcn.game.creator_points.rated');
             }
 
             if ($rating->featured_score > 0) {
@@ -30,20 +33,17 @@ class LevelRatingService
                 $featuredReward = config('gdcn.game.creator_points.featured.reward');
 
                 if ($multiplyWithScore) {
-                    $amount += $featuredReward * $rating->featured_score;
+                    $score->creator_points += $featuredReward * $rating->featured_score;
                 } else {
-                    $amount += $featuredReward;
+                    $score->creator_points += $featuredReward;
                 }
             }
 
             if ($rating->epic) {
-                $amount += config('gdcn.game.creator_points.epic');
+                $score->creator_points += config('gdcn.game.creator_points.epic');
             }
 
-            $rating->level
-                ?->creator
-                ?->score()
-                ->increment('creator_points', $amount);
+            $score->save();
         }
     }
 }
