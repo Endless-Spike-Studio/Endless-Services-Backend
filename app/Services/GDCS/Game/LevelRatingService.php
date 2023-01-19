@@ -44,7 +44,9 @@ class LevelRatingService
                     $score->creator_points += config('gdcn.game.creator_points.epic');
                 }
 
-                $score->save();
+                $score->update([
+                    'creator_points' => $score->creator_points
+                ]);
             });
     }
 }
