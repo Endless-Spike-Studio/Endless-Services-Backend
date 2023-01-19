@@ -15,11 +15,12 @@ class LevelRatingService
             ]);
 
         LevelRating::query()
-            ->with('level.creator.score')
+            ->with('level.creator')
+            ->whereHas('level.creator.score')
             ->each(function (LevelRating $rating) {
-                $score = $rating->level
-                    ?->creator
-                    ?->score;
+                $score = UserScore::query()
+                    ->where('user_id', $rating->level->creator->id)
+                    ->first();
 
                 if (empty($score)) {
                     return;
@@ -44,9 +45,7 @@ class LevelRatingService
                     $score->creator_points += config('gdcn.game.creator_points.epic');
                 }
 
-                $score->update([
-                    'creator_points' => $score->creator_points
-                ]);
+                $score->save();
             });
     }
 }
