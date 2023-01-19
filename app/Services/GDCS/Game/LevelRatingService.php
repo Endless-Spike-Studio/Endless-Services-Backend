@@ -25,8 +25,9 @@ class LevelRatingService
                 continue;
             }
 
+            $cp = 0;
             if ($rating->stars > 0) {
-                $score->creator_points += config('gdcn.game.creator_points.rated');
+                $cp += config('gdcn.game.creator_points.rated');
             }
 
             if ($rating->featured_score > 0) {
@@ -34,17 +35,17 @@ class LevelRatingService
                 $featuredReward = config('gdcn.game.creator_points.featured.reward');
 
                 if ($multiplyWithScore) {
-                    $score->creator_points += $featuredReward * $rating->featured_score;
+                    $cp += $featuredReward * $rating->featured_score;
                 } else {
-                    $score->creator_points += $featuredReward;
+                    $cp += $featuredReward;
                 }
             }
 
             if ($rating->epic) {
-                $score->creator_points += config('gdcn.game.creator_points.epic');
+                $cp += config('gdcn.game.creator_points.epic');
             }
 
-            $score->save();
+            $score->increment('creator_points', $cp);
         }
     }
 }
