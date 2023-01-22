@@ -6,6 +6,16 @@ import route from "@/scripts/core/route";
 import {find, get} from "lodash-es";
 import {servers} from "@/scripts/core/shared";
 import {FormItemRule} from "naive-ui";
+import {useClipboard, useWindowSize} from "@vueuse/core";
+import {useApiStore} from "@/scripts/core/stores";
+
+export const isMobile = (() => {
+    const _window = useWindowSize();
+
+    return computed(() => {
+        return _window.width.value <= 640;
+    });
+})();
 
 export function useProp<T extends unknown>(key: string, defaultValue?: T): ComputedRef<T> {
     const $page = usePage();
@@ -96,4 +106,15 @@ export function guessDifficultyNameFromStars(stars: number) {
         default:
             return 'N/A';
     }
+}
+
+export function copy(text: string) {
+    const apiStore = useApiStore();
+
+    useClipboard({
+        source: ref(text),
+        legacy: true
+    }).copy();
+
+    apiStore.$message.success('复制成功!');
 }

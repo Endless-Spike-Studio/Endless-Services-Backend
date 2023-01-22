@@ -1,9 +1,6 @@
-export const defaultLevelDesc = '(No description provided)';
+import {Server} from "@/types/shared";
 
-export interface Server {
-    name: string;
-    address: string;
-}
+export const defaultLevelDesc = '(No description provided)';
 
 export const servers = [
     {

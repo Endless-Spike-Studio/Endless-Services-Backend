@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const images = import.meta.glob<{
     default: string;
-}>('@/images/difficulties/*.png', {
+}>('@/images/game/difficulties/*.png', {
     eager: true
 });
 
@@ -53,7 +53,7 @@ const faceID = computed(() => {
 });
 
 const url = computed(() => {
-    return images['/resources/images/difficulties/' + faceID.value + (props.rating.epic ? '_epic' : featured.value ? '_featured' : '') + '.png']?.default;
+    return images['/resources/images/game/difficulties/' + faceID.value + (props.rating.epic ? '_epic' : featured.value ? '_featured' : '') + '.png']?.default;
 });
 
 const name = computed(() => {

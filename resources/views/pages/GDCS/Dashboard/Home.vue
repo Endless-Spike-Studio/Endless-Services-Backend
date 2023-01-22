@@ -7,7 +7,7 @@ import LevelInfo from "@/views/components/Info/Level.vue";
 import star from "@/images/game/star.png";
 import gold_coin from "@/images/game/c0.png";
 import silver_coin from "@/images/game/c2.png";
-import demon from "@/images/difficulties/9.png";
+import demon from "@/images/game/difficulties/9.png";
 import cp from "@/images/game/cp.png";
 import {useWindowSize} from "@vueuse/core";
 

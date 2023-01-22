@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {MenuOption, NIcon} from "naive-ui";
-import {FileTwotone, LinkOutlined, PlaySquareTwotone} from "@vicons/antd";
+import {FileTwotone, LinkOutlined} from "@vicons/antd";
 import CreateUsingLink from "@/views/pages/GDCS/Tools/Song/Custom/Create/Link.vue";
 import CreateUsingFile from "@/views/pages/GDCS/Tools/Song/Custom/Create/File.vue";
 import CreateUsingNetease from "@/views/pages/GDCS/Tools/Song/Custom/Create/Netease.vue";
+import {MusicNoteTwotone} from "@vicons/material";
 
 const menu = reactive({
     active: ref('link'),
@@ -29,7 +30,7 @@ const menu = reactive({
             label: '网易云音乐',
             key: 'netease',
             icon: () => h(NIcon, {
-                component: PlaySquareTwotone
+                component: MusicNoteTwotone
             }),
             render: () => h(CreateUsingNetease)
         }

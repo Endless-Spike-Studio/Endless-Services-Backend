@@ -1,17 +1,11 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {MenuOption, NButton, NCard, NIcon, NSpace} from "naive-ui";
-import {
-    CustomerServiceTwotone,
-    FolderTwotone,
-    LinkOutlined,
-    PlayCircleTwotone,
-    RetweetOutlined,
-    SafetyOutlined,
-    UserOutlined
-} from "@vicons/antd";
+import {FolderTwotone, LinkOutlined, RetweetOutlined, UserOutlined} from "@vicons/antd";
 import {to_route} from "@/scripts/core/utils";
 import {VNode} from "vue";
+import {GatewayUserAccess} from "@vicons/carbon";
+import {LibraryMusicTwotone, QueueMusicTwotone} from "@vicons/material";
 
 interface Tool {
     name: string;
@@ -59,7 +53,7 @@ const menu = reactive({
                 {
                     name: '临时关卡上传许可',
                     icon: () => h(NIcon, {
-                        component: SafetyOutlined
+                        component: GatewayUserAccess
                     }),
                     onSelect() {
                         to_route('gdcs.tools.level.temp_upload_access.index')
@@ -71,13 +65,13 @@ const menu = reactive({
             label: '歌曲',
             key: 'song',
             icon: () => h(NIcon, {
-                component: PlayCircleTwotone
+                component: LibraryMusicTwotone
             }),
             tools: [
                 {
                     name: '自定义歌曲',
                     icon: () => h(NIcon, {
-                        component: CustomerServiceTwotone
+                        component: QueueMusicTwotone
                     }),
                     onSelect() {
                         to_route('gdcs.tools.song.custom.index')
