@@ -12,7 +12,7 @@ import {
 } from "@vicons/antd";
 import Logo from "@/images/logo.png";
 import {to_route} from "@/scripts/core/utils";
-import route from "@/scripts/core/route";
+import route, {routes} from "@/scripts/core/route";
 import {useApiStore, useBackendStore} from "@/scripts/core/stores";
 import {useWindowSize} from "@vueuse/core";
 import {Inertia} from "@inertiajs/inertia";
@@ -45,7 +45,7 @@ const menu = reactive({
         }
 
         Inertia.on('finish', _update);
-        _update();
+        watch(routes, _update);
 
         return reference;
     })(),
