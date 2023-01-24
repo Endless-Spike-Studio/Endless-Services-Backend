@@ -1,19 +1,21 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
+import banner from "@/images/banner.png";
 import {
     AndroidOutlined,
     AppleOutlined,
+    FileZipTwotone,
     GithubOutlined,
     HeartTwotone,
     UsergroupAddOutlined,
     WindowsOutlined
 } from "@vicons/antd";
 import {copy, isMobile, to_route} from "@/scripts/core/utils";
-import {DropdownOption} from "naive-ui";
 import {useApiStore} from "@/scripts/core/stores";
 import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";
 import avatar_2 from "@/images/avatars/xyzlol.png";
 import Person from "@/views/components/Person.vue";
+import {ArrowBack, Box} from "@vicons/tabler";
 
 defineProps<{
     statistic: {
@@ -29,37 +31,19 @@ defineProps<{
     }
 }>();
 
-const windowsDownloadDropdown = reactive({
-    options: [
-        {
-            label: '无资源包 (.exe)',
-            key: 'exe',
-            onSelect() {
-                open('https://cdn.geometrydashchinese.com/client/GDCS.exe');
-            }
-        },
-        {
-            label: '带资源包 (.zip)',
-            key: 'zip',
-            onSelect() {
-                open('https://cdn.geometrydashchinese.com/client/GDCS.zip');
-            }
-        }
-    ] as DropdownOption[],
-    handleSelect(_key: string, option: DropdownOption) {
-        (option.onSelect as () => unknown)?.();
-    }
-});
-
 function handleAppleDownload() {
     const apiStore = useApiStore();
     apiStore.$message.error('没有');
 }
+
+const windowsDownloadCurrent = ref('entry');
 </script>
 
 <template>
     <CommonLayout>
         <n-space vertical>
+            <n-image :img-props="{ class: 'w-full' }" :src="banner" class="py-10"/>
+
             <n-card title="下载">
                 <n-grid :cols="3">
                     <n-grid-item class="mx-auto">
@@ -71,16 +55,56 @@ function handleAppleDownload() {
                         </n-button>
                     </n-grid-item>
 
-                    <n-grid-item class="mx-auto">
-                        <n-dropdown :options="windowsDownloadDropdown.options" trigger="click"
-                                    @select="windowsDownloadDropdown.handleSelect">
-                            <n-button text>
-                                <n-space vertical>
-                                    <n-icon :component="WindowsOutlined" :size="50"/>
-                                    <span class="text-2xl">Windows</span>
-                                </n-space>
-                            </n-button>
-                        </n-dropdown>
+                    <n-grid-item class="w-full mx-auto">
+                        <n-tabs v-model:value="windowsDownloadCurrent" :tab-style="{ display: 'none' }" animated
+                                pane-class="!pt-0">
+                            <n-tab-pane class="text-center" name="entry">
+                                <n-button text @click="windowsDownloadCurrent = 'select';">
+                                    <n-space vertical>
+                                        <n-icon :component="WindowsOutlined" :size="50"/>
+                                        <span class="text-2xl">Windows</span>
+                                    </n-space>
+                                </n-button>
+                            </n-tab-pane>
+
+                            <n-tab-pane name="select">
+                                <n-grid :cols="3" class="[&>*]:mx-auto">
+                                    <n-grid-item>
+                                        <n-button text @click="windowsDownloadCurrent = 'entry';">
+                                            <n-space vertical>
+                                                <n-icon :component="ArrowBack" :size="25"/>
+                                                <span class="text-xl">返回</span>
+                                            </n-space>
+                                        </n-button>
+                                    </n-grid-item>
+
+                                    <n-grid-item>
+                                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.zip" tag="a"
+                                                  text>
+                                            <n-space vertical>
+                                                <n-icon :component="FileZipTwotone" :size="25"/>
+
+                                                <span class="text-xl">
+                                                    [zip] 带资源包
+                                                </span>
+
+                                                <n-text type="success">(推荐)</n-text>
+                                            </n-space>
+                                        </n-button>
+                                    </n-grid-item>
+
+                                    <n-grid-item>
+                                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.exe" tag="a"
+                                                  text>
+                                            <n-space vertical>
+                                                <n-icon :component="Box" :size="25"/>
+                                                <span class="text-xl">[exe] 无资源包</span>
+                                            </n-space>
+                                        </n-button>
+                                    </n-grid-item>
+                                </n-grid>
+                            </n-tab-pane>
+                        </n-tabs>
                     </n-grid-item>
 
                     <n-grid-item class="mx-auto">
@@ -199,10 +223,21 @@ function handleAppleDownload() {
                         <n-grid :cols="isMobile ? 1 : 2" :x-gap="10" :y-gap="10">
                             <n-grid-item>
                                 <Person :avatar="avatar_1"
-                                        :bilibili_uid="26247334"
+                                        :bilibili_uid="24267334"
                                         :qq="2331281251"
                                         :works="['开发', '运维', '管理']"
-                                        name="渣渣120"/>
+                                        name="渣渣120"
+                                        role="服主">
+                                    <template #extra>
+                                        <n-space vertical>
+                                            <n-text>个人网站:</n-text>
+                                            <n-button href="https://zhazha120.cn" tag="a" text
+                                                      type="primary">
+                                                zhazha120.cn
+                                            </n-button>
+                                        </n-space>
+                                    </template>
+                                </Person>
                             </n-grid-item>
 
                             <n-grid-item v-if="isMobile">
@@ -214,7 +249,8 @@ function handleAppleDownload() {
                                         :bilibili_uid="93653653"
                                         :qq="1292866784"
                                         :works="['运维', '管理', '规则制定']"
-                                        name="xyzlol"/>
+                                        name="xyzlol"
+                                        role="副服主"/>
                             </n-grid-item>
                         </n-grid>
                     </n-card>
