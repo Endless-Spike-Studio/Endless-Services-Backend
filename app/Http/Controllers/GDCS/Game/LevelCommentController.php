@@ -16,8 +16,8 @@ use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelComment;
 use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
+use App\Services\Game\Command\LevelCommentService;
 use App\Services\Game\ObjectService;
-use App\Services\GDCS\Game\Command\LevelCommentService;
 use Base64Url\Base64Url;
 
 class LevelCommentController extends Controller
@@ -70,7 +70,7 @@ class LevelCommentController extends Controller
             ->find($data['levelID']);
 
         if (!$level) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_level_not_found'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_LEVEL_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_level_not_found'), gameResponse: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_LEVEL_NOT_FOUND->value);
         }
 
         $comments = $level->comments()
@@ -79,12 +79,12 @@ class LevelCommentController extends Controller
         match ($mode) {
             CommentMode::RECENT => $comments->orderByDesc('created_at'),
             CommentMode::MOST_LIKED => $comments->orderByDesc('likes'),
-            default => throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_invalid_mode'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_INVALID_MODE->value),
+            default => throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_invalid_mode'), gameResponse: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_INVALID_MODE->value),
         };
 
         $count = $comments->count();
         if ($count <= 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_empty'), game_response: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_EMPTY->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_index_failed_empty'), gameResponse: Response::GAME_LEVEL_COMMENT_INDEX_FAILED_EMPTY->value);
         }
 
         $this->logGame(__('gdcn.game.action.level_comment_index_success'));
@@ -133,15 +133,15 @@ class LevelCommentController extends Controller
             ->find($data['commentID']);
 
         if (!$comment) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_delete_failed_not_found'), game_response: Response::GAME_LEVEL_COMMENT_DELETE_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_delete_failed_not_found'), gameResponse: Response::GAME_LEVEL_COMMENT_DELETE_FAILED_NOT_FOUND->value);
         }
 
         if ($comment->level_id !== $levelID) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_delete_failed_parameter_validate_failed'), game_response: Response::GAME_LEVEL_COMMENT_DELETE_FAILED_PARAMETER_VALIDATE_FAILED->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_delete_failed_parameter_validate_failed'), gameResponse: Response::GAME_LEVEL_COMMENT_DELETE_FAILED_PARAMETER_VALIDATE_FAILED->value);
         }
 
         if ($comment->account->isNot($request->account)) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_delete_failed_not_owner'), game_response: Response::GAME_LEVEL_COMMENT_DELETE_FAILED_NOT_OWNER->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_comment_delete_failed_not_owner'), gameResponse: Response::GAME_LEVEL_COMMENT_DELETE_FAILED_NOT_OWNER->value);
         }
 
         $comment->delete();

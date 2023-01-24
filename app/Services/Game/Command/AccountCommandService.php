@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\GDCS\Game\Command;
+namespace App\Services\Game\Command;
 
 class AccountCommandService extends BaseCommandService
 {

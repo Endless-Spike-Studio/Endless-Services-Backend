@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use App\Exceptions\GDCS\WebException;
 use App\Http\Traits\HasMessage;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -17,22 +16,22 @@ class BaseException extends Exception
     use HasMessage;
 
     public bool $logging = true;
-    public array $log_context = [];
-    public int $http_code = 500;
-    protected string $log_channel = 'stack';
-    protected string $log_type = 'notice';
+    public array $logContext = [];
+    public int $httpCode = 500;
+    protected string $logChannel = 'stack';
+    protected string $logType = 'notice';
 
     public function __construct(
         string                          $message = null,
         int                             $code = 0,
         Throwable                       $previous = null,
-        int                             $http_code = 500,
-        array                           $log_context = [],
-        public readonly int|string|null $game_response = null
+        int                             $httpCode = 500,
+        array                           $logContext = [],
+        public readonly int|string|null $gameResponse = null
     )
     {
-        $this->http_code = $http_code;
-        $this->log_context = array_merge(['game_response' => $this->game_response], Request::context(), $log_context);
+        $this->httpCode = $httpCode;
+        $this->logContext = array_merge(['game_response' => $this->gameResponse], Request::context(), $logContext);
         parent::__construct($message, $code, $previous);
     }
 
@@ -40,7 +39,7 @@ class BaseException extends Exception
     {
         if ($this->logging) {
             $message = $this->formatMessage($this->message);
-            Log::channel($this->log_channel)->log($this->log_type, $message, $this->log_context);
+            Log::channel($this->logChannel)->log($this->logType, $message, $this->logContext);
         }
     }
 
@@ -62,13 +61,13 @@ class BaseException extends Exception
         }
 
         if (Request::has('secret')) {
-            return Response::make($this->game_response);
+            return Response::make($this->gameResponse);
         }
 
         if (Request::wantsJson()) {
-            return Response::make(['error' => $message], $this->http_code);
+            return Response::make(['error' => $message], $this->httpCode);
         }
 
-        abort($this->http_code, $message);
+        abort($this->httpCode, $message);
     }
 }

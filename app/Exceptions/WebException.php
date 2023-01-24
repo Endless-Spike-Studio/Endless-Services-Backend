@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\GDCS;
+namespace App\Exceptions;
 
 use App\Http\Traits\HasMessage;
 use Exception;

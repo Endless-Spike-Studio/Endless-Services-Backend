@@ -40,12 +40,12 @@ class AccountCommentHistoryController extends Controller
                 $comments->orderByDesc('likes');
                 break;
             default:
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_invalid_mode'), game_response: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_invalid_mode'), gameResponse: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_INVALID_MODE->value);
         }
 
         $count = $comments->count();
         if ($count <= 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_empty'), game_response: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_history_index_failed_empty'), gameResponse: Response::GAME_ACCOUNT_COMMENT_HISTORY_INDEX_FAILED_EMPTY->value);
         }
 
         $this->logGame(__('gdcn.game.action.account_comment_history_index_success'));

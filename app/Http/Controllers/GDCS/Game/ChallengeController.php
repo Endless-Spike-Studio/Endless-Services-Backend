@@ -49,9 +49,9 @@ class ChallengeController extends Controller
 
                     $challenges->push($challenge);
                 } catch (Exception $e) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.challenge_generate_failed_unexpected_exception'), log_context: [
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.challenge_generate_failed_unexpected_exception'), logContext: [
                         'message' => $e->getMessage()
-                    ], game_response: Response::GAME_CHALLENGE_GENERATE_FAILED_UNEXPECTED_EXCEPTION->value);
+                    ], gameResponse: Response::GAME_CHALLENGE_GENERATE_FAILED_UNEXPECTED_EXCEPTION->value);
                 }
             }
         }

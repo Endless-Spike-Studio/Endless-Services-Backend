@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 class StorageException extends BaseException
 {
-    protected string $log_channel = 'gdcn';
+    protected string $logChannel = 'gdcn';
 
     protected function formatMessage(string $message): string
     {

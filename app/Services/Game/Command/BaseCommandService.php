@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\GDCS\Game\Command;
+namespace App\Services\Game\Command;
 
 use App\Models\GDCS\Account;
 use App\Models\GDCS\Level;

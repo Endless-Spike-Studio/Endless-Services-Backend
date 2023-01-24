@@ -2,7 +2,7 @@
 
 namespace App\Jobs\GDCS;
 
-use App\Services\GDCS\Game\AntiCheatService;
+use App\Services\Game\AntiCheatService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

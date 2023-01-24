@@ -17,6 +17,7 @@ createInertiaApp({
         const pages = import.meta.glob<DefineComponent>('@/views/pages/**/*.vue');
         return resolvePageComponent(`/resources/views/pages/${name}.vue`, pages);
     },
+    title: name => `[GDCN] ${name}`,
     setup({el, app, props, plugin}) {
         const instance = createApp({
             render: () => h(app, props)

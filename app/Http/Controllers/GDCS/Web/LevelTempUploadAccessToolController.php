@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\GDCS\Web;
 
-use App\Exceptions\GDCS\WebException;
+use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\TempLevelUploadAccess;

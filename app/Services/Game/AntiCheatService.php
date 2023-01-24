@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\GDCS\Game;
+namespace App\Services\Game;
 
 use App\Models\GDCS\BannedUser;
 use App\Models\GDCS\DailyLevel;

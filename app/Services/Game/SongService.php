@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Services\NGProxy;
+namespace App\Services\Game;
 
 use App\Enums\Response;
 use App\Exceptions\NewGroundsProxyException;
 use App\Exceptions\ResponseException;
 use App\Models\NGProxy\Song;
-use App\Services\Game\ObjectService;
-use App\Services\Game\ResponseService;
 use App\Services\ProxyService;
 use Illuminate\Support\Arr;
 
@@ -16,19 +14,19 @@ class SongService
     /**
      * @throws NewGroundsProxyException
      */
-    public function find(int $id, bool $ignoreDisable = false): Song
+    public function find(int $id): Song
     {
         $song = Song::query()
             ->where('song_id', $id)
             ->first();
 
         if (!empty($song)) {
-            if (!$ignoreDisable && $song->disabled) {
-                throw new NewGroundsProxyException(
+            if ($song->disabled) {
+                throw (new NewGroundsProxyException(
                     __('gdcn.song.error.fetch_failed_disabled'),
-                    http_code: 403,
-                    game_response: Response::GAME_SONG_FETCH_FAILED_DISABLED->value
-                );
+                    httpCode: 403,
+                    gameResponse: Response::GAME_SONG_FETCH_FAILED_DISABLED->value
+                ))->setSong($song);
             }
 
             return $song;
@@ -63,7 +61,7 @@ class SongService
             } catch (ResponseException) {
                 throw new NewGroundsProxyException(
                     __('gdcn.song.error.fetch_failed'),
-                    game_response: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND->value
+                    gameResponse: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND->value
                 );
             }
 
@@ -73,10 +71,10 @@ class SongService
         if (!Arr::has($songObject, [1, 2, 3, 4, 5, 10])) {
             throw new NewGroundsProxyException(
                 __('gdcn.song.error.fetch_failed_wrong_song_object'),
-                log_context: [
+                logContext: [
                     'object' => $songObject
                 ],
-                game_response: Response::GAME_SONG_FETCH_FAILED_PROCESS_EXCEPTION->value
+                gameResponse: Response::GAME_SONG_FETCH_FAILED_PROCESS_EXCEPTION->value
             );
         }
 

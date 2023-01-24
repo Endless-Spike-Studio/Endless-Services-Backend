@@ -36,7 +36,7 @@ class LeaderboardController extends Controller
                 break;
             case LeaderboardFetchType::FRIENDS:
                 if (empty($request->account)) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.leaderboard_fetch_failed_need_login'), game_response: Response::GAME_LEADERBOARD_FETCH_FAILED_NEED_LOGIN->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.leaderboard_fetch_failed_need_login'), gameResponse: Response::GAME_LEADERBOARD_FETCH_FAILED_NEED_LOGIN->value);
                 }
 
                 $query->whereIn(
@@ -80,7 +80,7 @@ class LeaderboardController extends Controller
                     )->unique('user_id');
                 break;
             default:
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.leaderboard_fetch_failed_invalid_type'), game_response: Response::GAME_LEADERBOARD_FETCH_FAILED_INVALID_TYPE->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.leaderboard_fetch_failed_invalid_type'), gameResponse: Response::GAME_LEADERBOARD_FETCH_FAILED_INVALID_TYPE->value);
         }
 
         $this->logGame(__('gdcn.game.action.leaderboard_fetch_success'));

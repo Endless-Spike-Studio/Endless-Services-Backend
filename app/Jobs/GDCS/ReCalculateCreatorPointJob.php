@@ -2,7 +2,7 @@
 
 namespace App\Jobs\GDCS;
 
-use App\Services\GDCS\Game\LevelRatingService;
+use App\Services\Game\LevelRatingService as LevelRatingServiceAlias;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,6 +15,6 @@ class ReCalculateCreatorPointJob implements ShouldQueue
 
     public function handle(): void
     {
-        LevelRatingService::reCalculateCreatorPoints();
+        LevelRatingServiceAlias::reCalculateCreatorPoints();
     }
 }

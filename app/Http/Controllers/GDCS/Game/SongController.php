@@ -15,7 +15,7 @@ use App\Models\GDCS\Level;
 use App\Services\Game\BaseGameService;
 use App\Services\Game\CustomSongService;
 use App\Services\Game\ObjectService;
-use App\Services\NGProxy\SongService;
+use App\Services\Game\SongService;
 
 class SongController extends Controller
 {
@@ -34,7 +34,7 @@ class SongController extends Controller
                     ->find($data['songID'] - CustomSongService::$offset);
 
                 if (!$song) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_not_found_custom'), game_response: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_not_found_custom'), gameResponse: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM->value);
                 }
             } else {
                 $song = (new SongService)->find($data['songID']);
@@ -43,7 +43,7 @@ class SongController extends Controller
             $this->logGame(__('gdcn.game.action.song_fetch_success'));
             return $song->object;
         } catch (NewGroundsProxyException $e) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_upstream_exception'), previous: $e, game_response: $e->game_response);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_upstream_exception'), previous: $e, gameResponse: $e->gameResponse);
         }
     }
 

@@ -2,10 +2,10 @@
 
 namespace App\Http\Presenters\GDCS;
 
-use App\Exceptions\GDCS\WebException;
+use App\Exceptions\WebException;
 use App\Models\GDCS\AccountLink;
 use App\Models\GDCS\Level;
-use App\Services\GDCS\Web\LevelTransferService;
+use App\Services\Game\LevelTransferService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;

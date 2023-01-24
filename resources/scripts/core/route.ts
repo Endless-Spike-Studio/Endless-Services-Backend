@@ -1,17 +1,11 @@
-import axios from 'axios'
-import route, {Config, RouteParam, RouteParamsWithQueryOverload} from 'ziggy-js'
-import {ref} from 'vue'
+import route from "ziggy-js";
 
-export const routes = ref({
-    url: location.href,
-    routes: {},
-    defaults: {}
-} as Config);
+const request = await fetch('/api/routes');
+const routes = await request.json();
 
-axios.get('/api/routes')
-    .then(response => {
-        routes.value = response.data;
-    });
-
-// @ts-ignore
-export default (name?: string, params?: RouteParamsWithQueryOverload | RouteParam, absolute?: boolean) => route(name, params, absolute, routes.value);
+export default <
+    args extends Parameters<typeof route>
+>(name?: args[0], params?: args[1], absolute?: args[2]) => {
+    // @ts-ignore
+    return route(name, params, absolute, routes);
+};

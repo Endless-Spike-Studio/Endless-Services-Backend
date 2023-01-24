@@ -11,6 +11,7 @@ use App\Enums\GDCS\Game\Parameters\LevelSearchType;
 use App\Enums\GDCS\Game\SpecialLevelID;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
+use App\Exceptions\NewGroundsProxyException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\DailyOrWeeklyLevelFetchRequest;
 use App\Http\Requests\GDCS\Game\LevelDeleteRequest;
@@ -29,7 +30,7 @@ use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
 use App\Services\Game\CustomSongService;
 use App\Services\Game\ObjectService;
-use App\Services\NGProxy\SongService;
+use App\Services\Game\SongService;
 use App\Services\Storage\GameLevelDataStorageService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
@@ -91,7 +92,7 @@ class LevelController extends Controller
                 ->find($data['gauntlet']);
 
             if (!$gauntlet) {
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_gauntlet_not_found'), game_response: Response::GAME_LEVEL_SEARCH_FAILED_GAUNTLET_NOT_FOUND->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_gauntlet_not_found'), gameResponse: Response::GAME_LEVEL_SEARCH_FAILED_GAUNTLET_NOT_FOUND->value);
             }
 
             $type = LevelSearchType::LIST;
@@ -147,7 +148,7 @@ class LevelController extends Controller
                 break;
             case LevelSearchType::FRIENDS:
                 if (!$request->auth()) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_authorization_exception'), game_response: Response::GAME_LEVEL_SEARCH_FAILED_AUTHORIZATION_EXCEPTION->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_authorization_exception'), gameResponse: Response::GAME_LEVEL_SEARCH_FAILED_AUTHORIZATION_EXCEPTION->value);
                 }
 
                 $query->whereIn('user_id', $request->account->friend_user_ids_with_self);
@@ -161,7 +162,7 @@ class LevelController extends Controller
             case LevelSearchType::WORLD_MOST_LIKED:
             case LevelSearchType::UNKNOWN:
             default:
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_unsupported_type'), game_response: Response::GAME_LEVEL_SEARCH_FAILED_UNSUPPORTED_TYPE->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_unsupported_type'), gameResponse: Response::GAME_LEVEL_SEARCH_FAILED_UNSUPPORTED_TYPE->value);
         }
 
         if (!$showUnlisted) {
@@ -282,7 +283,7 @@ class LevelController extends Controller
         if ($count <= 0) {
             throw new GeometryDashChineseServerException(
                 __('gdcn.game.error.level_search_failed_empty'),
-                game_response: '##' . Response::empty() . '#' . sha1(Salts::LEVEL->value)
+                gameResponse: '##' . Response::empty() . '#' . sha1(Salts::LEVEL->value)
             );
         }
 
@@ -345,7 +346,13 @@ class LevelController extends Controller
                                 $songs[$level->song_id] = $customSong->object;
                             }
                         } else {
-                            $songs[$level->song_id] = app(SongService::class)->find($level->song_id, true)->object;
+                            try {
+                                $songs[$level->song_id] = app(SongService::class)->find($level->song_id)->object;
+                            } catch (NewGroundsProxyException $e) {
+                                if (!empty($e->song)) {
+                                    $songs[$level->song_id] = $e->song->object;
+                                }
+                            }
                         }
                     }
 
@@ -381,7 +388,7 @@ class LevelController extends Controller
                     ->first();
 
                 if (!$item) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_download_failed_daily_not_found'), game_response: Response::GAME_LEVEL_DOWNLOAD_FAILED_DAILY_NOT_FOUND->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_download_failed_daily_not_found'), gameResponse: Response::GAME_LEVEL_DOWNLOAD_FAILED_DAILY_NOT_FOUND->value);
                 }
 
                 $level = $item->level;
@@ -394,7 +401,7 @@ class LevelController extends Controller
                     ->first();
 
                 if (!$item) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_download_failed_weekly_not_found'), game_response: Response::GAME_LEVEL_DOWNLOAD_FAILED_WEEKLY_NOT_FOUND->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_download_failed_weekly_not_found'), gameResponse: Response::GAME_LEVEL_DOWNLOAD_FAILED_WEEKLY_NOT_FOUND->value);
                 }
 
                 $level = $item->level;
@@ -405,7 +412,7 @@ class LevelController extends Controller
                     ->find($data['levelID']);
 
                 if (!$level) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_download_failed_not_found'), game_response: Response::GAME_LEVEL_DOWNLOAD_FAILED_NOT_FOUND->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_download_failed_not_found'), gameResponse: Response::GAME_LEVEL_DOWNLOAD_FAILED_NOT_FOUND->value);
                 }
 
                 $specialID = 0;
@@ -495,7 +502,7 @@ class LevelController extends Controller
             ->find($data['levelID']);
 
         if (!$level) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_delete_failed_not_found'), game_response: Response::GAME_LEVEL_DELETE_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_delete_failed_not_found'), gameResponse: Response::GAME_LEVEL_DELETE_FAILED_NOT_FOUND->value);
         }
 
         $policy = Gate::forUser($request->user)->inspect('delete', $level);
@@ -505,7 +512,7 @@ class LevelController extends Controller
                 __('gdcn.game.error.level_delete_failed_with_reason', [
                     'reason' => $policy->message()
                 ]),
-                game_response: Response::GAME_LEVEL_DELETE_FAILED_POLICY_DENIED->value
+                gameResponse: Response::GAME_LEVEL_DELETE_FAILED_POLICY_DENIED->value
             );
         }
 
@@ -531,7 +538,7 @@ class LevelController extends Controller
                 ->first();
 
             if (!$item) {
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_daily_fetch_failed_not_found'), game_response: Response::GAME_LEVEL_DAILY_FETCH_FAILED_NOT_FOUND->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_daily_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_DAILY_FETCH_FAILED_NOT_FOUND->value);
             }
 
             $leftTime = Carbon::parse('next monday')->diffInSeconds($now);
@@ -542,7 +549,7 @@ class LevelController extends Controller
                 ->first();
 
             if (!$item) {
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_weekly_fetch_failed_not_found'), game_response: Response::GAME_LEVEL_WEEKLY_FETCH_FAILED_NOT_FOUND->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_weekly_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_WEEKLY_FETCH_FAILED_NOT_FOUND->value);
             }
 
             $leftTime = $now->secondsUntilEndOfDay();
@@ -567,11 +574,11 @@ class LevelController extends Controller
             ->find($data['levelID']);
 
         if (!$level) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_description_update_failed_not_found'), game_response: Response::GAME_LEVEL_DESCRIPTION_UPDATE_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_description_update_failed_not_found'), gameResponse: Response::GAME_LEVEL_DESCRIPTION_UPDATE_FAILED_NOT_FOUND->value);
         }
 
         if ($level->creator->isNot($request->user)) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_description_update_failed_not_owner'), game_response: Response::GAME_LEVEL_DESCRIPTION_UPDATE_FAILED_NOT_OWNER->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_description_update_failed_not_owner'), gameResponse: Response::GAME_LEVEL_DESCRIPTION_UPDATE_FAILED_NOT_OWNER->value);
         }
 
         $level->update([

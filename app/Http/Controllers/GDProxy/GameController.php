@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\GDProxy;
 
 use App\Exceptions\NewGroundsProxyException;
-use App\Services\NGProxy\SongService;
+use App\Services\Game\SongService;
 use App\Services\ProxyService;
 use Illuminate\Http\Request;
 

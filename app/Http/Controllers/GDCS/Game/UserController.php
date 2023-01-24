@@ -36,7 +36,7 @@ class UserController extends Controller
 
         $count = $query->count();
         if ($count <= 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.user_search_failed_empty'), game_response: Response::GAME_USER_SEARCH_FAILED_EMPTY->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.user_search_failed_empty'), gameResponse: Response::GAME_USER_SEARCH_FAILED_EMPTY->value);
         }
 
         $this->logGame(__('gdcn.game.action.user_search_success'));
@@ -78,11 +78,11 @@ class UserController extends Controller
         $query = match ($type) {
             UserIndexType::FRIENDS => $request->account->friends(),
             UserIndexType::BLOCKS => $request->account->blocks(),
-            default => throw new GeometryDashChineseServerException(__('gdcn.game.error.user_index_failed_invalid_mode'), game_response: Response::GAME_USER_INDEX_FAILED_INVALID_MODE->value),
+            default => throw new GeometryDashChineseServerException(__('gdcn.game.error.user_index_failed_invalid_mode'), gameResponse: Response::GAME_USER_INDEX_FAILED_INVALID_MODE->value),
         };
 
         if ($query->count() <= 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.user_index_failed_empty'), game_response: Response::GAME_USER_INDEX_FAILED_EMPTY->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.user_index_failed_empty'), gameResponse: Response::GAME_USER_INDEX_FAILED_EMPTY->value);
         }
 
         $this->logGame(__('gdcn.game.action.user_index_success'));
@@ -112,7 +112,7 @@ class UserController extends Controller
                         $account = $item->account->is($request->account) ? $item->target_account : $item->account;
                         break;
                     default:
-                        throw new GeometryDashChineseServerException(__('gdcn.game.error.user_index_failed_invalid_mode'), game_response: Response::GAME_USER_INDEX_FAILED_INVALID_MODE->value);
+                        throw new GeometryDashChineseServerException(__('gdcn.game.error.user_index_failed_invalid_mode'), gameResponse: Response::GAME_USER_INDEX_FAILED_INVALID_MODE->value);
                 }
 
                 return ObjectService::merge([

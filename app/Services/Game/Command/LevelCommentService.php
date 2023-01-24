@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\GDCS\Game\Command;
+namespace App\Services\Game\Command;
 
 use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\Game\LevelRatingDifficulty;

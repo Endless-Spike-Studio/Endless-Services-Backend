@@ -12,9 +12,9 @@ import {
 } from "@vicons/antd";
 import Logo from "@/images/logo.png";
 import {to_route} from "@/scripts/core/utils";
-import route, {routes} from "@/scripts/core/route";
+import route from "@/scripts/core/route";
 import {useApiStore, useBackendStore} from "@/scripts/core/stores";
-import {useWindowSize, watchOnce} from "@vueuse/core";
+import {useWindowSize} from "@vueuse/core";
 import {Inertia} from "@inertiajs/inertia";
 import {ComputedRef} from "vue";
 import {first} from "lodash-es";
@@ -44,8 +44,8 @@ const menu = reactive({
             reference.value = route().current()?.split('.').at(1)?.trim();
         }
 
-        watchOnce(routes, _update);
         Inertia.on('finish', _update);
+        _update();
 
         return reference;
     })(),

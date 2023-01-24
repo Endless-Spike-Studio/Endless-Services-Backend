@@ -32,7 +32,7 @@ class LevelLeaderboardController extends Controller
         switch ($data['type']) {
             case LevelLeaderboardFetchType::FRIENDS:
                 if (empty($request->account)) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_leaderboard_fetch_failed_need_login'), game_response: Response::GAME_LEVEL_LEADERBOARD_FETCH_FAILED_NEED_LOGIN->value);
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_leaderboard_fetch_failed_need_login'), gameResponse: Response::GAME_LEVEL_LEADERBOARD_FETCH_FAILED_NEED_LOGIN->value);
                 }
 
                 $query->whereIn(
@@ -58,7 +58,7 @@ class LevelLeaderboardController extends Controller
                 $query->orderByDesc('coins');
                 break;
             default:
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_leaderboard_fetch_failed_invalid_mode'), game_response: Response::GAME_LEVEL_LEADERBOARD_FETCH_FAILED_INVALID_MODE->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_leaderboard_fetch_failed_invalid_mode'), gameResponse: Response::GAME_LEVEL_LEADERBOARD_FETCH_FAILED_INVALID_MODE->value);
         }
 
         $this->logGame(__('gdcn.game.action.level_leaderboard_fetch_success'));

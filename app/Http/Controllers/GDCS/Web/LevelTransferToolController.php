@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\GDCS\Web;
 
 use App\Enums\GDCS\Game\Algorithm\Keys;
-use App\Exceptions\GDCS\WebException;
 use App\Exceptions\ResponseException;
+use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Web\LevelTransferToolInRequest;
 use App\Http\Requests\GDCS\Web\LevelTransferToolOutRequest;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\NGProxy;
 use App\Exceptions\NewGroundsProxyException;
 use App\Http\Requests\NGProxy\SongGetRequest;
 use App\Http\Traits\HasMessage;
-use App\Services\NGProxy\SongService;
+use App\Services\Game\SongService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 
@@ -24,7 +24,15 @@ class SongController extends Controller
      */
     public function info(int $id): array
     {
-        return $this->service->find($id, true)->toArray();
+        try {
+            return $this->service->find($id)->toArray();
+        } catch (NewGroundsProxyException $e) {
+            if (!empty($e->song)) {
+                return $e->song->toArray();
+            }
+
+            throw $e;
+        }
     }
 
     /**

@@ -2,7 +2,8 @@
 
 namespace App\Http\Presenters\GDCS;
 
-use App\Exceptions\GDCS\WebException;
+use App\Exceptions\NewGroundsProxyException;
+use App\Exceptions\WebException;
 use App\Models\GDCS\Account;
 use App\Models\GDCS\Contest;
 use App\Models\GDCS\CustomSong;
@@ -11,7 +12,7 @@ use App\Models\GDCS\LevelComment;
 use App\Models\GDCS\LevelRating;
 use App\Models\GDCS\UserScore;
 use App\Services\Game\CustomSongService;
-use App\Services\NGProxy\SongService;
+use App\Services\Game\SongService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -111,9 +112,17 @@ class DashboardPresenter
                         ->with(['account:id,name'])
                         ->first();
                 } else if ($level->song_id > 0) {
-                    return app(SongService::class)
-                        ->find($level->song_id, true)
-                        ->only(['name', 'artist_name', 'size']);
+                    try {
+                        $song = app(SongService::class)->find($level->song_id);
+                    } catch (NewGroundsProxyException $e) {
+                        if (empty($e->song)) {
+                            throw $e;
+                        }
+
+                        $song = $e->song;
+                    }
+
+                    return $song->only(['name', 'artist_name', 'size']);
                 }
 
                 return null;

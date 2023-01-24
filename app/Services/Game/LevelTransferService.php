@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Services\GDCS\Web;
+namespace App\Services\Game;
 
 use App\Enums\GDCS\Game\Parameters\LevelSearchType;
-use App\Exceptions\GDCS\WebException;
 use App\Exceptions\ResponseException;
-use App\Services\Game\AlgorithmService;
-use App\Services\Game\ObjectService;
-use App\Services\Game\ResponseService;
+use App\Exceptions\WebException;
 use App\Services\ProxyService;
 use Base64Url\Base64Url;
 use Illuminate\Support\Arr;
 
-class LevelTransferService
+class LevelTransferService extends BaseGameService
 {
     /**
      * @throws WebException
@@ -33,7 +30,7 @@ class LevelTransferService
             ResponseService::check($response);
             $parts = explode('#', $response);
             $levels = explode('|', Arr::get($parts, 0));
-            [$total, $offset, $perPage] = explode(':', Arr::get($parts, 3)) ?? [0, 0, AlgorithmService::$perPage];
+            [$total, $offset, $perPage] = explode(':', Arr::get($parts, 3)) ?? [0, 0, static::$perPage];
 
             return [
                 'total' => $total,

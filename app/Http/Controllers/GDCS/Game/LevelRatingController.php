@@ -31,18 +31,18 @@ class LevelRatingController extends Controller
         $config = config('gdcn.game.level_rating_suggestions.stars');
 
         if (!$config['enabled']) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_suggestion_not_enabled'), game_response: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_SUGGESTION_NOT_ENABLED->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_suggestion_not_enabled'), gameResponse: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_SUGGESTION_NOT_ENABLED->value);
         }
 
         $level = Level::query()
             ->find($data['levelID']);
 
         if (!$level) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_level_not_found'), game_response: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_LEVEL_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_level_not_found'), gameResponse: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_LEVEL_NOT_FOUND->value);
         }
 
         if (!$config['overwrite_able'] && $level->rating->difficulty !== LevelRatingDifficulty::NA) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_overwrite_disabled'), game_response: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_OVERWRITE_DISABLED->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_overwrite_disabled'), gameResponse: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_OVERWRITE_DISABLED->value);
         }
 
         $record = LevelStarSuggestion::query()
@@ -55,7 +55,7 @@ class LevelRatingController extends Controller
             ]);
 
         if (!$record->wasRecentlyCreated) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_already_exists'), game_response: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_ALREADY_EXISTS->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_stars_rate_failed_already_exists'), gameResponse: Response::GAME_LEVEL_RATING_STARS_RATE_FAILED_ALREADY_EXISTS->value);
         }
 
         $query = LevelStarSuggestion::query()
@@ -96,18 +96,18 @@ class LevelRatingController extends Controller
         $config = config('gdcn.game.level_rating_suggestions.demon');
 
         if (!$config['enabled']) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_suggestion_not_enabled'), game_response: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_SUGGESTION_NOT_ENABLED->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_suggestion_not_enabled'), gameResponse: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_SUGGESTION_NOT_ENABLED->value);
         }
 
         $level = Level::query()
             ->find($data['levelID']);
 
         if (!$level) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_level_not_found'), game_response: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_LEVEL_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_level_not_found'), gameResponse: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_LEVEL_NOT_FOUND->value);
         }
 
         if (!$config['overwrite_able'] && $level->rating->demon_difficulty !== LevelRatingDemonDifficulty::NA) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_overwrite_disabled'), game_response: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_OVERWRITE_DISABLED->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_overwrite_disabled'), gameResponse: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_OVERWRITE_DISABLED->value);
         }
 
         $record = LevelDemonDifficultySuggestion::query()
@@ -120,7 +120,7 @@ class LevelRatingController extends Controller
             ]);
 
         if (!$record->wasRecentlyCreated) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_already_exists'), game_response: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_ALREADY_EXISTS->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_demon_difficulty_rate_failed_already_exists'), gameResponse: Response::GAME_LEVEL_RATING_DEMON_DIFFICULTY_RATE_FAILED_ALREADY_EXISTS->value);
         }
 
         $query = LevelDemonDifficultySuggestion::query()
@@ -152,18 +152,18 @@ class LevelRatingController extends Controller
         $config = config('gdcn.game.level_rating_suggestions.suggest');
 
         if (!$config['enabled']) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_suggestion_not_enabled'), game_response: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_SUGGESTION_NOT_ENABLED->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_suggestion_not_enabled'), gameResponse: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_SUGGESTION_NOT_ENABLED->value);
         }
 
         $level = Level::query()
             ->find($data['levelID']);
 
         if (!$level) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_level_not_found'), game_response: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_LEVEL_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_level_not_found'), gameResponse: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_LEVEL_NOT_FOUND->value);
         }
 
         if (!$config['overwrite_able'] && $level->rating->stars > 0) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_overwrite_disabled'), game_response: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_OVERWRITE_DISABLED->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_overwrite_disabled'), gameResponse: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_OVERWRITE_DISABLED->value);
         }
 
         $record = LevelRatingSuggestion::query()
@@ -176,7 +176,7 @@ class LevelRatingController extends Controller
             ]);
 
         if (!$record->wasRecentlyCreated) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_already_exists'), game_response: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_ALREADY_EXISTS->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_rating_suggest_failed_already_exists'), gameResponse: Response::GAME_LEVEL_RATING_SUGGEST_FAILED_ALREADY_EXISTS->value);
         }
 
         $query = LevelRatingSuggestion::query()

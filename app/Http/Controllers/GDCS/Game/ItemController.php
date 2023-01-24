@@ -33,7 +33,7 @@ class ItemController extends Controller
                 ->find($data['itemID']),
             LikeType::ACCOUNT_COMMENT => AccountComment::query()
                 ->find($data['itemID']),
-            default => throw new GeometryDashChineseServerException(__('gdcn.game.error.item_like_failed_invalid_type'), game_response: Response::GAME_ITEM_LIKE_FAILED_INVALID_TYPE->value),
+            default => throw new GeometryDashChineseServerException(__('gdcn.game.error.item_like_failed_invalid_type'), gameResponse: Response::GAME_ITEM_LIKE_FAILED_INVALID_TYPE->value),
         };
 
         $record = LikeRecord::query()
@@ -46,7 +46,7 @@ class ItemController extends Controller
             ]);
 
         if (!$record->wasRecentlyCreated) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.item_like_failed_already_exists'), game_response: Response::GAME_ITEM_LIKE_FAILED_ALREADY_EXISTS->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.item_like_failed_already_exists'), gameResponse: Response::GAME_ITEM_LIKE_FAILED_ALREADY_EXISTS->value);
         }
 
         $item->update([

@@ -14,8 +14,8 @@ use App\Models\GDCS\Account;
 use App\Models\GDCS\AccountComment;
 use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
+use App\Services\Game\Command\AccountCommandService;
 use App\Services\Game\ObjectService;
-use App\Services\GDCS\Game\Command\AccountCommandService;
 use Base64Url\Base64Url;
 
 class AccountCommentController extends Controller
@@ -63,14 +63,14 @@ class AccountCommentController extends Controller
             ->find($data['accountID']);
 
         if (!$account) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_index_failed_target_not_found'), game_response: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_TARGET_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_index_failed_target_not_found'), gameResponse: Response::GAME_ACCOUNT_COMMENT_INDEX_FAILED_TARGET_NOT_FOUND->value);
         }
 
         $account->loadCount('comments');
         if ($account->comments_count <= 0) {
             throw new GeometryDashChineseServerException(
                 __('gdcn.game.error.account_comment_index_failed_empty'),
-                game_response: Response::empty()
+                gameResponse: Response::empty()
             );
         }
 
@@ -106,11 +106,11 @@ class AccountCommentController extends Controller
             ->find($data['commentID']);
 
         if (!$comment) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_delete_failed_not_found'), game_response: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_delete_failed_not_found'), gameResponse: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value);
         }
 
         if (!$comment->account->isNot($request->account)) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_delete_failed_not_owner'), game_response: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_OWNER->value);
+            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_comment_delete_failed_not_owner'), gameResponse: Response::GAME_ACCOUNT_COMMENT_DELETE_FAILED_NOT_OWNER->value);
         }
 
         $comment->delete();
