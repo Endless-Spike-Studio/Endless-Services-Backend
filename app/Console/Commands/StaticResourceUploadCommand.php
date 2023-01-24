@@ -38,8 +38,8 @@ class StaticResourceUploadCommand extends Command
                 continue;
             }
 
-            $pool->add(function () use ($storage, $relativePath, $fullPath) {
-                $storage->put(
+            $pool[] = async(function () use ($storage, $relativePath, $fullPath) {
+                return $storage->put(
                     $this->prefix . '/' . $relativePath,
                     file_get_contents($fullPath)
                 );
@@ -48,6 +48,6 @@ class StaticResourceUploadCommand extends Command
             });
         }
 
-        $pool->wait();
+        await($pool);
     }
 }
