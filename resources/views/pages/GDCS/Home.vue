@@ -1,21 +1,22 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import banner from "@/images/banner.png";
+import banner_f1 from "@/images/banner/f1.png";
+import banner_f2 from "@/images/banner/f2.png";
 import {
     AndroidOutlined,
     AppleOutlined,
     FileZipTwotone,
     GithubOutlined,
     HeartTwotone,
+    HomeTwotone,
+    MailTwotone,
     UsergroupAddOutlined,
     WindowsOutlined
 } from "@vicons/antd";
 import {copy, isMobile, to_route} from "@/scripts/core/utils";
-import {useApiStore} from "@/scripts/core/stores";
 import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";
 import avatar_2 from "@/images/avatars/xyzlol.png";
-import Person from "@/views/components/Person.vue";
-import {ArrowBack, Box} from "@vicons/tabler";
+import {Box} from "@vicons/tabler";
 
 defineProps<{
     statistic: {
@@ -30,23 +31,24 @@ defineProps<{
         contests: number;
     }
 }>();
-
-function handleAppleDownload() {
-    const apiStore = useApiStore();
-    apiStore.$message.error('没有');
-}
-
-const windowsDownloadCurrent = ref('entry');
 </script>
 
 <template>
     <CommonLayout>
         <n-space vertical>
-            <n-image :img-props="{ class: 'w-full' }" :src="banner" class="py-10"/>
+            <n-space :vertical="isMobile" class="py-20" justify="center">
+                <n-el class="sm:w-1/2 px-5 mx-auto">
+                    <n-image :img-props="{ class: 'w-full' }" :src="banner_f1" preview-disabled/>
+                </n-el>
+
+                <n-el class="sm:w-1/2 px-10 mx-auto">
+                    <n-image :img-props="{ class: 'w-full' }" :src="banner_f2" preview-disabled/>
+                </n-el>
+            </n-space>
 
             <n-card title="下载">
-                <n-grid :cols="3">
-                    <n-grid-item class="mx-auto">
+                <n-grid :cols="isMobile ? 2 : 4" :x-gap="10" :y-gap="10" class="[&>*]:mx-auto items-center">
+                    <n-grid-item>
                         <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.apk" tag="a" text>
                             <n-space vertical>
                                 <n-icon :component="AndroidOutlined" :size="50"/>
@@ -55,61 +57,39 @@ const windowsDownloadCurrent = ref('entry');
                         </n-button>
                     </n-grid-item>
 
-                    <n-grid-item class="w-full mx-auto">
-                        <n-tabs v-model:value="windowsDownloadCurrent" :tab-style="{ display: 'none' }" animated
-                                pane-class="!pt-0">
-                            <n-tab-pane class="text-center" name="entry">
-                                <n-button text @click="windowsDownloadCurrent = 'select';">
-                                    <n-space vertical>
-                                        <n-icon :component="WindowsOutlined" :size="50"/>
-                                        <span class="text-2xl">Windows</span>
-                                    </n-space>
-                                </n-button>
-                            </n-tab-pane>
+                    <n-grid-item v-if="!isMobile">
+                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.zip" tag="a" text>
+                            <n-space vertical>
+                                <n-space justify="center">
+                                    <n-icon :component="WindowsOutlined" :size="25"/>
+                                    <n-icon :component="FileZipTwotone" :size="25"/>
+                                </n-space>
 
-                            <n-tab-pane name="select">
-                                <n-grid :cols="3" class="[&>*]:mx-auto">
-                                    <n-grid-item>
-                                        <n-button text @click="windowsDownloadCurrent = 'entry';">
-                                            <n-space vertical>
-                                                <n-icon :component="ArrowBack" :size="25"/>
-                                                <span class="text-xl">返回</span>
-                                            </n-space>
-                                        </n-button>
-                                    </n-grid-item>
-
-                                    <n-grid-item>
-                                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.zip" tag="a"
-                                                  text>
-                                            <n-space vertical>
-                                                <n-icon :component="FileZipTwotone" :size="25"/>
-
-                                                <span class="text-xl">
-                                                    [zip] 带资源包
-                                                </span>
-
-                                                <n-text type="success">(推荐)</n-text>
-                                            </n-space>
-                                        </n-button>
-                                    </n-grid-item>
-
-                                    <n-grid-item>
-                                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.exe" tag="a"
-                                                  text>
-                                            <n-space vertical>
-                                                <n-icon :component="Box" :size="25"/>
-                                                <span class="text-xl">[exe] 无资源包</span>
-                                            </n-space>
-                                        </n-button>
-                                    </n-grid-item>
-                                </n-grid>
-                            </n-tab-pane>
-                        </n-tabs>
+                                <n-text class="text-2xl">Windows</n-text>
+                                <n-text>[.zip] (带资源包)</n-text>
+                                <n-text type="success">(推荐)</n-text>
+                            </n-space>
+                        </n-button>
                     </n-grid-item>
 
-                    <n-grid-item class="mx-auto">
-                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.ipa" text
-                                  @click="handleAppleDownload">
+                    <n-grid-item v-if="!isMobile">
+                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.exe" tag="a" text>
+                            <n-space vertical>
+                                <n-space justify="center">
+                                    <n-icon :component="WindowsOutlined" :size="25"/>
+                                    <n-icon :component="Box" :size="25"/>
+                                </n-space>
+
+                                <n-text class="text-2xl">Windows</n-text>
+                                <n-text>[.exe] (无资源包)</n-text>
+                                <n-text type="warning">仅供替换, 单独下载无法运行</n-text>
+                            </n-space>
+                        </n-button>
+                    </n-grid-item>
+
+                    <n-grid-item>
+                        <n-button disabled href="https://cdn.geometrydashchinese.com/client/GDCS.ipa" tag="a"
+                                  text type="warning">
                             <n-space vertical>
                                 <n-icon :component="AppleOutlined" :size="50"/>
                                 <span class="text-2xl">苹果</span>
@@ -190,12 +170,12 @@ const windowsDownloadCurrent = ref('entry');
             <n-grid :x-gap="10" :y-gap="10" class="[&>*>*]:h-full" cols="1 640:2">
                 <n-grid-item>
                     <n-card title="这是什么">
-                        GDCS,全称 Geometry Dash Chinese
+                        GDCS, 全称 Geometry Dash Chinese
                         <br>
 
                         是
                         <n-button href="https://zhazha120.cn" tag="a" text type="primary">渣渣120</n-button>
-                        独立开发的 Geometry Dash 私服
+                        独立开发的 Geometry Dash 服务器后端
                         <br>
 
                         您可以在
@@ -220,37 +200,129 @@ const windowsDownloadCurrent = ref('entry');
 
                 <n-grid-item>
                     <n-card title="管理团队">
-                        <n-grid :cols="isMobile ? 1 : 2" :x-gap="10" :y-gap="10">
+                        <n-grid :cols="isMobile ? 1 : 2" :x-gap="10" :y-gap="10" class="[&>*]:mx-auto">
                             <n-grid-item>
-                                <Person :avatar="avatar_1"
-                                        :bilibili_uid="24267334"
-                                        :qq="2331281251"
-                                        :works="['开发', '运维', '管理']"
-                                        name="渣渣120"
-                                        role="服主">
-                                    <template #extra>
-                                        <n-space vertical>
-                                            <n-text>个人网站:</n-text>
-                                            <n-button href="https://zhazha120.cn" tag="a" text
-                                                      type="primary">
-                                                zhazha120.cn
-                                            </n-button>
-                                        </n-space>
-                                    </template>
-                                </Person>
+                                <n-space>
+                                    <n-space class="text-center leading-none" vertical>
+                                        <n-image :src="avatar_1" :width="75" class="avatar" preview-disabled/>
+                                        <n-text class="font-bold text-2xl">渣渣120</n-text>
+                                        <n-text :depth="3">服主</n-text>
+                                    </n-space>
+
+                                    <n-grid :cols="2" :x-gap="10" :y-gap="10" class="[&>*]:leading-none">
+                                        <n-grid-item>
+                                            <n-space vertical>
+                                                <n-text class="font-bold">QQ</n-text>
+                                                <n-button href="https://wpa.qq.com/msgrd?uin=2331281251" tag="a"
+                                                          text type="primary">
+                                                    2331281251
+                                                </n-button>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item>
+                                            <n-space vertical>
+                                                <n-text class="font-bold">哔哩哔哩</n-text>
+                                                <n-button href="https://space.bilibili.com/24267334" tag="a"
+                                                          text type="primary">
+                                                    24267334
+                                                </n-button>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item :span="2">
+                                            <n-space vertical>
+                                                <n-text class="font-bold">职责</n-text>
+
+                                                <n-space size="small">
+                                                    <n-tag>开发</n-tag>
+                                                    <n-tag>运维</n-tag>
+                                                    <n-tag>管理</n-tag>
+                                                </n-space>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item :span="2">
+                                            <n-space class="mt-2.5">
+                                                <n-button href="https://zhazha120.cn" tag="a" text>
+                                                    <template #icon>
+                                                        <n-icon :component="HomeTwotone"/>
+                                                    </template>
+                                                </n-button>
+
+                                                <n-button href="https://github.com/WOSHIZHAZHA120" tag="a" text>
+                                                    <template #icon>
+                                                        <n-icon :component="GithubOutlined"/>
+                                                    </template>
+                                                </n-button>
+
+                                                <n-button href="mailto://WOSHIZHAZHA120@qq.com" tag="a" text>
+                                                    <template #icon>
+                                                        <n-icon :component="MailTwotone"/>
+                                                    </template>
+                                                </n-button>
+                                            </n-space>
+                                        </n-grid-item>
+                                    </n-grid>
+                                </n-space>
                             </n-grid-item>
 
                             <n-grid-item v-if="isMobile">
-                                <n-divider/>
+                                <n-divider class="!my-2.5"/>
                             </n-grid-item>
 
                             <n-grid-item>
-                                <Person :avatar="avatar_2"
-                                        :bilibili_uid="93653653"
-                                        :qq="1292866784"
-                                        :works="['运维', '管理', '规则制定']"
-                                        name="xyzlol"
-                                        role="副服主"/>
+                                <n-space>
+                                    <n-space class="text-center leading-none" vertical>
+                                        <n-image :src="avatar_2" :width="75" class="avatar" preview-disabled/>
+                                        <n-text class="font-bold text-2xl">xyzlol</n-text>
+                                        <n-text :depth="3">副服主</n-text>
+                                    </n-space>
+
+                                    <n-grid :cols="2" :x-gap="10" :y-gap="10" class="[&>*]:leading-none">
+                                        <n-grid-item>
+                                            <n-space vertical>
+                                                <n-text class="font-bold">QQ</n-text>
+                                                <n-button href="https://wpa.qq.com/msgrd?uin=1292866784" tag="a"
+                                                          text type="primary">
+                                                    1292866784
+                                                </n-button>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item>
+                                            <n-space vertical>
+                                                <n-text class="font-bold">哔哩哔哩</n-text>
+                                                <n-button href="https://space.bilibili.com/93653653" tag="a"
+                                                          text type="primary">
+                                                    93653653
+                                                </n-button>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item :span="2">
+                                            <n-space vertical>
+                                                <n-text class="font-bold">职责</n-text>
+
+                                                <n-space size="small">
+                                                    <n-tag>运维</n-tag>
+                                                    <n-tag>管理</n-tag>
+                                                    <n-tag>规则制定</n-tag>
+                                                </n-space>
+                                            </n-space>
+                                        </n-grid-item>
+
+                                        <n-grid-item :span="2">
+                                            <n-space class="mt-2.5">
+                                                <n-button href="mailto://1292866784@qq.com" tag="a" text>
+                                                    <template #icon>
+                                                        <n-icon :component="MailTwotone"/>
+                                                    </template>
+                                                </n-button>
+                                            </n-space>
+                                        </n-grid-item>
+                                    </n-grid>
+                                </n-space>
                             </n-grid-item>
                         </n-grid>
                     </n-card>
@@ -324,3 +396,9 @@ const windowsDownloadCurrent = ref('entry');
         </n-space>
     </CommonLayout>
 </template>
+
+<style scoped>
+.avatar {
+    @apply rounded-full transition duration-1000 ease-in-out hover:rotate-[360deg];
+}
+</style>
