@@ -137,6 +137,8 @@ declare namespace App.Models {
     export interface UserScore extends Model {
         user_id: number;
         stars: number;
+        coins: number;
+        user_coins: number;
         demons: number;
         creator_points: number;
         user?: User;

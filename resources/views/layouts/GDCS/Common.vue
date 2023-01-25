@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import CommonWrapper from "@/views/layouts/CommonWrapper.vue";
 import {MenuOption, NIcon, NImage} from "naive-ui";
 import {
     DashboardTwotone,
@@ -11,46 +10,22 @@ import {
     UserOutlined
 } from "@vicons/antd";
 import Logo from "@/images/logo.png";
-import {to_route} from "@/scripts/core/utils";
-import route, {routes} from "@/scripts/core/route";
-import {useApiStore, useBackendStore} from "@/scripts/core/stores";
-import {useWindowSize} from "@vueuse/core";
+import {to_home, to_route} from "@/scripts/core/utils";
+import route from "@/scripts/core/route";
+import {useBackendStore} from "@/scripts/core/stores";
 import {Inertia} from "@inertiajs/inertia";
-import {ComputedRef} from "vue";
-import {first} from "lodash-es";
+import CommonLayout from "@/views/layouts/CommonLayout.vue";
 
-const backendStore = useBackendStore();
+const route_home = 'gdcs.home';
 
-function to_home(routeName = 'gdcs.home') {
-    const apiStore = useApiStore();
-
-    menu.active = 'home';
-    if (route().current() === routeName) {
-        return apiStore.$message.info('别点了 你已经在首页了');
-    }
-
-    return to_route(routeName);
-}
-
-const menu = reactive({
-    active: (() => {
-        const reference = ref();
-
-        function _update() {
-            if (route().current('*.profile')) {
-                return reference.value = 'profile';
-            }
-
-            reference.value = route().current()?.split('.').at(1)?.trim();
+const menu = {
+    activeStateExtraUpdater() {
+        if (route().current('*.profile')) {
+            return 'profile';
         }
-
-        Inertia.on('finish', _update);
-        watch(routes, _update);
-
-        return reference;
-    })(),
-    options: {
-        left: [
+    },
+    left(): MenuOption[] {
+        return [
             {
                 title: 'GDCS',
                 key: 'logo',
@@ -62,17 +37,21 @@ const menu = reactive({
                     class: 'rounded-sm',
                     previewDisabled: true
                 }),
-                onSelect: to_home
+                onSelect: () => to_home(route_home)
             }
-        ],
-        center: [
+        ];
+    },
+    center(): MenuOption[] {
+        return [
             {
                 title: '主页',
                 key: 'home',
                 icon: () => h(NIcon, {
                     component: HomeTwotone
                 }),
-                onSelect: to_home
+                onSelect() {
+                    to_home(route_home)
+                }
             },
             {
                 title: 'Dashboard',
@@ -94,122 +73,57 @@ const menu = reactive({
                     return to_route('gdcs.tools.home');
                 }
             }
-        ],
-        right: computed(() => {
-            const items = [];
+        ];
+    },
+    right(): MenuOption[] {
+        const backendStore = useBackendStore();
 
-            if (!backendStore.gdcs.account) {
-                items.push({
-                    title: '登录',
-                    key: 'auth',
-                    icon: () => h(NIcon, {
-                        component: LoginOutlined
-                    }),
-                    onSelect() {
-                        return to_route('gdcs.auth.login');
-                    }
-                });
-            } else {
-                items.push({
-                    title: backendStore.gdcs.account.name,
-                    key: 'auth',
-                    icon: () => h(NIcon, {
-                        component: UserOutlined
-                    }),
-                    children: [
-                        {
-                            title: '个人资料',
-                            key: 'profile',
-                            icon: () => h(NIcon, {
-                                component: ProfileTwotone
-                            }),
-                            onSelect() {
-                                return to_route('gdcs.dashboard.account.info', backendStore.gdcs.account.id);
-                            }
-                        },
-                        {
-                            title: '登出',
-                            key: 'logout',
-                            icon: () => h(NIcon, {
-                                component: LogoutOutlined
-                            }),
-                            onSelect() {
-                                return Inertia.post(route('gdcs.auth.logout.api'));
-                            }
-                        }
-                    ]
-                });
-            }
-
-            return items;
-        }),
-        mobile: computed(() => {
-            let _ = false;
-
-            return [
-                {
-                    ...first(menu.options.left),
-                    children: [
-                        ...menu.options.left.filter(() => {
-                            if (_) {
-                                return true;
-                            }
-
-                            _ = true;
-                            return false;
+        return [
+            backendStore.gdcs.account ? {
+                title: backendStore.gdcs.account.name,
+                key: 'auth',
+                icon: () => h(NIcon, {
+                    component: UserOutlined
+                }),
+                children: [
+                    {
+                        title: '个人资料',
+                        key: 'profile',
+                        icon: () => h(NIcon, {
+                            component: ProfileTwotone
                         }),
-                        ...menu.options.center,
-                        ...menu.options.right
-                    ]
+                        onSelect() {
+                            return to_route('gdcs.dashboard.account.info', backendStore.gdcs.account.id);
+                        }
+                    },
+                    {
+                        title: '登出',
+                        key: 'logout',
+                        icon: () => h(NIcon, {
+                            component: LogoutOutlined
+                        }),
+                        onSelect() {
+                            return Inertia.post(route('gdcs.auth.logout.api'));
+                        }
+                    }
+                ]
+            } : {
+                title: '登录',
+                key: 'auth',
+                icon: () => h(NIcon, {
+                    component: LoginOutlined
+                }),
+                onSelect() {
+                    return to_route('gdcs.auth.login');
                 }
-            ];
-        })
-    } as Record<string, ComputedRef<MenuOption[]> | MenuOption[]>
-});
-
-function handleMenuSelect(_key: string, option: MenuOption) {
-    (option.onSelect as () => unknown)?.();
-}
-
-const {width} = useWindowSize();
+            }
+        ];
+    }
+};
 </script>
 
 <template>
-    <CommonWrapper>
-        <n-layout class="h-full">
-            <n-layout-header>
-                <slot name="header">
-                    <n-space v-if="width > 640" justify="space-between">
-                        <n-menu v-model:value="menu.active" :options="menu.options.left" mode="horizontal"
-                                @update:value="handleMenuSelect"/>
-
-                        <n-menu v-model:value="menu.active" :options="menu.options.center" mode="horizontal"
-                                @update:value="handleMenuSelect"/>
-
-                        <n-menu v-model:value="menu.active" :options="menu.options.right" mode="horizontal"
-                                @update:value="handleMenuSelect"/>
-                    </n-space>
-
-                    <n-el v-else>
-                        <n-menu v-model:value="menu.active" :options="menu.options.mobile" mode="vertical"
-                                @update:value="handleMenuSelect"/>
-                    </n-el>
-                </slot>
-            </n-layout-header>
-
-            <n-layout-content class="lg:w-3/5 lg:mx-auto mx-2.5 mt-2.5 mb-16">
-                <slot/>
-            </n-layout-content>
-
-            <n-layout-footer class="p-2.5 mx-auto text-center" position="absolute">
-                <slot name="footer">
-                    <n-text>&copy; 2022 - {{ new Date().getFullYear() }}</n-text>
-                    <n-divider vertical/>
-                    <n-button text @click="to_home">GDCS</n-button>
-                    <n-divider vertical/>
-                    <n-button href="https://beian.miit.gov.cn" tag="a" text>吉ICP备18006293号</n-button>
-                </slot>
-            </n-layout-footer>
-        </n-layout>
-    </CommonWrapper>
+    <CommonLayout :menu="menu" :route_home="route_home" name="GDCS">
+        <slot/>
+    </CommonLayout>
 </template>

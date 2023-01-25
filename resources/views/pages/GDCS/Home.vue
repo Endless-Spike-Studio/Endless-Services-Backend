@@ -204,7 +204,9 @@ defineProps<{
                             <n-grid-item>
                                 <n-space>
                                     <n-space class="text-center leading-none" vertical>
-                                        <n-image :src="avatar_1" :width="75" class="avatar" preview-disabled/>
+                                        <n-image :src="avatar_1" :width="75"
+                                                 class="rounded-full transition duration-1000 ease-in-out hover:rotate-[360deg]"
+                                                 preview-disabled/>
                                         <n-text class="font-bold text-2xl">渣渣120</n-text>
                                         <n-text :depth="3">服主</n-text>
                                     </n-space>
@@ -274,7 +276,9 @@ defineProps<{
                             <n-grid-item>
                                 <n-space>
                                     <n-space class="text-center leading-none" vertical>
-                                        <n-image :src="avatar_2" :width="75" class="avatar" preview-disabled/>
+                                        <n-image :src="avatar_2" :width="75"
+                                                 class="rounded-full transition duration-1000 ease-in-out hover:rotate-[360deg]"
+                                                 preview-disabled/>
                                         <n-text class="font-bold text-2xl">xyzlol</n-text>
                                         <n-text :depth="3">副服主</n-text>
                                     </n-space>
@@ -396,9 +400,3 @@ defineProps<{
         </n-space>
     </CommonLayout>
 </template>
-
-<style scoped>
-.avatar {
-    @apply rounded-full transition duration-1000 ease-in-out hover:rotate-[360deg];
-}
-</style>

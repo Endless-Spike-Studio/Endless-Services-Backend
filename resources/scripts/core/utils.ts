@@ -2,11 +2,11 @@ import {computed, ComputedRef} from "vue";
 import {InertiaForm, usePage} from "@inertiajs/inertia-vue3";
 import {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
 import {Inertia, VisitOptions} from "@inertiajs/inertia";
-import route from "@/scripts/core/route";
+import route, {routes} from "@/scripts/core/route";
 import {find, get} from "lodash-es";
 import {servers} from "@/scripts/core/shared";
 import {FormItemRule} from "naive-ui";
-import {useClipboard, useWindowSize} from "@vueuse/core";
+import {useClipboard, useWindowSize, watchOnce} from "@vueuse/core";
 import {useApiStore} from "@/scripts/core/stores";
 
 export const isMobile = (() => {
@@ -117,4 +117,37 @@ export function copy(text: string) {
     }).copy();
 
     apiStore.$message.success('复制成功!');
+}
+
+export function useCurrentModule(extraUpdater?: () => string | undefined) {
+    const reference = ref();
+
+    function _update() {
+        if (extraUpdater !== undefined) {
+            const result = extraUpdater();
+
+            if (result !== undefined) {
+                reference.value = result;
+                return;
+            }
+        }
+
+        reference.value = route().current()
+            ?.split('.')
+            .at(1)
+            ?.trim();
+    }
+
+    Inertia.on('finish', _update);
+    watchOnce(routes, _update);
+
+    return reference;
+}
+
+export function to_home(routeName: string) {
+    if (route().current() === routeName) {
+        return useApiStore().$message.info('别点了 你已经在首页了');
+    }
+
+    return to_route(routeName);
 }

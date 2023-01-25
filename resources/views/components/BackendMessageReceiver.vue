@@ -2,9 +2,10 @@
 import {useProp} from "@/scripts/core/utils";
 import {BackendMessage} from "@/types/backend";
 import {useApiStore} from "@/scripts/core/stores";
+import {watchArray} from "@vueuse/core";
 
 const apiStore = useApiStore();
-watch(useProp<BackendMessage[]>('messages', []), newMessages => {
+watchArray(useProp<BackendMessage[]>('messages', []), newMessages => {
     newMessages.forEach(newMessage => {
         apiStore.$message.create(newMessage.content, newMessage.options);
     });

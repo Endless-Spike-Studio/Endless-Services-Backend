@@ -1,121 +1,115 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDProxy/Common.vue";
-import {DropdownOption} from "naive-ui";
-import {useApiStore} from "@/scripts/core/stores";
 import {
     AndroidOutlined,
     AppleOutlined,
+    FileZipTwotone,
     GithubOutlined,
     HeartTwotone,
+    HomeTwotone,
+    MailTwotone,
     UsergroupAddOutlined,
     WindowsOutlined
 } from "@vicons/antd";
-import {useWindowSize} from "@vueuse/core";
-
-const windowsDownloadDropdown = reactive({
-    options: [
-        {
-            label: '无资源包 (.exe)',
-            key: 'exe',
-            onSelect() {
-                open('https://cdn.geometrydashchinese.com/client/GDProxy.exe');
-            }
-        },
-        {
-            label: '带资源包 (.zip)',
-            key: 'zip',
-            onSelect() {
-                open('https://cdn.geometrydashchinese.com/client/GDProxy.zip');
-            }
-        }
-    ] as DropdownOption[],
-    handleSelect(_key: string, option: DropdownOption) {
-        (option.onSelect as () => unknown)?.();
-    }
-});
-
-function handleAppleDownload() {
-    const apiStore = useApiStore();
-    apiStore.$message.error('没有');
-}
-
-const {width} = useWindowSize();
-</script>
+import {copy, isMobile} from "@/scripts/core/utils";
+import {Box} from "@vicons/tabler";
+import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";</script>
 
 <template>
     <CommonLayout>
         <n-space vertical>
-            <n-space vertical>
-                <n-space justify="center">
-                    <n-button href="https://cdn.geometrydashchinese.com/client/GDProxy.apk" tag="a">
-                        <template #icon>
-                            <n-icon :component="AndroidOutlined"/>
-                        </template>
+            <n-card title="下载">
+                <n-grid :cols="isMobile ? 2 : 4" :x-gap="10" :y-gap="10" class="[&>*]:mx-auto items-center">
+                    <n-grid-item>
+                        <n-button href="https://cdn.geometrydashchinese.com/client/GDProxy.apk" tag="a" text>
+                            <n-space vertical>
+                                <n-icon :component="AndroidOutlined" :size="50"/>
+                                <span class="text-2xl">安卓</span>
+                            </n-space>
+                        </n-button>
+                    </n-grid-item>
 
-                        Android
-                    </n-button>
+                    <n-grid-item v-if="!isMobile">
+                        <n-button href="https://cdn.geometrydashchinese.com/client/GDProxy.zip" tag="a" text>
+                            <n-space vertical>
+                                <n-space justify="center">
+                                    <n-icon :component="WindowsOutlined" :size="25"/>
+                                    <n-icon :component="FileZipTwotone" :size="25"/>
+                                </n-space>
 
-                    <n-dropdown :options="windowsDownloadDropdown.options" trigger="click"
-                                @select="windowsDownloadDropdown.handleSelect">
-                        <n-button>
+                                <n-text class="text-2xl">Windows</n-text>
+                                <n-text>[.zip] (带资源包)</n-text>
+                                <n-text type="success">(推荐)</n-text>
+                            </n-space>
+                        </n-button>
+                    </n-grid-item>
+
+                    <n-grid-item v-if="!isMobile">
+                        <n-button href="https://cdn.geometrydashchinese.com/client/GDProxy.exe" tag="a" text>
+                            <n-space vertical>
+                                <n-space justify="center">
+                                    <n-icon :component="WindowsOutlined" :size="25"/>
+                                    <n-icon :component="Box" :size="25"/>
+                                </n-space>
+
+                                <n-text class="text-2xl">Windows</n-text>
+                                <n-text>[.exe] (无资源包)</n-text>
+                                <n-text type="warning">仅供替换, 单独下载无法运行</n-text>
+                            </n-space>
+                        </n-button>
+                    </n-grid-item>
+
+                    <n-grid-item>
+                        <n-button disabled href="https://cdn.geometrydashchinese.com/client/GDProxy.ipa" tag="a"
+                                  text type="warning">
+                            <n-space vertical>
+                                <n-icon :component="AppleOutlined" :size="50"/>
+                                <span class="text-2xl">苹果</span>
+                            </n-space>
+                        </n-button>
+                    </n-grid-item>
+                </n-grid>
+
+                <template #footer>
+                    <n-space justify="center">
+                        <n-button href="https://afdian.net/a/WOSHIZHAZHA120" tag="a">
                             <template #icon>
-                                <n-icon :component="WindowsOutlined"/>
+                                <n-icon :component="HeartTwotone"/>
                             </template>
 
-                            Windows
+                            支持我们
                         </n-button>
-                    </n-dropdown>
 
-                    <n-button href="https://cdn.geometrydashchinese.com/client/GDProxy.ipa"
-                              @click="handleAppleDownload">
-                        <template #icon>
-                            <n-icon :component="AppleOutlined"/>
-                        </template>
+                        <n-button href="https://jq.qq.com/?k=1R3bJnPU" tag="a">
+                            <template #icon>
+                                <n-icon :component="UsergroupAddOutlined"/>
+                            </template>
 
-                        Apple
-                    </n-button>
-                </n-space>
+                            加入讨论群
+                        </n-button>
 
-                <n-space justify="center">
-                    <n-button href="https://afdian.net/a/WOSHIZHAZHA120" tag="a">
-                        <template #icon>
-                            <n-icon :component="HeartTwotone"/>
-                        </template>
+                        <n-button href="https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese" tag="a">
+                            <template #icon>
+                                <n-icon :component="GithubOutlined"/>
+                            </template>
 
-                        支持我们
-                    </n-button>
+                            Github
+                        </n-button>
+                    </n-space>
+                </template>
+            </n-card>
 
-                    <n-button href="https://jq.qq.com/?k=1R3bJnPU" tag="a">
-                        <template #icon>
-                            <n-icon :component="UsergroupAddOutlined"/>
-                        </template>
-
-                        加入讨论群
-                    </n-button>
-                </n-space>
-
-                <n-space justify="center">
-                    <n-button href="https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese" tag="a">
-                        <template #icon>
-                            <n-icon :component="GithubOutlined"/>
-                        </template>
-
-                        Github
-                    </n-button>
-                </n-space>
-            </n-space>
-
-            <n-grid :x-gap="10" :y-gap="10" cols="1 640:2">
+            <n-grid :x-gap="10" :y-gap="10" class="[&>*>*]:h-full" cols="1 640:2">
                 <n-grid-item>
                     <n-card class="h-full" title="这是什么">
-                        GDProxy,全称
+                        GDProxy, 全称
                         <n-text type="info">Geometry Dash Proxy</n-text>
                         <br>
                         是由
                         <n-button href="https://zhazha120.cn" tag="a" text type="primary">渣渣120</n-button>
                         独立开发的 Geometry Dash 加速器
                         <br>
-                        GDProxy 是开源的,您可以在
+                        GDProxy 是开源的, 您可以在
                         <n-button href="https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese" tag="a"
                                   text type="primary">
                             Github
@@ -124,47 +118,72 @@ const {width} = useWindowSize();
 
                         <br><br>
 
-                        如果您不想下载客户端,您也可以使用
+                        如果您不想下载客户端, 您也可以使用
                         <n-text type="info">GDPS Switcher</n-text>
                         功能
                         <br>
                         只需将服务器地址设置为
-                        <n-text type="info">https://dl.geometrydashchinese.com</n-text>
+                        <n-button text type="primary" @click="copy('https://dl.geometrydashchinese.com')">
+                            https://dl.geometrydashchinese.com
+                        </n-button>
                         就可以开始加速了
                     </n-card>
                 </n-grid-item>
 
                 <n-grid-item>
                     <n-card title="开发者">
-                        <n-descriptions :columns="width < 640 ? 1 : 2">
-                            <template #header>
-                                <n-text type="info">渣渣120</n-text>
-                            </template>
+                        <n-space>
+                            <n-space class="text-center leading-none" vertical>
+                                <n-image :src="avatar_1" :width="75"
+                                         class="rounded-full transition duration-1000 ease-in-out hover:rotate-[360deg]"
+                                         preview-disabled/>
+                                <n-text class="font-bold text-2xl">渣渣120</n-text>
+                            </n-space>
 
-                            <n-descriptions-item label="个人主页">
-                                <n-button href="https://zhazha120.cn" tag="a" text type="primary">
-                                    zhazha120.cn
-                                </n-button>
-                            </n-descriptions-item>
+                            <n-grid :cols="2" :x-gap="10" :y-gap="10" class="[&>*]:leading-none">
+                                <n-grid-item>
+                                    <n-space vertical>
+                                        <n-text class="font-bold">QQ</n-text>
+                                        <n-button href="https://wpa.qq.com/msgrd?uin=2331281251" tag="a"
+                                                  text type="primary">
+                                            2331281251
+                                        </n-button>
+                                    </n-space>
+                                </n-grid-item>
 
-                            <n-descriptions-item label="QQ">
-                                <n-button href="https://wpa.qq.com/msgrd?uin=2331281251" tag="a" text
-                                          type="primary">2331281251
-                                </n-button>
-                            </n-descriptions-item>
+                                <n-grid-item>
+                                    <n-space vertical>
+                                        <n-text class="font-bold">哔哩哔哩</n-text>
+                                        <n-button href="https://space.bilibili.com/24267334" tag="a"
+                                                  text type="primary">
+                                            24267334
+                                        </n-button>
+                                    </n-space>
+                                </n-grid-item>
 
-                            <n-descriptions-item label="哔哩哔哩">
-                                <n-button href="https://space.bilibili.com/24267334" tag="a" text
-                                          type="primary">24267334
-                                </n-button>
-                            </n-descriptions-item>
+                                <n-grid-item :span="2">
+                                    <n-space class="mt-2.5">
+                                        <n-button href="https://zhazha120.cn" tag="a" text>
+                                            <template #icon>
+                                                <n-icon :component="HomeTwotone"/>
+                                            </template>
+                                        </n-button>
 
-                            <n-descriptions-item label="Github">
-                                <n-button href="https://github.com/WOSHIZHAZHA120" tag="a" text type="primary">
-                                    WOSHIZHAZHA120
-                                </n-button>
-                            </n-descriptions-item>
-                        </n-descriptions>
+                                        <n-button href="https://github.com/WOSHIZHAZHA120" tag="a" text>
+                                            <template #icon>
+                                                <n-icon :component="GithubOutlined"/>
+                                            </template>
+                                        </n-button>
+
+                                        <n-button href="mailto://WOSHIZHAZHA120@qq.com" tag="a" text>
+                                            <template #icon>
+                                                <n-icon :component="MailTwotone"/>
+                                            </template>
+                                        </n-button>
+                                    </n-space>
+                                </n-grid-item>
+                            </n-grid>
+                        </n-space>
                     </n-card>
                 </n-grid-item>
             </n-grid>
