@@ -27,6 +27,7 @@ class LeaderboardController extends Controller
 
         $top = 0;
         $query = UserScore::query();
+        $query->whereDoesntHave('user.ban');
 
         switch ($data['type']) {
             case LeaderboardFetchType::TOP:
