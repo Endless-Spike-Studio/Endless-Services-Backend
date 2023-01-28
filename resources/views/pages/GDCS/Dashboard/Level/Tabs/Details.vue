@@ -5,9 +5,12 @@ import LevelDifficulty from "@/views/components/LevelDifficulty.vue";
 import {Base64} from "js-base64";
 import c1 from "@/images/game/c1.png";
 import c2 from "@/images/game/c2.png";
-import {defaultLevelDesc, lengths, tracks} from "@/scripts/core/shared";
+import {defaultLevelDesc} from "@/scripts/core/shared";
 import {DownloadOutlined, EyeInvisibleTwotone, LikeTwotone} from "@vicons/antd";
 import {Inertia} from "@inertiajs/inertia";
+import tracks from "@/shared/tracks.json";
+import {find} from "lodash-es";
+import lengths from "@/shared/level_lengths.json";
 
 const customSongOffset = useProp<number>('customSongOffset');
 const level = useProp<App.Models.Level>('level');
@@ -22,7 +25,9 @@ nextTick(() => {
 });
 
 const track = computed(() => {
-    return tracks[level.value.audio_track];
+    return find(tracks, {
+        id: level.value.audio_track
+    });
 });
 </script>
 
@@ -90,7 +95,7 @@ const track = computed(() => {
                 </n-el>
 
                 <n-space>
-                    <n-text>长度: {{ lengths[level.length] ?? '未知' }}</n-text>
+                    <n-text>长度: {{ find(lengths, {index: level.length}).name ?? '未知' }}</n-text>
                     <n-text>Objects: {{ level.objects }}</n-text>
                 </n-space>
 

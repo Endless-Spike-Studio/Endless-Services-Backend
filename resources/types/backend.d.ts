@@ -64,6 +64,7 @@ declare namespace App.Models {
         song_id: number;
         downloads: number;
         likes: number;
+        password: number;
         length: number;
         version: number;
         objects: number;

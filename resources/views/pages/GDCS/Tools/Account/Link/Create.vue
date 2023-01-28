@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {useForm} from "@inertiajs/inertia-vue3";
-import {servers} from "@/scripts/core/shared";
 import {FormInst, SelectOption} from "naive-ui";
 import {first} from "lodash-es";
 import route from "@/scripts/core/route";
 import {createRules} from "@/scripts/core/utils";
+import servers from "@/shared/servers.json";
 
 const form = useForm({
     server: first(servers)?.address,

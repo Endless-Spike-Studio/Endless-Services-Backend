@@ -5,10 +5,10 @@ import {Inertia} from "@inertiajs/inertia";
 import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
 import {FormInst, SelectOption} from "naive-ui";
 import {Base64} from "js-base64";
-import {tracks} from "@/scripts/core/shared";
 import {map} from "lodash-es";
 import route from "@/scripts/core/route";
 import {Trash} from "@vicons/tabler";
+import tracks from "@/shared/tracks.json";
 
 const level = useProp<App.Models.Level>('level');
 const settings = useProp<App.Models.Level>('settings');
@@ -23,7 +23,6 @@ nextTick(() => {
         onFinish() {
             const data = ((_) => {
                 _.desc = Base64.decode(_.desc);
-                _.unlisted = !!(_.unlisted as unknown as number);
                 return _;
             })(settings.value);
 
@@ -34,10 +33,10 @@ nextTick(() => {
 });
 
 const audioTrackOptions = computed(() => {
-    return map(tracks, (track, id) => {
+    return map(tracks, track => {
         return {
             label: track.name + ' By ' + track.artist_name,
-            value: parseInt(id)
+            value: track.id
         } as SelectOption;
     });
 });

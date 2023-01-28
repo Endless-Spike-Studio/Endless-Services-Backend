@@ -4,10 +4,10 @@ import {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
 import {Inertia, VisitOptions} from "@inertiajs/inertia";
 import route, {routes} from "@/scripts/core/route";
 import {find, get} from "lodash-es";
-import {servers} from "@/scripts/core/shared";
 import {FormItemRule} from "naive-ui";
 import {useClipboard, useWindowSize, watchOnce} from "@vueuse/core";
 import {useApiStore} from "@/scripts/core/stores";
+import servers from "@/shared/servers.json";
 
 export const isMobile = (() => {
     const _window = useWindowSize();
