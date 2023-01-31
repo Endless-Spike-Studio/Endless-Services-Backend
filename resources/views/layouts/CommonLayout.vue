@@ -43,8 +43,6 @@ function handleMenuSelect(_key: string, option: MenuOption) {
 }
 
 const appStore = useAppStore();
-const global = window;
-
 const _i = useProp('754a08ddf8bcb1cf22f310f09206dd783d42f7dd');
 </script>
 
@@ -126,23 +124,7 @@ const _i = useProp('754a08ddf8bcb1cf22f310f09206dd783d42f7dd');
                                         <n-icon :component="CommitTwotone"/>
                                     </template>
 
-                                    <n-text
-                                        v-if="_i['6aef87d005f444c7023bc154db6ec02428cd43b7'] === global.a52e49caf88aba98dca4defc66229ba39fd8edef"
-                                        class="text-current">
-                                        {{ _i['6aef87d005f444c7023bc154db6ec02428cd43b7'] }}
-                                    </n-text>
-
-                                    <n-el v-else class="leading-none">
-                                        <n-text title="后端" type="success">
-                                            {{ _i['6aef87d005f444c7023bc154db6ec02428cd43b7'] }}
-                                        </n-text>
-
-                                        <br>
-
-                                        <n-text title="前端" type="info">
-                                            {{ global.a52e49caf88aba98dca4defc66229ba39fd8edef }}
-                                        </n-text>
-                                    </n-el>
+                                    {{ _i['6aef87d005f444c7023bc154db6ec02428cd43b7'] }}
                                 </n-button>
                             </n-space>
                         </n-grid-item>

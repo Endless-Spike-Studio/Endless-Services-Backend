@@ -52,12 +52,5 @@ export default defineConfig({
                 'ie >= 11'
             ]
         })
-    ],
-    define: {
-        a52e49caf88aba98dca4defc66229ba39fd8edef: " '" +
-            execSync('git log -1 --pretty=%h')
-                .toString()
-                .trim()
-            + "' ".trim()
-    }
+    ]
 });
