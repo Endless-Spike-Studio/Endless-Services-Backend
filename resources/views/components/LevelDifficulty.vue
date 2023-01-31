@@ -3,7 +3,6 @@ import {App} from "@/types/backend";
 
 const props = defineProps<{
     rating: App.Models.LevelRating;
-    size?: number;
 }>();
 
 const images = import.meta.glob<{
@@ -96,11 +95,13 @@ const name = computed(() => {
 </script>
 
 <template>
-    <n-popover>
-        <template #trigger>
-            <n-image :src="url" :width="size ?? 30" preview-disabled/>
-        </template>
+    <slot :difficulty="name" :face="url">
+        <n-popover>
+            <template #trigger>
+                <n-image :src="url" preview-disabled v-bind:width="$attrs.width ?? 30"/>
+            </template>
 
-        {{ name }} {{ rating.stars }}
-    </n-popover>
+            {{ name }} {{ rating.stars }}
+        </n-popover>
+    </slot>
 </template>

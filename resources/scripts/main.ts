@@ -1,38 +1,39 @@
 import "@/styles/main.scss";
 import {createApp, DefineComponent, h} from "vue";
-import {createInertiaApp} from "@inertiajs/inertia-vue3";
-import {InertiaProgress} from "@inertiajs/progress";
+import {createInertiaApp} from "@inertiajs/vue3";
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import axios from "axios";
 import {pinia} from "@/scripts/core/client";
 import {useProp} from "@/scripts/core/utils";
-import persist from "pinia-plugin-persist";
-
-if (import.meta.env.PROD && location.protocol === 'http:') {
-    location.protocol = 'https:';
-}
+import products from "@/shared/products.json";
 
 createInertiaApp({
     resolve: (name: string) => {
         const pages = import.meta.glob<DefineComponent>('@/views/pages/**/*.vue');
         return resolvePageComponent(`/resources/views/pages/${name}.vue`, pages);
     },
-    title: name => `[GDCN] ${name}`,
-    setup({el, app, props, plugin}) {
+    setup({el, App, props, plugin}) {
         const instance = createApp({
-            render: () => h(app, props)
+            render: () => h(App, props)
         });
 
-        pinia.use(persist);
         instance.use(pinia);
         instance.use(plugin);
+
         instance.mount(el);
+    },
+    title: name => {
+        const product = products.find(_ => location.hostname === _.domain) ?? products.find(_ => !_.domain)!;
+
+        if (!name) {
+            return product.name;
+        }
+
+        return `[${product.code}] ${name}`;
     }
 }).then(() => {
     axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-TOKEN': useProp<string>('csrf_token').value
     }
-
-    InertiaProgress.init();
 });

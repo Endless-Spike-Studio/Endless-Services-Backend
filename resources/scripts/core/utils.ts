@@ -1,11 +1,9 @@
-import {computed, ComputedRef} from "vue";
-import {InertiaForm, usePage} from "@inertiajs/inertia-vue3";
-import {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
-import {Inertia, VisitOptions} from "@inertiajs/inertia";
-import route, {routes} from "@/scripts/core/route";
-import {find, get} from "lodash-es";
+import {ArgumentsType, useClipboard, useWindowSize} from "@vueuse/core";
+import {computed} from "vue";
+import {router, useForm, usePage} from "@inertiajs/vue3";
+import route, {RouteParam, RouteParamsWithQueryOverload} from "ziggy-js";
+import {get} from "lodash-es";
 import {FormItemRule} from "naive-ui";
-import {useClipboard, useWindowSize, watchOnce} from "@vueuse/core";
 import {useApiStore} from "@/scripts/core/stores";
 import servers from "@/shared/servers.json";
 
@@ -17,22 +15,21 @@ export const isMobile = (() => {
     });
 })();
 
-export function useProp<T extends unknown>(key: string, defaultValue?: T): ComputedRef<T> {
-    const $page = usePage();
-
+export function useProp<T extends unknown>(key: string, defaultValue?: T) {
     return computed(() => {
-        return get($page.props.value, key, defaultValue) as T;
+        const $page = usePage();
+        return get($page.props, key, defaultValue) as T;
     });
 }
 
-export function to_route(name: string, params?: RouteParamsWithQueryOverload | RouteParam, absolute?: boolean, options?: VisitOptions) {
+export function to_route(name: string, params?: RouteParamsWithQueryOverload | RouteParam, absolute?: boolean, options?: ArgumentsType<typeof router['visit']>[1]) {
     const targetURL = route(name, params, absolute);
 
     if (new URL(location.href).hostname !== new URL(targetURL).hostname) {
         return open(targetURL);
     }
 
-    Inertia.visit(targetURL, options);
+    router.visit(targetURL, options);
 }
 
 export function formatTime(_: string, defaultValue = '未知') {
@@ -40,10 +37,10 @@ export function formatTime(_: string, defaultValue = '未知') {
 }
 
 export function guessServer(address: string, defaultValue?: string) {
-    return find(servers, {address})?.name ?? defaultValue ?? address;
+    return servers.find(_ => address === _.address)?.name ?? defaultValue ?? address;
 }
 
-export function createRules<T extends object>(form: InertiaForm<T>, items?: Record<keyof T, FormItemRule[]>) {
+export function createRules<T extends Record<string, unknown>>(form: ReturnType<typeof useForm<T>>, items?: Record<keyof T, FormItemRule[]>) {
     return Object.keys(
         form.data()
     ).reduce((data, key) => {
@@ -138,8 +135,8 @@ export function useCurrentModule(extraUpdater?: () => string | undefined) {
             ?.trim();
     }
 
-    Inertia.on('finish', _update);
-    watchOnce(routes, _update);
+    router.on('finish', _update);
+    _update();
 
     return reference;
 }

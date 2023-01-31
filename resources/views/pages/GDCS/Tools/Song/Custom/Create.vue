@@ -6,6 +6,9 @@ import CreateUsingLink from "@/views/pages/GDCS/Tools/Song/Custom/Create/Link.vu
 import CreateUsingFile from "@/views/pages/GDCS/Tools/Song/Custom/Create/File.vue";
 import CreateUsingNetease from "@/views/pages/GDCS/Tools/Song/Custom/Create/Netease.vue";
 import {MusicNoteTwotone} from "@vicons/material";
+import Grid from "@/views/components/Grid.vue";
+import {isMobile} from "@/scripts/core/utils";
+import {Head} from "@inertiajs/vue3";
 
 const menu = reactive({
     active: ref('link'),
@@ -40,7 +43,11 @@ const menu = reactive({
 
 <template>
     <CommonLayout>
-        <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
+        <Head>
+            <title>在线工具 - 自定义歌曲 - 创建</title>
+        </Head>
+
+        <Grid :cols="isMobile ? 1 : 4">
             <n-grid-item>
                 <n-card :content-style="{ padding: 0 }">
                     <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -54,6 +61,6 @@ const menu = reactive({
                     </n-tab-pane>
                 </n-tabs>
             </n-grid-item>
-        </n-grid>
+        </Grid>
     </CommonLayout>
 </template>

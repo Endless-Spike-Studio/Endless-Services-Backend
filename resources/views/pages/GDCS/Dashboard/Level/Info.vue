@@ -9,6 +9,9 @@ import CommentsTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Comments.vue";
 import SettingsTab from "@/views/pages/GDCS/Dashboard/Level/Tabs/Settings.vue";
 import {LeaderboardTwotone} from "@vicons/material";
 import {CommentRegular} from "@vicons/fa";
+import Grid from "@/views/components/Grid.vue";
+import {Head} from "@inertiajs/vue3";
+import {isMobile} from "@/scripts/core/utils";
 
 const props = defineProps<{
     level: App.Models.Level;
@@ -85,7 +88,11 @@ const menu = reactive({
 
 <template>
     <CommonLayout>
-        <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
+        <Head>
+            <title>关卡 - {{ level.name }}</title>
+        </Head>
+
+        <Grid :cols="isMobile ? 1 : 4">
             <n-grid-item>
                 <n-card :content-style="{ padding: 0 }">
                     <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -99,6 +106,6 @@ const menu = reactive({
                     </n-tab-pane>
                 </n-tabs>
             </n-grid-item>
-        </n-grid>
+        </Grid>
     </CommonLayout>
 </template>

@@ -1,21 +1,23 @@
 <script lang="ts" setup>
-import {Inertia} from "@inertiajs/inertia";
+import {Head, router} from "@inertiajs/vue3";
 import {formatTime, useProp} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
+import {App} from "@/types/backend";
 import {LikeTwotone} from "@vicons/antd";
 import {Base64} from "js-base64";
+import {PaginatedData} from "@/types/utils";
 
 const page = ref();
+const account = useProp<App.Models.Account>('account');
 const comments = useProp<PaginatedData<App.Models.LevelComment>>('comments');
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['comments']
     });
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['comments'],
         data: {
             page: newPage
@@ -25,6 +27,10 @@ function handlePageUpdate(newPage: number) {
 </script>
 
 <template>
+    <Head>
+        <title>账号 - {{ account.name }} - 评论</title>
+    </Head>
+
     <n-card>
         <n-space v-if="comments && comments.data?.length > 0" vertical>
             <n-list bordered>

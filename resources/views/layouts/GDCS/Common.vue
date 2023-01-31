@@ -9,11 +9,11 @@ import {
     ToolTwotone,
     UserOutlined
 } from "@vicons/antd";
-import Logo from "@/images/logo.png";
+import Logo from "@/images/game/i1.png";
 import {to_home, to_route} from "@/scripts/core/utils";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
 import {useBackendStore} from "@/scripts/core/stores";
-import {Inertia} from "@inertiajs/inertia";
+import {router} from "@inertiajs/vue3";
 import CommonLayout from "@/views/layouts/CommonLayout.vue";
 
 const route_home = 'gdcs.home';
@@ -103,7 +103,7 @@ const menu = {
                             component: LogoutOutlined
                         }),
                         onSelect() {
-                            return Inertia.post(route('gdcs.auth.logout.api'));
+                            return router.post(route('gdcs.auth.logout.api'));
                         }
                     }
                 ]

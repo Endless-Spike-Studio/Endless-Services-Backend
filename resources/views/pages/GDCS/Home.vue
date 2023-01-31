@@ -17,6 +17,8 @@ import {copy, isMobile, to_route} from "@/scripts/core/utils";
 import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";
 import avatar_2 from "@/images/avatars/xyzlol.png";
 import {Box} from "@vicons/tabler";
+import {Head} from "@inertiajs/vue3";
+import Grid from "@/views/components/Grid.vue";
 
 defineProps<{
     statistic: {
@@ -31,10 +33,16 @@ defineProps<{
         contests: number;
     }
 }>();
+
+const windowsDownloadModalShow = ref(false);
 </script>
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>主页</title>
+        </Head>
+
         <n-space vertical>
             <n-space :vertical="isMobile" class="py-20" justify="center">
                 <n-el class="sm:w-1/2 px-5 mx-auto">
@@ -47,42 +55,21 @@ defineProps<{
             </n-space>
 
             <n-card title="下载">
-                <n-grid :cols="isMobile ? 2 : 4" :x-gap="10" :y-gap="10" class="[&>*]:mx-auto items-center">
+                <Grid :cols="3" class="[&>*]:mx-auto items-center">
                     <n-grid-item>
                         <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.apk" tag="a" text>
                             <n-space vertical>
                                 <n-icon :component="AndroidOutlined" :size="50"/>
-                                <span class="text-2xl">安卓</span>
+                                <n-text class="text-current text-2xl">安卓</n-text>
                             </n-space>
                         </n-button>
                     </n-grid-item>
 
-                    <n-grid-item v-if="!isMobile">
-                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.zip" tag="a" text>
+                    <n-grid-item>
+                        <n-button text @click="windowsDownloadModalShow = true">
                             <n-space vertical>
-                                <n-space justify="center">
-                                    <n-icon :component="WindowsOutlined" :size="25"/>
-                                    <n-icon :component="FileZipTwotone" :size="25"/>
-                                </n-space>
-
+                                <n-icon :component="WindowsOutlined" :size="50"/>
                                 <n-text class="text-2xl">Windows</n-text>
-                                <n-text>[.zip] (带资源包)</n-text>
-                                <n-text type="success">(推荐)</n-text>
-                            </n-space>
-                        </n-button>
-                    </n-grid-item>
-
-                    <n-grid-item v-if="!isMobile">
-                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.exe" tag="a" text>
-                            <n-space vertical>
-                                <n-space justify="center">
-                                    <n-icon :component="WindowsOutlined" :size="25"/>
-                                    <n-icon :component="Box" :size="25"/>
-                                </n-space>
-
-                                <n-text class="text-2xl">Windows</n-text>
-                                <n-text>[.exe] (无资源包)</n-text>
-                                <n-text type="warning">仅供替换, 单独下载无法运行</n-text>
                             </n-space>
                         </n-button>
                     </n-grid-item>
@@ -92,11 +79,11 @@ defineProps<{
                                   text type="warning">
                             <n-space vertical>
                                 <n-icon :component="AppleOutlined" :size="50"/>
-                                <span class="text-2xl">苹果</span>
+                                <n-text class="text-current text-2xl">苹果</n-text>
                             </n-space>
                         </n-button>
                     </n-grid-item>
-                </n-grid>
+                </Grid>
 
                 <template #footer>
                     <n-space justify="center">
@@ -128,7 +115,7 @@ defineProps<{
             </n-card>
 
             <n-card class="text-center" title="到目前, GDCS 拥有了">
-                <n-grid :x-gap="10" :y-gap="10" cols="3 640:9">
+                <Grid :cols="isMobile ? 3 : 9">
                     <n-grid-item>
                         <n-statistic :value="statistic.players.toString()" label="玩家"/>
                     </n-grid-item>
@@ -164,10 +151,10 @@ defineProps<{
                     <n-grid-item>
                         <n-statistic :value="statistic.contests.toString()" label="比赛"/>
                     </n-grid-item>
-                </n-grid>
+                </Grid>
             </n-card>
 
-            <n-grid :x-gap="10" :y-gap="10" class="[&>*>*]:h-full" cols="1 640:2">
+            <Grid :cols="isMobile ? 1 : 2" class="[&>*>*]:h-full">
                 <n-grid-item>
                     <n-card title="这是什么">
                         GDCS, 全称 Geometry Dash Chinese
@@ -200,7 +187,7 @@ defineProps<{
 
                 <n-grid-item>
                     <n-card title="管理团队">
-                        <n-grid :cols="isMobile ? 1 : 2" :x-gap="10" :y-gap="10" class="[&>*]:mx-auto">
+                        <Grid :cols="isMobile ? 1 : 2" class="[&>*]:mx-auto">
                             <n-grid-item>
                                 <n-space>
                                     <n-space class="text-center leading-none" vertical>
@@ -211,7 +198,7 @@ defineProps<{
                                         <n-text :depth="3">服主</n-text>
                                     </n-space>
 
-                                    <n-grid :cols="2" :x-gap="10" :y-gap="10" class="[&>*]:leading-none">
+                                    <Grid :cols="2" class="[&>*]:leading-none">
                                         <n-grid-item>
                                             <n-space vertical>
                                                 <n-text class="font-bold">QQ</n-text>
@@ -265,7 +252,7 @@ defineProps<{
                                                 </n-button>
                                             </n-space>
                                         </n-grid-item>
-                                    </n-grid>
+                                    </Grid>
                                 </n-space>
                             </n-grid-item>
 
@@ -283,7 +270,7 @@ defineProps<{
                                         <n-text :depth="3">副服主</n-text>
                                     </n-space>
 
-                                    <n-grid :cols="2" :x-gap="10" :y-gap="10" class="[&>*]:leading-none">
+                                    <Grid :cols="2" class="[&>*]:leading-none">
                                         <n-grid-item>
                                             <n-space vertical>
                                                 <n-text class="font-bold">QQ</n-text>
@@ -325,17 +312,17 @@ defineProps<{
                                                 </n-button>
                                             </n-space>
                                         </n-grid-item>
-                                    </n-grid>
+                                    </Grid>
                                 </n-space>
                             </n-grid-item>
-                        </n-grid>
+                        </Grid>
                     </n-card>
                 </n-grid-item>
-            </n-grid>
+            </Grid>
 
             <n-divider>特性</n-divider>
 
-            <n-grid :cols="isMobile ? 1 : 3" :x-gap="10" :y-gap="10" class="[&>*>*]:h-full">
+            <Grid :cols="isMobile ? 1 : 3" class="[&>*>*]:h-full">
                 <n-grid-item>
                     <n-card title="开源可靠">
                         <n-text :depth="3">
@@ -396,7 +383,46 @@ defineProps<{
                         </n-text>
                     </n-card>
                 </n-grid-item>
-            </n-grid>
+            </Grid>
         </n-space>
+
+        <n-modal v-model:show="windowsDownloadModalShow" class="sm:w-1/2 sm:mx-auto mx-2.5" preset="card"
+                 title="请选择您要下载的内容">
+            <n-el class="py-10">
+                <Grid :cols="2" class="[&>*]:mx-auto">
+                    <n-grid-item>
+                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.zip" tag="a" text>
+                            <n-space vertical>
+                                <n-icon :component="FileZipTwotone" :size="50"/>
+                                <n-text :depth="3">.zip</n-text>
+
+                                <n-el class="leading-relaxed">
+                                    <n-text class="text-current text-xl">带资源包</n-text>
+                                    <br><br>
+                                    <n-text type="success">(推荐)</n-text>
+                                </n-el>
+                            </n-space>
+                        </n-button>
+                    </n-grid-item>
+
+                    <n-grid-item>
+                        <n-button href="https://cdn.geometrydashchinese.com/client/GDCS.exe" tag="a" text>
+                            <n-space vertical>
+                                <n-icon :component="Box" :size="50"/>
+                                <n-text :depth="3">.exe</n-text>
+
+                                <n-el class="leading-relaxed">
+                                    <n-text class="text-current text-xl">无资源包</n-text>
+                                    <br><br>
+                                    <n-text type="warning">(仅供替换)</n-text>
+                                    <br>
+                                    <n-text type="error">(单独下载无法运行)</n-text>
+                                </n-el>
+                            </n-space>
+                        </n-button>
+                    </n-grid-item>
+                </Grid>
+            </n-el>
+        </n-modal>
     </CommonLayout>
 </template>

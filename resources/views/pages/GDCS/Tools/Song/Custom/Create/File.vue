@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/core/route";
+import {Head, useForm} from "@inertiajs/vue3";
+import route from "ziggy-js";
 import {FileAddTwotone} from "@vicons/antd";
 import {useApiStore} from "@/scripts/core/stores";
 import {FormInst, UploadFileInfo} from "naive-ui";
@@ -48,6 +48,10 @@ function submit() {
 </script>
 
 <template>
+    <Head>
+        <title>在线工具 - 自定义歌曲 - 创建 - 文件</title>
+    </Head>
+
     <n-card>
         <n-form ref="formRef" :model="form" :rules="rules">
             <n-form-item label="歌曲名">

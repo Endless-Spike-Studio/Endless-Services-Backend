@@ -1,22 +1,23 @@
 <script lang="ts" setup>
-import {Inertia} from "@inertiajs/inertia";
+import {Head, router} from "@inertiajs/vue3";
 import {createRange, formatTime, to_route, useProp} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
+import {App} from "@/types/backend";
 import c1 from "@/images/game/c1.png";
 import c2 from "@/images/game/c2.png";
+import {PaginatedData} from "@/types/utils";
 
 const level = useProp<App.Models.Level>('level');
 const scores = useProp<PaginatedData<App.Models.LevelScore>>('scores');
 const page = ref();
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['scores']
     });
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['comments'],
         data: {
             page: newPage
@@ -26,6 +27,10 @@ function handlePageUpdate(newPage: number) {
 </script>
 
 <template>
+    <Head>
+        <title>关卡 - {{ level.name }} - 排行榜</title>
+    </Head>
+
     <n-card>
         <n-space v-if="scores && scores.data?.length > 0" vertical>
             <n-list bordered>

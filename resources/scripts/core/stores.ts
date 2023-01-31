@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {darkTheme, lightTheme, useOsTheme} from "naive-ui";
+import {darkTheme, useOsTheme} from "naive-ui";
 import {useProp} from "@/scripts/core/utils";
 import {App} from "@/types/backend";
 
@@ -8,29 +8,17 @@ export const useAppStore = defineStore('app', {
         theme: useOsTheme().value
     }),
     getters: {
-        themeRef() {
-            switch (this.theme) {
-                case 'light':
-                    return lightTheme;
-                case 'dark':
-                    return darkTheme;
-                default:
-                    return null;
-            }
+        themeRef(store) {
+            return store.theme === 'dark' ? darkTheme : null;
         }
     },
     actions: {
         switchTheme() {
-            switch (this.theme) {
-                case 'light':
-                    this.theme = 'dark';
-                    break;
-                case 'dark':
-                default:
-                    this.theme = 'light';
-                    break;
-            }
+            this.theme = (this.theme === 'dark' ? ' light' : 'dark') as (typeof this.theme);
         }
+    },
+    persist: {
+        enabled: true
     }
 });
 
@@ -46,8 +34,8 @@ export const useApiStore = defineStore('api', {
 export const useBackendStore = defineStore('backend', {
     state: () => ({
         gdcs: {
-            account: useProp<App.Models.Account>('gdcs.account') as unknown as App.Models.Account,
-            user: useProp<App.Models.User>('gdcs.user') as unknown as App.Models.User
+            account: useProp('gdcs.account') as unknown as App.Models.Account,
+            user: useProp('gdcs.user') as unknown as App.Models.User
         }
     })
 });

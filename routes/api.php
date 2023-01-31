@@ -2,13 +2,10 @@
 
 use App\Http\Controllers\NGProxy\SongController;
 use Illuminate\Support\Facades\Route;
-use Tightenco\Ziggy\Ziggy;
 
 Route::group([
     'as' => 'api.',
 ], static function () {
-    Route::get('/routes', [Ziggy::class, 'toArray'])->name('routes');
-
     Route::group([
         'domain' => 'ng.geometrydashchinese.com',
         'as' => 'ngproxy.',

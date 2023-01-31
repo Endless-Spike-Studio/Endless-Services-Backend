@@ -1,19 +1,20 @@
 <script lang="ts" setup>
 import {formatTime, guessServer, to_route, useProp} from "@/scripts/core/utils";
-import {Inertia} from "@inertiajs/inertia";
-import {App, PaginatedData} from "@/types/backend";
+import {Head, router} from "@inertiajs/vue3";
+import {App} from "@/types/backend";
+import {PaginatedData} from "@/types/utils";
 
 const links = useProp<PaginatedData<App.Models.AccountLink>>('links');
 const page = ref();
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['links']
     });
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['links'],
         data: {
             page: newPage
@@ -23,6 +24,10 @@ function handlePageUpdate(newPage: number) {
 </script>
 
 <template>
+    <Head>
+        <title>在线工具 - 关卡转移 - 转入 - 链接选择</title>
+    </Head>
+
     <n-card title="链接选择">
         <template #header-extra>
             <n-button @click="to_route('gdcs.tools.account.link.index')">

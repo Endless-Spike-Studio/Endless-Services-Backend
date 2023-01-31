@@ -194,7 +194,8 @@ return [
             'account_email_edit_success_please_re_verify_email' => '[账号] 邮箱更改成功! 请重新验证邮箱',
             'account_edit_success' => '[账号] 编辑成功!',
             'account_password_change_success' => '[账号] 密码修改成功!',
-            'level_delete_success' => '[关卡] 删除成功!'
+            'level_delete_success' => '[关卡] 删除成功!',
+            'a_mail_with_name_has_been_send_to_your_email' => '一封包含用户名的邮件已发送到您的邮箱'
         ],
         'error' => [
             'invalid_arguments' => '[Dashboard] 参数无效',
@@ -240,6 +241,13 @@ return [
         'error' => [
             'not_level_owner' => '您不是该关卡的所有者',
             'level_rated' => '关卡已被 Rated'
+        ]
+    ],
+    'notification' => [
+        'lines' => [
+            'find_name' => '您正在找回用户名',
+            'name_is_with_name' => '您的用户名是: :name',
+            'if_you_did_not_forget_name_please_ignore_this' => '如果您未忘记用户名 请忽略这个'
         ]
     ]
 ];

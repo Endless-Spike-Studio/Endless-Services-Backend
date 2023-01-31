@@ -2,11 +2,16 @@
 import {formatTime, useProp} from "@/scripts/core/utils";
 import {App} from "@/types/backend";
 import {contestRules} from "@/scripts/core/shared";
+import {Head} from "@inertiajs/vue3";
 
 const contest = useProp<App.Models.Contest>('contest');
 </script>
 
 <template>
+    <Head>
+        <title>比赛 - {{ contest.name }} - 详细信息</title>
+    </Head>
+
     <n-card>
         <n-space vertical>
             <n-thing>

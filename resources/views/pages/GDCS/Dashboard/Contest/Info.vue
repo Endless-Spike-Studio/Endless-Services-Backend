@@ -7,6 +7,9 @@ import DetailsTab from "@/views/pages/GDCS/Dashboard/Contest/Tabs/Details.vue";
 import ParticipantsTab from "@/views/pages/GDCS/Dashboard/Contest/Tabs/Participants.vue";
 import SubmitTab from "@/views/pages/GDCS/Dashboard/Contest/Tabs/Submit.vue";
 import {Users} from "@vicons/tabler";
+import Grid from "@/views/components/Grid.vue";
+import {isMobile} from "@/scripts/core/utils";
+import {Head} from "@inertiajs/vue3";
 
 const props = defineProps<{
     contest: App.Models.Contest;
@@ -53,7 +56,11 @@ const menu = reactive({
 
 <template>
     <CommonLayout>
-        <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
+        <Head>
+            <title>比赛 - {{ contest.name }}</title>
+        </Head>
+
+        <Grid :cols="isMobile ? 1 : 4">
             <n-grid-item>
                 <n-card :content-style="{ padding: 0 }">
                     <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -67,6 +74,6 @@ const menu = reactive({
                     </n-tab-pane>
                 </n-tabs>
             </n-grid-item>
-        </n-grid>
+        </Grid>
     </CommonLayout>
 </template>

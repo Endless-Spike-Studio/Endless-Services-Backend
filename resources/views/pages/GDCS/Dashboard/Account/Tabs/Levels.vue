@@ -1,22 +1,24 @@
 <script lang="ts" setup>
-import {Inertia} from "@inertiajs/inertia";
+import {Head, router} from "@inertiajs/vue3";
 import {formatTime, to_route, useProp} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
+import {App} from "@/types/backend";
 import {Base64} from "js-base64";
 import LevelDifficulty from "@/views/components/LevelDifficulty.vue";
 import {defaultLevelDesc} from "@/scripts/core/shared";
+import {PaginatedData} from "@/types/utils";
 
 const page = ref();
+const account = useProp<App.Models.Account>('account');
 const levels = useProp<PaginatedData<App.Models.Level>>('levels');
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['levels']
     });
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['levels'],
         data: {
             page: newPage
@@ -26,6 +28,10 @@ function handlePageUpdate(newPage: number) {
 </script>
 
 <template>
+    <Head>
+        <title>账号 - {{ account.name }} - 关卡</title>
+    </Head>
+
     <n-card>
         <n-space v-if="levels && levels.data?.length > 0" vertical>
             <n-list bordered>

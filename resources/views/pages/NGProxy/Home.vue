@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/NGProxy/Common.vue";
 import {GithubOutlined, HeartTwotone, HomeTwotone, MailTwotone, UsergroupAddOutlined} from "@vicons/antd";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 import {App} from "@/types/backend";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
 import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";
 import {isMobile} from "@/scripts/core/utils";
+import Grid from "@/views/components/Grid.vue";
 
 const props = defineProps<{
     song: App.Models.Song;
@@ -21,6 +22,11 @@ function submit() {
 
 <template>
     <CommonLayout>
+        <Head>
+            <title v-if="song">歌曲 - [{{ song.song_id }}] {{ song.name }} By {{ song.artist_name }}</title>
+            <title v-else>主页</title>
+        </Head>
+
         <n-space vertical>
             <n-card title="歌曲查询">
                 <n-space vertical>
@@ -32,7 +38,7 @@ function submit() {
                         </n-button>
                     </n-space>
 
-                    <n-el v-if="song" class="lg:w-1/2 mx-auto text-center">
+                    <n-el v-if="song" class="sm:w-1/2 mx-auto text-center">
                         <n-descriptions :columns="isMobile ? 1 : 3" bordered>
                             <n-descriptions-item label="歌曲名">
                                 {{ song.name }}
@@ -88,7 +94,7 @@ function submit() {
                 </template>
             </n-card>
 
-            <n-grid :x-gap="10" :y-gap="10" cols="1 640:2">
+            <Grid :cols="isMobile ? 1 : 2">
                 <n-grid-item>
                     <n-card class="h-full" title="这是什么">
                         NGProxy, 全称
@@ -117,7 +123,7 @@ function submit() {
                                 <n-text class="font-bold text-2xl">渣渣120</n-text>
                             </n-space>
 
-                            <n-grid :cols="2" :x-gap="10" :y-gap="10" class="[&>*]:leading-none">
+                            <Grid :cols="2" class="[&>*]:leading-none">
                                 <n-grid-item>
                                     <n-space vertical>
                                         <n-text class="font-bold">QQ</n-text>
@@ -159,11 +165,11 @@ function submit() {
                                         </n-button>
                                     </n-space>
                                 </n-grid-item>
-                            </n-grid>
+                            </Grid>
                         </n-space>
                     </n-card>
                 </n-grid-item>
-            </n-grid>
+            </Grid>
         </n-space>
     </CommonLayout>
 </template>

@@ -1,23 +1,22 @@
 <script lang="ts" setup>
 import {createRules, useProp} from "@/scripts/core/utils";
 import {App} from "@/types/backend";
-import {Inertia} from "@inertiajs/inertia";
-import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
+import {Head, router, useForm} from "@inertiajs/vue3";
 import {FormInst} from "naive-ui";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
 
 const account = useProp<App.Models.Account>('account');
 const settings = useProp<App.Models.Account>('settings');
 const $emits = defineEmits(['submitted']);
 
-const form = ref(), rules = ref();
+const form = ref<ReturnType<typeof useForm<Record<string, unknown>>>>(), rules = ref();
 const formRef = ref<FormInst>();
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['settings'],
         onFinish() {
-            form.value = useForm(settings.value);
+            form.value = useForm(settings.value as unknown as Record<string, unknown>);
             rules.value = createRules(form.value);
         }
     });
@@ -26,10 +25,10 @@ nextTick(() => {
 function submit() {
     formRef.value?.validate(errors => {
         if (!errors) {
-            (form.value as InertiaForm<{}>)?.post(route('gdcs.dashboard.account.edit.api', account.value.id), {
+            form.value?.post(route('gdcs.dashboard.account.edit.api', account.value.id), {
                 onFinish() {
                     formRef.value?.validate();
-                    form.value.clearErrors();
+                    form.value?.clearErrors();
                 },
                 onSuccess() {
                     $emits('submitted');
@@ -66,6 +65,10 @@ function changePasswordSubmit() {
 </script>
 
 <template>
+    <Head>
+        <title>账号 - {{ account.name }} - 管理 - 设置</title>
+    </Head>
+
     <n-space vertical>
         <n-card>
             <n-form v-if="settings && form" ref="formRef" :model="form" :rules="rules">

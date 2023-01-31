@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {App, PaginatedData} from "@/types/backend";
-import {formatTime, to_route} from "@/scripts/core/utils";
-import {Inertia} from "@inertiajs/inertia";
+import {App} from "@/types/backend";
+import {formatTime, isMobile, to_route} from "@/scripts/core/utils";
+import {Head, router} from "@inertiajs/vue3";
 import LevelInfo from "@/views/components/Info/Level.vue";
 import star from "@/images/game/star.png";
 import gold_coin from "@/images/game/c0.png";
@@ -10,6 +10,8 @@ import silver_coin from "@/images/game/c2.png";
 import demon from "@/images/game/difficulties/9.png";
 import cp from "@/images/game/cp.png";
 import {useWindowSize} from "@vueuse/core";
+import {PaginatedData} from "@/types/utils";
+import Grid from "@/views/components/Grid.vue";
 
 const props = defineProps<{
     account: App.Models.Account;
@@ -55,7 +57,7 @@ const scoreSorter = reactive({
 });
 
 function handlePageUpdate() {
-    Inertia.reload({
+    router.reload({
         data: {
             page_accounts: pages.accounts,
             page_contests: pages.contests,
@@ -74,13 +76,17 @@ const {width} = useWindowSize();
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>Dashboard</title>
+        </Head>
+
         <n-space vertical>
             <n-card :title="account.name">
                 <template #header-extra>
                     <n-text :depth="3" class="text-sm">注册于 {{ formatTime(account.created_at) }}</n-text>
                 </template>
 
-                <n-grid :cols="3" :x-gap="10" :y-gap="10" class="text-center">
+                <Grid :cols="3" class="text-center">
                     <n-grid-item>
                         <n-statistic :value="statistic.comments.toString()" label="评论了">
                             <template #suffix>次</template>
@@ -98,7 +104,7 @@ const {width} = useWindowSize();
                             <template #suffix>赞</template>
                         </n-statistic>
                     </n-grid-item>
-                </n-grid>
+                </Grid>
             </n-card>
 
             <n-card title="最新赛事">
@@ -137,7 +143,7 @@ const {width} = useWindowSize();
                 <n-empty v-else/>
             </n-card>
 
-            <n-grid :x-gap="10" :y-gap="10" class="lg:h-[50vh]" cols="1 640:3">
+            <Grid :cols="isMobile ? 1 : 3" class="sm:h-[50vh]">
                 <n-grid-item class="h-full overflow-auto">
                     <n-card title="新账号">
                         <n-space vertical>
@@ -198,7 +204,7 @@ const {width} = useWindowSize();
                         </n-space>
                     </n-card>
                 </n-grid-item>
-            </n-grid>
+            </Grid>
 
             <n-card title="排行榜">
                 <n-space vertical>
@@ -263,7 +269,7 @@ const {width} = useWindowSize();
                                 </template>
 
                                 <n-space vertical>
-                                    <n-grid :cols="5" class="lg:!w-1/2 lg:mx-auto">
+                                    <Grid :cols="5" class="sm:!w-1/2 sm:mx-auto">
                                         <n-grid-item>
                                             <n-space justify="center" size="small">
                                                 <n-image :img-props="{ class: 'w-[1.5em]' }" :src="star"
@@ -308,7 +314,7 @@ const {width} = useWindowSize();
                                                 <n-text>{{ score.creator_points }}</n-text>
                                             </n-space>
                                         </n-grid-item>
-                                    </n-grid>
+                                    </Grid>
 
                                     <n-el class="text-center">
                                         <n-text :depth="3" class="text-sm">

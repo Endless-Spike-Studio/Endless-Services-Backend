@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import {Inertia} from "@inertiajs/inertia";
+import {Head, router} from "@inertiajs/vue3";
 import {to_route, useProp} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
+import {App} from "@/types/backend";
 import {Base64} from "js-base64";
+import {PaginatedData} from "@/types/utils";
 
 const levels = useProp<PaginatedData<App.Models.Level>>('levels');
 const page = ref();
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         data: {
             page: newPage
         },
@@ -17,7 +18,7 @@ function handlePageUpdate(newPage: number) {
 }
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['levels'],
         onFinish() {
             page.value = levels.value?.current_page;
@@ -27,6 +28,10 @@ nextTick(() => {
 </script>
 
 <template>
+    <Head>
+        <title>在线工具 - 关卡转移 - 转出 - 关卡选择</title>
+    </Head>
+
     <n-card title="关卡选择">
         <n-space v-if="levels && levels.data?.length > 0" vertical>
             <n-list bordered>

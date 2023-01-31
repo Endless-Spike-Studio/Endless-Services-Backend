@@ -43,7 +43,7 @@ class LevelTransferToolPresenter
         }
 
         return Inertia::render('GDCS/Tools/Level/Transfer/In/LevelSelect', [
-            'linkID' => $link->id,
+            'link' => $link->only(['id', 'target_name']),
             'levels' => $service->loadLevelsFromRemote($link->server, $link->target_user_id, Request::get('page', 0))
         ]);
     }
@@ -60,7 +60,7 @@ class LevelTransferToolPresenter
         }
 
         return Inertia::render('GDCS/Tools/Level/Transfer/Out/LinkSelect', [
-            'levelID' => $level->id,
+            'level' => $level->only(['id', 'name']),
             'links' => $account->links()
                 ->select(['id', 'account_id', 'server', 'target_name', 'target_account_id', 'target_user_id', 'created_at'])
                 ->paginate()

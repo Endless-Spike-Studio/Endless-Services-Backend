@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {App, PaginatedData} from "@/types/backend";
-import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
+import {App} from "@/types/backend";
+import {Head, router, useForm} from "@inertiajs/vue3";
 import {formatTime, guessServer, to_route} from "@/scripts/core/utils";
-import route from "@/scripts/core/route";
-import {Inertia} from "@inertiajs/inertia";
+import route from "ziggy-js";
+import {PaginatedData} from "@/types/utils";
 
 const props = defineProps<{
     links: PaginatedData<App.Models.AccountLink>
@@ -14,13 +14,13 @@ const forms = computed(() => {
     return props.links?.data.reduce(function (data, link) {
         data[link.id] = useForm({});
         return data;
-    }, {} as Record<number, unknown>);
+    }, {} as Record<number, ReturnType<typeof useForm<{}>>>);
 });
 
 const page = ref(props.links.current_page);
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['links'],
         data: {
             page: newPage
@@ -29,12 +29,16 @@ function handlePageUpdate(newPage: number) {
 }
 
 function deleteLink(id: number) {
-    (forms.value[id] as InertiaForm<{}>)?.delete(route('gdcs.tools.account.link.delete.api', id));
+    forms.value[id]?.delete(route('gdcs.tools.account.link.delete.api', id));
 }
 </script>
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>在线工具 - 账号链接</title>
+        </Head>
+
         <n-card title="账号链接">
             <template #header-extra>
                 <n-button @click="to_route('gdcs.tools.account.link.create')">

@@ -5,14 +5,14 @@ export interface BackendMessage {
     options: MessageOptions;
 }
 
-export interface Model {
-    id: number;
-    created_at: string | null;
-    updated_at: string | null;
-}
-
 declare namespace App.Models {
-    export interface Account extends Model {
+    interface _ {
+        id: number;
+        created_at: string | null;
+        updated_at: string | null;
+    }
+
+    export interface Account extends _ {
         name: string;
         email: string;
         email_verified_at: string | null;
@@ -20,7 +20,7 @@ declare namespace App.Models {
         links?: AccountLink[];
     }
 
-    export interface AccountLink extends Model {
+    export interface AccountLink extends _ {
         account_id: number;
         server: string;
         target_name: string;
@@ -29,7 +29,7 @@ declare namespace App.Models {
         account?: Account;
     }
 
-    export interface Contest extends Model {
+    export interface Contest extends _ {
         account_id: number;
         name: string;
         desc: string;
@@ -38,7 +38,7 @@ declare namespace App.Models {
         account?: Account;
     }
 
-    export interface ContestParticipant extends Model {
+    export interface ContestParticipant extends _ {
         contest_id: number;
         account_id: number;
         level_id: number;
@@ -47,7 +47,7 @@ declare namespace App.Models {
         level?: Level;
     }
 
-    export interface CustomSong extends Model {
+    export interface CustomSong extends _ {
         account_id: number;
         name: string;
         artist_name: string;
@@ -56,7 +56,7 @@ declare namespace App.Models {
         account?: Account;
     }
 
-    export interface Level extends Model {
+    export interface Level extends _ {
         name: string;
         desc: string;
         coins: number;
@@ -78,7 +78,7 @@ declare namespace App.Models {
         comments?: LevelComment[];
     }
 
-    export interface LevelScore extends Model {
+    export interface LevelScore extends _ {
         account_id: number;
         level_id: number;
         percent: number;
@@ -88,18 +88,18 @@ declare namespace App.Models {
         level?: Level;
     }
 
-    export interface LevelComment extends Model {
+    export interface LevelComment extends _ {
         account_id: number;
         level_id: number;
         comment: string;
         percent: number;
         likes: number;
-        span: boolean;
+        spam: boolean;
         account?: Account;
         level?: Level;
     }
 
-    export interface LevelRating extends Model {
+    export interface LevelRating extends _ {
         level_id: number;
         stars: number;
         difficulty: number;
@@ -112,13 +112,13 @@ declare namespace App.Models {
         level?: Level;
     }
 
-    export interface LevelTempUploadAccess extends Model {
+    export interface LevelTempUploadAccess extends _ {
         account_id: number;
         ip: string;
         account?: Account;
     }
 
-    export interface Song extends Model {
+    export interface Song extends _ {
         song_id: number;
         name: string;
         artist_name: string;
@@ -127,7 +127,7 @@ declare namespace App.Models {
         download_url: string;
     }
 
-    export interface User extends Model {
+    export interface User extends _ {
         name: string;
         uuid: string;
         udid: string;
@@ -135,7 +135,7 @@ declare namespace App.Models {
         score?: UserScore;
     }
 
-    export interface UserScore extends Model {
+    export interface UserScore extends _ {
         user_id: number;
         stars: number;
         coins: number;
@@ -144,12 +144,4 @@ declare namespace App.Models {
         creator_points: number;
         user?: User;
     }
-}
-
-export interface PaginatedData<T extends unknown> {
-    total: number;
-    per_page: number;
-    current_page: number;
-    last_page: number;
-    data: T[];
 }

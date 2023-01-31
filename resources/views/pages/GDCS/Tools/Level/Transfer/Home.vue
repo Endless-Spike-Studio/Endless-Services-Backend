@@ -4,6 +4,9 @@ import {NIcon} from "naive-ui";
 import {LeftCircleOutlined, RightCircleOutlined} from "@vicons/antd";
 import LinkSelectForLevelTransferIn from "@/views/pages/GDCS/Tools/Level/Transfer/In/LinkSelect.vue";
 import LevelSelectForLevelTransferOut from "@/views/pages/GDCS/Tools/Level/Transfer/Out/LevelSelect.vue";
+import Grid from "@/views/components/Grid.vue";
+import {Head} from "@inertiajs/vue3";
+import {isMobile} from "@/scripts/core/utils";
 
 const menu = reactive({
     active: ref('in'),
@@ -30,7 +33,11 @@ const menu = reactive({
 
 <template>
     <CommonLayout>
-        <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
+        <Head>
+            <title>在线工具 - 关卡转移</title>
+        </Head>
+
+        <Grid :cols="isMobile ? 1 : 4">
             <n-grid-item>
                 <n-card :content-style="{ padding: 0 }">
                     <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -44,6 +51,6 @@ const menu = reactive({
                     </n-tab-pane>
                 </n-tabs>
             </n-grid-item>
-        </n-grid>
+        </Grid>
     </CommonLayout>
 </template>

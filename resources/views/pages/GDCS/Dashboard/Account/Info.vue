@@ -4,14 +4,15 @@ import {App} from "@/types/backend";
 import {useBackendStore} from "@/scripts/core/stores";
 import {MenuOption, NIcon, NText} from "naive-ui";
 import CommentsTab from "@/views/pages/GDCS/Dashboard/Account/Tabs/Comments.vue";
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/core/route";
-import {formatTime} from "@/scripts/core/utils";
+import {Head, useForm} from "@inertiajs/vue3";
+import route from "ziggy-js";
+import {formatTime, isMobile} from "@/scripts/core/utils";
 import {CommentRegular} from "@vicons/fa";
 import {Box} from "@vicons/tabler";
 import LevelsTab from "@/views/pages/GDCS/Dashboard/Account/Tabs/Levels.vue";
 import {SettingTwotone} from "@vicons/antd";
 import SettingsTab from "@/views/pages/GDCS/Dashboard/Account/Tabs/Settings.vue";
+import Grid from "@/views/components/Grid.vue";
 
 const props = defineProps<{
     account: App.Models.Account;
@@ -93,8 +94,12 @@ function resendVerificationEmail() {
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>账号 - {{ account.name }}</title>
+        </Head>
+
         <n-space vertical>
-            <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
+            <Grid :cols="isMobile ? 1 : 4">
                 <n-grid-item>
                     <n-card :content-style="{ padding: 0 }">
                         <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -122,7 +127,7 @@ function resendVerificationEmail() {
 
                                 <n-divider v-if="account.user.score"/>
 
-                                <n-grid v-if="account.user.score" :x-gap="10" :y-gap="10" cols="3">
+                                <Grid v-if="account.user.score" :cols="3">
                                     <n-grid-item>
                                         <n-statistic :value="statistic.friends.toString()" label="好友"/>
                                     </n-grid-item>
@@ -156,7 +161,7 @@ function resendVerificationEmail() {
                                             </template>
                                         </n-statistic>
                                     </n-grid-item>
-                                </n-grid>
+                                </Grid>
 
                                 <n-el v-if="is_owner">
                                     <n-divider/>
@@ -192,7 +197,7 @@ function resendVerificationEmail() {
                         </n-card>
                     </n-space>
                 </n-grid-item>
-            </n-grid>
+            </Grid>
         </n-space>
     </CommonLayout>
 </template>

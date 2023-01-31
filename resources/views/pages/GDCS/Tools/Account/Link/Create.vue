@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 import {FormInst, SelectOption} from "naive-ui";
 import {first} from "lodash-es";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
 import {createRules} from "@/scripts/core/utils";
 import servers from "@/shared/servers.json";
 
@@ -41,6 +41,10 @@ function submit() {
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>在线工具 - 账号链接 - 创建</title>
+        </Head>
+
         <n-card title="链接创建">
             <n-form ref="formRef" :model="form" :rules="rules">
                 <n-form-item label="服务器">

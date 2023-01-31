@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 import {createRules, to_route} from "@/scripts/core/utils";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
 import {FormInst} from "naive-ui";
 
 const form = useForm({
@@ -29,14 +29,34 @@ function submit() {
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>登录</title>
+        </Head>
+
         <n-el class="sm:w-1/2 sm:mt-64 mx-auto">
             <n-card>
                 <n-form ref="formRef" :model="form" :rules="rules">
-                    <n-form-item label="用户名" path="name">
+                    <n-form-item class="relative" path="name">
+                        <template #label>
+                            <n-text>用户名</n-text>
+                            <n-button class="absolute right-0" text type="primary"
+                                      @click="to_route('gdcs.auth.find.name')">
+                                忘记用户名
+                            </n-button>
+                        </template>
+
                         <n-input v-model:value="form.name"/>
                     </n-form-item>
 
-                    <n-form-item label="密码" path="password">
+                    <n-form-item class="relative" path="password">
+                        <template #label>
+                            <n-text>密码</n-text>
+                            <n-button class="absolute right-0" text type="primary"
+                                      @click="to_route('gdcs.auth.find.password')">
+                                忘记密码
+                            </n-button>
+                        </template>
+
                         <n-input v-model:value="form.password" show-password-on="click" type="password"/>
                     </n-form-item>
                 </n-form>
@@ -46,17 +66,7 @@ function submit() {
                         登录
                     </n-button>
 
-                    <n-space size="small">
-                        <n-button text type="info" @click="to_route('gdcs.auth.forgetName')">
-                            忘记用户名
-                        </n-button>
-
-                        <n-button text type="info" @click="to_route('gdcs.auth.forgetPassword')">
-                            忘记密码
-                        </n-button>
-
-                        <n-button text @click="to_route('gdcs.auth.register')">还没账号? 去注册</n-button>
-                    </n-space>
+                    <n-button class="ml-2.5" text @click="to_route('gdcs.auth.register')">还没账号? 去注册</n-button>
                 </n-space>
             </n-card>
         </n-el>

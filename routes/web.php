@@ -18,6 +18,8 @@ use App\Http\Presenters\GDCS\LevelTransferToolPresenter;
 use App\Http\Presenters\NGProxy\HomePresenter as NGProxy_HomePresenter;
 use Illuminate\Support\Facades\Route;
 
+Route::redirect('/github', 'https://github.com/Geometry-Dash-Chinese/Geometry-Dash-Chinese')->name('github');
+
 Route::group([
     'domain' => 'gf.geometrydashchinese.com',
     'as' => 'gdcs.'
@@ -35,6 +37,12 @@ Route::group([
             Route::post('/register', [AuthController::class, 'register'])->name('register.api');
             Route::inertia('/login', 'GDCS/Auth/Login')->name('login');
             Route::post('/login', [AuthController::class, 'login'])->name('login.api');
+            Route::inertia('/find/name', 'GDCS/Auth/FindName')->name('find.name');
+            Route::post('/find/name', [AuthController::class, 'findName'])->name('find.name.api');
+            Route::inertia('/find/password', 'GDCS/Auth/FindPassword')->name('find.password');
+            Route::post('/find/name', [AuthController::class, 'findPassword'])->name('find.password.api');
+            Route::inertia('/reset/password', 'GDCS/Auth/ResetPassword')->name('reset.password');
+            Route::post('/reset/name', [AuthController::class, 'resetPassword'])->name('reset.password.api');
         });
 
         Route::group([

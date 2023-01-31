@@ -2,10 +2,12 @@
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {MenuOption, NButton, NCard, NIcon, NSpace} from "naive-ui";
 import {FolderTwotone, LinkOutlined, RetweetOutlined, UserOutlined} from "@vicons/antd";
-import {to_route} from "@/scripts/core/utils";
+import {isMobile, to_route} from "@/scripts/core/utils";
 import {VNode} from "vue";
 import {GatewayUserAccess} from "@vicons/carbon";
 import {LibraryMusicTwotone, QueueMusicTwotone} from "@vicons/material";
+import Grid from "@/views/components/Grid.vue";
+import {Head} from "@inertiajs/vue3";
 
 interface Tool {
     name: string;
@@ -85,8 +87,12 @@ const menu = reactive({
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>在线工具</title>
+        </Head>
+
         <n-space vertical>
-            <n-grid :x-gap="10" :y-gap="10" cols="1 640:4">
+            <Grid :cols="isMobile ? 1 : 4">
                 <n-grid-item>
                     <n-card :content-style="{ padding: 0 }">
                         <n-menu v-model:value="menu.active" :options="menu.options" mode="vertical"/>
@@ -110,7 +116,7 @@ const menu = reactive({
                         </n-tabs>
                     </n-card>
                 </n-grid-item>
-            </n-grid>
+            </Grid>
         </n-space>
     </CommonLayout>
 </template>

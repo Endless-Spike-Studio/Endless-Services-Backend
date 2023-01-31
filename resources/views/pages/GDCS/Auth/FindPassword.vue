@@ -1,15 +1,13 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {Head, useForm} from "@inertiajs/vue3";
+import {FormInst} from "naive-ui";
 import {createRules, to_route} from "@/scripts/core/utils";
 import route from "ziggy-js";
-import {FormInst} from "naive-ui";
 
 const form = useForm({
     name: null,
-    email: null,
-    password: null,
-    password_confirmation: null
+    email: null
 });
 
 const formRef = ref<FormInst>();
@@ -18,7 +16,7 @@ const rules = createRules(form);
 function submit() {
     formRef.value?.validate(errors => {
         if (!errors) {
-            form.post(route('gdcs.auth.register.api'), {
+            form.post(route('gdcs.auth.find.password.api'), {
                 onFinish() {
                     formRef.value?.validate();
                     form.clearErrors();
@@ -32,7 +30,7 @@ function submit() {
 <template>
     <CommonLayout>
         <Head>
-            <title>注册</title>
+            <title>找回密码</title>
         </Head>
 
         <n-el class="sm:w-1/2 sm:mt-64 mx-auto">
@@ -45,20 +43,14 @@ function submit() {
                     <n-form-item label="邮箱" path="email">
                         <n-input v-model:value="form.email"/>
                     </n-form-item>
-
-                    <n-form-item label="密码" path="password">
-                        <n-input v-model:value="form.password" show-password-on="click" type="password"/>
-                    </n-form-item>
-
-                    <n-form-item label="确认密码" path="password_confirmation">
-                        <n-input v-model:value="form.password_confirmation" show-password-on="click" type="password"/>
-                    </n-form-item>
                 </n-form>
 
                 <n-space class="w-full" justify="space-between">
-                    <n-button :disabled="!form.isDirty || form.processing" :loading="form.processing" @click="submit">注册
+                    <n-button :disabled="!form.isDirty || form.processing" :loading="form.processing" @click="submit">
+                        提交
                     </n-button>
-                    <n-button text @click="to_route('gdcs.auth.login')">已有账号? 去登录</n-button>
+
+                    <n-button class="ml-2.5" text @click="to_route('gdcs.auth.login')">想起来了? 去登录</n-button>
                 </n-space>
             </n-card>
         </n-el>

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\GDCS\Web;
 use App\Events\AccountRegistered;
 use App\Exceptions\WebException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GDCS\Web\FindNameRequest;
 use App\Http\Requests\GDCS\Web\LoginRequest;
 use App\Http\Requests\GDCS\Web\RegisterRequest;
 use App\Http\Traits\HasMessage;
 use App\Models\GDCS\Account;
+use App\Notifications\GDCS\FindNameNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +74,17 @@ class AuthController extends Controller
     {
         Auth::guard('gdcs')->logout();
         $this->pushSuccessMessage(__('gdcn.web.action.logout_success'));
+        return back();
+    }
+
+    public function findName(FindNameRequest $request)
+    {
+        $data = $request->validated();
+
+        $account = Account::whereEmail($data['email'])->firstOrFail();
+        $account->notify(new FindNameNotification);
+
+        $this->pushSuccessMessage(__('gdcn.dashboard.action.a_mail_with_name_has_been_send_to_your_email'));
         return back();
     }
 }

@@ -4,7 +4,8 @@
 
 @layer {
     :root {
-        @apply m-0 p-0 text-[12px] font-sans;
+        @apply w-full h-full m-0 p-0;
+        @apply text-[12px] font-sans;
     }
 
     html, body, #app {

@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import {createRules, useProp} from "@/scripts/core/utils";
 import {App} from "@/types/backend";
-import {Inertia} from "@inertiajs/inertia";
-import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
+import {router, useForm} from "@inertiajs/vue3";
 import {FormInst, SelectOption} from "naive-ui";
 import {Base64} from "js-base64";
 import {map} from "lodash-es";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
 import {Trash} from "@vicons/tabler";
 import tracks from "@/shared/tracks.json";
 
@@ -14,11 +13,11 @@ const level = useProp<App.Models.Level>('level');
 const settings = useProp<App.Models.Level>('settings');
 const $emits = defineEmits(['submitted']);
 
-const form = ref(), rules = ref();
+const form = ref<ReturnType<typeof useForm<Record<string, unknown>>>>(), rules = ref();
 const formRef = ref<FormInst>();
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['settings'],
         onFinish() {
             const data = ((_) => {
@@ -26,7 +25,7 @@ nextTick(() => {
                 return _;
             })(settings.value);
 
-            form.value = useForm(data);
+            form.value = useForm(data as unknown as Record<string, unknown>);
             rules.value = createRules(form.value);
         }
     });
@@ -42,6 +41,10 @@ const audioTrackOptions = computed(() => {
 });
 
 function changeSongType(custom = false) {
+    if (!form.value) {
+        return;
+    }
+
     if (custom) {
         form.value.audio_track = 0;
         form.value.song_id = settings.value.song_id || 1;
@@ -52,14 +55,18 @@ function changeSongType(custom = false) {
 }
 
 function submit() {
-    form.value.desc = Base64.encode(form.value.desc);
+    if (!form.value) {
+        return;
+    }
+
+    form.value.desc = Base64.encode(form.value.desc as string);
 
     formRef.value?.validate(errors => {
         if (!errors) {
-            (form.value as InertiaForm<{}>)?.post(route('gdcs.dashboard.level.edit.api', level.value.id), {
+            form.value?.post(route('gdcs.dashboard.level.edit.api', level.value.id), {
                 onFinish() {
                     formRef.value?.validate();
-                    form.value.clearErrors();
+                    form.value?.clearErrors();
                 },
                 onSuccess() {
                     $emits('submitted');
@@ -77,6 +84,10 @@ function deleteLevel() {
 </script>
 
 <template>
+    <Head>
+        <title>关卡 - {{ level.name }} - 管理 - 设置</title>
+    </Head>
+
     <n-space vertical>
         <n-card>
             <n-form v-if="settings && form" ref="formRef" :model="form" :rules="rules">

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {formatTime, guessServer, to_route} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
-import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/core/route";
-import {Inertia} from "@inertiajs/inertia";
+import {App} from "@/types/backend";
+import {Head, router, useForm} from "@inertiajs/vue3";
+import route from "ziggy-js";
+import {PaginatedData} from "@/types/utils";
 
 const props = defineProps<{
-    levelID: number;
+    level: App.Models.Level;
     links: PaginatedData<App.Models.AccountLink>
 }>();
 
@@ -22,11 +22,11 @@ const forms = computed(() => {
         });
 
         return data;
-    }, {} as Record<number, unknown>);
+    }, {} as Record<number, ReturnType<typeof useForm<{}>>>);
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['links'],
         data: {
             page: newPage
@@ -35,12 +35,16 @@ function handlePageUpdate(newPage: number) {
 }
 
 function transferOut(id: number) {
-    (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.tools.level.transfer.out.api', props.levelID));
+    forms.value[id]?.post(route('gdcs.tools.level.transfer.out.api', props.level.id));
 }
 </script>
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>在线工具 - 关卡转移 - 转出 - 关卡选择 - {{ level.name }} - 链接选择</title>
+        </Head>
+
         <n-card title="链接选择">
             <template #header-extra>
                 <n-button @click="to_route('gdcs.tools.account.link.index')">

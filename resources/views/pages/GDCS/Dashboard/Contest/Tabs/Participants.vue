@@ -1,20 +1,22 @@
 <script lang="ts" setup>
 import {formatTime, to_route, useProp} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
-import {Inertia} from "@inertiajs/inertia";
+import {App} from "@/types/backend";
+import {Head, router} from "@inertiajs/vue3";
 import LevelInfo from "@/views/components/Info/Level.vue";
+import {PaginatedData} from "@/types/utils";
 
-const participants = useProp<PaginatedData<App.Models.ContestParticipant>>('participants');
 const page = ref();
+const contest = useProp<App.Models.Contest>('contest');
+const participants = useProp<PaginatedData<App.Models.ContestParticipant>>('participants');
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['participants']
     });
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['participants'],
         data: {
             page: newPage
@@ -24,13 +26,17 @@ function handlePageUpdate(newPage: number) {
 </script>
 
 <template>
+    <Head>
+        <title>比赛 - {{ contest.name }} - 参与者</title>
+    </Head>
+
     <n-card>
         <n-space v-if="participants && participants.data?.length > 0" vertical>
             <n-list bordered>
                 <n-list-item v-for="participant in participants.data">
                     <LevelInfo :level="participant.level"/>
 
-                    <n-el class="lg:text-right">
+                    <n-el class="sm:text-right">
                         <n-button v-if="participant.account" text type="primary"
                                   @click="to_route('gdcs.dashboard.account.info', participant.account.id)">
                             {{ participant.account.name }}

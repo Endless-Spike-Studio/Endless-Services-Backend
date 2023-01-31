@@ -13,18 +13,24 @@ import {
 } from "@vicons/antd";
 import {copy, isMobile} from "@/scripts/core/utils";
 import {Box} from "@vicons/tabler";
-import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";</script>
+import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";
+import Grid from "@/views/components/Grid.vue";
+import {Head} from "@inertiajs/vue3";</script>
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>主页</title>
+        </Head>
+
         <n-space vertical>
             <n-card title="下载">
-                <n-grid :cols="isMobile ? 2 : 4" :x-gap="10" :y-gap="10" class="[&>*]:mx-auto items-center">
+                <Grid :cols="isMobile ? 2 : 4" class="[&>*]:mx-auto items-center">
                     <n-grid-item>
                         <n-button href="https://cdn.geometrydashchinese.com/client/GDProxy.apk" tag="a" text>
                             <n-space vertical>
                                 <n-icon :component="AndroidOutlined" :size="50"/>
-                                <span class="text-2xl">安卓</span>
+                                <n-text class="text-current text-2xl">安卓</n-text>
                             </n-space>
                         </n-button>
                     </n-grid-item>
@@ -64,11 +70,11 @@ import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";</script>
                                   text type="warning">
                             <n-space vertical>
                                 <n-icon :component="AppleOutlined" :size="50"/>
-                                <span class="text-2xl">苹果</span>
+                                <n-text class="text-current text-2xl">苹果</n-text>
                             </n-space>
                         </n-button>
                     </n-grid-item>
-                </n-grid>
+                </Grid>
 
                 <template #footer>
                     <n-space justify="center">
@@ -99,7 +105,7 @@ import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";</script>
                 </template>
             </n-card>
 
-            <n-grid :x-gap="10" :y-gap="10" class="[&>*>*]:h-full" cols="1 640:2">
+            <Grid :cols="isMobile ? 1 : 2" class="[&>*>*]:h-full">
                 <n-grid-item>
                     <n-card class="h-full" title="这是什么">
                         GDProxy, 全称
@@ -140,7 +146,7 @@ import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";</script>
                                 <n-text class="font-bold text-2xl">渣渣120</n-text>
                             </n-space>
 
-                            <n-grid :cols="2" :x-gap="10" :y-gap="10" class="[&>*]:leading-none">
+                            <Grid class="[&>*]:leading-none">
                                 <n-grid-item>
                                     <n-space vertical>
                                         <n-text class="font-bold">QQ</n-text>
@@ -182,11 +188,11 @@ import avatar_1 from "@/images/avatars/WOSHIZHAZHA120.png";</script>
                                         </n-button>
                                     </n-space>
                                 </n-grid-item>
-                            </n-grid>
+                            </Grid>
                         </n-space>
                     </n-card>
                 </n-grid-item>
-            </n-grid>
+            </Grid>
         </n-space>
     </CommonLayout>
 </template>

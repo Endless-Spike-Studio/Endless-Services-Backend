@@ -3,7 +3,7 @@ import {MenuOption, NIcon} from "naive-ui";
 import {HomeTwotone} from "@vicons/antd";
 import {to_home} from "@/scripts/core/utils";
 import CommonLayout from "@/views/layouts/CommonLayout.vue";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
 
 const route_home = 'ngproxy.home';
 

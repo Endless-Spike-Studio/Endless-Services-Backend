@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
-import {App, PaginatedData} from "@/types/backend";
-import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/core/route";
+import {App} from "@/types/backend";
+import {Head, router, useForm} from "@inertiajs/vue3";
+import route from "ziggy-js";
 import {formatTime} from "@/scripts/core/utils";
-import {Inertia} from "@inertiajs/inertia";
+import {PaginatedData} from "@/types/utils";
 
 const props = defineProps<{
     accesses: PaginatedData<App.Models.LevelTempUploadAccess>
@@ -14,13 +14,13 @@ const forms = computed(() => {
     return props.accesses?.data.reduce(function (data, access) {
         data[access.id] = useForm({});
         return data;
-    }, {} as Record<number, unknown>);
+    }, {} as Record<number, ReturnType<typeof useForm<{}>>>);
 });
 
 const page = ref(props.accesses.current_page);
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['accesses'],
         data: {
             page: newPage
@@ -29,15 +29,19 @@ function handlePageUpdate(newPage: number) {
 }
 
 function deleteAccess(id: number) {
-    (forms.value[id] as InertiaForm<{}>)?.delete(route('gdcs.tools.level.temp_upload_access.delete.api', id));
+    forms.value[id]?.delete(route('gdcs.tools.level.temp_upload_access.delete.api', id));
 }
 </script>
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>在线工具 - 临时关卡上传许可</title>
+        </Head>
+
         <n-card title="临时关卡上传许可">
             <template #header-extra>
-                <n-button @click="Inertia.post(route('gdcs.tools.level.temp_upload_access.create.api'))">
+                <n-button @click="router.post(route('gdcs.tools.level.temp_upload_access.create.api'))">
                     创建新许可
                 </n-button>
             </template>

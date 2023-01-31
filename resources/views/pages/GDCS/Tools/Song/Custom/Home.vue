@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import CommonLayout from "@/views/layouts/GDCS/Common.vue";
 import {formatTime, to_route} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
-import {Inertia} from "@inertiajs/inertia";
-import route from "@/scripts/core/route";
-import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
+import {App} from "@/types/backend";
+import {Head, router, useForm} from "@inertiajs/vue3";
+import route from "ziggy-js";
+import {PaginatedData} from "@/types/utils";
 
 const props = defineProps<{
     offset: number;
@@ -19,7 +19,7 @@ const forms = computed(() => {
     return props.songs.data.reduce(function (data, song) {
         data[song.id] = useForm({});
         return data;
-    }, {} as Record<number, unknown>);
+    }, {} as Record<number, ReturnType<typeof useForm<{}>>>);
 });
 
 const currentRouteIsUploaded = computed(() => {
@@ -27,7 +27,7 @@ const currentRouteIsUploaded = computed(() => {
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         data: {
             page: newPage
         },
@@ -36,12 +36,16 @@ function handlePageUpdate(newPage: number) {
 }
 
 function deleteSong(id: number) {
-    (forms.value[id] as InertiaForm<{}>)?.delete(route('gdcs.tools.song.custom.delete.api', id));
+    forms.value[id]?.delete(route('gdcs.tools.song.custom.delete.api', id));
 }
 </script>
 
 <template>
     <CommonLayout>
+        <Head>
+            <title>在线工具 - 自定义歌曲</title>
+        </Head>
+
         <n-card title="自定义歌曲">
             <template #header-extra>
                 <n-space>
@@ -79,7 +83,7 @@ function deleteSong(id: number) {
                                               @click="to_route('gdcs.dashboard.account.info', song.account.id)">
                                         {{ song.account.name }}
                                     </n-button>
-                                    <span v-else>未知</span>
+                                    <n-text v-else>未知</n-text>
                                     上传于 {{ formatTime(song.created_at) }}
                                 </n-text>
                             </template>

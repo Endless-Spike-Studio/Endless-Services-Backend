@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/core/route";
+import {Head, useForm} from "@inertiajs/vue3";
+import route from "ziggy-js";
 import {FormInst} from "naive-ui";
 import {createRules} from "@/scripts/core/utils";
 
@@ -43,6 +43,10 @@ function submit() {
 </script>
 
 <template>
+    <Head>
+        <title>在线工具 - 自定义歌曲 - 创建 - 网易云音乐</title>
+    </Head>
+
     <n-card>
         <n-form ref="formRef" :model="form" :rules="rules">
             <n-form-item label="音乐ID / 分享链接">

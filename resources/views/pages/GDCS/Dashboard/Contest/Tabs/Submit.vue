@@ -1,24 +1,25 @@
 <script lang="ts" setup>
-import {Inertia} from "@inertiajs/inertia";
+import {Head, router, useForm} from "@inertiajs/vue3";
 import {useProp} from "@/scripts/core/utils";
-import {App, PaginatedData} from "@/types/backend";
+import {App} from "@/types/backend";
 import LevelInfo from "@/views/components/Info/Level.vue";
-import {InertiaForm, useForm} from "@inertiajs/inertia-vue3";
-import route from "@/scripts/core/route";
+import route from "ziggy-js";
+import {PaginatedData} from "@/types/utils";
 
 const $emits = defineEmits(['submitted']);
+
+const page = ref();
 const contest = useProp<App.Models.Contest>('contest');
 const levels = useProp<PaginatedData<App.Models.Level>>('levels');
-const page = ref();
 
 nextTick(() => {
-    Inertia.reload({
+    router.reload({
         only: ['levels']
     });
 });
 
 function handlePageUpdate(newPage: number) {
-    Inertia.reload({
+    router.reload({
         only: ['levels'],
         data: {
             page: newPage
@@ -33,11 +34,11 @@ const forms = computed(() => {
         });
 
         return data;
-    }, {} as Record<number, unknown>)
+    }, {} as Record<number, ReturnType<typeof useForm<{}>>>)
 });
 
 function submit(id: number) {
-    (forms.value[id] as InertiaForm<{}>)?.post(route('gdcs.dashboard.contest.submit.api', contest.value.id), {
+    forms.value[id]?.post(route('gdcs.dashboard.contest.submit.api', contest.value.id), {
         onSuccess() {
             $emits('submitted');
         }
@@ -46,6 +47,10 @@ function submit(id: number) {
 </script>
 
 <template>
+    <Head>
+        <title>比赛 - {{ contest.name }} - 投稿</title>
+    </Head>
+
     <n-card>
         <n-space v-if="levels && levels.data?.length > 0" vertical>
             <n-list bordered>
