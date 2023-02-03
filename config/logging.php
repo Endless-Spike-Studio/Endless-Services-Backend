@@ -24,12 +24,6 @@ return [
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
         ],
-        'gdcn' => [
-            'driver' => 'daily',
-            'path' => storage_path('logs/product/gdcn.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 3,
-        ],
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
@@ -70,6 +64,27 @@ return [
         ],
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'GDCN' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/product/GDCN.log'),
+            'days' => 3,
+        ],
+        'GDProxy' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/product/GDProxy.log'),
+            'days' => 3,
+        ],
+        'NGProxy' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/product/NGProxy.log'),
+            'days' => 3,
+        ],
+        'Game' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/game/.log'),
+            'days' => 3,
         ],
     ],
 ];
