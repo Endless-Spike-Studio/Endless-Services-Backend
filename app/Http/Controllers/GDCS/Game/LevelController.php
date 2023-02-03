@@ -34,7 +34,6 @@ use App\Services\Game\ObjectService;
 use App\Services\Game\SongService;
 use App\Services\Storage\GameLevelDataStorageService;
 use Carbon\Carbon;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use InvalidArgumentException;
 
@@ -546,10 +545,8 @@ class LevelController extends Controller
                             'demon' => true,
                             'auto' => false
                         ])
-                        ->whereDoesntHave('level', function (Builder $query) {
-                            $query->whereDoesntHave('weekly');
-                        })
                         ->whereHas('level')
+                        ->whereDoesntHave('level.weekly')
                         ->get()
                         ->random()
                         ->level_id;
@@ -564,8 +561,12 @@ class LevelController extends Controller
                     ]);
 
                     return $this->fetchDailyOrWeekly($request);
-                } catch (InvalidArgumentException) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_daily_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_DAILY_FETCH_FAILED_NOT_FOUND->value);
+                } catch (InvalidArgumentException $e) {
+                    throw new GeometryDashChineseServerException(
+                        __('gdcn.game.error.level_daily_fetch_failed_not_found'),
+                        previous: $e,
+                        gameResponse: Response::GAME_LEVEL_DAILY_FETCH_FAILED_NOT_FOUND->value
+                    );
                 }
             }
 
@@ -583,10 +584,8 @@ class LevelController extends Controller
                             'demon' => false,
                             'auto' => false
                         ])
-                        ->whereDoesntHave('level', function (Builder $query) {
-                            $query->whereDoesntHave('daily');
-                        })
                         ->whereHas('level')
+                        ->whereDoesntHave('level.daily')
                         ->get()
                         ->random()
                         ->level_id;
@@ -601,8 +600,12 @@ class LevelController extends Controller
                     ]);
 
                     return $this->fetchDailyOrWeekly($request);
-                } catch (InvalidArgumentException) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_weekly_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_WEEKLY_FETCH_FAILED_NOT_FOUND->value);
+                } catch (InvalidArgumentException $e) {
+                    throw new GeometryDashChineseServerException(
+                        __('gdcn.game.error.level_weekly_fetch_failed_not_found'),
+                        previous: $e,
+                        gameResponse: Response::GAME_LEVEL_WEEKLY_FETCH_FAILED_NOT_FOUND->value
+                    );
                 }
             }
 
