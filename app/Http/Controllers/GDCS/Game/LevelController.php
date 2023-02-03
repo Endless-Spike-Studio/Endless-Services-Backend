@@ -570,6 +570,7 @@ class LevelController extends Controller
                 }
             }
 
+            $item->id += config('gdcn.game.weekly_offset');
             $leftTime = Carbon::parse('next monday')->diffInSeconds();
         } else {
             $item = DailyLevel::query()
