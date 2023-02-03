@@ -25,6 +25,7 @@ use App\Models\GDCS\DailyLevel;
 use App\Models\GDCS\Level;
 use App\Models\GDCS\LevelDownloadRecord;
 use App\Models\GDCS\LevelGauntlet;
+use App\Models\GDCS\LevelRating;
 use App\Models\GDCS\WeeklyLevel;
 use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
@@ -33,7 +34,9 @@ use App\Services\Game\ObjectService;
 use App\Services\Game\SongService;
 use App\Services\Storage\GameLevelDataStorageService;
 use Carbon\Carbon;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
+use InvalidArgumentException;
 
 class LevelController extends Controller
 {
@@ -162,7 +165,7 @@ class LevelController extends Controller
             case LevelSearchType::WORLD_MOST_LIKED:
             case LevelSearchType::UNKNOWN:
             default:
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_unsupported_type'), gameResponse: Response::GAME_LEVEL_SEARCH_FAILED_UNSUPPORTED_TYPE->value);
+                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_search_failed_unsupported_type'), gameResponse: Response::GAME_LEVEL_SEARCH_FAILED_UNSUPPORTED_TYPE->value);
         }
 
         if (!$showUnlisted) {
@@ -530,29 +533,80 @@ class LevelController extends Controller
     {
         $data = $request->validated();
 
-        $now = Carbon::now();
         if (!empty($data['weekly'])) {
             $item = WeeklyLevel::query()
-                ->where('apply_at', '<=', $now)
                 ->orderBy('apply_at', 'desc')
                 ->first();
 
             if (!$item) {
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_daily_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_DAILY_FETCH_FAILED_NOT_FOUND->value);
+                try {
+                    $availableLevelID = LevelRating::query()
+                        ->where('stars', '>', 0)
+                        ->where([
+                            'demon' => true,
+                            'auto' => false
+                        ])
+                        ->whereDoesntHave('level', function (Builder $query) {
+                            $query->whereDoesntHave('weekly');
+                        })
+                        ->whereHas('level')
+                        ->get()
+                        ->random()
+                        ->level_id;
+
+                    if (empty($availableLevelID)) {
+                        throw new InvalidArgumentException;
+                    }
+
+                    WeeklyLevel::create([
+                        'level_id' => $availableLevelID,
+                        'apply_at' => Carbon::parse('last monday')
+                    ]);
+
+                    return $this->fetchDailyOrWeekly($request);
+                } catch (InvalidArgumentException) {
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_daily_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_DAILY_FETCH_FAILED_NOT_FOUND->value);
+                }
             }
 
-            $leftTime = Carbon::parse('next monday')->diffInSeconds($now);
+            $leftTime = Carbon::parse('next monday')->diffInSeconds();
         } else {
             $item = DailyLevel::query()
-                ->where('apply_at', '<=', $now)
                 ->orderBy('apply_at', 'desc')
                 ->first();
 
             if (!$item) {
-                throw new GeometryDashChineseServerException(__('gdcn.game.error.level_weekly_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_WEEKLY_FETCH_FAILED_NOT_FOUND->value);
+                try {
+                    $availableLevelID = LevelRating::query()
+                        ->where('stars', '>', 0)
+                        ->where([
+                            'demon' => false,
+                            'auto' => false
+                        ])
+                        ->whereDoesntHave('level', function (Builder $query) {
+                            $query->whereDoesntHave('daily');
+                        })
+                        ->whereHas('level')
+                        ->get()
+                        ->random()
+                        ->level_id;
+
+                    if (empty($availableLevelID)) {
+                        throw new InvalidArgumentException;
+                    }
+
+                    DailyLevel::create([
+                        'level_id' => $availableLevelID,
+                        'apply_at' => Carbon::parse('today')
+                    ]);
+
+                    return $this->fetchDailyOrWeekly($request);
+                } catch (InvalidArgumentException) {
+                    throw new GeometryDashChineseServerException(__('gdcn.game.error.level_weekly_fetch_failed_not_found'), gameResponse: Response::GAME_LEVEL_WEEKLY_FETCH_FAILED_NOT_FOUND->value);
+                }
             }
 
-            $leftTime = $now->secondsUntilEndOfDay();
+            $leftTime = Carbon::now()->secondsUntilEndOfDay();
         }
 
         $this->logGame(__(!empty($data['weekly']) ? 'gdcn.game.action.level_weekly_fetch_success' : 'gdcn.game.action.level_daily_fetch_success'));
