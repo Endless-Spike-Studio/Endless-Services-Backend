@@ -17,12 +17,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Silber\Bouncer\Database\HasRolesAndAbilities;
 
 class Account extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasFactory, HasApiTokens, MustVerifyEmail, Notifiable, HasRolesAndAbilities;
+    use HasFactory, MustVerifyEmail, Notifiable, HasRolesAndAbilities;
 
     protected $table = 'gdcs_accounts';
 

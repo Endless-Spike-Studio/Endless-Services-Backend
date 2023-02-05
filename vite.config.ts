@@ -7,7 +7,6 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import {NaiveUiResolver} from "unplugin-vue-components/resolvers";
 import {resolve as resolvePath} from "path";
-import {execSync} from "node:child_process";
 
 export default defineConfig({
     build: {

@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
-use Spatie\Async\Pool;
 
 class StaticResourceUploadCommand extends Command
 {
@@ -20,8 +19,6 @@ class StaticResourceUploadCommand extends Command
 
     protected function process(string $path, string $prefix = null)
     {
-        $pool = Pool::create();
-
         $storage = Storage::disk('oss');
         $storage->deleteDirectory($this->prefix);
 
@@ -38,16 +35,12 @@ class StaticResourceUploadCommand extends Command
                 continue;
             }
 
-            $pool[] = async(function () use ($storage, $relativePath, $fullPath) {
-                return $storage->put(
-                    $this->prefix . '/' . $relativePath,
-                    file_get_contents($fullPath)
-                );
-            })->then(function () use ($relativePath, $fullPath) {
-                $this->info($fullPath . ' => ' . $this->prefix . $relativePath);
-            });
-        }
+            $storage->put(
+                $this->prefix . '/' . $relativePath,
+                file_get_contents($fullPath)
+            );
 
-        await($pool);
+            $this->info($fullPath . ' => ' . $this->prefix . $relativePath);
+        }
     }
 }
