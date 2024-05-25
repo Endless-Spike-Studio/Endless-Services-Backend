@@ -1,0 +1,14 @@
+{
+	"autoload": {
+		"psr-4": {
+			"Modules\\GeometryDashProxy\\": "app/",
+			"Modules\\GeometryDashProxy\\Database\\Factories\\": "database/factories/",
+			"Modules\\GeometryDashProxy\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Modules\\GeometryDashProxy\\Tests\\": "tests/"
+		}
+	}
+}

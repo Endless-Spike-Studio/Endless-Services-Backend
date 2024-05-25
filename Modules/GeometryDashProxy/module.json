@@ -1,0 +1,7 @@
+{
+	"name": "GeometryDashProxy",
+	"alias": "gdproxy",
+	"providers": [
+		"Modules\\GeometryDashProxy\\Providers\\GeometryDashProxyServiceProvider"
+	]
+}
