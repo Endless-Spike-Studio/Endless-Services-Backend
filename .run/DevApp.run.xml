@@ -1,9 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="DevApp" type="CompoundRunConfigurationType">
-        <toRun name="FrontEnd" type="js.build_tools.npm"/>
-        <toRun name="BackEnd" type="PhpLocalRunConfigurationType"/>
-        <toRun name="Queue" type="PhpLocalRunConfigurationType"/>
-        <toRun name="Schedule" type="PhpLocalRunConfigurationType"/>
-        <method v="2"/>
-    </configuration>
-</component>
