@@ -4,6 +4,7 @@
 		"php": ">=8.3",
 		"alphasnow/aliyun-oss-laravel": "^4.8.1",
 		"laravel/framework": "^11.8",
+		"nwidart/laravel-modules": "*",
 		"pestphp/pest": "^2.34.7",
 		"pestphp/pest-plugin-laravel": "^2.4",
 		"silber/bouncer": "^1.0.2"
@@ -52,7 +53,8 @@
 		"preferred-install": "dist",
 		"sort-packages": true,
 		"allow-plugins": {
-			"pestphp/pest-plugin": true
+			"pestphp/pest-plugin": true,
+			"wikimedia/composer-merge-plugin": true
 		}
 	},
 	"minimum-stability": "dev",
