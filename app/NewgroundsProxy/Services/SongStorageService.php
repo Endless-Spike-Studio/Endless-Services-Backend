@@ -2,9 +2,9 @@
 
 namespace App\NewgroundsProxy\Services;
 
-use App\Services\Storage\BaseStorageService;
+use App\Services\StorageService;
 
-class SongStorageService extends BaseStorageService
+class SongStorageService extends StorageService
 {
 	public function __construct()
 	{

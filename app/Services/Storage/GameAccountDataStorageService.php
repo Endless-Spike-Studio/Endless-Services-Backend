@@ -2,7 +2,9 @@
 
 namespace App\Services\Storage;
 
-class GameAccountDataStorageService extends BaseStorageService
+use App\Services\StorageService;
+
+class GameAccountDataStorageService extends StorageService
 {
 	public function __construct()
 	{

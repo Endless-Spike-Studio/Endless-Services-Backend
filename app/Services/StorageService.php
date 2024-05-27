@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Storage;
+namespace App\Services;
 
 use App\Exceptions\StorageException;
 use Illuminate\Support\Arr;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class BaseStorageService
+class StorageService
 {
 	/**
 	 * @throws StorageException

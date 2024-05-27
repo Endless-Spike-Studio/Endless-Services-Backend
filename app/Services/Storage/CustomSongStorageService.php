@@ -2,7 +2,9 @@
 
 namespace App\Services\Storage;
 
-class CustomSongStorageService extends BaseStorageService
+use App\Services\StorageService;
+
+class CustomSongStorageService extends StorageService
 {
 	public function __construct()
 	{
