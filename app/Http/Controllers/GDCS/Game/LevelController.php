@@ -11,7 +11,6 @@ use App\Enums\GDCS\Game\Parameters\LevelSearchType;
 use App\Enums\GDCS\Game\SpecialLevelID;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
-use App\Exceptions\NewGroundsProxyException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\DailyOrWeeklyLevelFetchRequest;
 use App\Http\Requests\GDCS\Game\LevelDeleteRequest;
@@ -27,6 +26,7 @@ use App\Models\GDCS\LevelDownloadRecord;
 use App\Models\GDCS\LevelGauntlet;
 use App\Models\GDCS\LevelRating;
 use App\Models\GDCS\WeeklyLevel;
+use App\NewgroundsProxy\Exceptions\NewgroundsProxyException;
 use App\Services\Game\AlgorithmService;
 use App\Services\Game\BaseGameService;
 use App\Services\Game\CustomSongService;
@@ -350,7 +350,7 @@ class LevelController extends Controller
                         } else {
                             try {
                                 $songs[$level->song_id] = app(SongService::class)->find($level->song_id)->object;
-                            } catch (NewGroundsProxyException $e) {
+                            } catch (NewgroundsProxyException $e) {
                                 if (!empty($e->song)) {
                                     $songs[$level->song_id] = $e->song->object;
                                 }

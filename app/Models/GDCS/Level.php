@@ -4,7 +4,7 @@ namespace App\Models\GDCS;
 
 use App\Enums\GDCS\Game\LevelRatingDemonDifficulty;
 use App\Enums\GDCS\Game\LevelRatingDifficulty;
-use App\Models\NGProxy\Song;
+use App\NewgroundsProxy\Entities\Song;
 use App\Services\Storage\GameLevelDataStorageService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;

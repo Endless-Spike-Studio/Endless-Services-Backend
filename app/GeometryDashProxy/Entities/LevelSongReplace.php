@@ -2,7 +2,7 @@
 
 namespace App\GeometryDashProxy\Entities;
 
-use App\Models\NGProxy\Song;
+use App\NewgroundsProxy\Entities\Song;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

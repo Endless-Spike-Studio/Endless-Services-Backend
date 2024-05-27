@@ -5,13 +5,13 @@ namespace App\Http\Controllers\GDCS\Game;
 use App\Enums\GDCS\Game\Objects\SongObject;
 use App\Enums\Response;
 use App\Exceptions\GeometryDashChineseServerException;
-use App\Exceptions\NewGroundsProxyException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GDCS\Game\SongFetchRequest;
 use App\Http\Requests\GDCS\Game\TopArtistFetchRequest;
 use App\Http\Traits\GameLog;
 use App\Models\GDCS\CustomSong;
 use App\Models\GDCS\Level;
+use App\NewgroundsProxy\Exceptions\NewgroundsProxyException;
 use App\Services\Game\BaseGameService;
 use App\Services\Game\CustomSongService;
 use App\Services\Game\ObjectService;
@@ -42,7 +42,7 @@ class SongController extends Controller
 
             $this->logGame(__('gdcn.game.action.song_fetch_success'));
             return $song->object;
-        } catch (NewGroundsProxyException $e) {
+        } catch (NewgroundsProxyException $e) {
             throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_upstream_exception'), previous: $e, gameResponse: $e->gameResponse);
         }
     }
