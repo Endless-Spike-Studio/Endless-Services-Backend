@@ -6,8 +6,8 @@ use App\Events\AccountRegistered;
 
 class SendVerificationEmail
 {
-    public function handle(AccountRegistered $event): void
-    {
-        $event->account->sendEmailVerificationNotification();
-    }
+	public function handle(AccountRegistered $event): void
+	{
+		$event->account->sendEmailVerificationNotification();
+	}
 }

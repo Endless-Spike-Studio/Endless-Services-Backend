@@ -15,66 +15,66 @@ use Illuminate\Support\Str;
 
 class AccountLinkToolController extends Controller
 {
-    use HasMessage;
+	use HasMessage;
 
-    /**
-     * @throws WebException
-     */
-    public function create(AccountLinkToolCreateRequest $request)
-    {
-        $data = $request->validated();
+	/**
+	 * @throws WebException
+	 */
+	public function create(AccountLinkToolCreateRequest $request)
+	{
+		$data = $request->validated();
 
-        try {
-            $response = ProxyService::instance()
-                ->asForm()
-                ->withUserAgent(null)
-                ->post($data['server'] . '/accounts/loginGJAccount.php', [
-                    'userName' => $data['name'],
-                    'password' => $data['password'],
-                    'udid' => Str::uuid()
-                        ->toString(),
-                    'secret' => 'Wmfv3899gc9'
-                ])->body();
+		try {
+			$response = ProxyService::instance()
+				->asForm()
+				->withUserAgent(null)
+				->post($data['server'] . '/accounts/loginGJAccount.php', [
+					'userName' => $data['name'],
+					'password' => $data['password'],
+					'udid' => Str::uuid()
+						->toString(),
+					'secret' => 'Wmfv3899gc9'
+				])->body();
 
-            ResponseService::check($response);
-        } catch (ResponseException) {
-            throw new WebException(__('gdcn.tools.error.account_link_create_failed_login_failed'));
-        }
+			ResponseService::check($response);
+		} catch (ResponseException) {
+			throw new WebException(__('gdcn.tools.error.account_link_create_failed_login_failed'));
+		}
 
-        $account = Auth::guard('gdcs')->user();
-        [$accountID, $userID] = explode(',', $response);
+		$account = Auth::guard('gdcs')->user();
+		[$accountID, $userID] = explode(',', $response);
 
-        $link = $account->links()
-            ->firstOrCreate([
-                'server' => $data['server'],
-                'target_account_id' => $accountID,
-                'target_user_id' => $userID,
-            ], [
-                'target_name' => $data['name']
-            ]);
+		$link = $account->links()
+			->firstOrCreate([
+				'server' => $data['server'],
+				'target_account_id' => $accountID,
+				'target_user_id' => $userID,
+			], [
+				'target_name' => $data['name']
+			]);
 
-        if (!$link->wasRecentlyCreated) {
-            throw new WebException(__('gdcn.tools.error.account_link_create_failed_already_exists'));
-        }
+		if (!$link->wasRecentlyCreated) {
+			throw new WebException(__('gdcn.tools.error.account_link_create_failed_already_exists'));
+		}
 
-        $this->pushSuccessMessage(__('gdcn.tools.action.account_link_create_success'));
-        return to_route('gdcs.tools.account.link.index');
-    }
+		$this->pushSuccessMessage(__('gdcn.tools.action.account_link_create_success'));
+		return to_route('gdcs.tools.account.link.index');
+	}
 
-    /**
-     * @throws WebException
-     */
-    public function delete(AccountLink $link)
-    {
-        $currentAccountID = Auth::guard('gdcs')->id();
+	/**
+	 * @throws WebException
+	 */
+	public function delete(AccountLink $link)
+	{
+		$currentAccountID = Auth::guard('gdcs')->id();
 
-        if ($link->account->id === $currentAccountID) {
-            $link->delete();
-            $this->pushSuccessMessage(__('gdcn.tools.action.account_link_delete_success'));
-        } else {
-            throw new WebException(__('gdcn.tools.error.account_link_delete_failed_not_owner'));
-        }
+		if ($link->account->id === $currentAccountID) {
+			$link->delete();
+			$this->pushSuccessMessage(__('gdcn.tools.action.account_link_delete_success'));
+		} else {
+			throw new WebException(__('gdcn.tools.error.account_link_delete_failed_not_owner'));
+		}
 
-        return back();
-    }
+		return back();
+	}
 }

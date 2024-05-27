@@ -12,55 +12,55 @@ use App\Models\GDCS\AccountBlock;
 
 class AccountBlockController extends Controller
 {
-    use GameLog;
+	use GameLog;
 
-    /**
-     * @throws GeometryDashChineseServerException
-     */
-    public function block(AccountBlockRequest $request): int
-    {
-        $data = $request->validated();
+	/**
+	 * @throws GeometryDashChineseServerException
+	 */
+	public function block(AccountBlockRequest $request): int
+	{
+		$data = $request->validated();
 
-        $context = [
-            'account_id' => $data['accountID'],
-            'target_account_id' => $data['targetAccountID']
-        ];
+		$context = [
+			'account_id' => $data['accountID'],
+			'target_account_id' => $data['targetAccountID']
+		];
 
-        $query = AccountBlock::query()
-            ->where($context);
+		$query = AccountBlock::query()
+			->where($context);
 
-        if ($query->exists()) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_block_failed_already_exists'), gameResponse: Response::GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS->value);
-        }
+		if ($query->exists()) {
+			throw new GeometryDashChineseServerException(__('gdcn.game.error.account_block_failed_already_exists'), gameResponse: Response::GAME_ACCOUNT_BLOCK_FAILED_ALREADY_EXISTS->value);
+		}
 
-        AccountBlock::create($context);
-        $this->logGame(__('gdcn.game.action.account_block_success'));
+		AccountBlock::create($context);
+		$this->logGame(__('gdcn.game.action.account_block_success'));
 
-        return Response::GAME_ACCOUNT_BLOCK_SUCCESS->value;
-    }
+		return Response::GAME_ACCOUNT_BLOCK_SUCCESS->value;
+	}
 
-    /**
-     * @throws GeometryDashChineseServerException
-     */
-    public function unblock(AccountUnblockRequest $request): int
-    {
-        $data = $request->validated();
+	/**
+	 * @throws GeometryDashChineseServerException
+	 */
+	public function unblock(AccountUnblockRequest $request): int
+	{
+		$data = $request->validated();
 
-        $context = [
-            'account_id' => $data['accountID'],
-            'target_account_id' => $data['targetAccountID']
-        ];
+		$context = [
+			'account_id' => $data['accountID'],
+			'target_account_id' => $data['targetAccountID']
+		];
 
-        $query = AccountBlock::query()
-            ->where($context);
+		$query = AccountBlock::query()
+			->where($context);
 
-        if (!$query->exists()) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_unblock_failed_not_found'), gameResponse: Response::GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND->value);
-        }
+		if (!$query->exists()) {
+			throw new GeometryDashChineseServerException(__('gdcn.game.error.account_unblock_failed_not_found'), gameResponse: Response::GAME_ACCOUNT_UNBLOCK_FAILED_NOT_FOUND->value);
+		}
 
-        $query->delete();
-        $this->logGame(__('gdcn.game.action.account_unblock_success'));
+		$query->delete();
+		$this->logGame(__('gdcn.game.action.account_unblock_success'));
 
-        return Response::GAME_ACCOUNT_UNBLOCK_SUCCESS->value;
-    }
+		return Response::GAME_ACCOUNT_UNBLOCK_SUCCESS->value;
+	}
 }

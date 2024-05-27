@@ -8,14 +8,14 @@ use Illuminate\Validation\Rule;
 
 class FindNameRequest extends Request
 {
-    public function rules(): array
-    {
-        return [
-            'email' => [
-                'required',
-                'string',
-                Rule::exists(Account::class)
-            ]
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'email' => [
+				'required',
+				'string',
+				Rule::exists(Account::class)
+			]
+		];
+	}
 }

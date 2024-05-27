@@ -7,24 +7,24 @@ use Illuminate\Validation\Rule;
 
 class AccountDataServerAddressGetRequest extends Request
 {
-    public function rules(): array
-    {
-        return [
-            'accountID' => [
-                'required',
-                'integer',
-                Rule::exists(Account::class, 'id'),
-            ],
-            'type' => [
-                'required',
-                'integer',
-                'between:1,2',
-            ],
-            'secret' => [
-                'required',
-                'string',
-                'in:Wmfd2893gb7',
-            ],
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'accountID' => [
+				'required',
+				'integer',
+				Rule::exists(Account::class, 'id'),
+			],
+			'type' => [
+				'required',
+				'integer',
+				'between:1,2',
+			],
+			'secret' => [
+				'required',
+				'string',
+				'in:Wmfd2893gb7',
+			],
+		];
+	}
 }

@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccountLink extends Model
 {
-    protected $table = 'gdcs_account_links';
+	protected $table = 'gdcs_account_links';
 
-    protected $fillable = ['server', 'target_name', 'target_account_id', 'target_user_id'];
+	protected $fillable = ['server', 'target_name', 'target_account_id', 'target_user_id'];
 
-    public function account(): BelongsTo
-    {
-        return $this->belongsTo(Account::class);
-    }
+	public function account(): BelongsTo
+	{
+		return $this->belongsTo(Account::class);
+	}
 }

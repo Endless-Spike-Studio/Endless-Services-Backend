@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LevelComment extends Model
 {
-    protected $table = 'gdcs_level_comments';
-    protected $fillable = ['account_id', 'comment', 'percent', 'likes'];
+	protected $table = 'gdcs_level_comments';
+	protected $fillable = ['account_id', 'comment', 'percent', 'likes'];
 
-    protected $casts = [
-        'spam' => 'boolean',
-    ];
+	protected $casts = [
+		'spam' => 'boolean',
+	];
 
-    public function account(): BelongsTo
-    {
-        return $this->belongsTo(Account::class, 'account_id');
-    }
+	public function account(): BelongsTo
+	{
+		return $this->belongsTo(Account::class, 'account_id');
+	}
 }

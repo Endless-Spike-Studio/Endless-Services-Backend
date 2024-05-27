@@ -11,12 +11,12 @@ use Illuminate\Queue\SerializesModels;
 
 class CleanUnusedTempLevelUploadAccessJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void
-    {
-        TempLevelUploadAccess::query()
-            ->where('created_at', '<=', now()->subMinutes(10))
-            ->delete();
-    }
+	public function handle(): void
+	{
+		TempLevelUploadAccess::query()
+			->where('created_at', '<=', now()->subMinutes(10))
+			->delete();
+	}
 }

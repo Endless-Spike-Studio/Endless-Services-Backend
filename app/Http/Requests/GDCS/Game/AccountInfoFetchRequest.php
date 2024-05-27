@@ -7,52 +7,52 @@ use Illuminate\Validation\Rule;
 
 class AccountInfoFetchRequest extends Request
 {
-    public function authorize(): bool
-    {
-        if ($this->has('accountID')) {
-            return $this->auth() && !empty($this->account);
-        }
+	public function authorize(): bool
+	{
+		if ($this->has('accountID')) {
+			return $this->auth() && !empty($this->account);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    public function rules(): array
-    {
-        return [
-            'gameVersion' => [
-                'required',
-                'integer',
-            ],
-            'binaryVersion' => [
-                'required',
-                'integer',
-            ],
-            'gdw' => [
-                'required',
-                'boolean',
-            ],
-            'accountID' => [
-                'sometimes',
-                'exclude_if:accountID,0',
-                'required',
-                'integer',
-                Rule::exists(Account::class, 'id'),
-            ],
-            'gjp' => [
-                'required_with:accountID',
-                'nullable',
-                'string',
-            ],
-            'targetAccountID' => [
-                'required',
-                'integer',
-                Rule::exists(Account::class, 'id'),
-            ],
-            'secret' => [
-                'required',
-                'string',
-                'in:Wmfd2893gb7',
-            ],
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'gameVersion' => [
+				'required',
+				'integer',
+			],
+			'binaryVersion' => [
+				'required',
+				'integer',
+			],
+			'gdw' => [
+				'required',
+				'boolean',
+			],
+			'accountID' => [
+				'sometimes',
+				'exclude_if:accountID,0',
+				'required',
+				'integer',
+				Rule::exists(Account::class, 'id'),
+			],
+			'gjp' => [
+				'required_with:accountID',
+				'nullable',
+				'string',
+			],
+			'targetAccountID' => [
+				'required',
+				'integer',
+				Rule::exists(Account::class, 'id'),
+			],
+			'secret' => [
+				'required',
+				'string',
+				'in:Wmfd2893gb7',
+			],
+		];
+	}
 }

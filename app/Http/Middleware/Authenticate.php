@@ -10,21 +10,21 @@ use Illuminate\Support\Facades\URL;
 
 class Authenticate extends Middleware
 {
-    use HasMessage;
+	use HasMessage;
 
-    protected function redirectTo($request): string
-    {
-        if ($request->inertia()) {
-            $this->pushErrorMessage(__('gdcn.web.error.need_login'));
-        }
+	protected function redirectTo($request): string
+	{
+		if ($request->inertia()) {
+			$this->pushErrorMessage(__('gdcn.web.error.need_login'));
+		}
 
-        Session::put([
-            'back_url' => URL::current()
-        ]);
+		Session::put([
+			'back_url' => URL::current()
+		]);
 
-        return match (true) {
-            Route::is('gdcs.*') => route('gdcs.auth.login'),
-            default => abort(401)
-        };
-    }
+		return match (true) {
+			Route::is('gdcs.*') => route('gdcs.auth.login'),
+			default => abort(401)
+		};
+	}
 }

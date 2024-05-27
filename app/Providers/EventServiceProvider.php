@@ -10,12 +10,12 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 
 class EventServiceProvider extends ServiceProvider
 {
-    protected $listen = [
-        LevelRated::class => [
-            ReCalculateCreatorPoints::class
-        ],
-        AccountRegistered::class => [
-            SendVerificationEmail::class
-        ]
-    ];
+	protected $listen = [
+		LevelRated::class => [
+			ReCalculateCreatorPoints::class
+		],
+		AccountRegistered::class => [
+			SendVerificationEmail::class
+		]
+	];
 }

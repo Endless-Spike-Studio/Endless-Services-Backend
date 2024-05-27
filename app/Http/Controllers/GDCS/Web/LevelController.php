@@ -12,45 +12,45 @@ use Illuminate\Support\Facades\Gate;
 
 class LevelController extends Controller
 {
-    use HasMessage;
+	use HasMessage;
 
-    /**
-     * @throws WebException
-     */
-    public function edit(Level $level, LevelEditRequest $request)
-    {
-        $data = $request->validated();
-        $account = Auth::guard('gdcs')->user();
+	/**
+	 * @throws WebException
+	 */
+	public function edit(Level $level, LevelEditRequest $request)
+	{
+		$data = $request->validated();
+		$account = Auth::guard('gdcs')->user();
 
-        if (!$account->user->can('edit', $level)) {
-            throw new WebException(__('gdcn.dashboard.error.level_edit_failed_permission_denied'));
-        }
+		if (!$account->user->can('edit', $level)) {
+			throw new WebException(__('gdcn.dashboard.error.level_edit_failed_permission_denied'));
+		}
 
-        $level->update($data);
-        $this->pushSuccessMessage(__('gdcn.dashboard.action.level_edit_success'));
+		$level->update($data);
+		$this->pushSuccessMessage(__('gdcn.dashboard.action.level_edit_success'));
 
-        return back();
-    }
+		return back();
+	}
 
-    /**
-     * @throws WebException
-     */
-    public function delete(Level $level)
-    {
-        $account = Auth::guard('gdcs')->user();
-        $policy = Gate::forUser($account->user)->inspect('delete', $level);
+	/**
+	 * @throws WebException
+	 */
+	public function delete(Level $level)
+	{
+		$account = Auth::guard('gdcs')->user();
+		$policy = Gate::forUser($account->user)->inspect('delete', $level);
 
-        if ($policy->denied()) {
-            throw new WebException(
-                __('gdcn.dashboard.error.level_delete_failed_with_reason', [
-                    'reason' => $policy->message()
-                ])
-            );
-        }
+		if ($policy->denied()) {
+			throw new WebException(
+				__('gdcn.dashboard.error.level_delete_failed_with_reason', [
+					'reason' => $policy->message()
+				])
+			);
+		}
 
-        $level->delete();
-        $this->pushSuccessMessage(__('gdcn.dashboard.action.level_delete_success'));
+		$level->delete();
+		$this->pushSuccessMessage(__('gdcn.dashboard.action.level_delete_success'));
 
-        return to_route('gdcs.dashboard.home');
-    }
+		return to_route('gdcs.dashboard.home');
+	}
 }

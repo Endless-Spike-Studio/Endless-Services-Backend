@@ -6,8 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class Request extends FormRequest
 {
-    public function rules(): array
-    {
-        return [];
-    }
+	public function rules(): array
+	{
+		return [];
+	}
 }

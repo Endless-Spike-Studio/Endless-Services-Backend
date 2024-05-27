@@ -10,17 +10,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccountSetting extends Model
 {
-    protected $table = 'gdcs_account_settings';
-    protected $fillable = ['message_state', 'friend_request_state', 'comment_history_state', 'youtube_channel', 'twitter', 'twitch',];
+	protected $table = 'gdcs_account_settings';
+	protected $fillable = ['message_state', 'friend_request_state', 'comment_history_state', 'youtube_channel', 'twitter', 'twitch',];
 
-    protected $casts = [
-        'message_state' => AccountSettingMessageState::class,
-        'friend_request_state' => AccountSettingFriendRequestState::class,
-        'comment_history_state' => AccountSettingCommentHistoryState::class,
-    ];
+	protected $casts = [
+		'message_state' => AccountSettingMessageState::class,
+		'friend_request_state' => AccountSettingFriendRequestState::class,
+		'comment_history_state' => AccountSettingCommentHistoryState::class,
+	];
 
-    public function account(): BelongsTo
-    {
-        return $this->belongsTo(Account::class);
-    }
+	public function account(): BelongsTo
+	{
+		return $this->belongsTo(Account::class);
+	}
 }

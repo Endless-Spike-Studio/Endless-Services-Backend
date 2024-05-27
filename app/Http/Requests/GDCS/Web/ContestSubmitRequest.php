@@ -8,14 +8,14 @@ use Illuminate\Validation\Rule;
 
 class ContestSubmitRequest extends Request
 {
-    public function rules(): array
-    {
-        return [
-            'levelID' => [
-                'required',
-                'integer',
-                Rule::exists(Level::class, 'id')
-            ]
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'levelID' => [
+				'required',
+				'integer',
+				Rule::exists(Level::class, 'id')
+			]
+		];
+	}
 }

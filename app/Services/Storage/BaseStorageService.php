@@ -10,144 +10,162 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class BaseStorageService
 {
-    /**
-     * @throws StorageException
-     */
-    public function __construct(protected array $storages)
-    {
-        foreach ($this->storages as $storage) {
-            if (!Arr::has($storage, ['disk', 'format'])) {
-                throw new StorageException(__('gdcn.storage.error.invalid_config'));
-            }
-        }
-    }
+	/**
+	 * @throws StorageException
+	 */
+	public function __construct(protected array $storages)
+	{
+		foreach ($this->storages as $storage) {
+			if (!Arr::has($storage, ['disk', 'format'])) {
+				throw new StorageException(__('gdcn.storage.error.invalid_config'));
+			}
+		}
+	}
 
-    /**
-     * @throws StorageException
-     */
-    public function get(array $data): string
-    {
-        foreach ($this->storages as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = $storage['format'];
+	public function allValid(array $data): bool
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
 
-            foreach ($data as $key => $value) {
-                $path = Str::replace('{' . $key . '}', $value, $path);
-            }
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
 
-            if ($disk->exists($path)) {
-                return $disk->get($path);
-            }
-        }
+			if (!$disk->exists($path) || $disk->size($path) <= 0) {
+				return false;
+			}
+		}
 
-        throw new StorageException(__('gdcn.storage.error.fetch_failed_not_found'), httpCode: 404);
-    }
+		return true;
+	}
 
-    public function exists(array $data): bool
-    {
-        foreach ($this->storages as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = $storage['format'];
+	public function exists(array $data): bool
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
 
-            foreach ($data as $key => $value) {
-                $path = Str::replace('{' . $key . '}', $value, $path);
-            }
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
 
-            if ($disk->exists($path)) {
-                return true;
-            }
-        }
+			if ($disk->exists($path)) {
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    public function allExists(array $data): bool
-    {
-        foreach ($this->storages as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = $storage['format'];
+	/**
+	 * @throws StorageException
+	 */
+	public function get(array $data): string
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
 
-            foreach ($data as $key => $value) {
-                $path = Str::replace('{' . $key . '}', $value, $path);
-            }
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
 
-            if (!$disk->exists($path)) {
-                return false;
-            }
-        }
+			if ($disk->exists($path)) {
+				return $disk->get($path);
+			}
+		}
 
-        return true;
-    }
+		throw new StorageException(__('gdcn.storage.error.fetch_failed_not_found'), httpCode: 404);
+	}
 
-    public function put(array $data, string $content): void
-    {
-        foreach ($this->storages as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = $storage['format'];
+	public function allExists(array $data): bool
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
 
-            foreach ($data as $key => $value) {
-                $path = Str::replace('{' . $key . '}', $value, $path);
-            }
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
 
-            $disk->put($path, $content);
-        }
-    }
+			if (!$disk->exists($path)) {
+				return false;
+			}
+		}
 
-    public function delete(array $data): void
-    {
-        foreach ($this->storages as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = $storage['format'];
+		return true;
+	}
 
-            foreach ($data as $key => $value) {
-                $path = Str::replace('{' . $key . '}', $value, $path);
-            }
+	public function put(array $data, string $content): void
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
 
-            if ($disk->exists($path)) {
-                $disk->delete($path);
-            }
-        }
-    }
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
 
-    /**
-     * @throws StorageException
-     */
-    public function url(array $data): string
-    {
-        foreach ($this->storages as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = $storage['format'];
+			$disk->put($path, $content);
+		}
+	}
 
-            foreach ($data as $key => $value) {
-                $path = Str::replace('{' . $key . '}', $value, $path);
-            }
+	public function delete(array $data): void
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
 
-            if ($disk->exists($path)) {
-                return $disk->url($path);
-            }
-        }
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
 
-        throw new StorageException(__('gdcn.storage.error.url_get_failed_not_found'), httpCode: 404);
-    }
+			if ($disk->exists($path)) {
+				$disk->delete($path);
+			}
+		}
+	}
 
-    /**
-     * @throws StorageException
-     */
-    public function download(array $data): StreamedResponse
-    {
-        foreach ($this->storages as $storage) {
-            $disk = Storage::disk($storage['disk']);
-            $path = $storage['format'];
+	/**
+	 * @throws StorageException
+	 */
+	public function url(array $data): string
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
 
-            foreach ($data as $key => $value) {
-                $path = Str::replace('{' . $key . '}', $value, $path);
-            }
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
 
-            if ($disk->exists($path)) {
-                return $disk->download($path);
-            }
-        }
+			if ($disk->exists($path)) {
+				return $disk->url($path);
+			}
+		}
 
-        throw new StorageException(__('gdcn.storage.error.download_failed_not_found'), httpCode: 404);
-    }
+		throw new StorageException(__('gdcn.storage.error.url_get_failed_not_found'), httpCode: 404);
+	}
+
+	/**
+	 * @throws StorageException
+	 */
+	public function download(array $data): StreamedResponse
+	{
+		foreach ($this->storages as $storage) {
+			$disk = Storage::disk($storage['disk']);
+			$path = $storage['format'];
+
+			foreach ($data as $key => $value) {
+				$path = Str::replace('{' . $key . '}', $value, $path);
+			}
+
+			if ($disk->exists($path)) {
+				return $disk->download($path);
+			}
+		}
+
+		throw new StorageException(__('gdcn.storage.error.download_failed_not_found'), httpCode: 404);
+	}
 }

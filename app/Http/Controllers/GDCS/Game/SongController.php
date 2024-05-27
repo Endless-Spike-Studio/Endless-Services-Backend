@@ -19,52 +19,52 @@ use App\Services\Game\SongService;
 
 class SongController extends Controller
 {
-    use GameLog;
+	use GameLog;
 
-    /**
-     * @throws GeometryDashChineseServerException
-     */
-    public function fetch(SongFetchRequest $request): string
-    {
-        try {
-            $data = $request->validated();
+	/**
+	 * @throws GeometryDashChineseServerException
+	 */
+	public function fetch(SongFetchRequest $request): string
+	{
+		try {
+			$data = $request->validated();
 
-            if ($data['songID'] >= CustomSongService::$offset) {
-                $song = CustomSong::query()
-                    ->find($data['songID'] - CustomSongService::$offset);
+			if ($data['songID'] >= CustomSongService::$offset) {
+				$song = CustomSong::query()
+					->find($data['songID'] - CustomSongService::$offset);
 
-                if (!$song) {
-                    throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_not_found_custom'), gameResponse: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM->value);
-                }
-            } else {
-                $song = (new SongService)->find($data['songID']);
-            }
+				if (!$song) {
+					throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_not_found_custom'), gameResponse: Response::GAME_SONG_FETCH_FAILED_NOT_FOUND_CUSTOM->value);
+				}
+			} else {
+				$song = (new SongService)->find($data['songID']);
+			}
 
-            $this->logGame(__('gdcn.game.action.song_fetch_success'));
-            return $song->object;
-        } catch (NewgroundsProxyException $e) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_upstream_exception'), previous: $e, gameResponse: $e->gameResponse);
-        }
-    }
+			$this->logGame(__('gdcn.game.action.song_fetch_success'));
+			return $song->object;
+		} catch (NewgroundsProxyException $e) {
+			throw new GeometryDashChineseServerException(__('gdcn.game.error.song_fetch_failed_upstream_exception'), previous: $e, gameResponse: $e->gameResponse);
+		}
+	}
 
-    public function fetchTopArtists(TopArtistFetchRequest $request): string
-    {
-        $data = $request->validated();
+	public function fetchTopArtists(TopArtistFetchRequest $request): string
+	{
+		$data = $request->validated();
 
-        $query = Level::query()
-            ->selectRaw('song_id, count(*) as times')
-            ->where('song_id', '<', CustomSongService::$offset)
-            ->where('song_id', '!=', 0)
-            ->groupBy('song_id')
-            ->orderByDesc('times');
+		$query = Level::query()
+			->selectRaw('song_id, count(*) as times')
+			->where('song_id', '<', CustomSongService::$offset)
+			->where('song_id', '!=', 0)
+			->groupBy('song_id')
+			->orderByDesc('times');
 
-        $this->logGame(__('gdcn.game.action.featured_artists_fetch_success'));
-        return $query->forPage(++$data['page'], BaseGameService::$perPage)
-            ->get()
-            ->map(function (Level $level) {
-                return ObjectService::merge([
-                    SongObject::ARTIST_NAME => $level->song->artist_name
-                ], ':');
-            })->join('|');
-    }
+		$this->logGame(__('gdcn.game.action.featured_artists_fetch_success'));
+		return $query->forPage(++$data['page'], BaseGameService::$perPage)
+			->get()
+			->map(function (Level $level) {
+				return ObjectService::merge([
+					SongObject::ARTIST_NAME => $level->song->artist_name
+				], ':');
+			})->join('|');
+	}
 }

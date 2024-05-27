@@ -11,18 +11,18 @@ use Illuminate\Support\Facades\URL;
 
 class EmailVerificationNotification extends VerifyEmail implements ShouldQueue
 {
-    use Queueable;
+	use Queueable;
 
-    protected function verificationUrl($notifiable): string
-    {
-        /** @var Account $notifiable */
-        $hash = implode('|', [
-            $notifiable->getkey(),
-            $notifiable->getEmailForVerification(),
-        ]);
+	protected function verificationUrl($notifiable): string
+	{
+		/** @var Account $notifiable */
+		$hash = implode('|', [
+			$notifiable->getkey(),
+			$notifiable->getEmailForVerification(),
+		]);
 
-        return URL::signedRoute('gdcs.auth.verify', [
-            '_' => Crypt::encryptString($hash)
-        ]);
-    }
+		return URL::signedRoute('gdcs.auth.verify', [
+			'_' => Crypt::encryptString($hash)
+		]);
+	}
 }

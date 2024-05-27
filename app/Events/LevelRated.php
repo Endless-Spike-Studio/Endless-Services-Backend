@@ -9,10 +9,10 @@ use Illuminate\Queue\SerializesModels;
 
 class LevelRated
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+	use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(readonly Level $level)
-    {
+	public function __construct(readonly Level $level)
+	{
 
-    }
+	}
 }

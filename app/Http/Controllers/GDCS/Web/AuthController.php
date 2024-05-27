@@ -19,72 +19,72 @@ use Illuminate\Support\Facades\Request;
 
 class AuthController extends Controller
 {
-    use HasMessage;
+	use HasMessage;
 
-    public function register(RegisterRequest $request)
-    {
-        $data = $request->validated();
+	public function register(RegisterRequest $request)
+	{
+		$data = $request->validated();
 
-        $account = Account::create([
-            'name' => $data['name'],
-            'password' => Hash::make($data['password']),
-            'email' => $data['email']
-        ]);
+		$account = Account::create([
+			'name' => $data['name'],
+			'password' => Hash::make($data['password']),
+			'email' => $data['email']
+		]);
 
-        event(new AccountRegistered($account));
-        Auth::guard('gdcs')->login($account);
+		event(new AccountRegistered($account));
+		Auth::guard('gdcs')->login($account);
 
-        return Redirect::intended();
-    }
+		return Redirect::intended();
+	}
 
-    /**
-     * @throws WebException
-     */
-    public function login(LoginRequest $request)
-    {
-        $data = $request->validated();
+	/**
+	 * @throws WebException
+	 */
+	public function login(LoginRequest $request)
+	{
+		$data = $request->validated();
 
-        if (!Auth::guard('gdcs')->attempt($data)) {
-            throw new WebException(__('gdcn.web.error.login_failed'));
-        }
+		if (!Auth::guard('gdcs')->attempt($data)) {
+			throw new WebException(__('gdcn.web.error.login_failed'));
+		}
 
-        $this->pushSuccessMessage(__('gdcn.web.action.login_success'));
-        return Redirect::intended();
-    }
+		$this->pushSuccessMessage(__('gdcn.web.action.login_success'));
+		return Redirect::intended();
+	}
 
-    public function verify()
-    {
-        $account = Auth::guard('gdcs')->user();
-        $payload = Request::route('_');
+	public function verify()
+	{
+		$account = Auth::guard('gdcs')->user();
+		$payload = Request::route('_');
 
-        if (!empty($account) && !empty($payload)) {
-            $purePayload = Crypt::decryptString($payload);
-            [$id, $email] = explode('|', $purePayload);
+		if (!empty($account) && !empty($payload)) {
+			$purePayload = Crypt::decryptString($payload);
+			[$id, $email] = explode('|', $purePayload);
 
-            if ($account->email === $email && (string)$account->id === $id) {
-                $account->markEmailAsVerified();
-                $this->pushSuccessMessage(__('gdcn.web.action.account_verify_success'));
-            }
-        }
+			if ($account->email === $email && (string)$account->id === $id) {
+				$account->markEmailAsVerified();
+				$this->pushSuccessMessage(__('gdcn.web.action.account_verify_success'));
+			}
+		}
 
-        return to_route('gdcs.home');
-    }
+		return to_route('gdcs.home');
+	}
 
-    public function logout()
-    {
-        Auth::guard('gdcs')->logout();
-        $this->pushSuccessMessage(__('gdcn.web.action.logout_success'));
-        return back();
-    }
+	public function logout()
+	{
+		Auth::guard('gdcs')->logout();
+		$this->pushSuccessMessage(__('gdcn.web.action.logout_success'));
+		return back();
+	}
 
-    public function findName(FindNameRequest $request)
-    {
-        $data = $request->validated();
+	public function findName(FindNameRequest $request)
+	{
+		$data = $request->validated();
 
-        $account = Account::whereEmail($data['email'])->firstOrFail();
-        $account->notify(new FindNameNotification);
+		$account = Account::whereEmail($data['email'])->firstOrFail();
+		$account->notify(new FindNameNotification);
 
-        $this->pushSuccessMessage(__('gdcn.dashboard.action.a_mail_with_name_has_been_send_to_your_email'));
-        return back();
-    }
+		$this->pushSuccessMessage(__('gdcn.dashboard.action.a_mail_with_name_has_been_send_to_your_email'));
+		return back();
+	}
 }

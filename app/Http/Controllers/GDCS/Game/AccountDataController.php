@@ -12,40 +12,40 @@ use App\Http\Traits\GameLog;
 
 class AccountDataController extends Controller
 {
-    use GameLog;
+	use GameLog;
 
-    public function getDataServerAddress(AccountDataServerAddressGetRequest $request): string
-    {
-        $this->logGame(__('gdcn.game.action.account_data_server_url_fetch_success'));
-        return $request->getHost();
-    }
+	public function getDataServerAddress(AccountDataServerAddressGetRequest $request): string
+	{
+		$this->logGame(__('gdcn.game.action.account_data_server_url_fetch_success'));
+		return $request->getHost();
+	}
 
-    public function save(AccountDataSaveRequest $request): int
-    {
-        $data = $request->validated();
-        $request->account->data = $data['saveData'];
-        $this->logGame(__('gdcn.game.action.account_data_save_success'));
-        return Response::GAME_ACCOUNT_DATA_SAVE_SUCCESS->value;
-    }
+	public function save(AccountDataSaveRequest $request): int
+	{
+		$data = $request->validated();
+		$request->account->data = $data['saveData'];
+		$this->logGame(__('gdcn.game.action.account_data_save_success'));
+		return Response::GAME_ACCOUNT_DATA_SAVE_SUCCESS->value;
+	}
 
-    /**
-     * @throws GeometryDashChineseServerException
-     */
-    public function load(AccountDataLoadRequest $request): string
-    {
-        $data = $request->validated();
-        $content = $request->account->data;
+	/**
+	 * @throws GeometryDashChineseServerException
+	 */
+	public function load(AccountDataLoadRequest $request): string
+	{
+		$data = $request->validated();
+		$content = $request->account->data;
 
-        if (empty($content)) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_data_load_failed_not_found'), gameResponse: Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
-        }
+		if (empty($content)) {
+			throw new GeometryDashChineseServerException(__('gdcn.game.error.account_data_load_failed_not_found'), gameResponse: Response::GAME_ACCOUNT_DATA_LOAD_FAILED_NOT_FOUND->value);
+		}
 
-        $this->logGame(__('gdcn.game.action.account_data_load_success'));
-        return implode(';', [
-            $content,
-            $data['gameVersion'],
-            $data['binaryVersion'],
-            $content
-        ]);
-    }
+		$this->logGame(__('gdcn.game.action.account_data_load_success'));
+		return implode(';', [
+			$content,
+			$data['gameVersion'],
+			$data['binaryVersion'],
+			$content
+		]);
+	}
 }

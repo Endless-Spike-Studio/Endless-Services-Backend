@@ -8,10 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ResetPasswordNotification extends ResetPassword implements ShouldQueue
 {
-    use Queueable;
+	use Queueable;
 
-    protected function resetUrl($notifiable)
-    {
+	protected function resetUrl($notifiable)
+	{
 
-    }
+	}
 }

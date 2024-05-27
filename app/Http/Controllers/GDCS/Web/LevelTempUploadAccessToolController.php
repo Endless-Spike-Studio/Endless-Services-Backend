@@ -11,35 +11,35 @@ use Illuminate\Support\Facades\Request;
 
 class LevelTempUploadAccessToolController extends Controller
 {
-    use HasMessage;
+	use HasMessage;
 
-    public function create()
-    {
-        Auth::guard('gdcs')
-            ->user()
-            ->tempLevelUploadAccesses()
-            ->create([
-                'ip' => Request::ip()
-            ]);
+	public function create()
+	{
+		Auth::guard('gdcs')
+			->user()
+			->tempLevelUploadAccesses()
+			->create([
+				'ip' => Request::ip()
+			]);
 
-        $this->pushSuccessMessage(__('gdcn.tools.action.level_temp_upload_access_create_success'));
-        return to_route('gdcs.tools.level.temp_upload_access.index');
-    }
+		$this->pushSuccessMessage(__('gdcn.tools.action.level_temp_upload_access_create_success'));
+		return to_route('gdcs.tools.level.temp_upload_access.index');
+	}
 
-    /**
-     * @throws WebException
-     */
-    public function delete(TempLevelUploadAccess $access)
-    {
-        $currentAccountID = Auth::guard('gdcs')->id();
+	/**
+	 * @throws WebException
+	 */
+	public function delete(TempLevelUploadAccess $access)
+	{
+		$currentAccountID = Auth::guard('gdcs')->id();
 
-        if ($access->account_id === $currentAccountID) {
-            $access->delete();
-            $this->pushSuccessMessage(__('gdcn.tools.action.level_temp_upload_access_delete_success'));
-        } else {
-            throw new WebException(__('gdcn.tools.error.level_temp_upload_access_delete_failed_not_owner'));
-        }
+		if ($access->account_id === $currentAccountID) {
+			$access->delete();
+			$this->pushSuccessMessage(__('gdcn.tools.action.level_temp_upload_access_delete_success'));
+		} else {
+			throw new WebException(__('gdcn.tools.error.level_temp_upload_access_delete_failed_not_owner'));
+		}
 
-        return back();
-    }
+		return back();
+	}
 }

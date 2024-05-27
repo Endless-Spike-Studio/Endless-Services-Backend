@@ -9,23 +9,23 @@ use Illuminate\Auth\Access\Response;
 
 class LevelPolicy
 {
-    use HandlesAuthorization;
+	use HandlesAuthorization;
 
-    public function edit(User $user, Level $level): bool
-    {
-        return $level->creator->is($user);
-    }
+	public function edit(User $user, Level $level): bool
+	{
+		return $level->creator->is($user);
+	}
 
-    public function delete(User $user, Level $level): Response
-    {
-        if (!$level->creator->is($user)) {
-            return Response::deny(__('gdcn.policy.error.not_level_owner'));
-        }
+	public function delete(User $user, Level $level): Response
+	{
+		if (!$level->creator->is($user)) {
+			return Response::deny(__('gdcn.policy.error.not_level_owner'));
+		}
 
-        if ($level->rating->stars <> 0) {
-            return Response::deny(__('gdcn.policy.error.level_rated'));
-        }
+		if ($level->rating->stars <> 0) {
+			return Response::deny(__('gdcn.policy.error.level_rated'));
+		}
 
-        return Response::allow();
-    }
+		return Response::allow();
+	}
 }

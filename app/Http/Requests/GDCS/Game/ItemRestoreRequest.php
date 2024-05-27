@@ -7,19 +7,19 @@ use Illuminate\Validation\Rule;
 
 class ItemRestoreRequest extends Request
 {
-    public function rules(): array
-    {
-        return [
-            'udid' => [
-                'required',
-                'integer',
-                Rule::exists(User::class, 'udid'),
-            ],
-            'secret' => [
-                'required',
-                'string',
-                'in:Wmfd2893gb7',
-            ],
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'udid' => [
+				'required',
+				'integer',
+				Rule::exists(User::class, 'udid'),
+			],
+			'secret' => [
+				'required',
+				'string',
+				'in:Wmfd2893gb7',
+			],
+		];
+	}
 }

@@ -11,10 +11,10 @@ use Illuminate\Queue\SerializesModels;
 
 class RunAntiCheatServiceJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle()
-    {
-        AntiCheatService::run();
-    }
+	public function handle()
+	{
+		AntiCheatService::run();
+	}
 }

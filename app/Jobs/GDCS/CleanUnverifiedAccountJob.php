@@ -11,13 +11,13 @@ use Illuminate\Queue\SerializesModels;
 
 class CleanUnverifiedAccountJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void
-    {
-        Account::query()
-            ->where('created_at', '<=', now()->subHour())
-            ->whereNull('email_verified_at')
-            ->delete();
-    }
+	public function handle(): void
+	{
+		Account::query()
+			->where('created_at', '<=', now()->subHour())
+			->whereNull('email_verified_at')
+			->delete();
+	}
 }

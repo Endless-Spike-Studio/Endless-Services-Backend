@@ -4,5 +4,5 @@ namespace App\Services\Game;
 
 class BaseGameService
 {
-    public static int $perPage = 10;
+	public static int $perPage = 10;
 }

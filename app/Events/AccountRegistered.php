@@ -7,10 +7,10 @@ use Illuminate\Foundation\Events\Dispatchable;
 
 class AccountRegistered
 {
-    use Dispatchable;
+	use Dispatchable;
 
-    public function __construct(readonly Account $account)
-    {
+	public function __construct(readonly Account $account)
+	{
 
-    }
+	}
 }

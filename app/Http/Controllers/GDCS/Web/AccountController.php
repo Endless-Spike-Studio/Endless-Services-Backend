@@ -13,58 +13,58 @@ use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
 {
-    use HasMessage;
+	use HasMessage;
 
-    /**
-     * @throws WebException
-     */
-    public function resendVerificationEmail()
-    {
-        $account = Auth::guard('gdcs')->user();
+	/**
+	 * @throws WebException
+	 */
+	public function resendVerificationEmail()
+	{
+		$account = Auth::guard('gdcs')->user();
 
-        if ($account->hasVerifiedEmail()) {
-            throw new WebException(__('gdcn.web.error.account_verification_email_resend_failed_already_verified'));
-        } else {
-            $account->sendEmailVerificationNotification();
-            $this->pushSuccessMessage(__('gdcn.web.action.account_verification_email_resend_success'));
-        }
+		if ($account->hasVerifiedEmail()) {
+			throw new WebException(__('gdcn.web.error.account_verification_email_resend_failed_already_verified'));
+		} else {
+			$account->sendEmailVerificationNotification();
+			$this->pushSuccessMessage(__('gdcn.web.action.account_verification_email_resend_success'));
+		}
 
-        return back();
-    }
+		return back();
+	}
 
-    public function edit(Account $account, AccountEditRequest $request)
-    {
-        $data = $request->validated();
-        $account->update($data);
+	public function edit(Account $account, AccountEditRequest $request)
+	{
+		$data = $request->validated();
+		$account->update($data);
 
-        if ($account->wasChanged('name')) {
-            $account->user->update([
-                'name' => $account->name
-            ]);
-        }
+		if ($account->wasChanged('name')) {
+			$account->user->update([
+				'name' => $account->name
+			]);
+		}
 
-        if ($account->wasChanged('email')) {
-            $account->update([
-                'email_verified_at' => null
-            ]);
+		if ($account->wasChanged('email')) {
+			$account->update([
+				'email_verified_at' => null
+			]);
 
-            $account->sendEmailVerificationNotification();
-            $this->pushSuccessMessage(__('gdcn.dashboard.action.account_email_edit_success_please_re_verify_email'));
-        }
+			$account->sendEmailVerificationNotification();
+			$this->pushSuccessMessage(__('gdcn.dashboard.action.account_email_edit_success_please_re_verify_email'));
+		}
 
-        $this->pushSuccessMessage(__('gdcn.dashboard.action.account_edit_success'));
-        return back();
-    }
+		$this->pushSuccessMessage(__('gdcn.dashboard.action.account_edit_success'));
+		return back();
+	}
 
-    public function changePassword(Account $account, AccountPasswordChangeRequest $request)
-    {
-        $data = $request->validated();
+	public function changePassword(Account $account, AccountPasswordChangeRequest $request)
+	{
+		$data = $request->validated();
 
-        $account->update([
-            'password' => Hash::make($data['password'])
-        ]);
+		$account->update([
+			'password' => Hash::make($data['password'])
+		]);
 
-        $this->pushSuccessMessage(__('gdcn.dashboard.action.account_password_change_success'));
-        return back();
-    }
+		$this->pushSuccessMessage(__('gdcn.dashboard.action.account_password_change_success'));
+		return back();
+	}
 }

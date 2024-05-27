@@ -6,13 +6,13 @@ use App\Http\Requests\Request;
 
 class LevelTransferToolInRequest extends Request
 {
-    public function rules(): array
-    {
-        return [
-            'levelID' => [
-                'required',
-                'integer'
-            ]
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'levelID' => [
+				'required',
+				'integer'
+			]
+		];
+	}
 }

@@ -9,22 +9,22 @@ use Illuminate\Validation\Rule;
 
 class AccountEditRequest extends Request
 {
-    public function rules(): array
-    {
-        $currentAccountID = Auth::guard('gdcs')->id();
+	public function rules(): array
+	{
+		$currentAccountID = Auth::guard('gdcs')->id();
 
-        return [
-            'name' => [
-                'required',
-                'string',
-                Rule::unique(Account::class)->ignore($currentAccountID)
-            ],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                Rule::unique(Account::class)->ignore($currentAccountID)
-            ]
-        ];
-    }
+		return [
+			'name' => [
+				'required',
+				'string',
+				Rule::unique(Account::class)->ignore($currentAccountID)
+			],
+			'email' => [
+				'required',
+				'string',
+				'email',
+				Rule::unique(Account::class)->ignore($currentAccountID)
+			]
+		];
+	}
 }

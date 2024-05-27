@@ -29,43 +29,43 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class Kernel extends HttpKernel
 {
-    protected $middleware = [
-        TrustProxies::class,
-        HandleCors::class,
-        PreventRequestsDuringMaintenance::class,
-        ValidatePostSize::class,
-        TrimStrings::class,
-        ConvertEmptyStringsToNull::class
-    ];
+	protected $middleware = [
+		TrustProxies::class,
+		HandleCors::class,
+		PreventRequestsDuringMaintenance::class,
+		ValidatePostSize::class,
+		TrimStrings::class,
+		ConvertEmptyStringsToNull::class
+	];
 
-    protected $middlewareGroups = [
-        'web' => [
-            EncryptCookies::class,
-            AddQueuedCookiesToResponse::class,
-            StartSession::class,
-            AuthenticateSession::class,
-            ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
-            SubstituteBindings::class,
-            HandleInertiaRequests::class
-        ],
+	protected $middlewareGroups = [
+		'web' => [
+			EncryptCookies::class,
+			AddQueuedCookiesToResponse::class,
+			StartSession::class,
+			AuthenticateSession::class,
+			ShareErrorsFromSession::class,
+			VerifyCsrfToken::class,
+			SubstituteBindings::class,
+			HandleInertiaRequests::class
+		],
 
-        'api' => [
-            SubstituteBindings::class
-        ],
+		'api' => [
+			SubstituteBindings::class
+		],
 
-        'game' => []
-    ];
+		'game' => []
+	];
 
-    protected $routeMiddleware = [
-        'auth' => Authenticate::class,
-        'auth.basic' => AuthenticateWithBasicAuth::class,
-        'cache.headers' => SetCacheHeaders::class,
-        'can' => Authorize::class,
-        'guest' => RedirectIfAuthenticated::class,
-        'password.confirm' => RequirePassword::class,
-        'signed' => ValidateSignature::class,
-        'throttle' => ThrottleRequests::class,
-        'verified' => EnsureEmailIsVerified::class
-    ];
+	protected $routeMiddleware = [
+		'auth' => Authenticate::class,
+		'auth.basic' => AuthenticateWithBasicAuth::class,
+		'cache.headers' => SetCacheHeaders::class,
+		'can' => Authorize::class,
+		'guest' => RedirectIfAuthenticated::class,
+		'password.confirm' => RequirePassword::class,
+		'signed' => ValidateSignature::class,
+		'throttle' => ThrottleRequests::class,
+		'verified' => EnsureEmailIsVerified::class
+	];
 }

@@ -6,21 +6,21 @@ use App\Http\Requests\Request;
 
 class CustomSongToolCreateUsingFileRequest extends Request
 {
-    public function rules(): array
-    {
-        return [
-            'name' => [
-                'required',
-                'string'
-            ],
-            'artist_name' => [
-                'required',
-                'string'
-            ],
-            'file' => [
-                'required',
-                'file'
-            ]
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'name' => [
+				'required',
+				'string'
+			],
+			'artist_name' => [
+				'required',
+				'string'
+			],
+			'file' => [
+				'required',
+				'file'
+			]
+		];
+	}
 }

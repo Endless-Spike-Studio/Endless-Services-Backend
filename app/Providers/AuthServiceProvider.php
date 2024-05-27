@@ -10,13 +10,13 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 
 class AuthServiceProvider extends ServiceProvider
 {
-    protected $policies = [
-        Level::class => LevelPolicy::class,
-        Contest::class => ContestPolicy::class
-    ];
+	protected $policies = [
+		Level::class => LevelPolicy::class,
+		Contest::class => ContestPolicy::class
+	];
 
-    public function boot(): void
-    {
-        $this->registerPolicies();
-    }
+	public function boot(): void
+	{
+		$this->registerPolicies();
+	}
 }

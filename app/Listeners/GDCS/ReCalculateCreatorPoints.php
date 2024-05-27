@@ -6,8 +6,8 @@ use App\Jobs\GDCS\ReCalculateCreatorPointJob;
 
 class ReCalculateCreatorPoints
 {
-    public function handle(): void
-    {
-        ReCalculateCreatorPointJob::dispatch();
-    }
+	public function handle(): void
+	{
+		ReCalculateCreatorPointJob::dispatch();
+	}
 }

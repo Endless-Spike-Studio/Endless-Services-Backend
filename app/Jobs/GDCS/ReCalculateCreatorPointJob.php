@@ -11,10 +11,10 @@ use Illuminate\Queue\SerializesModels;
 
 class ReCalculateCreatorPointJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(): void
-    {
-        LevelRatingServiceAlias::reCalculateCreatorPoints();
-    }
+	public function handle(): void
+	{
+		LevelRatingServiceAlias::reCalculateCreatorPoints();
+	}
 }

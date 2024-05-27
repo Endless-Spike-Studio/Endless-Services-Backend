@@ -8,18 +8,18 @@ use Illuminate\Validation\Rule;
 
 class LoginRequest extends Request
 {
-    public function rules(): array
-    {
-        return [
-            'name' => [
-                'required',
-                'string',
-                Rule::exists(Account::class)
-            ],
-            'password' => [
-                'required',
-                'string'
-            ]
-        ];
-    }
+	public function rules(): array
+	{
+		return [
+			'name' => [
+				'required',
+				'string',
+				Rule::exists(Account::class)
+			],
+			'password' => [
+				'required',
+				'string'
+			]
+		];
+	}
 }

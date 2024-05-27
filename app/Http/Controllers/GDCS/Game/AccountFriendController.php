@@ -11,23 +11,23 @@ use App\Models\GDCS\AccountFriend;
 
 class AccountFriendController extends Controller
 {
-    use GameLog;
+	use GameLog;
 
-    /**
-     * @throws GeometryDashChineseServerException
-     */
-    public function remove(AccountFriendRemoveRequest $request): int
-    {
-        $data = $request->validated();
-        $query = AccountFriend::findBetween($request->account->id, $data['targetAccountID']);
+	/**
+	 * @throws GeometryDashChineseServerException
+	 */
+	public function remove(AccountFriendRemoveRequest $request): int
+	{
+		$data = $request->validated();
+		$query = AccountFriend::findBetween($request->account->id, $data['targetAccountID']);
 
-        if (!$query->exists()) {
-            throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_delete_failed_target_not_found'), gameResponse: Response::GAME_ACCOUNT_FRIEND_DELETE_FAILED_TARGET_NOT_FRIEND->value);
-        }
+		if (!$query->exists()) {
+			throw new GeometryDashChineseServerException(__('gdcn.game.error.account_friend_delete_failed_target_not_found'), gameResponse: Response::GAME_ACCOUNT_FRIEND_DELETE_FAILED_TARGET_NOT_FRIEND->value);
+		}
 
-        $query->delete();
-        $this->logGame(__('gdcn.game.action.account_friend_delete_success'));
+		$query->delete();
+		$this->logGame(__('gdcn.game.action.account_friend_delete_success'));
 
-        return Response::GAME_ACCOUNT_FRIEND_DELETE_SUCCESS->value;
-    }
+		return Response::GAME_ACCOUNT_FRIEND_DELETE_SUCCESS->value;
+	}
 }
