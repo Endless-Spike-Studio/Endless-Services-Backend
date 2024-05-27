@@ -3,6 +3,7 @@
 	"require": {
 		"php": ">=8.3",
 		"alphasnow/aliyun-oss-laravel": "^4.8.1",
+		"endless-spike-studio/geometry-dash-library": "*",
 		"laravel/framework": "^11.8",
 		"pestphp/pest": "^2.34.7",
 		"pestphp/pest-plugin-laravel": "^2.4",
