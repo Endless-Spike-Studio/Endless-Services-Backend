@@ -40,7 +40,9 @@
 			"@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
 		],
 		"post-create-project-cmd": [
-			"@php artisan key:generate --ansi"
+			"@php artisan key:generate --ansi",
+			"@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+			"@php artisan migrate --graceful --ansi"
 		]
 	},
 	"extra": {
@@ -53,9 +55,10 @@
 		"preferred-install": "dist",
 		"sort-packages": true,
 		"allow-plugins": {
-			"pestphp/pest-plugin": true
+			"pestphp/pest-plugin": true,
+			"php-http/discovery": true
 		}
 	},
-	"minimum-stability": "dev",
+	"minimum-stability": "stable",
 	"prefer-stable": true
 }
