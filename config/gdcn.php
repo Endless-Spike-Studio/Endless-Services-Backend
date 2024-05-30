@@ -160,8 +160,10 @@ return [
 	'ngproxy' => [
 		'storages' => [
 			'songs' => [
-				'disk' => 'oss',
-				'format' => 'ngproxy/songs/{id}.mp3'
+				[
+					'disk' => 'oss',
+					'format' => 'ngproxy/songs/{id}.mp3'
+				]
 			]
 		]
 	]
