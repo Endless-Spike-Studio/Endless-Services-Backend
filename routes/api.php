@@ -6,6 +6,7 @@ use App\NewgroundsProxy\Controllers\SongApiController;
 Route::group([
 	'prefix' => 'EndlessProxy'
 ], function () {
+	Route::post('/getGJSongInfo.php', [GameApiController::class, 'getSong']);
 	Route::post('/{path}', [GameApiController::class, 'proxy'])->where('path', '\.php$');
 
 	Route::group([

@@ -20,17 +20,26 @@ class GameApiController extends Controller
 	}
 
 	/**
-	 * @throws RequestException
 	 * @throws SongFetchException
+	 */
+	public function getSong(Request $request): string
+	{
+		$id = $request->integer('songID');
+
+		if (empty($id)) {
+			abort(404);
+		}
+
+		return $this->song->get($id)->toObject();
+	}
+
+	/**
+	 * @throws RequestException
 	 */
 	public function handle(Request $request): string
 	{
 		$uri = $request->getRequestUri();
 		$data = $request->all();
-
-		if ($uri === '/getGJSongInfo.php') {
-			return $this->song->get($data['songID'])->toObject();
-		}
 
 		return $this->proxy->post($uri, $data);
 	}
