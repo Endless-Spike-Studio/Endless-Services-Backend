@@ -2,8 +2,9 @@
 
 namespace App\Shared\Exceptions;
 
-use App\GeometryDash\Enums\Response;
+use App\GeometryDash\Enums\Response as GameResponse;
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request;
 use Throwable;
 
@@ -17,13 +18,13 @@ class ApplicationException extends Exception
 		protected readonly int    $http_code = 500,
 		protected readonly array  $http_headers = [],
 
-		protected readonly string $game_response = Response::FAILED->value
+		protected readonly string $game_response = GameResponse::FAILED->value
 	)
 	{
 		parent::__construct($message, $code, $previous);
 	}
 
-	public function render()
+	public function render(): Response
 	{
 		if (Request::ajax() || Request::wantsJson()) {
 			return response([
