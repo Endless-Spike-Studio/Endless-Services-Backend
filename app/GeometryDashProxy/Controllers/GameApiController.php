@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 class GameApiController extends Controller
 {
 	public function __construct(
-		protected readonly SongService  $song,
 		protected readonly ProxyService $proxy
 	)
 	{
@@ -22,7 +21,7 @@ class GameApiController extends Controller
 	/**
 	 * @throws SongFetchException
 	 */
-	public function getSong(Request $request): string
+	public function getSong(Request $request, SongService $song): string
 	{
 		$id = $request->integer('songID');
 
@@ -30,7 +29,7 @@ class GameApiController extends Controller
 			abort(404);
 		}
 
-		return $this->song->get($id)->toObject();
+		return $song->get($id)->toObject();
 	}
 
 	/**
