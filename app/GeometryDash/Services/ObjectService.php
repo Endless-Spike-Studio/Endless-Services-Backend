@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Game;
+namespace App\GeometryDash\Services;
 
 use Illuminate\Support\Arr;
 
-class ObjectService extends BaseGameService
+class ObjectService
 {
 	public static function merge(array $object, string $glue): string
 	{
@@ -21,7 +21,7 @@ class ObjectService extends BaseGameService
 		$result = [];
 
 		$objects = explode($delimiter, $object);
-		for ($i = 0, $iMax = count($objects); $i < $iMax; $i += 2) {
+		for ($i = 0, $max = count($objects); $i < $max; $i += 2) {
 			if (!Arr::has($objects, [$i, $i + 1])) {
 				continue;
 			}
