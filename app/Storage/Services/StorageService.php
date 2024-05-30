@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Services;
+namespace App\Storage\Services;
 
-use App\Exceptions\StorageException;
+use App\Storage\Exceptions\StorageException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StorageService
 {
 	/**
 	 * @throws StorageException
 	 */
-	public function __construct(protected array $storages)
+	public function __construct(protected readonly array $storages)
 	{
 		foreach ($this->storages as $storage) {
 			if (!Arr::has($storage, ['disk', 'format'])) {
-				throw new StorageException(__('gdcn.storage.error.invalid_config'));
+				throw new StorageException(
+					__('[存储] 配置不正确')
+				);
 			}
 		}
 	}
@@ -26,7 +29,7 @@ class StorageService
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -44,7 +47,7 @@ class StorageService
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -58,14 +61,11 @@ class StorageService
 		return false;
 	}
 
-	/**
-	 * @throws StorageException
-	 */
 	public function get(array $data): string
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -76,14 +76,14 @@ class StorageService
 			}
 		}
 
-		throw new StorageException(__('gdcn.storage.error.fetch_failed_not_found'), httpCode: 404);
+		throw new NotFoundHttpException();
 	}
 
 	public function allExists(array $data): bool
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -101,7 +101,7 @@ class StorageService
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -115,7 +115,7 @@ class StorageService
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -127,14 +127,11 @@ class StorageService
 		}
 	}
 
-	/**
-	 * @throws StorageException
-	 */
 	public function url(array $data): string
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -145,17 +142,14 @@ class StorageService
 			}
 		}
 
-		throw new StorageException(__('gdcn.storage.error.url_get_failed_not_found'), httpCode: 404);
+		throw new NotFoundHttpException();
 	}
 
-	/**
-	 * @throws StorageException
-	 */
 	public function download(array $data): StreamedResponse
 	{
 		foreach ($this->storages as $storage) {
 			$disk = Storage::disk($storage['disk']);
-			$path = $storage['format'];
+			$path = config('gdcn.storage.base') . '/' . $storage['format'];
 
 			foreach ($data as $key => $value) {
 				$path = Str::replace('{' . $key . '}', $value, $path);
@@ -166,6 +160,6 @@ class StorageService
 			}
 		}
 
-		throw new StorageException(__('gdcn.storage.error.download_failed_not_found'), httpCode: 404);
+		throw new NotFoundHttpException();
 	}
 }

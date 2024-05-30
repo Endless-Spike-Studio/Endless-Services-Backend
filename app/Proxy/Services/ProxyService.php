@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Proxy\Services;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
