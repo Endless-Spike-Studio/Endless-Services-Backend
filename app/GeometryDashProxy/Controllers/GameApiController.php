@@ -2,32 +2,36 @@
 
 namespace App\GeometryDashProxy\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Services\ProxyService;
-use Illuminate\Http\Client\HttpClientException;
+use App\GeometryDashProxy\Exceptions\RequestException;
+use App\GeometryDashProxy\Services\ProxyService;
+use App\NewgroundsProxy\Exceptions\SongFetchException;
+use App\NewgroundsProxy\Services\SongService;
+use App\Shared\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class GameApiController extends Controller
 {
 	public function __construct(
-		protected ProxyService $proxy
+		protected readonly SongService  $song,
+		protected readonly ProxyService $proxy
 	)
 	{
 
 	}
 
+	/**
+	 * @throws RequestException
+	 * @throws SongFetchException
+	 */
 	public function handle(Request $request): string
 	{
-		try {
-			$data = $request->all();
+		$uri = $request->getRequestUri();
+		$data = $request->all();
 
-			return ProxyService::instance()
-				->withUserAgent(null)
-				->asForm()
-				->post(rtrim(config('gdcn.gdproxy.base'), '/') . $request->getRequestUri(), $data)
-				->body();
-		} catch (HttpClientException) {
-			return -1;
+		if ($uri === '/getGJSongInfo.php') {
+			return $this->song->get($data['songID'])->toObject();
 		}
+
+		return $this->proxy->post($uri, $data);
 	}
 }
