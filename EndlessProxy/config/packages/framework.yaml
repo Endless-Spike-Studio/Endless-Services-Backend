@@ -1,2 +1,0 @@
-framework:
-    secret: '%env(APP_SECRET)%'
