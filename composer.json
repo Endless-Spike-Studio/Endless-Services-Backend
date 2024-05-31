@@ -1,5 +1,9 @@
 {
 	"require": {
-		"slim/slim": "^4.13"
+		"slim/slim": "^4.13",
+		"laminas/laminas-diactoros": "^3.3",
+		"php-di/slim-bridge": "^3.4",
+		"php-di/php-di": "^7.0",
+		"psr/http-factory": "^1.1"
 	}
 }
