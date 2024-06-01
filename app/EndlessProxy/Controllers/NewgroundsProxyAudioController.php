@@ -8,7 +8,7 @@ use App\EndlessProxy\Services\ProxyService;
 use Illuminate\Http\Client\ConnectionException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class NewgroundsProxyController
+class NewgroundsProxyAudioController
 {
 	public function __construct(
 		protected readonly ProxyService           $proxy,

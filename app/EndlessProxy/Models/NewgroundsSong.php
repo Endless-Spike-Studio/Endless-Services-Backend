@@ -2,7 +2,7 @@
 
 namespace App\EndlessProxy\Models;
 
-use App\EndlessProxy\Controllers\NewgroundsProxyController;
+use App\EndlessProxy\Controllers\NewgroundsProxyAudioController;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\URL;
@@ -24,7 +24,7 @@ class NewgroundsSong extends Model
 	public function downloadUrl(): Attribute
 	{
 		return new Attribute(
-			get: fn() => URL::action([NewgroundsProxyController::class, 'download'], $this->song_id)
+			get: fn() => URL::action([NewgroundsProxyAudioController::class, 'download'], $this->song_id)
 		);
 	}
 }

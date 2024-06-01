@@ -1,7 +1,7 @@
 <?php
 
 use App\EndlessProxy\Controllers\GameApiProxyController;
-use App\EndlessProxy\Controllers\NewgroundsProxyController;
+use App\EndlessProxy\Controllers\NewgroundsProxyAudioController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -23,9 +23,9 @@ Route::group([
 			Route::group([
 				'prefix' => '{id}'
 			], function () {
-				Route::get('/', [NewgroundsProxyController::class, 'info']);
-				Route::get('/object', [NewgroundsProxyController::class, 'object']);
-				Route::get('/download', [NewgroundsProxyController::class, 'download']);
+				Route::get('/', [NewgroundsProxyAudioController::class, 'info']);
+				Route::get('/object', [NewgroundsProxyAudioController::class, 'object']);
+				Route::get('/download', [NewgroundsProxyAudioController::class, 'download']);
 			});
 		});
 	});
