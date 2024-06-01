@@ -4,8 +4,173 @@
 		"Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
 		"This file is @generated automatically"
 	],
-	"content-hash": "5f721671af71c49d367aca54a9ad2f9e",
+	"content-hash": "fb1dcf93bc42146c768e2ad711020470",
 	"packages": [
+		{
+			"name": "aliyuncs/oss-sdk-php",
+			"version": "v2.7.1",
+			"source": {
+				"type": "git",
+				"url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
+				"reference": "ce5d34dae9868237a32248788ea175c7e9da14b1"
+			},
+			"dist": {
+				"type": "zip",
+				"url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/ce5d34dae9868237a32248788ea175c7e9da14b1",
+				"reference": "ce5d34dae9868237a32248788ea175c7e9da14b1",
+				"shasum": ""
+			},
+			"require": {
+				"php": ">=5.3"
+			},
+			"require-dev": {
+				"php-coveralls/php-coveralls": "*",
+				"phpunit/phpunit": "*"
+			},
+			"type": "library",
+			"autoload": {
+				"psr-4": {
+					"OSS\\": "src/OSS"
+				}
+			},
+			"notification-url": "https://packagist.org/downloads/",
+			"license": [
+				"MIT"
+			],
+			"authors": [
+				{
+					"name": "Aliyuncs",
+					"homepage": "http://www.aliyun.com"
+				}
+			],
+			"description": "Aliyun OSS SDK for PHP",
+			"homepage": "http://www.aliyun.com/product/oss/",
+			"support": {
+				"issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
+				"source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.7.1"
+			},
+			"time": "2024-02-28T11:22:18+00:00"
+		},
+		{
+			"name": "alphasnow/aliyun-oss-flysystem",
+			"version": "3.4.1",
+			"source": {
+				"type": "git",
+				"url": "https://github.com/alphasnow/aliyun-oss-flysystem.git",
+				"reference": "e5b3cb546c88f6dff5aad293cda460d3a1efca96"
+			},
+			"dist": {
+				"type": "zip",
+				"url": "https://api.github.com/repos/alphasnow/aliyun-oss-flysystem/zipball/e5b3cb546c88f6dff5aad293cda460d3a1efca96",
+				"reference": "e5b3cb546c88f6dff5aad293cda460d3a1efca96",
+				"shasum": ""
+			},
+			"require": {
+				"aliyuncs/oss-sdk-php": "^2.7",
+				"league/flysystem": "^3.0"
+			},
+			"require-dev": {
+				"friendsofphp/php-cs-fixer": "^3.6",
+				"mockery/mockery": "^1.5",
+				"php-coveralls/php-coveralls": "*",
+				"phpstan/phpstan": "^1.4",
+				"phpunit/phpunit": "^9.5",
+				"vlucas/phpdotenv": "^5.4"
+			},
+			"type": "library",
+			"autoload": {
+				"psr-4": {
+					"AlphaSnow\\Flysystem\\Aliyun\\": "src/"
+				}
+			},
+			"notification-url": "https://packagist.org/downloads/",
+			"license": [
+				"MIT"
+			],
+			"authors": [
+				{
+					"name": "Alpha Snow",
+					"email": "wind91@foxmail.com"
+				}
+			],
+			"description": "Flysystem adapter for the Aliyun storage",
+			"homepage": "https://alphasnow.github.io/aliyun-oss-flysystem/",
+			"keywords": [
+				"adapter",
+				"aliyun",
+				"filesystem",
+				"oss"
+			],
+			"support": {
+				"issues": "https://github.com/alphasnow/aliyun-oss-flysystem/issues",
+				"source": "https://github.com/alphasnow/aliyun-oss-flysystem/tree/3.4.1"
+			},
+			"time": "2024-05-08T06:14:16+00:00"
+		},
+		{
+			"name": "alphasnow/aliyun-oss-laravel",
+			"version": "4.8.1",
+			"source": {
+				"type": "git",
+				"url": "https://github.com/alphasnow/aliyun-oss-laravel.git",
+				"reference": "c391a80b924a94dffe304a76df68dbd38ec47e22"
+			},
+			"dist": {
+				"type": "zip",
+				"url": "https://api.github.com/repos/alphasnow/aliyun-oss-laravel/zipball/c391a80b924a94dffe304a76df68dbd38ec47e22",
+				"reference": "c391a80b924a94dffe304a76df68dbd38ec47e22",
+				"shasum": ""
+			},
+			"require": {
+				"alphasnow/aliyun-oss-flysystem": "^3.4",
+				"php": "^8.0.2"
+			},
+			"require-dev": {
+				"friendsofphp/php-cs-fixer": "^3.12",
+				"mockery/mockery": "^1.5",
+				"orchestra/testbench": "^7.13",
+				"php-coveralls/php-coveralls": "*",
+				"phpstan/phpstan": "^1.9",
+				"phpunit/phpunit": "^9.5"
+			},
+			"type": "library",
+			"extra": {
+				"laravel": {
+					"providers": [
+						"AlphaSnow\\LaravelFilesystem\\Aliyun\\AliyunServiceProvider"
+					]
+				}
+			},
+			"autoload": {
+				"psr-4": {
+					"AlphaSnow\\LaravelFilesystem\\Aliyun\\": "src/"
+				}
+			},
+			"notification-url": "https://packagist.org/downloads/",
+			"license": [
+				"MIT"
+			],
+			"authors": [
+				{
+					"name": "alphasnow",
+					"email": "wind91@foxmail.com"
+				}
+			],
+			"description": "alibaba cloud object storage service for laravel",
+			"homepage": "https://alphasnow.github.io/aliyun-oss-laravel/",
+			"keywords": [
+				"aliyun",
+				"filesystems",
+				"laravel",
+				"oss",
+				"storage"
+			],
+			"support": {
+				"issues": "https://github.com/alphasnow/aliyun-oss-laravel/issues",
+				"source": "https://github.com/alphasnow/aliyun-oss-laravel/tree/4.8.1"
+			},
+			"time": "2024-04-28T01:23:12+00:00"
+		},
 		{
 			"name": "brick/math",
 			"version": "0.12.1",
