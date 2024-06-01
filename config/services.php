@@ -10,6 +10,14 @@ return [
 			],
 			'geometry_dash' => [
 				'base' => env('ENDLESS_PROXY_GEOMETRY_DASH_BASE', 'https://www.boomlings.com/database')
+			],
+			'newgrounds' => [
+				'audios' => [
+					'storage' => [
+						'disk' => 'oss',
+						'format' => 'endless_proxy/newgrounds/audios/{id}.mp3'
+					]
+				]
 			]
 		]
 	]

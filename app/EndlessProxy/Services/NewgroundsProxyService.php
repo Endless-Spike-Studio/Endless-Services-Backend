@@ -8,6 +8,7 @@ use App\GeometryDash\Enums\Objects\GeometryDashSongObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class NewgroundsProxyService
 {
@@ -133,11 +134,25 @@ class NewgroundsProxyService
 	 */
 	public function toData(NewgroundsSong $song): string
 	{
+		$disk = config('services.endless.proxy.newgrounds.audios.storage.disk');
+		$format = config('services.endless.proxy.newgrounds.audios.storage.format');
+		$path = str_replace('{id}', $song->song_id, $format);
+
+		$storage = Storage::disk($disk);
+
+		if ($storage->exists($path) && $storage->size($path) > 0) {
+			return $storage->get($path);
+		}
+
 		$url = urldecode($song->original_download_url);
 
-		return $this->proxy->getRequest()
+		$data = $this->proxy->getRequest()
 			->get($url)
 			->body();
+
+		$storage->put($path, $data);
+
+		return $data;
 	}
 
 	public function toObject(NewgroundsSong $song): string
