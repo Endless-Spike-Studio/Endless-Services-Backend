@@ -4,15 +4,15 @@ namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Services\GeometryDashProxyService;
-use App\EndlessProxy\Services\NewgroundsProxyService;
+use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 
 class GameApiProxyController
 {
 	public function __construct(
-		protected readonly GeometryDashProxyService $service,
-		protected readonly NewgroundsProxyService   $newgroundsProxy
+		protected readonly GeometryDashProxyService    $service,
+		protected readonly NewgroundsAudioProxyService $audio
 	)
 	{
 
@@ -41,7 +41,7 @@ class GameApiProxyController
 			return '-1';
 		}
 
-		$song = $this->newgroundsProxy->resolve($id);
-		return $this->newgroundsProxy->toObject($song);
+		$song = $this->audio->resolve($id);
+		return $this->audio->toObject($song);
 	}
 }

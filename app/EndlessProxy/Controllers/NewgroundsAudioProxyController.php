@@ -3,16 +3,16 @@
 namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Exceptions\SongResolveException;
-use App\EndlessProxy\Services\NewgroundsProxyService;
+use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use App\EndlessProxy\Services\ProxyService;
 use Illuminate\Http\Client\ConnectionException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class NewgroundsProxyAudioController
+class NewgroundsAudioProxyController
 {
 	public function __construct(
 		protected readonly ProxyService           $proxy,
-		protected readonly NewgroundsProxyService $service
+		protected readonly NewgroundsAudioProxyService $service
 	)
 	{
 

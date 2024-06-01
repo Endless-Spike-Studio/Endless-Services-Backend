@@ -10,7 +10,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
-class NewgroundsProxyService
+class NewgroundsAudioProxyService
 {
 	public function __construct(
 		protected readonly GeometryDashProxyService  $proxy,
