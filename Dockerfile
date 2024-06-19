@@ -1,4 +1,4 @@
-FROM composer:latest AS builder-backend
+FROM composer:latest
 
 COPY . /app
 
@@ -8,7 +8,7 @@ RUN composer install --no-dev
 
 FROM registry.cn-shanghai.aliyuncs.com/endless-spike-studio/runtime:v2
 
-COPY /app /app
+COPY --copy=0 /app /app
 
 WORKDIR /app
 
