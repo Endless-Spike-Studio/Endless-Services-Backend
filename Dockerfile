@@ -8,7 +8,7 @@ RUN composer install --no-dev
 
 FROM registry.cn-shanghai.aliyuncs.com/endless-spike-studio/runtime:v2
 
-COPY --copy=0 /app /app
+COPY --from=0 /app /app
 
 WORKDIR /app
 
