@@ -1,4 +1,4 @@
-FROM composer:latest
+FROM registry.cn-shanghai.aliyuncs.com/endless-spike-studio/runtime:v2
 
 COPY . /app
 WORKDIR /app
