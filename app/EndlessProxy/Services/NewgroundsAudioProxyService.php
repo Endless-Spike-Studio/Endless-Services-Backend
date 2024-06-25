@@ -3,6 +3,7 @@
 namespace App\EndlessProxy\Services;
 
 use App\EndlessProxy\Exceptions\SongResolveException;
+use App\EndlessProxy\Jobs\FetchSongDataJob;
 use App\EndlessProxy\Models\NewgroundsSong;
 use App\GeometryDash\Enums\Objects\GeometryDashSongObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
@@ -56,8 +57,8 @@ class NewgroundsAudioProxyService
 		} catch (ConnectionException $e) {
 			throw new SongResolveException('链接异常', previous: $e);
 		} finally {
-			if (!empty($song)) {
-				$this->storage->fetch($song);
+			if (!empty($song) && !$this->storage->valid($song)) {
+				dispatch(new FetchSongDataJob($song));
 			}
 		}
 	}
