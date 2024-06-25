@@ -1,6 +1,7 @@
 <?php
 
 use App\EndlessProxy\Controllers\GameApiProxyController;
+use App\EndlessProxy\Controllers\GameSongApiController;
 use App\EndlessProxy\Controllers\NewgroundsAudioProxyController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,7 +11,7 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		Route::post('/getGJSongInfo.php', [GameApiProxyController::class, 'getSong']);
+		Route::post('/getGJSongInfo.php', [GameSongApiController::class, 'object']);
 		Route::post('/{path}', [GameApiProxyController::class, 'handle'])->where('path', '.*');
 	});
 

@@ -3,15 +3,13 @@
 namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Services\GeometryDashProxyService;
-use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 
 class GameApiProxyController
 {
 	public function __construct(
-		protected readonly GeometryDashProxyService    $service,
-		protected readonly NewgroundsAudioProxyService $audio
+		protected readonly GeometryDashProxyService $service
 	)
 	{
 
@@ -27,17 +25,5 @@ class GameApiProxyController
 		return $this->service
 			->getRequest()
 			->post($path, $data);
-	}
-
-	public function getSong(Request $request): string
-	{
-		$id = $request->integer('songID');
-
-		if (empty($id)) {
-			return '-1';
-		}
-
-		$song = $this->audio->resolve($id);
-		return $this->audio->toObject($song);
 	}
 }
