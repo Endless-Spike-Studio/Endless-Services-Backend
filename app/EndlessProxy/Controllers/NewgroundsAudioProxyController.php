@@ -6,12 +6,13 @@ use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use App\EndlessProxy\Services\ProxyService;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class NewgroundsAudioProxyController
 {
 	public function __construct(
-		protected readonly ProxyService           $proxy,
+		protected readonly ProxyService                $proxy,
 		protected readonly NewgroundsAudioProxyService $service
 	)
 	{
@@ -20,6 +21,7 @@ class NewgroundsAudioProxyController
 
 	/**
 	 * @throws SongResolveException
+	 * @throws ConnectionException
 	 */
 	public function info(int $id): array
 	{
@@ -28,6 +30,7 @@ class NewgroundsAudioProxyController
 
 	/**
 	 * @throws SongResolveException
+	 * @throws ConnectionException
 	 */
 	public function object(int $id): string
 	{
@@ -44,10 +47,8 @@ class NewgroundsAudioProxyController
 		$song = $this->service->resolve($id);
 		$data = $this->service->toData($song);
 
-		return new StreamedResponse(function () use ($data) {
+		return Response::streamDownload(function () use ($data) {
 			echo $data;
-		}, headers: [
-			'Content-Disposition' => 'attachment; filename=' . $song->song_id . '.mp3'
-		]);
+		}, "$song->song_id.mp3");
 	}
 }
