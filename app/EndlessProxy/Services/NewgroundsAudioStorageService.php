@@ -41,7 +41,7 @@ class NewgroundsAudioStorageService
 			$storage = Storage::disk($this->disk);
 			$path = $this->toPath($song->song_id);
 
-			if ($storage->exists($path) && $storage->size($path) > 0) {
+			if ($this->valid($song)) {
 				return true;
 			}
 
@@ -55,5 +55,17 @@ class NewgroundsAudioStorageService
 		} catch (ConnectionException $e) {
 			throw new SongResolveException('链接异常', previous: $e);
 		}
+	}
+
+	public function valid(NewgroundsSong $song): bool
+	{
+		$storage = Storage::disk($this->disk);
+		$path = $this->toPath($song->song_id);
+
+		if ($storage->exists($path) && $storage->size($path) > 0) {
+			return true;
+		}
+
+		return false;
 	}
 }
