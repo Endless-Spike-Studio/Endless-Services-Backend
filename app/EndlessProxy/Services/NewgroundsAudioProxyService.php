@@ -20,18 +20,11 @@ class NewgroundsAudioProxyService
 
 	}
 
-	/**
-	 * @throws ConnectionException
-	 */
 	public function toData(NewgroundsSong $song): string
 	{
 		return $this->storage->get($song);
 	}
 
-	/**
-	 * @throws SongResolveException
-	 * @throws ConnectionException
-	 */
 	public function resolve(int $id): NewgroundsSong
 	{
 		try {
@@ -51,7 +44,7 @@ class NewgroundsAudioProxyService
 				throw new SongResolveException('解析失败, 该歌曲可能不存在');
 			}
 
-			return NewgroundsSong::create([
+			return app(NewgroundsSong::class)->create([
 				'song_id' => $songObject[GeometryDashSongObjectDefinitions::ID->value],
 				'name' => $songObject[GeometryDashSongObjectDefinitions::NAME->value],
 				'artist_id' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_ID->value],

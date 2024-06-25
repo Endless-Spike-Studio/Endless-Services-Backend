@@ -2,10 +2,8 @@
 
 namespace App\EndlessProxy\Controllers;
 
-use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use App\EndlessProxy\Services\ProxyService;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -19,29 +17,17 @@ class NewgroundsAudioProxyController
 
 	}
 
-	/**
-	 * @throws SongResolveException
-	 * @throws ConnectionException
-	 */
 	public function info(int $id): array
 	{
 		return $this->service->resolve($id)->toArray();
 	}
 
-	/**
-	 * @throws SongResolveException
-	 * @throws ConnectionException
-	 */
 	public function object(int $id): string
 	{
 		$song = $this->service->resolve($id);
 		return $this->service->toObject($song);
 	}
 
-	/**
-	 * @throws SongResolveException
-	 * @throws ConnectionException
-	 */
 	public function download(int $id): StreamedResponse
 	{
 		$song = $this->service->resolve($id);

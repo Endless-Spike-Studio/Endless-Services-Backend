@@ -4,7 +4,7 @@ namespace App\GeometryDash\Enums\Objects;
 
 enum GeometryDashSongObjectDefinitions: int
 {
-	public const GLUE = '~|~';
+	public const string GLUE = '~|~';
 
 	case ID = 1;
 	case NAME = 2;

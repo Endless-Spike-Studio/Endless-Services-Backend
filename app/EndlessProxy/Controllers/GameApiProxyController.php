@@ -2,7 +2,6 @@
 
 namespace App\EndlessProxy\Controllers;
 
-use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Services\GeometryDashProxyService;
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use Illuminate\Http\Client\ConnectionException;
@@ -30,9 +29,6 @@ class GameApiProxyController
 			->post($path, $data);
 	}
 
-	/**
-	 * @throws SongResolveException
-	 */
 	public function getSong(Request $request): string
 	{
 		$id = $request->integer('songID');
