@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 
-class GameSfxApiProxyController
+class GameCustomContentProxyController
 {
 	public function __construct(
 		protected readonly GeometryDashProxyService $proxy
