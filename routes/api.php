@@ -1,5 +1,6 @@
 <?php
 
+use App\EndlessProxy\Controllers\GameAccountDataProxyController;
 use App\EndlessProxy\Controllers\GameApiProxyController;
 use App\EndlessProxy\Controllers\GameCustomContentProxyController;
 use App\EndlessProxy\Controllers\GameSongApiProxyController;
@@ -12,6 +13,14 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
+		Route::post('/getAccountURL.php', [GameAccountDataProxyController::class, 'base']);
+
+		Route::group([
+			'prefix' => 'AccountData'
+		], function () {
+			Route::post('/{path}', [GameAccountDataProxyController::class, 'handle'])->where('path', '.*');
+		});
+
 		Route::post('/getCustomContentURL.php', [GameCustomContentProxyController::class, 'base']);
 
 		Route::group([
