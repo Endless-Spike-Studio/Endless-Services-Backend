@@ -19,7 +19,7 @@ class GameCustomContentProxyController
 
 	public function base(): string
 	{
-		return URL::action([static::class, 'handle'], '/');
+		return URL::action([__CLASS__, 'handle'], '/');
 	}
 
 	/**
