@@ -12,7 +12,7 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		Route::get('/getCustomContentURL.php', [GameSfxApiProxyController::class, 'base']);
+		Route::post('/getCustomContentURL.php', [GameSfxApiProxyController::class, 'base']);
 
 		Route::group([
 			'prefix' => 'CustomContent'
