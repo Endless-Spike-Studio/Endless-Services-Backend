@@ -5,7 +5,7 @@ namespace App\EndlessProxy\Controllers;
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use Illuminate\Http\Request;
 
-class GameSongApiController
+class GameSongApiProxyController
 {
 	public function __construct(
 		protected readonly NewgroundsAudioProxyService $audio
