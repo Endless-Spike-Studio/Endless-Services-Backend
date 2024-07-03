@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-	protected string $name = 'endless_proxy.newgrounds_songs';
+	protected readonly string $name = 'endless_proxy.newgrounds_songs';
 
 	public function up(): void
 	{
