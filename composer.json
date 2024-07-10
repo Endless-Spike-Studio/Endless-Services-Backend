@@ -7,6 +7,7 @@
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.23.1",
+		"laravel-lang/common": "^6.3",
 		"mockery/mockery": "^1.6.12",
 		"nunomaduro/collision": "^8.1.1",
 		"pestphp/pest": "^2.34.7",
