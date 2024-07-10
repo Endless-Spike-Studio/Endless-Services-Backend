@@ -1,11 +1,22 @@
 <?php
 
+use App\Base\Controllers\UserController;
 use App\EndlessProxy\Controllers\GameAccountDataProxyController;
 use App\EndlessProxy\Controllers\GameApiProxyController;
 use App\EndlessProxy\Controllers\GameCustomContentProxyController;
 use App\EndlessProxy\Controllers\GameSongApiProxyController;
 use App\EndlessProxy\Controllers\NewgroundsAudioProxyController;
 use Illuminate\Support\Facades\Route;
+
+Route::group([
+	'prefix' => 'Base'
+], function () {
+	Route::group([
+		'prefix' => 'User'
+	], function () {
+		Route::post('/register', [UserController::class, 'register']);
+	});
+});
 
 Route::group([
 	'prefix' => 'EndlessProxy'
