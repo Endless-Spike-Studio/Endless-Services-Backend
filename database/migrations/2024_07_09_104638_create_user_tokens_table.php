@@ -12,7 +12,7 @@ return new class extends Migration {
 	{
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
-			$table->foreignIdFor(User::class)->unique();
+			$table->foreignIdFor(User::class);
 			$table->string('name');
 			$table->string('token', 64)->unique();
 			$table->timestamp('expires_at')->nullable();
