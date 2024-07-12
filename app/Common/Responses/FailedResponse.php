@@ -10,7 +10,7 @@ class FailedResponse extends SuccessResponse
 		protected mixed  $data = null
 	)
 	{
-		parent::__construct($this->code, $this->data);
+		parent::__construct($this->data, $this->code);
 	}
 
 	public function toResponse($request): array

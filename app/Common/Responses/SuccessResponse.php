@@ -7,8 +7,8 @@ use Illuminate\Contracts\Support\Responsable;
 class SuccessResponse implements Responsable
 {
 	public function __construct(
-		protected int   $code = 200,
-		protected mixed $data = null
+		protected mixed $data = null,
+		protected int   $code = 200
 	)
 	{
 
