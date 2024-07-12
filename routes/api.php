@@ -15,6 +15,7 @@ Route::group([
 		'prefix' => 'User'
 	], function () {
 		Route::post('/register', [UserController::class, 'register']);
+		Route::post('/login', [UserController::class, 'login']);
 	});
 });
 
