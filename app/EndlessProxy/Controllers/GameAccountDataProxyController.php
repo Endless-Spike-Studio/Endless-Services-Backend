@@ -7,6 +7,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
+use Random\Randomizer;
 
 class GameAccountDataProxyController
 {
@@ -34,7 +35,10 @@ class GameAccountDataProxyController
 		), function () {
 			return $this->proxy
 				->getRequest()
-				->post('/getAccountURL.php')
+				->post('/getAccountURL.php', [
+					'type' => (new Randomizer)->getInt(1, 2),
+					'secret' => 'Wmfd2893gb7'
+				])
 				->body();
 		});
 
