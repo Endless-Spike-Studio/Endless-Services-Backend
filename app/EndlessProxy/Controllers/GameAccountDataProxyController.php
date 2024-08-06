@@ -3,6 +3,7 @@
 namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Services\GeometryDashProxyService;
+use App\GeometryDash\Enums\GeometryDashSecrets;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -37,7 +38,7 @@ class GameAccountDataProxyController
 				->getRequest()
 				->post('/getAccountURL.php', [
 					'type' => (new Randomizer)->getInt(1, 2),
-					'secret' => 'Wmfd2893gb7'
+					'secret' => GeometryDashSecrets::COMMON->value
 				])
 				->body();
 		});
