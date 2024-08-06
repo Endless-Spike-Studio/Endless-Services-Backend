@@ -5,6 +5,7 @@ namespace App\EndlessProxy\Services;
 use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Jobs\FetchSongDataJob;
 use App\EndlessProxy\Models\NewgroundsSong;
+use App\GeometryDash\Enums\GeometryDashSecrets;
 use App\GeometryDash\Enums\Objects\GeometryDashSongObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Illuminate\Http\Client\ConnectionException;
@@ -21,9 +22,14 @@ class NewgroundsAudioProxyService
 
 	}
 
-	public function toData(NewgroundsSong $song): string
+	public function raw(NewgroundsSong $song): string
 	{
-		return $this->storage->get($song);
+		return $this->storage->raw($song);
+	}
+
+	public function url(NewgroundsSong $song): string
+	{
+		return $this->storage->url($song);
 	}
 
 	public function resolve(int $id): NewgroundsSong

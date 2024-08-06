@@ -20,19 +20,14 @@ class NewgroundsAudioStorageService
 		$this->format = config('services.endless.proxy.newgrounds.audios.storage.format');
 	}
 
-	public function get(NewgroundsSong $song): string
+	public function raw(NewgroundsSong $song): string
 	{
+		$this->fetch($song);
+
 		$storage = Storage::disk($this->disk);
 		$path = $this->toPath($song->song_id);
 
-		$this->fetch($song);
-
 		return $storage->get($path);
-	}
-
-	protected function toPath(int $id)
-	{
-		return str_replace('{id}', $id, $this->format);
 	}
 
 	public function fetch(NewgroundsSong $song): bool
@@ -57,15 +52,26 @@ class NewgroundsAudioStorageService
 		}
 	}
 
+	protected function toPath(int $id)
+	{
+		return str_replace('{id}', $id, $this->format);
+	}
+
 	public function valid(NewgroundsSong $song): bool
 	{
 		$storage = Storage::disk($this->disk);
 		$path = $this->toPath($song->song_id);
 
-		if ($storage->exists($path) && $storage->size($path) > 0) {
-			return true;
-		}
+		return $storage->exists($path) && $storage->size($path) > 0;
+	}
 
-		return false;
+	public function url(NewgroundsSong $song): string
+	{
+		$this->fetch($song);
+
+		$storage = Storage::disk($this->disk);
+		$path = $this->toPath($song->song_id);
+
+		return $storage->url($path);
 	}
 }
