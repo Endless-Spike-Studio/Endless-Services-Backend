@@ -71,7 +71,7 @@ class NewgroundsAudioProxyService
 		$response = $this->proxy->getRequest()
 			->post('getGJSongInfo.php', [
 				'songID' => $id,
-				'secret' => 'Wmfd2893gb7',
+				'secret' => GeometryDashSecrets::COMMON->value
 			])
 			->body();
 
@@ -129,7 +129,7 @@ class NewgroundsAudioProxyService
 			->post('getGJLevels21.php', [
 				'song' => $id,
 				'customSong' => true,
-				'secret' => 'Wmfd2893gb7',
+				'secret' => GeometryDashSecrets::COMMON->value
 			])
 			->body();
 
