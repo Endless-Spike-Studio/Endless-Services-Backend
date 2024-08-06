@@ -4,8 +4,7 @@ namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use App\EndlessProxy\Services\ProxyService;
-use Illuminate\Support\Facades\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Redirect;
 
 class NewgroundsAudioProxyController
 {
@@ -28,13 +27,11 @@ class NewgroundsAudioProxyController
 		return $this->service->toObject($song);
 	}
 
-	public function download(int $id): StreamedResponse
+	public function download(int $id): string
 	{
 		$song = $this->service->resolve($id);
-		$data = $this->service->toData($song);
+		$url = $this->service->url($song);
 
-		return Response::streamDownload(function () use ($data) {
-			echo $data;
-		}, "$song->song_id.mp3");
+		return Redirect::to($url, 301);
 	}
 }
