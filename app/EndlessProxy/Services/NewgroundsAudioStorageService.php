@@ -81,7 +81,7 @@ class NewgroundsAudioStorageService
 	{
 		if ($this->checkCustom($song->original_download_url)) {
 			return URL::action([GameCustomContentProxyController::class, 'handle'], [
-				'path' => "/music/$song->id.ogg"
+				'path' => "music/$song->song_id.ogg"
 			]);
 		}
 
