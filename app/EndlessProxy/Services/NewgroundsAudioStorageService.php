@@ -4,6 +4,7 @@ namespace App\EndlessProxy\Services;
 
 use App\EndlessProxy\Controllers\GameCustomContentProxyController;
 use App\EndlessProxy\Exceptions\SongResolveException;
+use App\EndlessProxy\Jobs\FetchSongDataJob;
 use App\EndlessProxy\Models\NewgroundsSong;
 use App\GeometryDash\Enums\SpecialSongDownloadUrl;
 use Illuminate\Http\Client\HttpClientException;
@@ -25,12 +26,17 @@ class NewgroundsAudioStorageService
 
 	public function raw(NewgroundsSong $song): string
 	{
-		$this->fetch($song);
+		FetchSongDataJob::dispatch($song)->onConnection('sync');
 
 		$storage = Storage::disk($this->disk);
 		$path = $this->toPath($song->song_id);
 
 		return $storage->get($path);
+	}
+
+	protected function toPath(int $id)
+	{
+		return str_replace('{id}', $id, $this->format);
 	}
 
 	public function fetch(NewgroundsSong $song): bool
@@ -53,11 +59,6 @@ class NewgroundsAudioStorageService
 		} catch (HttpClientException $e) {
 			throw new SongResolveException('请求异常', previous: $e);
 		}
-	}
-
-	protected function toPath(int $id)
-	{
-		return str_replace('{id}', $id, $this->format);
 	}
 
 	public function valid(NewgroundsSong $song): bool
@@ -85,7 +86,7 @@ class NewgroundsAudioStorageService
 			]);
 		}
 
-		$this->fetch($song);
+		FetchSongDataJob::dispatch($song)->onConnection('sync');
 
 		$storage = Storage::disk($this->disk);
 		$path = $this->toPath($song->song_id);

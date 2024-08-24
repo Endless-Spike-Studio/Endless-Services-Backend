@@ -65,7 +65,7 @@ class NewgroundsAudioProxyService
 			throw new SongResolveException('请求异常', previous: $e);
 		} finally {
 			if (!empty($song) && !$this->storage->valid($song)) {
-				dispatch(new FetchSongDataJob($song));
+				FetchSongDataJob::dispatch($song);
 			}
 		}
 	}
