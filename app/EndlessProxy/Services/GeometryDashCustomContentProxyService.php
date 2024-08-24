@@ -5,7 +5,7 @@ namespace App\EndlessProxy\Services;
 class GeometryDashCustomContentProxyService
 {
 	public function __construct(
-		protected readonly GeometryDashCuistomContentStorageService $storage
+		protected readonly GeometryDashCustomContentStorageService $storage
 	)
 	{
 

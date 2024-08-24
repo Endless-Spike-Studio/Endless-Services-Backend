@@ -7,7 +7,7 @@ use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-class GeometryDashCuistomContentStorageService
+class GeometryDashCustomContentStorageService
 {
 	protected readonly string $disk;
 	protected readonly string $format;
