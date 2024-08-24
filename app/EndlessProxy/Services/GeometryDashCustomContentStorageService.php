@@ -34,9 +34,9 @@ class GeometryDashCustomContentStorageService
 	{
 		try {
 			$storage = Storage::disk($this->disk);
-			$path = $this->toPath($path);
+			$storagePath = $this->toPath($path);
 
-			if ($this->valid($path)) {
+			if ($this->valid($storagePath)) {
 				return true;
 			}
 
@@ -55,7 +55,7 @@ class GeometryDashCustomContentStorageService
 				->get($path)
 				->body();
 
-			return $storage->put($path, $data);
+			return $storage->put($storagePath, $data);
 		} catch (HttpClientException $e) {
 			throw new CustomContentResolveException('请求异常', previous: $e);
 		}
