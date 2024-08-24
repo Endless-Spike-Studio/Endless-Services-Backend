@@ -9,7 +9,13 @@ return [
 				'delay' => env('ENDLESS_PROXY_RETRY_DELAY', 0)
 			],
 			'geometry_dash' => [
-				'base' => env('ENDLESS_PROXY_GEOMETRY_DASH_BASE', 'https://www.boomlings.com/database')
+				'base' => env('ENDLESS_PROXY_GEOMETRY_DASH_BASE', 'https://www.boomlings.com/database'),
+				'custom_contents' => [
+					'storage' => [
+						'disk' => 'oss',
+						'format' => 'endless_proxy/geometry_dash/custom_contents/{path}'
+					]
+				]
 			],
 			'newgrounds' => [
 				'audios' => [
