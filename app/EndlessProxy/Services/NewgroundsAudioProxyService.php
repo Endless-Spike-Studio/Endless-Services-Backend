@@ -9,6 +9,7 @@ use App\GeometryDash\Enums\GeometryDashSecrets;
 use App\GeometryDash\Enums\Objects\GeometryDashSongObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Arr;
 
 class NewgroundsAudioProxyService
@@ -60,8 +61,8 @@ class NewgroundsAudioProxyService
 				'disabled' => false,
 				'original_download_url' => $songObject[GeometryDashSongObjectDefinitions::DOWNLOAD_URL->value]
 			]);
-		} catch (ConnectionException $e) {
-			throw new SongResolveException('链接异常', previous: $e);
+		} catch (HttpClientException $e) {
+			throw new SongResolveException('请求异常', previous: $e);
 		} finally {
 			if (!empty($song) && !$this->storage->valid($song)) {
 				dispatch(new FetchSongDataJob($song));

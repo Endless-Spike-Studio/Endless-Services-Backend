@@ -4,7 +4,7 @@ namespace App\EndlessProxy\Services;
 
 use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Models\NewgroundsSong;
-use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Storage;
 
 class NewgroundsAudioStorageService
@@ -47,8 +47,8 @@ class NewgroundsAudioStorageService
 				->body();
 
 			return $storage->put($path, $data);
-		} catch (ConnectionException $e) {
-			throw new SongResolveException('链接异常', previous: $e);
+		} catch (HttpClientException $e) {
+			throw new SongResolveException('请求异常', previous: $e);
 		}
 	}
 
