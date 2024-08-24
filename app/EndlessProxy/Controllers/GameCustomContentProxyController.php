@@ -2,8 +2,9 @@
 
 namespace App\EndlessProxy\Controllers;
 
+use App\EndlessProxy\Exceptions\CustomContentResolveException;
 use App\EndlessProxy\Services\GeometryDashProxyService;
-use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
@@ -22,26 +23,27 @@ class GameCustomContentProxyController
 		return URL::action([__CLASS__, 'handle'], '/');
 	}
 
-	/**
-	 * @throws ConnectionException
-	 */
 	public function handle(Request $request, string $path): string
 	{
-		$data = $request->all();
+		try {
+			$data = $request->all();
 
-		$upstream = Cache::rememberForever(sha1(
-			implode('|', [__CLASS__, __FUNCTION__, 'upstream'])
-		), function () {
+			$upstream = Cache::rememberForever(sha1(
+				implode('|', [__CLASS__, __FUNCTION__, 'upstream'])
+			), function () {
+				return $this->proxy
+					->getRequest()
+					->post('/getCustomContentURL.php')
+					->body();
+			});
+
 			return $this->proxy
 				->getRequest()
-				->post('/getCustomContentURL.php')
+				->baseUrl($upstream)
+				->get($path, $data)
 				->body();
-		});
-
-		return $this->proxy
-			->getRequest()
-			->baseUrl($upstream)
-			->get($path, $data)
-			->body();
+		} catch (HttpClientException $e) {
+			throw new CustomContentResolveException('请求异常', previous: $e);
+		}
 	}
 }
