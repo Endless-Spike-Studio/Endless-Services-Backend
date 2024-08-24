@@ -2,10 +2,13 @@
 
 namespace App\EndlessProxy\Services;
 
+use App\EndlessProxy\Controllers\GameCustomContentProxyController;
 use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Models\NewgroundsSong;
+use App\GeometryDash\Enums\SpecialSongDownloadUrl;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 
 class NewgroundsAudioStorageService
 {
@@ -59,14 +62,29 @@ class NewgroundsAudioStorageService
 
 	public function valid(NewgroundsSong $song): bool
 	{
+		if ($this->checkCustom($song->original_download_url)) {
+			return true;
+		}
+
 		$storage = Storage::disk($this->disk);
 		$path = $this->toPath($song->song_id);
 
 		return $storage->exists($path) && $storage->size($path) > 0;
 	}
 
+	protected function checkCustom(string $url): bool
+	{
+		return $url === SpecialSongDownloadUrl::CUSTOM->value;
+	}
+
 	public function url(NewgroundsSong $song): string
 	{
+		if ($this->checkCustom($song->original_download_url)) {
+			return URL::action([GameCustomContentProxyController::class, 'handle'], [
+				'path' => "/music/$song->id.ogg"
+			]);
+		}
+
 		$this->fetch($song);
 
 		$storage = Storage::disk($this->disk);
