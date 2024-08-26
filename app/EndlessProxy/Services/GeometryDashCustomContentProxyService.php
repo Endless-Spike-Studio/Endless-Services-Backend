@@ -11,6 +11,11 @@ class GeometryDashCustomContentProxyService
 
 	}
 
+	public function raw(string $path): string
+	{
+		return $this->storage->raw($path);
+	}
+
 	public function url(string $path): string
 	{
 		return $this->storage->url($path);

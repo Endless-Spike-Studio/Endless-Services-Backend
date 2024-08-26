@@ -3,7 +3,7 @@
 namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Services\GeometryDashCustomContentProxyService;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 
 class GameCustomContentProxyController
@@ -22,8 +22,10 @@ class GameCustomContentProxyController
 
 	public function handle(string $path): string
 	{
-		$url = $this->service->url($path);
+		$filename = basename($path);
 
-		return Redirect::to($url, 301);
+		return Response::streamDownload(function () use ($path) {
+			echo $this->service->raw($path);
+		}, $filename);
 	}
 }

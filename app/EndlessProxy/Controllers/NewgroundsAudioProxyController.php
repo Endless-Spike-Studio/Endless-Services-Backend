@@ -4,7 +4,7 @@ namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use App\EndlessProxy\Services\ProxyService;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 
 class NewgroundsAudioProxyController
 {
@@ -30,8 +30,9 @@ class NewgroundsAudioProxyController
 	public function download(int $id): string
 	{
 		$song = $this->service->resolve($id);
-		$url = $this->service->url($song);
 
-		return Redirect::to($url, 301);
+		return Response::streamDownload(function () use ($song) {
+			echo $this->service->raw($song);
+		}, $song->song_id . '.mp3');
 	}
 }
