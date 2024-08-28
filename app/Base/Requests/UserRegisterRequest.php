@@ -14,6 +14,7 @@ class UserRegisterRequest extends ApiRequest
 			'name' => [
 				'required',
 				'string',
+				'alpha_dash:ascii',
 				Rule::unique(User::class)
 			],
 			'email' => [
