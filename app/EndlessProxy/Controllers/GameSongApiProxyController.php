@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class GameSongApiProxyController
 {
 	public function __construct(
-		protected readonly NewgroundsAudioProxyService $audio
+		protected readonly NewgroundsAudioProxyService $service
 	)
 	{
 
@@ -22,7 +22,8 @@ class GameSongApiProxyController
 			return '-1';
 		}
 
-		$song = $this->audio->resolve($id);
-		return $this->audio->toObject($song);
+		return $this->service->toObject(
+			$this->service->resolve($id)
+		);
 	}
 }

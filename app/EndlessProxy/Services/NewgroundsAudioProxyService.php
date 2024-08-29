@@ -23,16 +23,6 @@ class NewgroundsAudioProxyService
 
 	}
 
-	public function raw(NewgroundsSong $song): string
-	{
-		return $this->storage->raw($song);
-	}
-
-	public function url(NewgroundsSong $song): string
-	{
-		return $this->storage->url($song);
-	}
-
 	public function resolve(int $id): NewgroundsSong
 	{
 		try {

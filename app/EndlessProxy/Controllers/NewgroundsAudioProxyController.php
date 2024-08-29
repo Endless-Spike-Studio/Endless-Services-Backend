@@ -3,6 +3,7 @@
 namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
+use App\EndlessProxy\Services\NewgroundsAudioStorageService;
 use App\EndlessProxy\Services\ProxyService;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -10,8 +11,9 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 class NewgroundsAudioProxyController
 {
 	public function __construct(
-		protected readonly ProxyService                $proxy,
-		protected readonly NewgroundsAudioProxyService $service
+		protected readonly ProxyService                  $proxy,
+		protected readonly NewgroundsAudioProxyService   $service,
+		protected readonly NewgroundsAudioStorageService $storage
 	)
 	{
 
@@ -24,8 +26,9 @@ class NewgroundsAudioProxyController
 
 	public function object(int $id): string
 	{
-		$song = $this->service->resolve($id);
-		return $this->service->toObject($song);
+		return $this->service->toObject(
+			$this->service->resolve($id)
+		);
 	}
 
 	public function download(int $id): StreamedResponse
@@ -33,7 +36,7 @@ class NewgroundsAudioProxyController
 		$song = $this->service->resolve($id);
 
 		return Response::streamDownload(function () use ($song) {
-			echo $this->service->raw($song);
+			echo $this->storage->raw($song);
 		}, $song->song_id . '.mp3');
 	}
 }
