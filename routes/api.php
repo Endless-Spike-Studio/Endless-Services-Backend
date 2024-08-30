@@ -6,6 +6,7 @@ use App\EndlessProxy\Controllers\GameApiProxyController;
 use App\EndlessProxy\Controllers\GameCustomContentProxyController;
 use App\EndlessProxy\Controllers\GameSongApiProxyController;
 use App\EndlessProxy\Controllers\NewgroundsAudioProxyController;
+use App\EndlessServer\Controllers\GameAccountController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -69,8 +70,8 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		// Route::post('/accounts/registerGJAccount.php', []);
-		// Route::post('/accounts/loginGJAccount.php', []);
+		Route::post('/accounts/registerGJAccount.php', [GameAccountController::class, 'register']);
+		Route::post('/accounts/loginGJAccount.php', [GameAccountController::class, 'login']);
 		// Route::post('/updateGJUserScore22.php', []);
 		// Route::post('/getGJUserInfo20.php', []);
 		// Route::post('/updateGJAccSettings20.php', []);
