@@ -18,11 +18,12 @@ class UserService
 
 	public function register(string $name, string $email, string $password)
 	{
-		return User::create([
-			'name' => $name,
-			'email' => $email,
-			'password' => $password,
-		]);
+		return User::query()
+			->create([
+				'name' => $name,
+				'email' => $email,
+				'password' => $password,
+			]);
 	}
 
 	public function login(string $name, string $password): FailedResponse|array
