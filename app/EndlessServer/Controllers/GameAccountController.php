@@ -42,6 +42,8 @@ class GameAccountController
 			return GeometryDashResponses::ACCOUNT_LOGIN_FAILED_EMAIL_NOT_VERIFIED->value;
 		}
 
+		$this->service->storageGjp2($account, $data['password']);
+
 		$player = $this->service->queryAccountPlayer($account, $data['udid']);
 
 		return implode(',', [

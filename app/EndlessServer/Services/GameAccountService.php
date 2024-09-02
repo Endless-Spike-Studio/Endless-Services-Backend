@@ -4,6 +4,7 @@ namespace App\EndlessServer\Services;
 
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Player;
+use App\GeometryDash\Enums\GeometryDashSalts;
 use Illuminate\Support\Str;
 
 class GameAccountService
@@ -31,6 +32,14 @@ class GameAccountService
 			], [
 				'name' => $account->name,
 				'udid' => $udid
+			]);
+	}
+
+	public function storageGjp2(Account $account, string $password): void
+	{
+		$account->gjp2()
+			->updateOrCreate([
+				'gjp2' => sha1($password . GeometryDashSalts::GJP2->value)
 			]);
 	}
 }
