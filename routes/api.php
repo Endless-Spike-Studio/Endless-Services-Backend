@@ -1,12 +1,12 @@
 <?php
 
 use App\Base\Controllers\UserController;
-use App\EndlessProxy\Controllers\GameAccountDataProxyController;
-use App\EndlessProxy\Controllers\GameApiProxyController;
-use App\EndlessProxy\Controllers\GameCustomContentProxyController;
-use App\EndlessProxy\Controllers\GameSongApiProxyController;
-use App\EndlessProxy\Controllers\NewgroundsAudioProxyController;
-use App\EndlessServer\Controllers\GameAccountController;
+use App\EndlessProxy\Controllers\GameAccountDataProxyController as EndlessProxyGameAccountDataProxyController;
+use App\EndlessProxy\Controllers\GameApiProxyController as EndlessProxyGameApiProxyController;
+use App\EndlessProxy\Controllers\GameCustomContentProxyController as EndlessProxyGameCustomContentProxyController;
+use App\EndlessProxy\Controllers\GameSongApiProxyController as EndlessProxyGameSongApiProxyController;
+use App\EndlessProxy\Controllers\NewgroundsAudioProxyController as EndlessProxyNewgroundsAudioProxyController;
+use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountControllerAlias;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -26,25 +26,25 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		Route::post('/getAccountURL.php', [GameAccountDataProxyController::class, 'base']);
+		Route::post('/getAccountURL.php', [EndlessProxyGameAccountDataProxyController::class, 'base']);
 
 		Route::group([
 			'prefix' => 'AccountData'
 		], function () {
-			Route::post('/{path}', [GameAccountDataProxyController::class, 'handle'])->where('path', '.*');
+			Route::post('/{path}', [EndlessProxyGameAccountDataProxyController::class, 'handle'])->where('path', '.*');
 		});
 
-		Route::post('/getCustomContentURL.php', [GameCustomContentProxyController::class, 'base']);
+		Route::post('/getCustomContentURL.php', [EndlessProxyGameCustomContentProxyController::class, 'base']);
 
 		Route::group([
 			'prefix' => 'CustomContent'
 		], function () {
-			Route::get('/{path}', [GameCustomContentProxyController::class, 'handle'])->where('path', '.*');
+			Route::get('/{path}', [EndlessProxyGameCustomContentProxyController::class, 'handle'])->where('path', '.*');
 		});
 
-		Route::post('/getGJSongInfo.php', [GameSongApiProxyController::class, 'object']);
+		Route::post('/getGJSongInfo.php', [EndlessProxyGameSongApiProxyController::class, 'object']);
 
-		Route::post('/{path}', [GameApiProxyController::class, 'handle'])->where('path', '.*');
+		Route::post('/{path}', [EndlessProxyGameApiProxyController::class, 'handle'])->where('path', '.*');
 	});
 
 	Route::group([
@@ -56,9 +56,9 @@ Route::group([
 			Route::group([
 				'prefix' => '{id}'
 			], function () {
-				Route::get('/', [NewgroundsAudioProxyController::class, 'info']);
-				Route::get('/object', [NewgroundsAudioProxyController::class, 'object']);
-				Route::get('/download', [NewgroundsAudioProxyController::class, 'download']);
+				Route::get('/', [EndlessProxyNewgroundsAudioProxyController::class, 'info']);
+				Route::get('/object', [EndlessProxyNewgroundsAudioProxyController::class, 'object']);
+				Route::get('/download', [EndlessProxyNewgroundsAudioProxyController::class, 'download']);
 			});
 		});
 	});
@@ -70,8 +70,8 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		Route::post('/accounts/registerGJAccount.php', [GameAccountController::class, 'register']);
-		Route::post('/accounts/loginGJAccount.php', [GameAccountController::class, 'login']);
+		Route::post('/accounts/registerGJAccount.php', [EndlessServerGameAccountControllerAlias::class, 'register']);
+		Route::post('/accounts/loginGJAccount.php', [EndlessServerGameAccountControllerAlias::class, 'login']);
 		// Route::post('/updateGJUserScore22.php', []);
 		// Route::post('/getGJUserInfo20.php', []);
 		// Route::post('/updateGJAccSettings20.php', []);
