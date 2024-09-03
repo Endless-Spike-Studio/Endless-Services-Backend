@@ -6,7 +6,7 @@ use App\EndlessProxy\Controllers\GameApiProxyController as EndlessProxyGameApiPr
 use App\EndlessProxy\Controllers\GameCustomContentProxyController as EndlessProxyGameCustomContentProxyController;
 use App\EndlessProxy\Controllers\GameSongApiProxyController as EndlessProxyGameSongApiProxyController;
 use App\EndlessProxy\Controllers\NewgroundsAudioProxyController as EndlessProxyNewgroundsAudioProxyController;
-use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountControllerAlias;
+use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -70,8 +70,8 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		Route::post('/accounts/registerGJAccount.php', [EndlessServerGameAccountControllerAlias::class, 'register']);
-		Route::post('/accounts/loginGJAccount.php', [EndlessServerGameAccountControllerAlias::class, 'login']);
+		Route::post('/accounts/registerGJAccount.php', [EndlessServerGameAccountController::class, 'register']);
+		Route::post('/accounts/loginGJAccount.php', [EndlessServerGameAccountController::class, 'login']);
 		// Route::post('/updateGJUserScore22.php', []);
 		// Route::post('/getGJUserInfo20.php', []);
 		// Route::post('/updateGJAccSettings20.php', []);
