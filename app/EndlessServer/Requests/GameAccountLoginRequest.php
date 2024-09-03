@@ -30,6 +30,7 @@ class GameAccountLoginRequest extends GameRequest
 			],
 			'secret' => [
 				'required',
+				'string',
 				Rule::in([
 					GeometryDashSecrets::ACCOUNT->value
 				])
