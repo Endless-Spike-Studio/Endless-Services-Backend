@@ -11,23 +11,20 @@ class ApiRequest extends FormRequest
 	/**
 	 * @throws FailedException
 	 */
-	protected function failedValidation(Validator $validator)
+	protected function failedAuthorization()
 	{
-		throw new FailedException(
-			__('api.Request validation failed'),
-			422,
-			data: $validator->errors()
-		);
+		throw new FailedException(__('api.request_authorization_failed'), 401);
 	}
 
 	/**
 	 * @throws FailedException
 	 */
-	protected function failedAuthorization()
+	protected function failedValidation(Validator $validator)
 	{
 		throw new FailedException(
-			__('api.Request authorization failed'),
-			401
+			__('api.request_validation_failed'),
+			422,
+			data: $validator->errors()
 		);
 	}
 }

@@ -4,10 +4,9 @@ namespace App\EndlessServer\Requests;
 
 use App\EndlessServer\Models\Account;
 use App\GeometryDash\Enums\GeometryDashSecrets;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class GameAccountLoginRequest extends FormRequest
+class GameAccountLoginRequest extends GameRequest
 {
 	public function rules(): array
 	{
