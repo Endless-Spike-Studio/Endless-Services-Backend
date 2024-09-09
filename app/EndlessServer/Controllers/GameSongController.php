@@ -3,7 +3,8 @@
 namespace App\EndlessServer\Controllers;
 
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
-use App\EndlessServer\Requests\GameGetSongInfoRequest;
+use App\EndlessServer\Requests\GameFetchSongObjectRequest;
+use App\GeometryDash\Enums\GeometryDashResponses;
 
 class GameSongController
 {
@@ -14,12 +15,16 @@ class GameSongController
 
 	}
 
-	public function getInfo(GameGetSongInfoRequest $request): string
+	public function getInfo(GameFetchSongObjectRequest $request): string
 	{
 		$data = $request->validated();
 
-		return $this->newgroundsAudioProxyService->toObject(
-			$this->newgroundsAudioProxyService->resolve($data['songID'])
-		);
+		$song = $this->newgroundsAudioProxyService->resolve($data['songID']);
+
+		if ($song->disabled) {
+			return GeometryDashResponses::SONG_DISABLED->value;
+		}
+
+		return $this->newgroundsAudioProxyService->toObject($song);
 	}
 }

@@ -5,7 +5,7 @@ namespace App\EndlessServer\Requests;
 use App\GeometryDash\Enums\GeometryDashSecrets;
 use Illuminate\Validation\Rule;
 
-class GameGetSongInfoRequest extends GameRequest
+class GameFetchSongObjectRequest extends GameRequest
 {
 	public function rules(): array
 	{
