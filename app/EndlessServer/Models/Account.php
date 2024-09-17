@@ -13,6 +13,7 @@ class Account extends Model implements MustVerifyEmailContract
 
 	protected $table = 'endless_server.accounts';
 
+	protected $fillable = ['name', 'email', 'password'];
 	public function gjp2(): HasOne
 	{
 		return $this->hasOne(AccountGjp2Binding::class);
