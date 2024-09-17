@@ -9,6 +9,8 @@ class AccountGjp2Binding extends Model
 {
 	protected $table = 'endless_server.account_gjp2_bindings';
 
+	protected $fillable = ['gjp2'];
+
 	public function account(): BelongsTo
 	{
 		return $this->belongsTo(Account::class);
