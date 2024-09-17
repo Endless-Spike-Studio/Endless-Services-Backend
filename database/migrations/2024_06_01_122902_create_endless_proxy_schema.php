@@ -13,6 +13,6 @@ return new class extends Migration {
 
 	public function down(): void
 	{
-		DB::unprepared("DROP SCHEMA IF EXISTS $this->name");
+		DB::unprepared("DROP SCHEMA $this->name");
 	}
 };
