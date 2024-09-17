@@ -13,6 +13,7 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Player::class)->unique();
+			$table->integer('creator_points');
 			$table->integer('completed_dailies_count');
 			$table->integer('completed_weeklies_count');
 			$table->integer('completed_classic_auto_count');
