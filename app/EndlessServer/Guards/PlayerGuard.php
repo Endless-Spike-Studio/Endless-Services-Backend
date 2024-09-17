@@ -3,6 +3,7 @@
 namespace App\EndlessServer\Guards;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
+use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Services\GameAccountService;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -42,6 +43,10 @@ class PlayerGuard implements Guard
 			if ($this->tryUuidAndUdid()) {
 				return $this->user();
 			}
+
+			if ($this->tryCreate()) {
+				return $this->user();
+			}
 		}
 
 		return null;
@@ -49,10 +54,11 @@ class PlayerGuard implements Guard
 
 	protected function tryAccount(): bool
 	{
+		/** @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
-		$udid = Request::string('udid');
 
 		if (!empty($account)) {
+			$udid = Request::string('udid');
 			$this->player = app(GameAccountService::class)->queryAccountPlayer($account, $udid);
 			return true;
 		}
@@ -78,6 +84,27 @@ class PlayerGuard implements Guard
 		}
 
 		if (empty($player)) {
+			return false;
+		}
+
+		$this->player = $player;
+		return true;
+	}
+
+	protected function tryCreate()
+	{
+		$uuid = Request::string('uuid');
+		$udid = Request::string('udid');
+		$name = Request::string('userName', 'Player');
+
+		$player = Player::query()
+			->create([
+				'uuid' => $uuid,
+				'udid' => $udid,
+				'name' => $name
+			]);
+
+		if (!$player->wasRecentlyCreated) {
 			return false;
 		}
 
