@@ -2,18 +2,25 @@
 
 namespace App\EndlessServer\Models;
 
+use Database\Factories\AccountFactory;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Account extends Model implements MustVerifyEmailContract
 {
-	use MustVerifyEmail;
+	use HasFactory, MustVerifyEmail;
 
 	protected $table = 'endless_server.accounts';
 
 	protected $fillable = ['name', 'email', 'password'];
+
+	protected static function newFactory(): AccountFactory
+	{
+		return AccountFactory::new();
+	}
 
 	public function player(): HasOne
 	{
