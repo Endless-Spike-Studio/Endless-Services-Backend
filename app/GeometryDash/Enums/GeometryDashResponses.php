@@ -21,5 +21,7 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ACCOUNT_REGISTER_FAILED_EMAIL_IS_INVALID = GeometryDashResponses::_6;
 	public const GeometryDashResponses ACCOUNT_LOGIN_FAILED_ACCOUNT_NOT_FOUND = GeometryDashResponses::_11;
 	public const GeometryDashResponses ACCOUNT_LOGIN_FAILED_EMAIL_NOT_VERIFIED = GeometryDashResponses::_12;
+	public const GeometryDashResponses PLAYER_DATA_UPDATE_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses PLAYER_DATA_UPDATE_FAILED_INVALID_SINFO = GeometryDashResponses::_1;
 	public const GeometryDashResponses SONG_DISABLED = GeometryDashResponses::_2;
 }
