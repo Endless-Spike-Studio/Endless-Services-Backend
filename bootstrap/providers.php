@@ -1,7 +1,9 @@
 <?php
 
 use App\Common\Providers\EndlessServiceProvider;
+use App\EndlessServer\Providers\EndlessServerGuardServiceProvider;
 
 return [
-	EndlessServiceProvider::class
+	EndlessServiceProvider::class,
+	EndlessServerGuardServiceProvider::class
 ];
