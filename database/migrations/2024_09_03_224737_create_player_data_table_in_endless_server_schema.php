@@ -21,6 +21,9 @@ return new class extends Migration {
 			$table->integer('icon_type');
 			$table->integer('coins');
 			$table->integer('user_coins');
+			$table->integer('color1');
+			$table->integer('color2');
+			$table->integer('color3');
 			$table->integer('cube_id');
 			$table->integer('ship_id');
 			$table->integer('ball_id');
