@@ -11,17 +11,6 @@ use Illuminate\Validation\Rule;
 
 class GamePlayerDataUpdateRequest extends GameRequest
 {
-	public function authorize(): Response
-	{
-		$validateGjp2 = $this->validateGjp2();
-
-		if ($validateGjp2->denied()) {
-			return $validateGjp2;
-		}
-
-		return Response::allow();
-	}
-
 	public function rules(): array
 	{
 		return [
