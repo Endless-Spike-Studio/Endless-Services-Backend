@@ -28,6 +28,9 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
+		Route::get('/network/websocket', [EndlessProxyGameApiProxyController::class, 'getNetworkWebsocketInfo']);
+		Route::get('/network/{key}', [EndlessProxyGameApiProxyController::class, 'pullNetwork']);
+
 		Route::post('/getAccountURL.php', [EndlessProxyGameAccountDataProxyController::class, 'base']);
 
 		Route::group([
