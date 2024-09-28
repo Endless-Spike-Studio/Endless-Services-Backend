@@ -43,14 +43,14 @@ class GameApiProxyController
 		}
 	}
 
-	public function getNetworkWebsocketInfo(Request $request): array
+	public function getNetworkWebsocketInfo(): array
 	{
 		return [
 			'broadcaster' => 'reverb',
 			'key' => config('broadcasting.connections.reverb.key'),
-			'wsHost' => config('broadcasting.connections.reverb.options.host'),
-			'wsPort' => config('broadcasting.connections.reverb.options.port'),
-			'wssPort' => config('broadcasting.connections.reverb.options.port'),
+			'wsHost' => config('websocket.host'),
+			'wsPort' => config('websocket.ws_port'),
+			'wssPort' => config('websocket.wss_port'),
 			'forceTLS' => false,
 			'enabledTransports' => ['ws', 'wss'],
 			'authEndpoint' => URL::action([BroadcastController::class, 'authenticate']),
