@@ -30,12 +30,14 @@ class GameApiProxyController
 				->getRequest()
 				->post($path, $data);
 
-			GameApiProxyNetworkEvent::broadcast($request->ip(), [
-				'path' => $path,
-				'data' => $data,
-				'headers' => $response->headers(),
-				'response' => $response->body()
-			]);
+			if (config('services.endless.proxy.network_log_enabled')) {
+				GameApiProxyNetworkEvent::broadcast($request->ip(), [
+					'path' => $path,
+					'data' => $data,
+					'headers' => $response->headers(),
+					'response' => $response->body()
+				]);
+			}
 
 			return $response;
 		} catch (HttpClientException $e) {

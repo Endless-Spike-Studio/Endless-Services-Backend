@@ -4,6 +4,7 @@ return [
 	'endless' => [
 		'proxy' => [
 			'server' => env('ENDLESS_PROXY_SERVER'),
+			'network_log_enabled' => env('ENDLESS_PROXY_NETWORK_LOG_ENABLED', true),
 			'retry' => [
 				'times' => env('ENDLESS_PROXY_RETRY_TIMES', 10),
 				'delay' => env('ENDLESS_PROXY_RETRY_DELAY', 0)
