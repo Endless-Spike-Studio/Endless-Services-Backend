@@ -48,6 +48,8 @@ class GameApiProxyController
 	public function getNetworkWebsocketInfo(): array
 	{
 		return [
+			'enabled' => config('services.endless.proxy.network_log_enabled'),
+
 			'broadcaster' => 'reverb',
 			'key' => config('broadcasting.connections.reverb.key'),
 			'wsHost' => config('websocket.host'),
