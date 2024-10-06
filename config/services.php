@@ -13,16 +13,16 @@ return [
 				'base' => env('ENDLESS_PROXY_GEOMETRY_DASH_BASE', 'https://www.boomlings.com/database'),
 				'custom_contents' => [
 					'storage' => [
-						'disk' => 'oss',
-						'format' => 'endless_proxy/geometry_dash/custom_contents/{path}'
+						'disk' => env('ENDLESS_PROXY_GEOMETRY_DASH_CUSTOM_CONTENTS_STORAGE_DISK', 'oss'),
+						'format' => env('ENDLESS_PROXY_GEOMETRY_DASH_CUSTOM_CONTENTS_STORAGE_FORMAT', 'endless_proxy/geometry_dash/custom_contents/{path}')
 					]
 				]
 			],
 			'newgrounds' => [
 				'audios' => [
 					'storage' => [
-						'disk' => 'oss',
-						'format' => 'endless_proxy/newgrounds/audios/{id}.mp3'
+						'disk' => env('ENDLESS_PROXY_NEWGROUNDS_AUDIOS_STORAGE_DISK', 'oss'),
+						'format' => env('ENDLESS_PROXY_NEWGROUNDS_AUDIOS_STORAGE_FORMAT', 'endless_proxy/newgrounds/audios/{id}.mp3')
 					]
 				]
 			]
