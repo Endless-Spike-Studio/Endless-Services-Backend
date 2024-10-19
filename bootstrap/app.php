@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
 	->withRouting(
@@ -9,6 +10,8 @@ return Application::configure(basePath: dirname(__DIR__))
 	->withBroadcasting('', [
 		'prefix' => 'api'
 	])
-	->withMiddleware()
+	->withMiddleware(function (Middleware $middleware) {
+		$middleware->trustProxies('*');
+	})
 	->withExceptions()
 	->create();
