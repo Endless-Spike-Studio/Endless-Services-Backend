@@ -2,6 +2,10 @@
 
 namespace App\GeometryDash\Enums\Objects;
 
+use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryState;
+use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestState;
+use App\GeometryDash\Enums\GeometryDashAccountSettingMessageState;
+
 enum GeometryDashPlayerInfoObjectDefinitions: int
 {
 	public const string GLUE = ':';
@@ -21,7 +25,9 @@ enum GeometryDashPlayerInfoObjectDefinitions: int
 	case SPECIAL = 15;
 	case UUID = 16;
 	case USER_COINS = 17;
+	/** @see GeometryDashAccountSettingMessageState */
 	case MESSAGE_STATE = 18;
+	/** @see GeometryDashAccountSettingFriendRequestState */
 	case FRIEND_REQUEST_STATE = 19;
 	case YOUTUBE = 20;
 	case CUBE_ID = 21;
@@ -48,6 +54,7 @@ enum GeometryDashPlayerInfoObjectDefinitions: int
 	case DIAMONDS = 46;
 	case EXPLOSION_ID = 48;
 	case MOD_LEVEL = 49;
+	/** @see GeometryDashAccountSettingCommentHistoryState */
 	case COMMENT_HISTORY_STATE = 50;
 	case COLOR_3 = 51;
 	case MOONS = 52;
