@@ -32,6 +32,11 @@ class Account extends Model implements MustVerifyEmailContract
 		return $this->hasOne(AccountGjp2Binding::class);
 	}
 
+	public function setting(): HasOne
+	{
+		return $this->hasOne(AccountSetting::class)->withDefault();
+	}
+
 	protected function casts(): array
 	{
 		return [
