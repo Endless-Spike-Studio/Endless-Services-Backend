@@ -35,6 +35,7 @@ return new class extends Migration {
 			$table->integer('explosion_id');
 			$table->integer('swing_id');
 			$table->integer('jetpack_id');
+			$table->unsignedTinyInteger('special');
 			$table->timestamps();
 		});
 	}
