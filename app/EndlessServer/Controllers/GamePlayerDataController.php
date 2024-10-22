@@ -41,7 +41,11 @@ class GamePlayerDataController
 				'spider_id' => $data['accSpider'],
 				'explosion_id' => $data['accExplosion'],
 				'swing_id' => $data['accSwing'],
-				'jetpack_id' => $data['accJetpack']
+				'jetpack_id' => $data['accJetpack'],
+				'color1' => $data['color1'],
+				'color2' => $data['color2'],
+				'color3' => $data['color3'],
+				'special' => $data['special']
 			]);
 
 		$sinfoParts = explode(',', $data['sinfo']);
