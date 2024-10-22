@@ -19,11 +19,11 @@ class Player extends Model
 
 	public function data(): HasOne
 	{
-		return $this->hasOne(PlayerData::class);
+		return $this->hasOne(PlayerData::class)->withDefault();
 	}
 
 	public function statistic(): HasOne
 	{
-		return $this->hasOne(PlayerStatistic::class);
+		return $this->hasOne(PlayerStatistic::class)->withDefault();
 	}
 }
