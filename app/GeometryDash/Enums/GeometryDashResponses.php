@@ -25,4 +25,5 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses PLAYER_DATA_UPDATE_FAILED_INVALID_SINFO = GeometryDashResponses::_1;
 	public const GeometryDashResponses SONG_DISABLED = GeometryDashResponses::_2;
 	public const GeometryDashResponses ITEM_RESTORE_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses PLAYER_INFO_FETCH_FAILED_NOT_FOUND = GeometryDashResponses::_1;
 }

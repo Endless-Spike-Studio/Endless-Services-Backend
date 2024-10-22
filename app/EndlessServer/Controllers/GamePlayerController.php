@@ -5,6 +5,7 @@ namespace App\EndlessServer\Controllers;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Models\PlayerData;
 use App\EndlessServer\Requests\GamePlayerInfoFetchRequest;
+use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 
@@ -17,6 +18,10 @@ class GamePlayerController
 		$player = Player::query()
 			->where('uuid', $data['targetAccountID'])
 			->first();
+
+		if (empty($player)) {
+			return GeometryDashResponses::PLAYER_INFO_FETCH_FAILED_NOT_FOUND->value;
+		}
 
 		return app(GeometryDashObjectService::class)->merge([
 			GeometryDashPlayerInfoObjectDefinitions::NAME->value => $player->name,
