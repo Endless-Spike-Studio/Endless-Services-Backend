@@ -6,10 +6,9 @@ use App\EndlessServer\Models\Account;
 use App\GeometryDash\Enums\GeometryDashBinaryVersions;
 use App\GeometryDash\Enums\GeometryDashGameVersions;
 use App\GeometryDash\Enums\GeometryDashSecrets;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class GamePlayerInfoFetchRequest extends FormRequest
+class GamePlayerInfoFetchRequest extends GameRequest
 {
 	public function rules(): array
 	{
