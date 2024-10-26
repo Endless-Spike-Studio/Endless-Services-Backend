@@ -3,55 +3,25 @@
 namespace App\EndlessServer\Requests;
 
 use App\EndlessServer\Models\Account;
-use App\GeometryDash\Enums\GeometryDashBinaryVersions;
-use App\GeometryDash\Enums\GeometryDashGameVersions;
-use App\GeometryDash\Enums\GeometryDashSecrets;
+use App\EndlessServer\Traits\GameRequestRules;
 use Illuminate\Validation\Rule;
 
 class GamePlayerInfoFetchRequest extends GameRequest
 {
+	use GameRequestRules;
+
 	public function rules(): array
 	{
 		return [
-			'gameVersion' => [
-				'nullable',
-				'integer',
-				Rule::in([
-					GeometryDashGameVersions::LATEST->value
-				])
-			],
-			'binaryVersion' => [
-				'nullable',
-				'integer',
-				Rule::in([
-					GeometryDashBinaryVersions::LATEST->value
-				])
-			],
-			'gdw' => [
-				'nullable',
-				'integer'
-			],
-			'accountID' => [
-				'sometimes',
-				'integer',
-				Rule::exists(Account::class, 'id')
-			],
-			'gjp2' => [
-				'sometimes',
-				'string'
-			],
+			...$this->versions(),
+			...$this->gdw(),
+			...$this->auth_gjp2(),
 			'targetAccountID' => [
 				'required',
 				'integer',
 				Rule::exists(Account::class, 'id')
 			],
-			'secret' => [
-				'required',
-				'string',
-				Rule::in([
-					GeometryDashSecrets::COMMON->value
-				])
-			]
+			...$this->secret()
 		];
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace App\EndlessServer\Requests;
 
-use App\EndlessServer\Models\Account;
+use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryState;
 use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestState;
 use App\GeometryDash\Enums\GeometryDashAccountSettingMessageState;
@@ -11,18 +11,12 @@ use Illuminate\Validation\Rule;
 
 class GameAccountSettingUpdateRequest extends GameRequest
 {
+	use GameRequestRules;
+
 	public function rules(): array
 	{
 		return [
-			'accountID' => [
-				'required',
-				'integer',
-				Rule::exists(Account::class, 'id')
-			],
-			'gjp2' => [
-				'required',
-				'string'
-			],
+			...$this->auth_gjp2(),
 			'mS' => [
 				'required',
 				'integer',
@@ -50,13 +44,7 @@ class GameAccountSettingUpdateRequest extends GameRequest
 				'required',
 				'string'
 			],
-			'secret' => [
-				'required',
-				'string',
-				Rule::in([
-					GeometryDashSecrets::ACCOUNT->value
-				])
-			]
+			...$this->secret(GeometryDashSecrets::ACCOUNT)
 		];
 	}
 }

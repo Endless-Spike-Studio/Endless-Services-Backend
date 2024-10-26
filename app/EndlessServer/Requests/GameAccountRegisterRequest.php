@@ -3,12 +3,15 @@
 namespace App\EndlessServer\Requests;
 
 use App\EndlessServer\Models\Account;
+use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\GeometryDashSecrets;
 use Illuminate\Validation\Rule;
 
 class GameAccountRegisterRequest extends GameRequest
 {
+	use GameRequestRules;
+
 	public function rules(): array
 	{
 		return [
@@ -28,13 +31,7 @@ class GameAccountRegisterRequest extends GameRequest
 				'email',
 				Rule::unique(Account::class)
 			],
-			'secret' => [
-				'required',
-				'string',
-				Rule::in([
-					GeometryDashSecrets::ACCOUNT->value
-				])
-			]
+			...$this->secret(GeometryDashSecrets::ACCOUNT)
 		];
 	}
 

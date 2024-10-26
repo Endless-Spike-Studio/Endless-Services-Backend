@@ -2,11 +2,12 @@
 
 namespace App\EndlessServer\Requests;
 
-use App\GeometryDash\Enums\GeometryDashSecrets;
-use Illuminate\Validation\Rule;
+use App\EndlessServer\Traits\GameRequestRules;
 
 class GameFetchSongObjectRequest extends GameRequest
 {
+	use GameRequestRules;
+
 	public function rules(): array
 	{
 		return [
@@ -14,13 +15,7 @@ class GameFetchSongObjectRequest extends GameRequest
 				'required',
 				'string'
 			],
-			'secret' => [
-				'required',
-				'string',
-				Rule::in([
-					GeometryDashSecrets::COMMON->value
-				])
-			]
+			...$this->secret()
 		];
 	}
 }

@@ -2,24 +2,17 @@
 
 namespace App\EndlessServer\Requests;
 
-use App\EndlessServer\Models\Account;
+use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashSecrets;
-use Illuminate\Validation\Rule;
 
 class GameAccountLoginRequest extends GameRequest
 {
+	use GameRequestRules;
+
 	public function rules(): array
 	{
 		return [
-			'userName' => [
-				'required',
-				'string',
-				Rule::exists(Account::class, 'name')
-			],
-			'password' => [
-				'required',
-				'string'
-			],
+			...$this->auth_password(),
 			'udid' => [
 				'required',
 				'string'
@@ -28,13 +21,7 @@ class GameAccountLoginRequest extends GameRequest
 				'nullable',
 				'string'
 			],
-			'secret' => [
-				'required',
-				'string',
-				Rule::in([
-					GeometryDashSecrets::ACCOUNT->value
-				])
-			]
+			...$this->secret(GeometryDashSecrets::ACCOUNT)
 		];
 	}
 }
