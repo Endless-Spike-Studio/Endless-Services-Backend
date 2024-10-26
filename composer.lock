@@ -4,7 +4,7 @@
 		"Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
 		"This file is @generated automatically"
 	],
-	"content-hash": "467de3ff81e3113da29ecf59874bbc42",
+	"content-hash": "b95dd2fd102eb372803844a38e1ba9ca",
 	"packages": [
 		{
 			"name": "aliyuncs/oss-sdk-php",
@@ -4316,6 +4316,71 @@
 				}
 			],
 			"time": "2024-06-11T12:45:25+00:00"
+		},
+		{
+			"name": "spomky-labs/base64url",
+			"version": "v2.0.4",
+			"source": {
+				"type": "git",
+				"url": "https://github.com/Spomky-Labs/base64url.git",
+				"reference": "7752ce931ec285da4ed1f4c5aa27e45e097be61d"
+			},
+			"dist": {
+				"type": "zip",
+				"url": "https://api.github.com/repos/Spomky-Labs/base64url/zipball/7752ce931ec285da4ed1f4c5aa27e45e097be61d",
+				"reference": "7752ce931ec285da4ed1f4c5aa27e45e097be61d",
+				"shasum": ""
+			},
+			"require": {
+				"php": ">=7.1"
+			},
+			"require-dev": {
+				"phpstan/extension-installer": "^1.0",
+				"phpstan/phpstan": "^0.11|^0.12",
+				"phpstan/phpstan-beberlei-assert": "^0.11|^0.12",
+				"phpstan/phpstan-deprecation-rules": "^0.11|^0.12",
+				"phpstan/phpstan-phpunit": "^0.11|^0.12",
+				"phpstan/phpstan-strict-rules": "^0.11|^0.12"
+			},
+			"type": "library",
+			"autoload": {
+				"psr-4": {
+					"Base64Url\\": "src/"
+				}
+			},
+			"notification-url": "https://packagist.org/downloads/",
+			"license": [
+				"MIT"
+			],
+			"authors": [
+				{
+					"name": "Florent Morselli",
+					"homepage": "https://github.com/Spomky-Labs/base64url/contributors"
+				}
+			],
+			"description": "Base 64 URL Safe Encoding/Decoding PHP Library",
+			"homepage": "https://github.com/Spomky-Labs/base64url",
+			"keywords": [
+				"base64",
+				"rfc4648",
+				"safe",
+				"url"
+			],
+			"support": {
+				"issues": "https://github.com/Spomky-Labs/base64url/issues",
+				"source": "https://github.com/Spomky-Labs/base64url/tree/v2.0.4"
+			},
+			"funding": [
+				{
+					"url": "https://github.com/Spomky",
+					"type": "github"
+				},
+				{
+					"url": "https://www.patreon.com/FlorentMorselli",
+					"type": "patreon"
+				}
+			],
+			"time": "2020-11-03T09:10:25+00:00"
 		},
 		{
 			"name": "symfony/clock",

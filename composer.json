@@ -4,7 +4,8 @@
 		"alphasnow/aliyun-oss-laravel": "^4.9.0",
 		"laravel/framework": "^11.22.0",
 		"laravel/reverb": "^1.0",
-		"laravel/tinker": "^2.9"
+		"laravel/tinker": "^2.9",
+		"spomky-labs/base64url": "^2.0"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.23.1",
