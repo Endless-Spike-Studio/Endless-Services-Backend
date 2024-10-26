@@ -6,6 +6,7 @@ use App\EndlessProxy\Controllers\GameApiProxyController as EndlessProxyGameApiPr
 use App\EndlessProxy\Controllers\GameCustomContentProxyController as EndlessProxyGameCustomContentProxyController;
 use App\EndlessProxy\Controllers\GameSongApiProxyController as EndlessProxyGameSongApiProxyController;
 use App\EndlessProxy\Controllers\NewgroundsAudioProxyController as EndlessProxyNewgroundsAudioProxyController;
+use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerGameAccountCommentController;
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
 use App\EndlessServer\Controllers\GameItemController as EndlessServerGameItemController;
@@ -83,7 +84,7 @@ Route::group([
 		Route::post('/updateGJUserScore22.php', [EndlessServerGamePlayerDataController::class, 'update']);
 		Route::post('/getGJUserInfo20.php', [EndlessServerGamePlayerController::class, 'info']);
 		Route::post('/updateGJAccSettings20.php', [EndlessServerGameAccountSettingController::class, 'update']);
-		// Route::post('/uploadGJAccComment20.php', []);
+		Route::post('/uploadGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'upload']);
 		// Route::post('/getGJAccountComments20.php', []);
 		// Route::post('/deleteGJAccComment20.php', []);
 		// Route::post('/getAccountURL.php', []);

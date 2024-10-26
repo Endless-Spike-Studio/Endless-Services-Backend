@@ -7,6 +7,7 @@ use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Account extends Model implements MustVerifyEmailContract
@@ -35,6 +36,11 @@ class Account extends Model implements MustVerifyEmailContract
 	public function setting(): HasOne
 	{
 		return $this->hasOne(AccountSetting::class)->withDefault();
+	}
+
+	public function comments(): HasMany
+	{
+		return $this->hasMany(AccountComment::class);
 	}
 
 	protected function casts(): array
