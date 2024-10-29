@@ -132,6 +132,13 @@ Route::group([
 		// Route::post('/getGJTopArtists.php', []);
 		// Route::post('/deleteGJLevelList.php', []);
 		Route::post('/getCustomContentURL.php', [EndlessServerGameCustomContentController::class, 'getURL']);
+
+		Route::group([
+			'prefix' => 'CustomContent'
+		], function () {
+			Route::post('/{path}', [EndlessServerGameCustomContentController::class, 'handle'])->where('path', '.*');
+		});
+
 		// Route::post('/getGJLevelLists.php', []);
 		// Route::post('/getGJLevelScoresPlat.php', []);
 		// Route::post('/uploadGJLevelList.php', []);
