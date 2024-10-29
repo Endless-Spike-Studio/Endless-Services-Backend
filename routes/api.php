@@ -9,6 +9,7 @@ use App\EndlessProxy\Controllers\NewgroundsAudioProxyController as EndlessProxyN
 use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerGameAccountCommentController;
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
+use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
 use App\EndlessServer\Controllers\GameItemController as EndlessServerGameItemController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
 use App\EndlessServer\Controllers\GamePlayerDataController as EndlessServerGamePlayerDataController;
@@ -130,7 +131,7 @@ Route::group([
 		Route::post('/restoreGJItems.php', [EndlessServerGameItemController::class, 'restore']);
 		// Route::post('/getGJTopArtists.php', []);
 		// Route::post('/deleteGJLevelList.php', []);
-		// Route::post('/getCustomContentURL.php', []);
+		Route::post('/getCustomContentURL.php', [EndlessServerGameCustomContentController::class, 'getURL']);
 		// Route::post('/getGJLevelLists.php', []);
 		// Route::post('/getGJLevelScoresPlat.php', []);
 		// Route::post('/uploadGJLevelList.php', []);
