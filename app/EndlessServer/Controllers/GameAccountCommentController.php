@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class GameAccountCommentController
 {
 	public function __construct(
-		protected GeometryDashObjectService $objectService
+		protected readonly GeometryDashObjectService $objectService
 	)
 	{
 

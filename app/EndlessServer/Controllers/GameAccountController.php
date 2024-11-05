@@ -11,7 +11,7 @@ use App\GeometryDash\Enums\GeometryDashResponses;
 class GameAccountController
 {
 	public function __construct(
-		protected GameAccountService $service
+		protected readonly GameAccountService $service
 	)
 	{
 

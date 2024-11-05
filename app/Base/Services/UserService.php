@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class UserService
 {
 	public function __construct(
-		protected UserTokenService $tokenService
+		protected readonly UserTokenService $tokenService
 	)
 	{
 

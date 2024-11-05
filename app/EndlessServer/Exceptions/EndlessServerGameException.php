@@ -9,9 +9,9 @@ use Throwable;
 class EndlessServerGameException extends Exception
 {
 	public function __construct(
-		string    $message = null,
-		int       $code = 0,
-		Throwable $previous = null
+		protected                     $message = '',
+		protected                     $code = 0,
+		protected readonly ?Throwable $previous = null
 	)
 	{
 		parent::__construct($message, $code, $previous);

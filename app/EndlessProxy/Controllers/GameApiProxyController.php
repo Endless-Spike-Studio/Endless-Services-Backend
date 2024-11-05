@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\URL;
 class GameApiProxyController
 {
 	public function __construct(
-		protected readonly GeometryDashProxyService $service
+		protected readonly GeometryDashProxyService $service,
+		protected readonly NetworkChannel           $networkChannel
 	)
 	{
 
@@ -60,7 +61,7 @@ class GameApiProxyController
 			'enabledTransports' => ['ws', 'wss'],
 			'authEndpoint' => URL::action([BroadcastController::class, 'authenticate']),
 
-			'channel' => app(NetworkChannel::class),
+			'channel' => $this->networkChannel,
 			'event' => GameApiProxyNetworkEvent::class
 		];
 	}

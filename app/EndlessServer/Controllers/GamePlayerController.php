@@ -11,7 +11,14 @@ use App\GeometryDash\Services\GeometryDashObjectService;
 
 class GamePlayerController
 {
-	public function info(GamePlayerInfoFetchRequest $request)
+	public function __construct(
+		protected readonly GeometryDashObjectService $objectService
+	)
+	{
+
+	}
+
+	public function info(GamePlayerInfoFetchRequest $request): int|string
 	{
 		$data = $request->validated();
 
@@ -23,7 +30,7 @@ class GamePlayerController
 			return GeometryDashResponses::PLAYER_INFO_FETCH_FAILED_NOT_FOUND->value;
 		}
 
-		return app(GeometryDashObjectService::class)->merge([
+		return $this->objectService->merge([
 			GeometryDashPlayerInfoObjectDefinitions::NAME->value => $player->name,
 			GeometryDashPlayerInfoObjectDefinitions::ID->value => $player->id,
 			GeometryDashPlayerInfoObjectDefinitions::STARS->value => $player->data->stars,

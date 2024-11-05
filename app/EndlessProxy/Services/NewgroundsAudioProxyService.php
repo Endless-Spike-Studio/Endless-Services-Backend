@@ -42,15 +42,16 @@ class NewgroundsAudioProxyService
 				throw new SongResolveException('解析失败, 该歌曲可能不存在');
 			}
 
-			return app(NewgroundsSong::class)->create([
-				'song_id' => $songObject[GeometryDashSongObjectDefinitions::ID->value],
-				'name' => $songObject[GeometryDashSongObjectDefinitions::NAME->value],
-				'artist_id' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_ID->value],
-				'artist_name' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_NAME->value],
-				'size' => $songObject[GeometryDashSongObjectDefinitions::SIZE->value],
-				'disabled' => false,
-				'original_download_url' => $songObject[GeometryDashSongObjectDefinitions::DOWNLOAD_URL->value]
-			]);
+			return NewgroundsSong::query()
+				->create([
+					'song_id' => $songObject[GeometryDashSongObjectDefinitions::ID->value],
+					'name' => $songObject[GeometryDashSongObjectDefinitions::NAME->value],
+					'artist_id' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_ID->value],
+					'artist_name' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_NAME->value],
+					'size' => $songObject[GeometryDashSongObjectDefinitions::SIZE->value],
+					'disabled' => false,
+					'original_download_url' => $songObject[GeometryDashSongObjectDefinitions::DOWNLOAD_URL->value]
+				]);
 		} catch (HttpClientException $e) {
 			throw new SongResolveException('请求异常', previous: $e);
 		} finally {
