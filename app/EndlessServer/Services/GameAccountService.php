@@ -4,11 +4,18 @@ namespace App\EndlessServer\Services;
 
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Player;
-use App\GeometryDash\Enums\GeometryDashSalts;
+use App\GeometryDash\Services\GeometryDashAlgorithmService;
 use Illuminate\Support\Str;
 
 class GameAccountService
 {
+	public function __construct(
+		protected GeometryDashAlgorithmService $algorithmService
+	)
+	{
+
+	}
+
 	public function register(string $name, string $email, string $password)
 	{
 		return Account::query()
@@ -39,7 +46,7 @@ class GameAccountService
 	{
 		$account->gjp2()
 			->updateOrCreate([
-				'gjp2' => sha1($password . GeometryDashSalts::GJP2->value)
+				'gjp2' => $this->algorithmService->generateGjp2($password)
 			]);
 	}
 }
