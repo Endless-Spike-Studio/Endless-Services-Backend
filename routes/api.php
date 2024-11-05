@@ -87,7 +87,7 @@ Route::group([
 		Route::post('/updateGJAccSettings20.php', [EndlessServerGameAccountSettingController::class, 'update']);
 		Route::post('/uploadGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'upload']);
 		Route::post('/getGJAccountComments20.php', [EndlessServerGameAccountCommentController::class, 'list']);
-		// Route::post('/deleteGJAccComment20.php', []);
+		Route::post('/deleteGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'delete']);
 		// Route::post('/getAccountURL.php', []);
 		// Route::post('/database/accounts/backupGJAccountNew.php', []);
 		// Route::post('/database/accounts/syncGJAccountNew.php', []);

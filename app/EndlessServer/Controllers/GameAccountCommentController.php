@@ -5,6 +5,7 @@ namespace App\EndlessServer\Controllers;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountComment;
+use App\EndlessServer\Requests\GameAccountCommentDeleteRequest;
 use App\EndlessServer\Requests\GameAccountCommentListRequest;
 use App\EndlessServer\Requests\GameAccountCommentUploadRequest;
 use App\GeometryDash\Enums\GeometryDashResponses;
@@ -56,5 +57,29 @@ class GameAccountCommentController
 					GeometryDashCommentObjectDefinitions::AGE->value => $comment->created_at->diffForHumans(syntax: true)
 				], GeometryDashCommentObjectDefinitions::GLUE);
 			})->join('|');
+	}
+
+	public function delete(GameAccountCommentDeleteRequest $request): int
+	{
+		$data = $request->validated();
+
+		$comment = AccountComment::query()
+			->where('id', $data['commentID'])
+			->first();
+
+		if (empty($comment)) {
+			return GeometryDashResponses::ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value;
+		}
+
+		/** @var Account $account */
+		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+		if ($account->isNot($comment->account)) {
+			return GeometryDashResponses::ACCOUNT_COMMENT_DELETE_FAILED_NOT_OWNER->value;
+		}
+
+		$comment->delete();
+
+		return GeometryDashResponses::ACCOUNT_COMMENT_DELETE_SUCCESS->value;
 	}
 }
