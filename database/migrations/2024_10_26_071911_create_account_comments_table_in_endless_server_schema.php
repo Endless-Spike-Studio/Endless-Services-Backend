@@ -13,7 +13,8 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Account::class);
-			$table->string('comment');
+			$table->string('content');
+			$table->boolean('spam');
 			$table->timestamps();
 		});
 	}
