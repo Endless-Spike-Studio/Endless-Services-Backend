@@ -7,10 +7,10 @@ use App\Base\Requests\UserRegisterRequest;
 use App\Base\Services\UserService;
 use App\Common\Responses\SuccessResponse;
 
-class UserController
+readonly class UserController
 {
 	public function __construct(
-		protected readonly UserService $service
+		protected UserService $service
 	)
 	{
 

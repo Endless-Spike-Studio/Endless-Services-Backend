@@ -8,12 +8,12 @@ use App\EndlessProxy\Services\ProxyService;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class NewgroundsAudioProxyController
+readonly class NewgroundsAudioProxyController
 {
 	public function __construct(
-		protected readonly ProxyService                  $proxy,
-		protected readonly NewgroundsAudioProxyService   $service,
-		protected readonly NewgroundsAudioStorageService $storage
+		protected ProxyService                  $proxy,
+		protected NewgroundsAudioProxyService   $service,
+		protected NewgroundsAudioStorageService $storage
 	)
 	{
 

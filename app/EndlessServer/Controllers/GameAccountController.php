@@ -8,10 +8,10 @@ use App\EndlessServer\Requests\GameAccountRegisterRequest;
 use App\EndlessServer\Services\GameAccountService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 
-class GameAccountController
+readonly class GameAccountController
 {
 	public function __construct(
-		protected readonly GameAccountService $service
+		protected GameAccountService $service
 	)
 	{
 

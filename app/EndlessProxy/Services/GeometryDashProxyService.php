@@ -4,10 +4,10 @@ namespace App\EndlessProxy\Services;
 
 use Illuminate\Http\Client\PendingRequest;
 
-class GeometryDashProxyService
+readonly class GeometryDashProxyService
 {
 	public function __construct(
-		protected readonly ProxyService $proxy
+		protected ProxyService $proxy
 	)
 	{
 

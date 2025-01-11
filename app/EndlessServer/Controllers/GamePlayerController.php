@@ -9,10 +9,10 @@ use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 
-class GamePlayerController
+readonly class GamePlayerController
 {
 	public function __construct(
-		protected readonly GeometryDashObjectService $objectService
+		protected GeometryDashObjectService $objectService
 	)
 	{
 

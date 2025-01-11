@@ -15,10 +15,10 @@ use Base64Url\Base64Url;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class GameAccountCommentController
+readonly class GameAccountCommentController
 {
 	public function __construct(
-		protected readonly GeometryDashObjectService $objectService
+		protected GeometryDashObjectService $objectService
 	)
 	{
 

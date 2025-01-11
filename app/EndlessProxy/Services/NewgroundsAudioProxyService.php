@@ -12,12 +12,12 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Arr;
 
-class NewgroundsAudioProxyService
+readonly class NewgroundsAudioProxyService
 {
 	public function __construct(
-		protected readonly GeometryDashProxyService      $proxy,
-		protected readonly GeometryDashObjectService     $object,
-		protected readonly NewgroundsAudioStorageService $storage
+		protected GeometryDashProxyService      $proxy,
+		protected GeometryDashObjectService     $object,
+		protected NewgroundsAudioStorageService $storage
 	)
 	{
 

@@ -6,10 +6,10 @@ use App\EndlessProxy\Requests\GameFetchSongObjectRequest;
 use App\EndlessProxy\Services\NewgroundsAudioProxyService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 
-class GameSongApiProxyController
+readonly class GameSongApiProxyController
 {
 	public function __construct(
-		protected readonly NewgroundsAudioProxyService $service
+		protected NewgroundsAudioProxyService $service
 	)
 	{
 

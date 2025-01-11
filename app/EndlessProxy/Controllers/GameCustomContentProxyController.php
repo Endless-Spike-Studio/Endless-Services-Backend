@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class GameCustomContentProxyController
+readonly class GameCustomContentProxyController
 {
 	public function __construct(
-		protected readonly GeometryDashCustomContentStorageService $storage
+		protected GeometryDashCustomContentStorageService $storage
 	)
 	{
 

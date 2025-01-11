@@ -7,13 +7,13 @@ use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
-class GeometryDashCustomContentStorageService
+readonly class GeometryDashCustomContentStorageService
 {
-	protected readonly string $disk;
-	protected readonly string $format;
+	protected string $disk;
+	protected string $format;
 
 	public function __construct(
-		protected readonly GeometryDashProxyService $proxy
+		protected GeometryDashProxyService $proxy
 	)
 	{
 		$this->disk = config('services.endless.proxy.geometry_dash.custom_contents.storage.disk');

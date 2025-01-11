@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 use Random\Randomizer;
 
-class GameAccountDataProxyController
+readonly class GameAccountDataProxyController
 {
 	public function __construct(
-		protected readonly GeometryDashProxyService $proxy
+		protected GeometryDashProxyService $proxy
 	)
 	{
 

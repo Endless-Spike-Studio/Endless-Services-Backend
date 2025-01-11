@@ -12,11 +12,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\URL;
 
-class GameApiProxyController
+readonly class GameApiProxyController
 {
 	public function __construct(
-		protected readonly GeometryDashProxyService $service,
-		protected readonly NetworkChannel           $networkChannel
+		protected GeometryDashProxyService $service,
+		protected NetworkChannel           $networkChannel
 	)
 	{
 

@@ -7,10 +7,10 @@ use App\Base\Models\UserToken;
 use App\Common\Responses\FailedResponse;
 use Illuminate\Support\Facades\Hash;
 
-class UserService
+readonly class UserService
 {
 	public function __construct(
-		protected readonly UserTokenService $tokenService
+		protected UserTokenService $tokenService
 	)
 	{
 

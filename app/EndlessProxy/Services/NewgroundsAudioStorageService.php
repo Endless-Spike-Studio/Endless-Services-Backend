@@ -11,13 +11,13 @@ use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
-class NewgroundsAudioStorageService
+readonly class NewgroundsAudioStorageService
 {
-	protected readonly string $disk;
-	protected readonly string $format;
+	protected string $disk;
+	protected string $format;
 
 	public function __construct(
-		protected readonly GeometryDashProxyService $proxy
+		protected GeometryDashProxyService $proxy
 	)
 	{
 		$this->disk = config('services.endless.proxy.newgrounds.audios.storage.disk');
