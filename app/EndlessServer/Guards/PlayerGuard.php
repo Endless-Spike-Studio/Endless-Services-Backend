@@ -91,7 +91,7 @@ class PlayerGuard implements Guard
 		return true;
 	}
 
-	protected function tryCreate()
+	protected function tryCreate(): bool
 	{
 		$uuid = Request::string('uuid');
 		$udid = Request::string('udid');
