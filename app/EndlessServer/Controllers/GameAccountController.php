@@ -22,7 +22,9 @@ readonly class GameAccountController
 	{
 		$data = $request->validated();
 
-		$this->service->register($data['userName'], $data['email'], $data['password']);
+		$account = $this->service->register($data['userName'], $data['email'], $data['password']);
+
+		$this->service->storageGjp2($account, $data['password']);
 
 		return GeometryDashResponses::ACCOUNT_REGISTER_SUCCESS->value;
 	}
