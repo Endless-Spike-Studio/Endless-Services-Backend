@@ -30,11 +30,9 @@ readonly class NewgroundsAudioProxyService
 				->where('song_id', $id)
 				->first();
 
-			$this->storage->song = $song;
-
-			$this->resolveSongObjectUsingOfficialServerSongApi($id);
-
 			if (!empty($song)) {
+				$this->storage->song = $song;
+
 				return $song;
 			}
 
