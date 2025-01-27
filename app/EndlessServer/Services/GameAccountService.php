@@ -26,7 +26,7 @@ class GameAccountService
 			]);
 	}
 
-	public function queryAccountPlayer(Account $account, string $udid = null)
+	public function queryAccountPlayer(Account $account, ?string $udid = null)
 	{
 		if (empty($udid)) {
 			$udid = Str::uuid()

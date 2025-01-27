@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class UserTokenService
 {
-	public function create(User $user, string $name, DateTime $expires_at = null)
+	public function create(User $user, string $name, ?DateTime $expires_at = null)
 	{
 		return UserToken::query()
 			->create([

@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 
 trait GameRequestRules
 {
-	protected function versions(GeometryDashGameVersions $gameVersion = null, GeometryDashBinaryVersions $binaryVersion = null): array
+	protected function versions(?GeometryDashGameVersions $gameVersion = null, ?GeometryDashBinaryVersions $binaryVersion = null): array
 	{
 		if ($gameVersion === null) {
 			$gameVersion = GeometryDashBinaryVersions::LATEST;
@@ -78,7 +78,7 @@ trait GameRequestRules
 		];
 	}
 
-	protected function secret(GeometryDashSecrets $secret = null): array
+	protected function secret(?GeometryDashSecrets $secret = null): array
 	{
 		if ($secret === null) {
 			$secret = GeometryDashSecrets::COMMON;
