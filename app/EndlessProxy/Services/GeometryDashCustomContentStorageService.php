@@ -2,16 +2,28 @@
 
 namespace App\EndlessProxy\Services;
 
+use App\EndlessProxy\Contracts\ExternalProxyStorageServiceContract;
 use App\EndlessProxy\Exceptions\CustomContentResolveException;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-readonly class GeometryDashCustomContentStorageService
+class GeometryDashCustomContentStorageService implements ExternalProxyStorageServiceContract
 {
 	protected string $disk;
 	protected string $format;
+
+	protected Filesystem $storage;
+
+	public string $path {
+		set {
+			$this->path = $this->format;
+			$this->path = Str::replace('{path}', $value, $this->path);
+		}
+	}
 
 	public function __construct(
 		protected GeometryDashProxyService $proxy
@@ -19,35 +31,21 @@ readonly class GeometryDashCustomContentStorageService
 	{
 		$this->disk = config('services.endless.proxy.geometry_dash.custom_contents.storage.disk');
 		$this->format = config('services.endless.proxy.geometry_dash.custom_contents.storage.format');
+
+		$this->storage = Storage::disk($this->disk);
 	}
 
-	public function raw(string $path): string
+	public function download(): StreamedResponse
 	{
-		$this->fetch($path);
+		$this->fetch();
 
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($path);
-
-		return $storage->get($path);
+		return $this->storage->download($this->path);
 	}
 
-	public function download(string $path): StreamedResponse
-	{
-		$this->fetch($path);
-
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($path);
-
-		return $storage->download($path);
-	}
-
-	public function fetch(string $path): bool
+	public function fetch(): bool
 	{
 		try {
-			$storage = Storage::disk($this->disk);
-			$storagePath = $this->toPath($path);
-
-			if ($this->valid($storagePath)) {
+			if ($this->valid()) {
 				return true;
 			}
 
@@ -63,35 +61,17 @@ readonly class GeometryDashCustomContentStorageService
 			$data = $this->proxy
 				->getRequest()
 				->baseUrl($upstream)
-				->get($path)
+				->get($this->path)
 				->body();
 
-			return $storage->put($storagePath, $data);
+			return $this->storage->put($this->path, $data);
 		} catch (HttpClientException $e) {
 			throw new CustomContentResolveException('请求异常', previous: $e);
 		}
 	}
 
-	protected function toPath(string $path)
+	public function valid(): bool
 	{
-		return str_replace('{path}', $path, $this->format);
-	}
-
-	public function valid(string $path): bool
-	{
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($path);
-
-		return $storage->exists($path) && $storage->size($path) > 0;
-	}
-
-	public function url(string $path): string
-	{
-		$this->fetch($path);
-
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($path);
-
-		return $storage->url($path);
+		return $this->storage->exists($this->path) && $this->storage->size($this->path) > 0;
 	}
 }

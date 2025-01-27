@@ -22,6 +22,8 @@ readonly class GameCustomContentProxyController
 
 	public function handle(string $path): StreamedResponse
 	{
-		return $this->storage->download($path);
+		$this->storage->path = $path;
+
+		return $this->storage->download();
 	}
 }

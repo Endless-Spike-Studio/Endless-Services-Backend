@@ -30,6 +30,8 @@ readonly class NewgroundsAudioProxyService
 				->where('song_id', $id)
 				->first();
 
+			$this->storage->song = $song;
+
 			$this->resolveSongObjectUsingOfficialServerSongApi($id);
 
 			if (!empty($song)) {
@@ -55,7 +57,7 @@ readonly class NewgroundsAudioProxyService
 		} catch (HttpClientException $e) {
 			throw new SongResolveException('请求异常', previous: $e);
 		} finally {
-			if (!empty($song) && !$this->storage->valid($song)) {
+			if (!empty($song) && !$this->storage->valid()) {
 				FetchSongDataJob::dispatch($song);
 			}
 		}

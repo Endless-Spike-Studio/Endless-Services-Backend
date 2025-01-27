@@ -24,7 +24,9 @@ class FetchSongDataJob implements ShouldQueue, ShouldBeUniqueUntilProcessing
 
 	public function handle(): void
 	{
-		app(NewgroundsAudioStorageService::class)->fetch($this->song);
+		$service = app(NewgroundsAudioStorageService::class);
+		$service->song = $this->song;
+		$service->fetch();
 	}
 
 	public function uniqueId(): string

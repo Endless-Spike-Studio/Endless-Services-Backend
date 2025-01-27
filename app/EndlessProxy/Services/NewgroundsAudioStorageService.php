@@ -2,20 +2,31 @@
 
 namespace App\EndlessProxy\Services;
 
-use App\EndlessProxy\Controllers\GameCustomContentProxyController;
-use App\EndlessProxy\Controllers\NewgroundsAudioProxyController;
+use App\EndlessProxy\Contracts\ExternalProxyStorageServiceContract;
 use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Models\NewgroundsSong;
 use App\GeometryDash\Enums\SpecialSongDownloadUrl;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-readonly class NewgroundsAudioStorageService
+class NewgroundsAudioStorageService implements ExternalProxyStorageServiceContract
 {
 	protected string $disk;
 	protected string $format;
+
+	protected Filesystem $storage;
+	protected string $path;
+
+	public NewgroundsSong $song {
+		set {
+			$this->song = $value;
+
+			$this->path = $this->format;
+			$this->path = str_replace('{id}', $this->song->song_id, $this->path);
+		}
+	}
 
 	public function __construct(
 		protected GeometryDashProxyService $proxy
@@ -23,84 +34,47 @@ readonly class NewgroundsAudioStorageService
 	{
 		$this->disk = config('services.endless.proxy.newgrounds.audios.storage.disk');
 		$this->format = config('services.endless.proxy.newgrounds.audios.storage.format');
+
+		$this->storage = Storage::disk($this->disk);
 	}
 
-	public function raw(NewgroundsSong $song): string
+	public function download(): StreamedResponse
 	{
-		$this->fetch($song);
+		$this->fetch();
 
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($song->song_id);
-
-		return $storage->get($path);
+		return $this->storage->download($this->path);
 	}
 
-	public function download(NewgroundsSong $song): StreamedResponse
-	{
-		$this->fetch($song);
-
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($song->song_id);
-
-		return $storage->download($path);
-	}
-
-	protected function toPath(int $id)
-	{
-		return str_replace('{id}', $id, $this->format);
-	}
-
-	public function fetch(NewgroundsSong $song): bool
+	public function fetch(): bool
 	{
 		try {
-			$storage = Storage::disk($this->disk);
-			$path = $this->toPath($song->song_id);
-
-			if ($this->valid($song)) {
+			if ($this->valid()) {
 				return true;
 			}
 
-			$url = urldecode($song->original_download_url);
+			$url = urldecode($this->song->original_download_url);
 
 			$data = $this->proxy->getRequest()
 				->get($url)
 				->body();
 
-			return $storage->put($path, $data);
+			return $this->storage->put($this->path, $data);
 		} catch (HttpClientException $e) {
 			throw new SongResolveException('请求异常', previous: $e);
 		}
 	}
 
-	public function valid(NewgroundsSong $song): bool
+	public function valid(): bool
 	{
-		if ($this->checkCustom($song->original_download_url)) {
+		if (!$this->shouldProcess()) {
 			return true;
 		}
 
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($song->song_id);
-
-		return $storage->exists($path) && $storage->size($path) > 0;
+		return $this->storage->exists($this->path) && $this->storage->size($this->path) > 0;
 	}
 
-	protected function checkCustom(string $url): bool
+	protected function shouldProcess(): bool
 	{
-		return $url === SpecialSongDownloadUrl::CUSTOM->value;
-	}
-
-	public function url(NewgroundsSong $song): string
-	{
-		if ($this->checkCustom($song->original_download_url)) {
-			return URL::action([GameCustomContentProxyController::class, 'handle'], [
-				'path' => "music/$song->song_id.ogg"
-			]);
-		}
-
-		$this->fetch($song);
-
-		return URL::action([NewgroundsAudioProxyController::class, 'download'], [
-			'id' => $song->song_id
-		]);
+		return $this->song->download_url !== SpecialSongDownloadUrl::CUSTOM->value;
 	}
 }

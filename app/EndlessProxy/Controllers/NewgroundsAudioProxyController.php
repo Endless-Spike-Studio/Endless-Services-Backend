@@ -34,6 +34,8 @@ readonly class NewgroundsAudioProxyController
 	{
 		$song = $this->service->resolve($id);
 
-		return $this->storage->download($song);
+		$this->storage->song = $song;
+
+		return $this->storage->download();
 	}
 }
