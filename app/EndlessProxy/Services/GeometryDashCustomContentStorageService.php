@@ -6,6 +6,7 @@ use App\EndlessProxy\Exceptions\CustomContentResolveException;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 readonly class GeometryDashCustomContentStorageService
 {
@@ -28,6 +29,16 @@ readonly class GeometryDashCustomContentStorageService
 		$path = $this->toPath($path);
 
 		return $storage->get($path);
+	}
+
+	public function download(string $path): StreamedResponse
+	{
+		$this->fetch($path);
+
+		$storage = Storage::disk($this->disk);
+		$path = $this->toPath($path);
+
+		return $storage->download($path);
 	}
 
 	public function fetch(string $path): bool

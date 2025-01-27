@@ -3,13 +3,14 @@
 namespace App\EndlessProxy\Services;
 
 use App\EndlessProxy\Controllers\GameCustomContentProxyController;
+use App\EndlessProxy\Controllers\NewgroundsAudioProxyController;
 use App\EndlessProxy\Exceptions\SongResolveException;
-use App\EndlessProxy\Jobs\FetchSongDataJob;
 use App\EndlessProxy\Models\NewgroundsSong;
 use App\GeometryDash\Enums\SpecialSongDownloadUrl;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 readonly class NewgroundsAudioStorageService
 {
@@ -26,12 +27,22 @@ readonly class NewgroundsAudioStorageService
 
 	public function raw(NewgroundsSong $song): string
 	{
-		FetchSongDataJob::dispatch($song)->onConnection('sync');
+		$this->fetch($song);
 
 		$storage = Storage::disk($this->disk);
 		$path = $this->toPath($song->song_id);
 
 		return $storage->get($path);
+	}
+
+	public function download(NewgroundsSong $song): StreamedResponse
+	{
+		$this->fetch($song);
+
+		$storage = Storage::disk($this->disk);
+		$path = $this->toPath($song->song_id);
+
+		return $storage->download($path);
 	}
 
 	protected function toPath(int $id)
@@ -86,11 +97,10 @@ readonly class NewgroundsAudioStorageService
 			]);
 		}
 
-		FetchSongDataJob::dispatch($song)->onConnection('sync');
+		$this->fetch($song);
 
-		$storage = Storage::disk($this->disk);
-		$path = $this->toPath($song->song_id);
-
-		return $storage->url($path);
+		return URL::action([NewgroundsAudioProxyController::class, 'download'], [
+			'id' => $song->song_id
+		]);
 	}
 }

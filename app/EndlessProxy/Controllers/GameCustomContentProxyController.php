@@ -3,7 +3,6 @@
 namespace App\EndlessProxy\Controllers;
 
 use App\EndlessProxy\Services\GeometryDashCustomContentStorageService;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -23,10 +22,6 @@ readonly class GameCustomContentProxyController
 
 	public function handle(string $path): StreamedResponse
 	{
-		$filename = basename($path);
-
-		return Response::streamDownload(function () use ($path) {
-			echo $this->storage->raw($path);
-		}, $filename);
+		return $this->storage->download($path);
 	}
 }
