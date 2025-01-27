@@ -7,6 +7,7 @@ use App\EndlessServer\Requests\GameAccountLoginRequest;
 use App\EndlessServer\Requests\GameAccountRegisterRequest;
 use App\EndlessServer\Services\GameAccountService;
 use App\GeometryDash\Enums\GeometryDashResponses;
+use Illuminate\Support\Facades\Hash;
 
 readonly class GameAccountController
 {
@@ -40,6 +41,10 @@ readonly class GameAccountController
 
 		if (!$account->hasVerifiedEmail()) {
 			return GeometryDashResponses::ACCOUNT_LOGIN_FAILED_EMAIL_NOT_VERIFIED->value;
+		}
+
+		if (!Hash::check($data['password'], $account->password)) {
+			return GeometryDashResponses::ACCOUNT_LOGIN_FAILED_WRONG_PASSWORD->value;
 		}
 
 		$this->service->storageGjp2($account, $data['password']);
