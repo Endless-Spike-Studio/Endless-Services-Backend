@@ -15,7 +15,7 @@ class GameRequest extends FormRequest
 	 */
 	protected function failedAuthorization()
 	{
-		throw new EndlessServerGameException(__('endless_services.request.authorization_failed'), GeometryDashResponses::FAILED->value);
+		throw new EndlessServerGameException(__('endless_services.request.authorization.failed'), GeometryDashResponses::FAILED->value);
 	}
 
 	/**
@@ -26,7 +26,7 @@ class GameRequest extends FormRequest
 		try {
 			parent::failedValidation($validator);
 		} catch (Throwable $e) {
-			throw new EndlessServerGameException(__('endless_services.request.validation_failed'), GeometryDashResponses::FAILED->value, $e);
+			throw new EndlessServerGameException(__('endless_services.request.validation.failed'), GeometryDashResponses::FAILED->value, $e);
 		}
 	}
 }
