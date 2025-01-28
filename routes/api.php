@@ -81,7 +81,7 @@ Route::group([
 	Route::group([
 		'prefix' => 'Account'
 	], function () {
-		Route::get('/verify/{_}', [EndlessServerAccountController::class, 'verify']);
+		Route::post('/verify', [EndlessServerAccountController::class, 'verify']);
 	});
 
 	Route::group([

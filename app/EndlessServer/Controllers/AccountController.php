@@ -6,26 +6,29 @@ use App\Common\Responses\FailedResponse;
 use App\Common\Responses\SuccessResponse;
 use App\EndlessServer\Data\EmailVerificationData;
 use App\EndlessServer\Models\Account;
+use App\EndlessServer\Requests\AccountVerifyRequest;
 
 class AccountController
 {
-	public function verify(string $_): SuccessResponse|FailedResponse
+	public function verify(AccountVerifyRequest $request): SuccessResponse|FailedResponse
 	{
-		$data = decrypt($_);
+		$data = $request->validated();
 
-		if ($data instanceof EmailVerificationData) {
+		$verificationData = decrypt($data['_']);
+
+		if ($verificationData instanceof EmailVerificationData) {
 			$now = now();
 
 			$expired_at = $now->subMinutes(10);
 
-			if ($expired_at > $data->created_at) {
+			if ($expired_at > $verificationData->created_at) {
 				return new FailedResponse(
 					__('验证超时')
 				);
 			}
 
 			$account = Account::query()
-				->where('id', $data->id)
+				->where('id', $verificationData->id)
 				->first();
 
 			if (empty($account)) {
