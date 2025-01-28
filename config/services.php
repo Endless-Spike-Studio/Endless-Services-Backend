@@ -26,6 +26,9 @@ return [
 					]
 				]
 			]
+		],
+		'server' => [
+			'per_page' => env('ENDLESS_SERVER_PER_PAGE', 10)
 		]
 	]
 ];
