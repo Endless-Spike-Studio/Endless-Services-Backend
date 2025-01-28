@@ -111,15 +111,15 @@ class GamePlayerDataUpdateRequest extends GameRequest
 				'integer'
 			],
 			'dinfo' => [
-				'required',
+				'nullable',
 				'string'
 			],
 			'dinfow' => [
-				'required',
+				'nullable',
 				'integer'
 			],
 			'dinfog' => [
-				'required',
+				'nullable',
 				'integer'
 			],
 			'sinfo' => [
