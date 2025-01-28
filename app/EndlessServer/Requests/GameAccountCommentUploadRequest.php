@@ -2,6 +2,7 @@
 
 namespace App\EndlessServer\Requests;
 
+use App\EndlessServer\Models\Account;
 use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashCommentType;
 use Illuminate\Validation\Rule;
@@ -16,6 +17,19 @@ class GameAccountCommentUploadRequest extends GameRequest
 			...$this->versions(),
 			...$this->gdw(),
 			...$this->auth_gjp2(),
+			'uuid' => [
+				'nullable',
+				'string'
+			],
+			'udid' => [
+				'nullable',
+				'string'
+			],
+			'userName' => [
+				'nullable',
+				'string',
+				Rule::exists(Account::class, 'name')
+			],
 			'comment' => [
 				'required',
 				'string'
@@ -23,7 +37,10 @@ class GameAccountCommentUploadRequest extends GameRequest
 			'cType' => [
 				'required',
 				'integer',
-				Rule::enum(GeometryDashCommentType::class)
+				Rule::enum(GeometryDashCommentType::class),
+				Rule::in([
+					GeometryDashCommentType::ACCOUNT->value
+				])
 			],
 			'chk' => [
 				'required',
