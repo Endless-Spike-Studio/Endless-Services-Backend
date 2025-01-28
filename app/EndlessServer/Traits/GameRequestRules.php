@@ -13,7 +13,7 @@ trait GameRequestRules
 	protected function versions(?GeometryDashGameVersions $gameVersion = null, ?GeometryDashBinaryVersions $binaryVersion = null): array
 	{
 		if ($gameVersion === null) {
-			$gameVersion = GeometryDashBinaryVersions::LATEST;
+			$gameVersion = GeometryDashGameVersions::LATEST;
 		}
 
 		if ($binaryVersion === null) {
