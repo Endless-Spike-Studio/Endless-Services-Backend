@@ -6,6 +6,7 @@ enum GeometryDashBinaryVersions: int
 {
 	case _35 = 35;
 	case _42 = 42;
+	case _45 = 45;
 
-	public const GeometryDashBinaryVersions LATEST = GeometryDashBinaryVersions::_42;
+	public const GeometryDashBinaryVersions LATEST = GeometryDashBinaryVersions::_45;
 }
