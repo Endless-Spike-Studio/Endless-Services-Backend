@@ -15,6 +15,14 @@ class GameAccountCommentListRequest extends GameRequest
 		return [
 			...$this->versions(),
 			...$this->gdw(),
+			'uuid' => [
+				'nullable',
+				'string'
+			],
+			'udid' => [
+				'nullable',
+				'string'
+			],
 			'accountID' => [
 				'required',
 				'integer',
@@ -22,6 +30,10 @@ class GameAccountCommentListRequest extends GameRequest
 			],
 			'page' => [
 				'required',
+				'integer'
+			],
+			'total' => [
+				'nullable',
 				'integer'
 			],
 			...$this->secret()
