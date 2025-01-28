@@ -13,7 +13,7 @@ class ApiRequest extends FormRequest
 	 */
 	protected function failedAuthorization()
 	{
-		throw new FailedException(__('endless_services.request.authorization.failed'), 401);
+		throw new FailedException(__('请求鉴权失败'), 401);
 	}
 
 	/**
@@ -22,7 +22,7 @@ class ApiRequest extends FormRequest
 	protected function failedValidation(Validator $validator)
 	{
 		throw new FailedException(
-			__('endless_services.request.validation.failed'),
+			__('请求校验失败'),
 			422,
 			data: $validator->errors()
 		);
