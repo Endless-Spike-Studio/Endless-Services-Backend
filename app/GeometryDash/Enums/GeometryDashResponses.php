@@ -15,6 +15,8 @@ enum GeometryDashResponses: int
 
 	public const GeometryDashResponses SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses FAILED = GeometryDashResponses::_1;
+	public const GeometryDashResponses REQUEST_VALIDATION_FAILED = GeometryDashResponses::_1;
+	public const GeometryDashResponses REQUEST_AUTHORIZATION_FAILED = GeometryDashResponses::_1;
 	public const GeometryDashResponses ACCOUNT_REGISTER_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses ACCOUNT_REGISTER_FAILED_USERNAME_ALREADY_EXISTS = GeometryDashResponses::_2;
 	public const GeometryDashResponses ACCOUNT_REGISTER_FAILED_EMAIL_ALREADY_EXISTS = GeometryDashResponses::_3;

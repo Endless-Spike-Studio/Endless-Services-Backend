@@ -15,7 +15,7 @@ class GameRequest extends FormRequest
 	 */
 	protected function failedAuthorization()
 	{
-		throw new EndlessServerGameException(__('请求鉴权失败'), GeometryDashResponses::FAILED->value);
+		throw new EndlessServerGameException(__('请求鉴权失败'), GeometryDashResponses::REQUEST_AUTHORIZATION_FAILED->value);
 	}
 
 	/**
@@ -26,7 +26,7 @@ class GameRequest extends FormRequest
 		try {
 			parent::failedValidation($validator);
 		} catch (Throwable $e) {
-			throw new EndlessServerGameException(__('请求校验失败'), GeometryDashResponses::FAILED->value, $e);
+			throw new EndlessServerGameException(__('请求校验失败'), GeometryDashResponses::REQUEST_VALIDATION_FAILED->value, $e);
 		}
 	}
 }
