@@ -6,6 +6,7 @@ use App\EndlessProxy\Controllers\GameApiProxyController as EndlessProxyGameApiPr
 use App\EndlessProxy\Controllers\GameCustomContentProxyController as EndlessProxyGameCustomContentProxyController;
 use App\EndlessProxy\Controllers\GameSongApiProxyController as EndlessProxyGameSongApiProxyController;
 use App\EndlessProxy\Controllers\NewgroundsAudioProxyController as EndlessProxyNewgroundsAudioProxyController;
+use App\EndlessServer\Controllers\AccountController as EndlessServerAccountController;
 use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerGameAccountCommentController;
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
@@ -77,6 +78,12 @@ Route::group([
 Route::group([
 	'prefix' => 'EndlessServer'
 ], function () {
+	Route::group([
+		'prefix' => 'Account'
+	], function () {
+		Route::get('/verify/{_}', [EndlessServerAccountController::class, 'verify']);
+	});
+
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {

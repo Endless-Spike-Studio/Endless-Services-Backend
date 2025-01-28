@@ -24,6 +24,8 @@ readonly class GameAccountController
 
 		$account = $this->service->register($data['userName'], $data['email'], $data['password']);
 
+		$account->sendEmailVerificationNotification();
+
 		$this->service->storageGjp2($account, $data['password']);
 
 		return GeometryDashResponses::ACCOUNT_REGISTER_SUCCESS->value;
