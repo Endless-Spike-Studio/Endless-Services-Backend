@@ -12,7 +12,7 @@ class GameAccountLoginRequest extends GameRequest
 	public function rules(): array
 	{
 		return [
-			...$this->auth_gjp2(),
+			...$this->auth_username_gjp2(),
 			'udid' => [
 				'required',
 				'string'

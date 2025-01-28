@@ -63,6 +63,21 @@ trait GameRequestRules
 		];
 	}
 
+	protected function auth_username_gjp2(): array
+	{
+		return [
+			'userName' => [
+				'required',
+				'string',
+				Rule::exists(Account::class, 'name')
+			],
+			'gjp2' => [
+				'required',
+				'string'
+			]
+		];
+	}
+
 	protected function auth_gjp2(): array
 	{
 		return [
