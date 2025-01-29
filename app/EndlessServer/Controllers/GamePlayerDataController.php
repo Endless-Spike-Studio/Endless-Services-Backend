@@ -27,10 +27,10 @@ readonly class GamePlayerDataController
 		/** @var Player $player */
 		$player = Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->user();
 
-		$this->service->update($player->id, $data['stars'], $data['moons'], $data['demons'], $data['diamonds'], $data['icon'], $data['iconType'], $data['coins'], $data['userCoins'], $data['accIcon'], $data['accShip'], $data['accBall'], $data['accBird'], $data['accDart'], $data['accRobot'], $data['accGlow'], $data['accSpider'], $data['accExplosion'], $data['accSwing'], $data['accJetpack'], $data['color1'], $data['color2'], $data['color3'], $data['special']);
-
 		$this->service->initialize($player->id);
 		$this->statisticService->initialize($player->id);
+
+		$this->service->update($player->id, $data['stars'], $data['moons'], $data['demons'], $data['diamonds'], $data['icon'], $data['iconType'], $data['coins'], $data['userCoins'], $data['accIcon'], $data['accShip'], $data['accBall'], $data['accBird'], $data['accDart'], $data['accRobot'], $data['accGlow'], $data['accSpider'], $data['accExplosion'], $data['accSwing'], $data['accJetpack'], $data['color1'], $data['color2'], $data['color3'], $data['special']);
 
 		$sinfoParts = explode(',', $data['sinfo']);
 
