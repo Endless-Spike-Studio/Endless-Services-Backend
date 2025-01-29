@@ -4,7 +4,7 @@ namespace App\EndlessServer\Services;
 
 use App\EndlessServer\Models\PlayerData;
 
-class GamePlayerDataService
+readonly class GamePlayerDataService
 {
 	public function initialize(int $playerId): void
 	{

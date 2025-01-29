@@ -8,7 +8,7 @@ use App\EndlessServer\Requests\GameAccountSettingUpdateRequest;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use Illuminate\Support\Facades\Auth;
 
-class GameAccountSettingController
+readonly class GameAccountSettingController
 {
 	public function update(GameAccountSettingUpdateRequest $request): int
 	{

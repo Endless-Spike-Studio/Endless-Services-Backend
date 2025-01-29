@@ -5,7 +5,7 @@ namespace App\EndlessServer\Services;
 use App\EndlessServer\Data\GamePaginationData;
 use Illuminate\Contracts\Database\Query\Builder;
 
-class GamePaginationService
+readonly class GamePaginationService
 {
 	public function generate(Builder $query, int $page, int|null $perPage = null)
 	{

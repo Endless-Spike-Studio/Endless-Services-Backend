@@ -8,7 +8,7 @@ use App\EndlessServer\Models\PlayerStatistic;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDemonDifficulties;
 
-class GamePlayerStatisticService
+readonly class GamePlayerStatisticService
 {
 	public function initialize(int $playerId): true
 	{

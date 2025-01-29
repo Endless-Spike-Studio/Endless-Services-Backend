@@ -4,7 +4,7 @@ namespace App\EndlessServer\Controllers;
 
 use Illuminate\Support\Facades\URL;
 
-class GameCustomContentController
+readonly class GameCustomContentController
 {
 	public function getURL(): string
 	{

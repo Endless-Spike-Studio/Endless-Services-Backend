@@ -8,7 +8,7 @@ use App\EndlessServer\Data\EmailVerificationData;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Requests\AccountVerifyRequest;
 
-class AccountController
+readonly class AccountController
 {
 	public function verify(AccountVerifyRequest $request): SuccessResponse|FailedResponse
 	{
