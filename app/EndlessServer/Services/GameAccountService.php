@@ -33,10 +33,17 @@ readonly class GameAccountService
 				->toString();
 		}
 
+		$player = Player::query()
+			->where('uuid', $account->id)
+			->first();
+
+		if (!empty($player)) {
+			return $player;
+		}
+
 		return Player::query()
-			->firstOrCreate([
-				'uuid' => $account->id
-			], [
+			->create([
+				'uuid' => $account->id,
 				'name' => $account->name,
 				'udid' => $udid
 			]);
