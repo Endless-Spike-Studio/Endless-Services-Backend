@@ -44,7 +44,7 @@ class Account extends Model implements MustVerifyEmailContract
 
 	public function setting(): HasOne
 	{
-		return $this->hasOne(AccountSetting::class)->withDefault();
+		return $this->hasOne(AccountSetting::class);
 	}
 
 	public function comments(): HasMany

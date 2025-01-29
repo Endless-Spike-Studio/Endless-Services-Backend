@@ -33,15 +33,15 @@ class GameAccountSettingUpdateRequest extends GameRequest
 				Rule::enum(GeometryDashAccountSettingCommentHistoryState::class)
 			],
 			'yt' => [
-				'required',
+				'nullable',
 				'string'
 			],
 			'twitter' => [
-				'required',
+				'nullable',
 				'string'
 			],
 			'twitch' => [
-				'required',
+				'nullable',
 				'string'
 			],
 			...$this->secret(GeometryDashSecrets::ACCOUNT)
