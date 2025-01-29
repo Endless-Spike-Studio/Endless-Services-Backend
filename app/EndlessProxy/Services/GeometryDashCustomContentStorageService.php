@@ -26,7 +26,7 @@ class GeometryDashCustomContentStorageService implements ExternalProxyStorageSer
 	}
 
 	public function __construct(
-		protected GeometryDashProxyService $proxy
+		protected readonly GeometryDashProxyService $proxy
 	)
 	{
 		$this->disk = config('services.endless.proxy.geometry_dash.custom_contents.storage.disk');

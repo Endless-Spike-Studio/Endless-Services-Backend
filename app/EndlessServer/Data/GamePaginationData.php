@@ -17,15 +17,12 @@ class GamePaginationData
 	}
 
 	public function __construct(
-		public Collection $items,
-
-		public int        $total,
-		public int        $page,
-		public int        $perPage
+		readonly Collection $items,
+		readonly int        $total,
+		readonly int        $page,
+		readonly int        $perPage
 	)
 	{
 
 	}
-
-
 }

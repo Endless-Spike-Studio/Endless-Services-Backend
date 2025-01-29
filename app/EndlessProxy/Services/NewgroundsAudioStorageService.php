@@ -29,7 +29,7 @@ class NewgroundsAudioStorageService implements ExternalProxyStorageServiceContra
 	}
 
 	public function __construct(
-		protected GeometryDashProxyService $proxy
+		protected readonly GeometryDashProxyService $proxy
 	)
 	{
 		$this->disk = config('services.endless.proxy.newgrounds.audios.storage.disk');

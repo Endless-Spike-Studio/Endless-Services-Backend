@@ -7,7 +7,7 @@ use App\EndlessServer\Models\Player;
 use App\GeometryDash\Services\GeometryDashAlgorithmService;
 use Illuminate\Support\Str;
 
-class GameAccountService
+readonly class GameAccountService
 {
 	public function __construct(
 		protected GeometryDashAlgorithmService $algorithmService

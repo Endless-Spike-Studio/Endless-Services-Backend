@@ -10,11 +10,11 @@ use App\EndlessServer\Services\GamePlayerStatisticService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use Illuminate\Support\Facades\Auth;
 
-class GamePlayerDataController
+readonly class GamePlayerDataController
 {
 	public function __construct(
-		protected readonly GamePlayerDataService      $service,
-		protected readonly GamePlayerStatisticService $statisticService
+		protected GamePlayerDataService      $service,
+		protected GamePlayerStatisticService $statisticService
 	)
 	{
 
