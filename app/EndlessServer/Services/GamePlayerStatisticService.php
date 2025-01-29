@@ -22,7 +22,7 @@ class GamePlayerStatisticService
 
 		PlayerStatistic::query()
 			->create([
-				'player_id' => 0,
+				'player_id' => $playerId,
 				'creator_points' => 0,
 				'completed_dailies_count' => 0,
 				'completed_weeklies_count' => 0,

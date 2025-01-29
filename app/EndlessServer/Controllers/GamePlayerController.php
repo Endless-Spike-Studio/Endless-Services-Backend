@@ -5,6 +5,8 @@ namespace App\EndlessServer\Controllers;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Models\PlayerData;
 use App\EndlessServer\Requests\GamePlayerInfoFetchRequest;
+use App\EndlessServer\Services\GamePlayerDataService;
+use App\EndlessServer\Services\GamePlayerStatisticService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
@@ -12,7 +14,9 @@ use App\GeometryDash\Services\GeometryDashObjectService;
 readonly class GamePlayerController
 {
 	public function __construct(
-		protected GeometryDashObjectService $objectService
+		protected GeometryDashObjectService  $objectService,
+		protected GamePlayerDataService      $dataService,
+		protected GamePlayerStatisticService $statisticService
 	)
 	{
 
@@ -29,6 +33,9 @@ readonly class GamePlayerController
 		if (empty($player)) {
 			return GeometryDashResponses::PLAYER_INFO_FETCH_FAILED_NOT_FOUND->value;
 		}
+
+		$this->dataService->initialize($player->id);
+		$this->statisticService->initialize($player->id);
 
 		return $this->objectService->merge([
 			GeometryDashPlayerInfoObjectDefinitions::NAME->value => $player->name,
