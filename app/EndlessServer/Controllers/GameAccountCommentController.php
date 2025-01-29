@@ -35,8 +35,7 @@ readonly class GameAccountCommentController
 
 		$account->comments()
 			->create([
-				'content' => Base64Url::decode($data['comment']),
-				'spam' => false
+				'content' => Base64Url::decode($data['comment'])
 			]);
 
 		return GeometryDashResponses::ACCOUNT_COMMENT_UPLOAD_SUCCESS->value;
