@@ -11,7 +11,6 @@ use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerG
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
-use App\EndlessServer\Controllers\GameItemController as EndlessServerGameItemController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
 use App\EndlessServer\Controllers\GamePlayerDataController as EndlessServerGamePlayerDataController;
 use App\EndlessServer\Controllers\GameSongController as EndlessServerGameSongController;
@@ -135,7 +134,6 @@ Route::group([
 		// Route::post('/rateGJDemon21.php', []);
 		// Route::post('/suggestGJStars20.php', []);
 		Route::post('/getGJSongInfo.php', [EndlessServerGameSongController::class, 'getInfo']);
-		Route::post('/restoreGJItems.php', [EndlessServerGameItemController::class, 'restore']);
 		// Route::post('/getGJTopArtists.php', []);
 		// Route::post('/deleteGJLevelList.php', []);
 		Route::post('/getCustomContentURL.php', [EndlessServerGameCustomContentController::class, 'getURL']);
