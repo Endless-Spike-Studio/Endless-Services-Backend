@@ -38,7 +38,7 @@ class AccountController
 			}
 
 			if ($account->hasVerifiedEmail()) {
-				return new FailedResponse(__('账号已验证'), 202);
+				return new FailedResponse(__('账号已验证'), 304);
 			}
 
 			$account->markEmailAsVerified();
