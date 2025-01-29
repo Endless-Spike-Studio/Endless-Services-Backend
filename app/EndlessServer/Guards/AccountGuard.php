@@ -24,28 +24,29 @@ class AccountGuard implements Guard
 
 	public function guest(): bool
 	{
-		return null !== $this->user();
+		return $this->user() === null;
 	}
 
 	public function user(): ?Account
 	{
-		if (!empty($this->account)) {
-			return $this->account;
-		}
-
-		if (Request::filled(['userName', 'password'])) {
-			if ($this->tryUserNameAndPassword()) {
-				return $this->user();
+		if ($this->account === null) {
+			if (Request::filled(['userName', 'password'])) {
+				if ($this->tryUserNameAndPassword()) {
+					return $this->user();
+				}
 			}
-		}
 
-		if (Request::filled(['accountID', 'gjp2'])) {
-			if ($this->tryAccountIdAndGjp2()) {
-				return $this->user();
+			if (Request::filled(['accountID', 'gjp2'])) {
+				if ($this->tryAccountIdAndGjp2()) {
+					return $this->user();
+				}
 			}
+
+			return null;
 		}
 
-		return null;
+		return $this->account;
+
 	}
 
 	protected function tryUserNameAndPassword(): bool
@@ -57,7 +58,7 @@ class AccountGuard implements Guard
 			->where('name', $userName)
 			->first();
 
-		if (empty($account)) {
+		if ($account === null) {
 			return false;
 		}
 
@@ -84,11 +85,12 @@ class AccountGuard implements Guard
 			->where('gjp2', $gjp2)
 			->first();
 
-		if (empty($binding)) {
+		if ($binding === null) {
 			return false;
 		}
 
 		$this->account = $binding->account;
+
 		return true;
 	}
 

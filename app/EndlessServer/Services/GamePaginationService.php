@@ -7,9 +7,9 @@ use Illuminate\Contracts\Database\Query\Builder;
 
 readonly class GamePaginationService
 {
-	public function generate(Builder $query, int $page, int|null $perPage = null)
+	public function generate(Builder $query, int $page, ?int $perPage = null)
 	{
-		if (is_null($perPage)) {
+		if ($perPage === null) {
 			$perPage = config('services.endless.server.per_page');
 		}
 

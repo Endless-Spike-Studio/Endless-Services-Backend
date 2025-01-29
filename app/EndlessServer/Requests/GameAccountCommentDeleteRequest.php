@@ -2,10 +2,12 @@
 
 namespace App\EndlessServer\Requests;
 
+use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountComment;
 use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashCommentType;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class GameAccountCommentDeleteRequest extends GameRequest
@@ -46,5 +48,10 @@ class GameAccountCommentDeleteRequest extends GameRequest
 			],
 			...$this->secret()
 		];
+	}
+
+	public function authorize(): bool
+	{
+		return Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->check();
 	}
 }

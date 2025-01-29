@@ -2,11 +2,13 @@
 
 namespace App\EndlessServer\Requests;
 
+use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryState;
 use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestState;
 use App\GeometryDash\Enums\GeometryDashAccountSettingMessageState;
 use App\GeometryDash\Enums\GeometryDashSecrets;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class GameAccountSettingUpdateRequest extends GameRequest
@@ -46,5 +48,10 @@ class GameAccountSettingUpdateRequest extends GameRequest
 			],
 			...$this->secret(GeometryDashSecrets::ACCOUNT)
 		];
+	}
+
+	public function authorize(): bool
+	{
+		return Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->check();
 	}
 }

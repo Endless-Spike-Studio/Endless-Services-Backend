@@ -30,15 +30,15 @@ readonly class GameAccountSettingController
 
 		$this->service->initialize($account->id);
 
-		if (is_null($data['yt'])) {
+		if ($data['yt'] === null) {
 			$data['yt'] = '';
 		}
 
-		if (is_null($data['twitter'])) {
+		if ($data['twitter'] === null) {
 			$data['twitter'] = '';
 		}
 
-		if (is_null($data['twitch'])) {
+		if ($data['twitch'] === null) {
 			$data['twitch'] = '';
 		}
 

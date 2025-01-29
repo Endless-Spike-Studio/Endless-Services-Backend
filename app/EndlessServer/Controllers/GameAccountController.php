@@ -38,7 +38,7 @@ readonly class GameAccountController
 			->where('name', $data['userName'])
 			->first();
 
-		if (empty($account)) {
+		if ($account === null) {
 			return GeometryDashResponses::ACCOUNT_LOGIN_FAILED_ACCOUNT_NOT_FOUND->value;
 		}
 

@@ -39,7 +39,7 @@ readonly class GamePlayerDataController
 			$this->statisticService->updatePlatformer($player->id, $sinfoParts[6], $sinfoParts[7], $sinfoParts[8], $sinfoParts[9], $sinfoParts[10], $sinfoParts[11]);
 		}
 
-		if (!empty($data['dinfo'])) {
+		if (isset($data['dinfo'])) {
 			$completedDemonLevelIds = explode(',', $data['dinfo']);
 			$this->statisticService->updateDemon($player->id, $completedDemonLevelIds);
 		}

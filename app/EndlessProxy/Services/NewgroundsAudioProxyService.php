@@ -30,35 +30,55 @@ readonly class NewgroundsAudioProxyService
 				->where('song_id', $id)
 				->first();
 
-			if (!empty($song)) {
-				$this->storage->song = $song;
+			if ($song === null) {
+				$songObject = $this->resolveSongObjectFromOfficialServerLevelApi($id);
 
-				return $song;
+				if ($songObject === null) {
+					throw new SongResolveException('解析失败, 该歌曲可能不存在');
+				}
+
+				$song = NewgroundsSong::query()
+					->create([
+						'song_id' => $songObject[GeometryDashSongObjectDefinitions::ID->value],
+						'name' => $songObject[GeometryDashSongObjectDefinitions::NAME->value],
+						'artist_id' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_ID->value],
+						'artist_name' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_NAME->value],
+						'size' => $songObject[GeometryDashSongObjectDefinitions::SIZE->value],
+						'disabled' => false,
+						'original_download_url' => $songObject[GeometryDashSongObjectDefinitions::DOWNLOAD_URL->value]
+					]);
 			}
 
-			$songObject = $this->resolveSongObjectFromOfficialServerLevelApi($id);
+			$this->storage->song = $song;
 
-			if (empty($songObject)) {
-				throw new SongResolveException('解析失败, 该歌曲可能不存在');
-			}
-
-			return NewgroundsSong::query()
-				->create([
-					'song_id' => $songObject[GeometryDashSongObjectDefinitions::ID->value],
-					'name' => $songObject[GeometryDashSongObjectDefinitions::NAME->value],
-					'artist_id' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_ID->value],
-					'artist_name' => $songObject[GeometryDashSongObjectDefinitions::ARTIST_NAME->value],
-					'size' => $songObject[GeometryDashSongObjectDefinitions::SIZE->value],
-					'disabled' => false,
-					'original_download_url' => $songObject[GeometryDashSongObjectDefinitions::DOWNLOAD_URL->value]
-				]);
+			return $song;
 		} catch (HttpClientException $e) {
 			throw new SongResolveException('请求异常', previous: $e);
 		} finally {
-			if (!empty($song) && !$this->storage->valid()) {
+			if (isset($song) && !$this->storage->valid()) {
 				FetchSongDataJob::dispatch($song);
 			}
 		}
+	}
+
+	/**
+	 * @throws ConnectionException
+	 */
+	protected function resolveSongObjectFromOfficialServerLevelApi(int $id): ?array
+	{
+		$songApiResult = $this->resolveSongObjectUsingOfficialServerSongApi($id);
+
+		if ($this->validateSongObject($songApiResult)) {
+			return $songApiResult;
+		}
+
+		$levelApiResult = $this->resolveSongObjectUsingOfficialServerLevelApi($id);
+
+		if ($this->validateSongObject($levelApiResult)) {
+			return $levelApiResult;
+		}
+
+		return null;
 	}
 
 	/**
@@ -84,26 +104,6 @@ readonly class NewgroundsAudioProxyService
 		}
 
 		return $this->object->split($response, GeometryDashSongObjectDefinitions::GLUE);
-	}
-
-	/**
-	 * @throws ConnectionException
-	 */
-	protected function resolveSongObjectFromOfficialServerLevelApi(int $id): ?array
-	{
-		$songApiResult = $this->resolveSongObjectUsingOfficialServerSongApi($id);
-
-		if ($this->validateSongObject($songApiResult)) {
-			return $songApiResult;
-		}
-
-		$levelApiResult = $this->resolveSongObjectUsingOfficialServerLevelApi($id);
-
-		if ($this->validateSongObject($levelApiResult)) {
-			return $levelApiResult;
-		}
-
-		return null;
 	}
 
 	protected function validateSongObject(array $object): bool

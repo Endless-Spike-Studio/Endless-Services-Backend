@@ -28,7 +28,7 @@ readonly class GameAccountService
 
 	public function queryAccountPlayer(Account $account, ?string $udid = null)
 	{
-		if (empty($udid)) {
+		if ($udid === null) {
 			$udid = Str::uuid()
 				->toString();
 		}
@@ -37,16 +37,16 @@ readonly class GameAccountService
 			->where('uuid', $account->id)
 			->first();
 
-		if (!empty($player)) {
-			return $player;
+		if ($player === null) {
+			return Player::query()
+				->create([
+					'uuid' => $account->id,
+					'name' => $account->name,
+					'udid' => $udid
+				]);
 		}
 
-		return Player::query()
-			->create([
-				'uuid' => $account->id,
-				'name' => $account->name,
-				'udid' => $udid
-			]);
+		return $player;
 	}
 
 	public function storageGjp2(Account $account, string $password): void

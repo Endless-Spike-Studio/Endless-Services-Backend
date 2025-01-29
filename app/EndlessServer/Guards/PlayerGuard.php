@@ -26,44 +26,47 @@ class PlayerGuard implements Guard
 
 	public function guest(): bool
 	{
-		return null !== $this->user();
+		return $this->user() === null;
 	}
 
 	public function user(): ?Player
 	{
-		if (!empty($this->player)) {
-			return $this->player;
-		}
-
-		if ($this->tryAccount()) {
-			return $this->user();
-		}
-
-		if (Request::filled(['uuid', 'udid'])) {
-			if ($this->tryUuidAndUdid()) {
+		if ($this->player === null) {
+			if ($this->tryAccount()) {
 				return $this->user();
 			}
 
-			if ($this->tryCreate()) {
-				return $this->user();
+			if (Request::filled(['uuid', 'udid'])) {
+				if ($this->tryUuidAndUdid()) {
+					return $this->user();
+				}
+
+				if ($this->tryCreate()) {
+					return $this->user();
+				}
 			}
+
+			return null;
 		}
 
-		return null;
+		return $this->player;
+
 	}
 
 	protected function tryAccount(): bool
 	{
-		/** @var Account $account */
+		/** @var ?Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
-		if (!empty($account)) {
-			$udid = Request::string('udid');
-			$this->player = app(GameAccountService::class)->queryAccountPlayer($account, $udid);
-			return true;
+		if ($account === null) {
+			return false;
 		}
 
-		return false;
+		$udid = Request::string('udid');
+
+		$this->player = app(GameAccountService::class)->queryAccountPlayer($account, $udid);
+
+		return true;
 	}
 
 	protected function tryUuidAndUdid(): bool
@@ -83,11 +86,12 @@ class PlayerGuard implements Guard
 				->first();
 		}
 
-		if (empty($player)) {
+		if ($player === null) {
 			return false;
 		}
 
 		$this->player = $player;
+
 		return true;
 	}
 

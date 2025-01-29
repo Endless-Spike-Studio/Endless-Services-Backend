@@ -72,7 +72,7 @@ readonly class GameAccountCommentController
 			->where('id', $data['commentID'])
 			->first();
 
-		if (empty($comment)) {
+		if ($comment === null) {
 			return GeometryDashResponses::ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND->value;
 		}
 

@@ -2,7 +2,9 @@
 
 namespace App\EndlessServer\Requests;
 
+use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Traits\GameRequestRules;
+use Illuminate\Support\Facades\Auth;
 
 class GamePlayerDataUpdateRequest extends GameRequest
 {
@@ -144,5 +146,10 @@ class GamePlayerDataUpdateRequest extends GameRequest
 			],
 			...$this->secret()
 		];
+	}
+
+	public function authorize(): bool
+	{
+		return Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->check();
 	}
 }

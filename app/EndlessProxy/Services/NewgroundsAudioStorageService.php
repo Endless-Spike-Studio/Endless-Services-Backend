@@ -13,12 +13,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class NewgroundsAudioStorageService implements ExternalProxyStorageServiceContract
 {
-	protected string $disk;
-	protected string $format;
-
-	protected Filesystem $storage;
-	protected string $path;
-
 	public NewgroundsSong $song {
 		set {
 			$this->song = $value;
@@ -27,6 +21,10 @@ class NewgroundsAudioStorageService implements ExternalProxyStorageServiceContra
 			$this->path = str_replace('{id}', $this->song->song_id, $this->path);
 		}
 	}
+	protected string $disk;
+	protected string $format;
+	protected Filesystem $storage;
+	protected string $path;
 
 	public function __construct(
 		protected readonly GeometryDashProxyService $proxy

@@ -31,7 +31,7 @@ readonly class AccountController
 				->where('id', $verificationData->id)
 				->first();
 
-			if (empty($account)) {
+			if ($account === null) {
 				return new FailedResponse(
 					__('账号不存在')
 				);

@@ -13,17 +13,15 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GeometryDashCustomContentStorageService implements ExternalProxyStorageServiceContract
 {
-	protected string $disk;
-	protected string $format;
-
-	protected Filesystem $storage;
-
 	public string $path {
 		set {
 			$this->path = $this->format;
 			$this->path = Str::replace('{path}', $value, $this->path);
 		}
 	}
+	protected string $disk;
+	protected string $format;
+	protected Filesystem $storage;
 
 	public function __construct(
 		protected readonly GeometryDashProxyService $proxy
