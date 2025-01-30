@@ -62,46 +62,46 @@ trait GameRequestRules
 		];
 	}
 
-	protected function auth_password(): array
+	protected function auth_password(bool $optional = false): array
 	{
 		return [
 			'userName' => [
-				'required',
+				$optional ? 'nullable' : 'required',
 				'string',
 				Rule::exists(Account::class, 'name')
 			],
 			'password' => [
-				'required',
+				$optional ? 'nullable' : 'required',
 				'string'
 			]
 		];
 	}
 
-	protected function auth_username_gjp2(): array
+	protected function auth_username_gjp2(bool $optional = false): array
 	{
 		return [
 			'userName' => [
-				'required',
+				$optional ? 'nullable' : 'required',
 				'string',
 				Rule::exists(Account::class, 'name')
 			],
 			'gjp2' => [
-				'required',
+				$optional ? 'nullable' : 'required',
 				'string'
 			]
 		];
 	}
 
-	protected function auth_gjp2(): array
+	protected function auth_gjp2(bool $optional = false): array
 	{
 		return [
 			'accountID' => [
-				'required',
+				$optional ? 'nullable' : 'required',
 				'integer',
 				Rule::exists(Account::class, 'id')
 			],
 			'gjp2' => [
-				'required',
+				$optional ? 'nullable' : 'required',
 				'string'
 			]
 		];
