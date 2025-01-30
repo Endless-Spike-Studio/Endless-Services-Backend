@@ -6,6 +6,7 @@ use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashCommentType;
+use App\GeometryDash\Services\GeometryDashCheckService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
@@ -47,6 +48,12 @@ class GameAccountCommentUploadRequest extends GameRequest
 
 	public function authorize(): bool
 	{
-		return Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->check();
+		$this->getValidatorInstance();
+
+		$data = $this->validated();
+
+		$commentType = GeometryDashCommentType::from($data['cType']);
+
+		return Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->check() && app(GeometryDashCheckService::class)->generateComment($data['userName'], $data['comment'], 0, 0, $commentType) === $data['chk'];
 	}
 }
