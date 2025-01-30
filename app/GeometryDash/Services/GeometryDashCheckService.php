@@ -9,7 +9,12 @@ use Base64Url\Base64Url;
 
 readonly class GeometryDashCheckService
 {
-	public function generateComment(string $userName, string $comment, int $levelId, int $percent, GeometryDashCommentType $type): string
+	public function generateAccountComment(string $userName, string $comment): string
+	{
+		return $this->generateComment($userName, $comment, 0, 0, GeometryDashCommentType::ACCOUNT);
+	}
+
+	protected function generateComment(string $userName, string $comment, int $levelId, int $percent, GeometryDashCommentType $type): string
 	{
 		return $this->generate([
 			$userName,
@@ -25,5 +30,10 @@ readonly class GeometryDashCheckService
 		$result = app(GeometryDashAlgorithmService::class)->xor(sha1(implode('', $data) . $salt->value), $key->value);
 
 		return $base64 ? Base64Url::encode($result, true) : $result;
+	}
+
+	public function generateLevelComment(string $userName, string $comment, int $levelId, int $percent): string
+	{
+		return $this->generateComment($userName, $comment, $levelId, $percent, GeometryDashCommentType::LEVEL);
 	}
 }

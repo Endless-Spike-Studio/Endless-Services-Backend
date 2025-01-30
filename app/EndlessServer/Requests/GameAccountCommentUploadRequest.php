@@ -52,8 +52,6 @@ class GameAccountCommentUploadRequest extends GameRequest
 
 		$data = $this->validated();
 
-		$commentType = GeometryDashCommentType::from($data['cType']);
-
-		return Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->check() && app(GeometryDashCheckService::class)->generateComment($data['userName'], $data['comment'], 0, 0, $commentType) === $data['chk'];
+		return Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->check() && $data['chk'] === app(GeometryDashCheckService::class)->generateAccountComment($data['userName'], $data['comment']);
 	}
 }
