@@ -14,6 +14,7 @@ use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerG
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
 use App\EndlessServer\Controllers\GamePlayerDataController as EndlessServerGamePlayerDataController;
+use App\EndlessServer\Controllers\GameRewardController as EndlessServerGameRewardController;
 use App\EndlessServer\Controllers\GameSongController as EndlessServerGameSongController;
 use Illuminate\Support\Facades\Route;
 
@@ -98,7 +99,7 @@ Route::group([
 		Route::post('/getAccountURL.php', [EndlessServerGameAccountDataController::class, 'baseUrl']);
 		Route::post('/database/accounts/backupGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'save']);
 		Route::post('/database/accounts/syncGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'load']);
-		// Route::post('/getGJRewards.php', []);
+		Route::post('/getGJRewards.php', [EndlessServerGameRewardController::class, 'get']);
 		// Route::post('/requestUserAccess.php', []);
 		// Route::post('/getGJChallenges.php', []);
 		// Route::post('/getGJUsers20.php', []);

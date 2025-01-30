@@ -34,6 +34,46 @@ return [
 					'disk' => env('ENDLESS_SERVER_ACCOUNT_DATA_STORAGE_DISK', 'oss'),
 					'format' => env('ENDLESS_SERVER_ACCOUNT_DATA_STORAGE_FORMAT', 'endless_server/account_data/{id}.dat')
 				]
+			],
+			'rewards' => [
+				'small' => [
+					'wait' => env('ENDLESS_SERVER_REWARDS_SMALL_WAIT', 3600),
+					'orbs' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_SMALL_ORBS_MIN', 200),
+						'max' => env('ENDLESS_SERVER_REWARDS_SMALL_ORBS_MAX', 400)
+					],
+					'diamonds' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_SMALL_DIAMONDS_MIN', 2),
+						'max' => env('ENDLESS_SERVER_REWARDS_SMALL_DIAMONDS_MAX', 10)
+					],
+					'shards' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_SMALL_SHARDS_MIN', 1),
+						'max' => env('ENDLESS_SERVER_REWARDS_SMALL_SHARDS_MAX', 6)
+					],
+					'keys' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_BIG_KEYS_MIN', 1),
+						'max' => env('ENDLESS_SERVER_REWARDS_BIG_KEYS_MAX', 6)
+					]
+				],
+				'big' => [
+					'wait' => env('ENDLESS_SERVER_REWARDS_BIG_WAIT', 14400),
+					'orbs' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_BIG_ORBS_MIN', 2000),
+						'max' => env('ENDLESS_SERVER_REWARDS_BIG_ORBS_MAX', 4000)
+					],
+					'diamonds' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_BIG_DIAMONDS_MIN', 20),
+						'max' => env('ENDLESS_SERVER_REWARDS_BIG_DIAMONDS_MAX', 100)
+					],
+					'shards' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_BIG_SHARDS_MIN', 1),
+						'max' => env('ENDLESS_SERVER_REWARDS_BIG_SHARDS_MAX', 6)
+					],
+					'keys' => [
+						'min' => env('ENDLESS_SERVER_REWARDS_BIG_KEYS_MIN', 1),
+						'max' => env('ENDLESS_SERVER_REWARDS_BIG_KEYS_MAX', 6)
+					]
+				]
 			]
 		]
 	]
