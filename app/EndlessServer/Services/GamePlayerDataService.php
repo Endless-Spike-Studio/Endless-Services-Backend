@@ -19,6 +19,8 @@ readonly class GamePlayerDataService
 		PlayerData::query()
 			->create([
 				'player_id' => $playerId,
+				'game_version' => 0,
+				'binary_version' => 0,
 				'stars' => 0,
 				'moons' => 0,
 				'demons' => 0,
@@ -42,6 +44,16 @@ readonly class GamePlayerDataService
 				'swing_id' => 1,
 				'jetpack_id' => 1,
 				'special' => 1
+			]);
+	}
+
+	public function updateVersions(int $playerId, int $gameVersion, int $binaryVersion): void
+	{
+		PlayerData::query()
+			->where('player_id', $playerId)
+			->update([
+				'game_version' => $gameVersion,
+				'binary_version' => $binaryVersion
 			]);
 	}
 
