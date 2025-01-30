@@ -31,4 +31,5 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ACCOUNT_COMMENT_DELETE_FAILED_NOT_FOUND = GeometryDashResponses::_1;
 	public const GeometryDashResponses ACCOUNT_COMMENT_DELETE_FAILED_NOT_OWNER = GeometryDashResponses::_1;
 	public const GeometryDashResponses ACCOUNT_COMMENT_DELETE_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses ACCOUNT_DATA_SAVE_SUCCESS = GeometryDashResponses::__1;
 }

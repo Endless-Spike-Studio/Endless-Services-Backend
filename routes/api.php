@@ -9,6 +9,7 @@ use App\EndlessProxy\Controllers\NewgroundsAudioProxyController as EndlessProxyN
 use App\EndlessServer\Controllers\AccountController as EndlessServerAccountController;
 use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerGameAccountCommentController;
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
+use App\EndlessServer\Controllers\GameAccountDataController as EndlessServerGameAccountDataController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
@@ -94,9 +95,9 @@ Route::group([
 		Route::post('/uploadGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'upload']);
 		Route::post('/getGJAccountComments20.php', [EndlessServerGameAccountCommentController::class, 'list']);
 		Route::post('/deleteGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'delete']);
-		// Route::post('/getAccountURL.php', []);
-		// Route::post('/database/accounts/backupGJAccountNew.php', []);
-		// Route::post('/database/accounts/syncGJAccountNew.php', []);
+		Route::post('/getAccountURL.php', [EndlessServerGameAccountDataController::class, 'baseUrl']);
+		Route::post('/database/accounts/backupGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'save']);
+		Route::post('/database/accounts/syncGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'load']);
 		// Route::post('/getGJRewards.php', []);
 		// Route::post('/requestUserAccess.php', []);
 		// Route::post('/getGJChallenges.php', []);

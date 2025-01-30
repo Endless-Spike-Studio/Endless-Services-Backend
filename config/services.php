@@ -28,7 +28,13 @@ return [
 			]
 		],
 		'server' => [
-			'per_page' => env('ENDLESS_SERVER_PER_PAGE', 10)
+			'per_page' => env('ENDLESS_SERVER_PER_PAGE', 10),
+			'account_data' => [
+				'storage' => [
+					'disk' => env('ENDLESS_SERVER_ACCOUNT_DATA_STORAGE_DISK', 'oss'),
+					'format' => env('ENDLESS_SERVER_ACCOUNT_DATA_STORAGE_FORMAT', 'endless_server/account_data/{id}.dat')
+				]
+			]
 		]
 	]
 ];
