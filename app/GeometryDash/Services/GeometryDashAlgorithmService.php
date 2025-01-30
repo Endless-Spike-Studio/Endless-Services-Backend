@@ -6,7 +6,7 @@ use App\GeometryDash\Enums\GeometryDashSalts;
 
 class GeometryDashAlgorithmService
 {
-	public static function xor(string $data, string $key): string
+	public function xor(string $data, string $key): string
 	{
 		$dataChars = str_split($data);
 
