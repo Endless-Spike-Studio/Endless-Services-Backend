@@ -19,14 +19,7 @@ class GameAccountCommentUploadRequest extends GameRequest
 			...$this->versions(),
 			...$this->gdw(),
 			...$this->auth_gjp2(),
-			'uuid' => [
-				'nullable',
-				'string'
-			],
-			'udid' => [
-				'nullable',
-				'string'
-			],
+			...$this->identifies(),
 			'userName' => [
 				'nullable',
 				'string',

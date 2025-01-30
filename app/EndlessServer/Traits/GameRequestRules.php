@@ -38,6 +38,20 @@ trait GameRequestRules
 		];
 	}
 
+	protected function identifies(): array
+	{
+		return [
+			'uuid' => [
+				'nullable',
+				'string'
+			],
+			'udid' => [
+				'nullable',
+				'string'
+			]
+		];
+	}
+
 	protected function gdw(): array
 	{
 		return [
