@@ -30,7 +30,11 @@ readonly class UserService
 	{
 		$user = User::query()
 			->where('name', $name)
-			->firstOrFail();
+			->first();
+
+		if ($user === null) {
+			return new FailedResponse('用户不存在', 404);
+		}
 
 		if (!Hash::check($password, $user->password)) {
 			return new FailedResponse('登录失败', 401);
@@ -43,10 +47,11 @@ readonly class UserService
 			->where('user_id', $user->id)
 			->where('name', $token_name)
 			->where('expires_at', '>', $now)
-			->firstOr(callback: function () use ($now, $user, $token_name) {
-				$expires_at = $now->addMinutes(10);
-				return $this->tokenService->create($user, $token_name, $expires_at);
-			});
+			->first();
+
+		if ($record === null) {
+			$record = $this->tokenService->create($user, $token_name);
+		}
 
 		return $record->only(['token', 'expires_at']);
 	}
