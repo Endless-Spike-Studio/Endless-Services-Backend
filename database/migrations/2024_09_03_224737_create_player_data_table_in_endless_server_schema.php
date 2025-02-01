@@ -1,6 +1,7 @@
 <?php
 
 use App\EndlessServer\Models\Player;
+use App\GeometryDash\Enums\GeometryDashIconTypes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,29 +14,31 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Player::class)->unique();
-			$table->unsignedSmallInteger('stars');
-			$table->unsignedSmallInteger('moons');
-			$table->unsignedSmallInteger('demons');
-			$table->unsignedSmallInteger('diamonds');
-			$table->unsignedSmallInteger('icon_id');
-			$table->unsignedSmallInteger('icon_type');
-			$table->unsignedSmallInteger('coins');
-			$table->unsignedSmallInteger('user_coins');
-			$table->unsignedSmallInteger('color1');
-			$table->unsignedSmallInteger('color2');
-			$table->unsignedSmallInteger('color3');
-			$table->unsignedSmallInteger('cube_id');
-			$table->unsignedSmallInteger('ship_id');
-			$table->unsignedSmallInteger('ball_id');
-			$table->unsignedSmallInteger('bird_id');
-			$table->unsignedSmallInteger('dart_id');
-			$table->unsignedSmallInteger('robot_id');
-			$table->unsignedSmallInteger('glow_id');
-			$table->unsignedSmallInteger('spider_id');
-			$table->unsignedSmallInteger('explosion_id');
-			$table->unsignedSmallInteger('swing_id');
-			$table->unsignedSmallInteger('jetpack_id');
-			$table->unsignedTinyInteger('special');
+			$table->unsignedBigInteger('game_version');
+			$table->unsignedBigInteger('binary_version');
+			$table->unsignedBigInteger('stars');
+			$table->unsignedBigInteger('moons');
+			$table->unsignedBigInteger('demons');
+			$table->unsignedBigInteger('diamonds');
+			$table->unsignedBigInteger('icon_id');
+			$table->enum('icon_type', [GeometryDashIconTypes::CUBE->value, GeometryDashIconTypes::SHIP->value, GeometryDashIconTypes::BALL->value, GeometryDashIconTypes::UFO->value, GeometryDashIconTypes::WAVE->value, GeometryDashIconTypes::ROBOT->value, GeometryDashIconTypes::SPIDER->value, GeometryDashIconTypes::SWING->value, GeometryDashIconTypes::JETPACK->value]);
+			$table->unsignedBigInteger('coins');
+			$table->unsignedBigInteger('user_coins');
+			$table->unsignedBigInteger('color1');
+			$table->unsignedBigInteger('color2');
+			$table->unsignedBigInteger('color3');
+			$table->unsignedBigInteger('cube_id');
+			$table->unsignedBigInteger('ship_id');
+			$table->unsignedBigInteger('ball_id');
+			$table->unsignedBigInteger('bird_id');
+			$table->unsignedBigInteger('dart_id');
+			$table->unsignedBigInteger('robot_id');
+			$table->unsignedBigInteger('glow_id');
+			$table->unsignedBigInteger('spider_id');
+			$table->unsignedBigInteger('explosion_id');
+			$table->unsignedBigInteger('swing_id');
+			$table->unsignedBigInteger('jetpack_id');
+			$table->unsignedBigInteger('special');
 			$table->timestamps();
 		});
 	}
