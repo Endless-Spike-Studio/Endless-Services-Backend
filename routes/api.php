@@ -100,7 +100,7 @@ Route::group([
 		Route::post('/database/accounts/backupGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'save']);
 		Route::post('/database/accounts/syncGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'load']);
 		Route::post('/getGJRewards.php', [EndlessServerGameRewardController::class, 'get']);
-		// Route::post('/requestUserAccess.php', []);
+		Route::post('/requestUserAccess.php', [EndlessServerGameAccountController::class, 'requestAccess']);
 		// Route::post('/getGJChallenges.php', []);
 		// Route::post('/getGJUsers20.php', []);
 		// Route::post('/getGJScores20.php', []);

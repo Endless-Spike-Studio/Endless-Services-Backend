@@ -2,11 +2,14 @@
 
 namespace App\EndlessServer\Controllers;
 
+use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Requests\GameAccountLoginRequest;
 use App\EndlessServer\Requests\GameAccountRegisterRequest;
+use App\EndlessServer\Requests\GameRequestAccountAccessRequest;
 use App\EndlessServer\Services\GameAccountService;
 use App\GeometryDash\Enums\GeometryDashResponses;
+use Illuminate\Support\Facades\Auth;
 
 readonly class GameAccountController
 {
@@ -56,5 +59,27 @@ readonly class GameAccountController
 			$account->id,
 			$player->id
 		]);
+	}
+
+	public function requestAccess(GameRequestAccountAccessRequest $request)
+	{
+		$request->validated();
+
+		/** @var Account $account */
+		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+		$account->load('roles');
+
+		if ($account->roles->isEmpty()) {
+			return GeometryDashResponses::REQUEST_ACCOUNT_ACCESS_FAILED_NO_ROLES->value;
+		}
+
+		$level = $account->roles->max(fn($role) => $role->mod_level);
+
+		if ($level <= 0) {
+			return GeometryDashResponses::REQUEST_ACCOUNT_ACCESS_FAILED_NO_MOD_ROLES->value;
+		}
+
+		return $level;
 	}
 }
