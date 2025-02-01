@@ -2,9 +2,9 @@
 	"require": {
 		"php": "^8.4",
 		"alphasnow/aliyun-oss-laravel": "^4.9.0",
-		"laravel/framework": "^11.40.0",
-		"laravel/reverb": "^1.4.5",
-		"laravel/tinker": "^2.10",
+		"laravel/framework": "^11.41.3",
+		"laravel/reverb": "^1.4.6",
+		"laravel/tinker": "^2.10.1",
 		"spomky-labs/base64url": "^2.0.4"
 	},
 	"require-dev": {
