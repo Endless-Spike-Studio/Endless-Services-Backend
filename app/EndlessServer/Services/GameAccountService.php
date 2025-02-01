@@ -16,16 +16,6 @@ readonly class GameAccountService
 
 	}
 
-	public function register(string $name, string $email, string $password)
-	{
-		return Account::query()
-			->create([
-				'name' => $name,
-				'email' => $email,
-				'password' => $password
-			]);
-	}
-
 	public function queryAccountPlayer(Account $account, ?string $udid = null)
 	{
 		if ($udid === null) {

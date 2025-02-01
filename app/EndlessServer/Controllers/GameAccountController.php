@@ -24,7 +24,12 @@ readonly class GameAccountController
 	{
 		$data = $request->validated();
 
-		$account = $this->service->register($data['userName'], $data['email'], $data['password']);
+		$account = Account::query()
+			->create([
+				'name' => $data['userName'],
+				'email' => $data['email'],
+				'password' => $data['password']
+			]);
 
 		$account->sendEmailVerificationNotification();
 
