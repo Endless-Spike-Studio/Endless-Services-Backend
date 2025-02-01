@@ -88,8 +88,13 @@ Route::group([
 	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		Route::post('/accounts/registerGJAccount.php', [EndlessServerGameAccountController::class, 'register']);
-		Route::post('/accounts/loginGJAccount.php', [EndlessServerGameAccountController::class, 'login']);
+		Route::group([
+			'prefix' => 'accounts'
+		], function () {
+			Route::post('/registerGJAccount.php', [EndlessServerGameAccountController::class, 'register']);
+			Route::post('/loginGJAccount.php', [EndlessServerGameAccountController::class, 'login']);
+		});
+
 		Route::post('/updateGJUserScore22.php', [EndlessServerGamePlayerDataController::class, 'update']);
 		Route::post('/getGJUserInfo20.php', [EndlessServerGamePlayerController::class, 'info']);
 		Route::post('/updateGJAccSettings20.php', [EndlessServerGameAccountSettingController::class, 'update']);
@@ -97,8 +102,18 @@ Route::group([
 		Route::post('/getGJAccountComments20.php', [EndlessServerGameAccountCommentController::class, 'list']);
 		Route::post('/deleteGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'delete']);
 		Route::post('/getAccountURL.php', [EndlessServerGameAccountDataController::class, 'baseUrl']);
-		Route::post('/database/accounts/backupGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'save']);
-		Route::post('/database/accounts/syncGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'load']);
+
+		Route::group([
+			'prefix' => 'database'
+		], function () {
+			Route::group([
+				'prefix' => 'accounts'
+			], function () {
+				Route::post('/backupGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'save']);
+				Route::post('/syncGJAccountNew.php', [EndlessServerGameAccountDataController::class, 'load']);
+			});
+		});
+
 		Route::post('/getGJRewards.php', [EndlessServerGameRewardController::class, 'get']);
 		Route::post('/requestUserAccess.php', [EndlessServerGameAccountController::class, 'requestAccess']);
 		// Route::post('/getGJChallenges.php', []);
@@ -137,7 +152,11 @@ Route::group([
 		// Route::post('/suggestGJStars20.php', []);
 		Route::post('/getGJSongInfo.php', [EndlessServerGameSongController::class, 'getInfo']);
 		// Route::post('/getGJTopArtists.php', []);
+		// Route::post('/getGJLevelLists.php', []);
+		// Route::post('/getGJLevelScoresPlat.php', []);
+		// Route::post('/uploadGJLevelList.php', []);
 		// Route::post('/deleteGJLevelList.php', []);
+		// Route::post('/getGJSecretReward.php', []);
 		Route::post('/getCustomContentURL.php', [EndlessServerGameCustomContentController::class, 'getURL']);
 
 		Route::group([
@@ -145,9 +164,5 @@ Route::group([
 		], function () {
 			Route::post('/{path}', [EndlessServerGameCustomContentController::class, 'handle'])->where('path', '.*');
 		});
-
-		// Route::post('/getGJLevelLists.php', []);
-		// Route::post('/getGJLevelScoresPlat.php', []);
-		// Route::post('/uploadGJLevelList.php', []);
 	});
 });
