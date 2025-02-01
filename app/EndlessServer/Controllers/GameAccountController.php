@@ -85,6 +85,6 @@ readonly class GameAccountController
 			return GeometryDashResponses::REQUEST_ACCOUNT_ACCESS_FAILED_NO_MOD_ROLES->value;
 		}
 
-		return $level;
+		return max($level, 2);
 	}
 }
