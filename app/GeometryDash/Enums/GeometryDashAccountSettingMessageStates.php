@@ -2,7 +2,7 @@
 
 namespace App\GeometryDash\Enums;
 
-enum GeometryDashAccountSettingMessageState: int
+enum GeometryDashAccountSettingMessageStates: int
 {
 	case ALL = 0;
 	case FRIENDS_ONLY = 1;

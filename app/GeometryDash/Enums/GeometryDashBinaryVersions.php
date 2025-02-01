@@ -4,9 +4,9 @@ namespace App\GeometryDash\Enums;
 
 enum GeometryDashBinaryVersions: int
 {
-	case _35 = 35;
-	case _42 = 42;
-	case _45 = 45;
+	case __35 = 35;
+	case __42 = 42;
+	case __45 = 45;
 
-	public const GeometryDashBinaryVersions LATEST = GeometryDashBinaryVersions::_45;
+	public const GeometryDashBinaryVersions LATEST = GeometryDashBinaryVersions::__45;
 }

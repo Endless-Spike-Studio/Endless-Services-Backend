@@ -2,7 +2,7 @@
 
 namespace App\GeometryDash\Enums;
 
-enum GeometryDashAccountSettingFriendRequestState: int
+enum GeometryDashAccountSettingFriendRequestStates: int
 {
 	case ALL = 0;
 	case NONE = 1;

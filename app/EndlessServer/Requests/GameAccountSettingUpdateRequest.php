@@ -4,9 +4,9 @@ namespace App\EndlessServer\Requests;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Traits\GameRequestRules;
-use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryState;
-use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestState;
-use App\GeometryDash\Enums\GeometryDashAccountSettingMessageState;
+use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingMessageStates;
 use App\GeometryDash\Enums\GeometryDashSecrets;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -22,17 +22,17 @@ class GameAccountSettingUpdateRequest extends GameRequest
 			'mS' => [
 				'required',
 				'integer',
-				Rule::enum(GeometryDashAccountSettingMessageState::class)
+				Rule::enum(GeometryDashAccountSettingMessageStates::class)
 			],
 			'frS' => [
 				'required',
 				'integer',
-				Rule::enum(GeometryDashAccountSettingFriendRequestState::class)
+				Rule::enum(GeometryDashAccountSettingFriendRequestStates::class)
 			],
 			'cS' => [
 				'required',
 				'integer',
-				Rule::enum(GeometryDashAccountSettingCommentHistoryState::class)
+				Rule::enum(GeometryDashAccountSettingCommentHistoryStates::class)
 			],
 			'yt' => [
 				'nullable',

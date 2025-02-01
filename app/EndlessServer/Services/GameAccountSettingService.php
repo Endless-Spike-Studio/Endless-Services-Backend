@@ -3,9 +3,9 @@
 namespace App\EndlessServer\Services;
 
 use App\EndlessServer\Models\AccountSetting;
-use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryState;
-use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestState;
-use App\GeometryDash\Enums\GeometryDashAccountSettingMessageState;
+use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingMessageStates;
 
 readonly class GameAccountSettingService
 {
@@ -22,16 +22,16 @@ readonly class GameAccountSettingService
 		AccountSetting::query()
 			->create([
 				'account_id' => $accountId,
-				'message_state' => GeometryDashAccountSettingMessageState::ALL->value,
-				'friend_request_state' => GeometryDashAccountSettingFriendRequestState::ALL->value,
-				'comment_history_state' => GeometryDashAccountSettingCommentHistoryState::ALL->value,
+				'message_state' => GeometryDashAccountSettingMessageStates::ALL->value,
+				'friend_request_state' => GeometryDashAccountSettingFriendRequestStates::ALL->value,
+				'comment_history_state' => GeometryDashAccountSettingCommentHistoryStates::ALL->value,
 				'youtube' => '',
 				'twitter' => '',
 				'twitch' => ''
 			]);
 	}
 
-	public function update(int $accountId, GeometryDashAccountSettingMessageState $messageState, GeometryDashAccountSettingFriendRequestState $friendRequestState, GeometryDashAccountSettingCommentHistoryState $commentHistoryState, string $youtube, string $twitter, string $twitch): int
+	public function update(int $accountId, GeometryDashAccountSettingMessageStates $messageState, GeometryDashAccountSettingFriendRequestStates $friendRequestState, GeometryDashAccountSettingCommentHistoryStates $commentHistoryState, string $youtube, string $twitter, string $twitch): int
 	{
 		return AccountSetting::query()
 			->where('account_id', $accountId)

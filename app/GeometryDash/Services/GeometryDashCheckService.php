@@ -2,7 +2,7 @@
 
 namespace App\GeometryDash\Services;
 
-use App\GeometryDash\Enums\GeometryDashCommentType;
+use App\GeometryDash\Enums\GeometryDashCommentTypes;
 use App\GeometryDash\Enums\GeometryDashSalts;
 use App\GeometryDash\Enums\GeometryDashXorKeys;
 use Base64Url\Base64Url;
@@ -11,10 +11,10 @@ readonly class GeometryDashCheckService
 {
 	public function generateAccountComment(string $userName, string $comment): string
 	{
-		return $this->generateComment($userName, $comment, 0, 0, GeometryDashCommentType::ACCOUNT);
+		return $this->generateComment($userName, $comment, 0, 0, GeometryDashCommentTypes::ACCOUNT);
 	}
 
-	protected function generateComment(string $userName, string $comment, int $levelId, int $percent, GeometryDashCommentType $type): string
+	protected function generateComment(string $userName, string $comment, int $levelId, int $percent, GeometryDashCommentTypes $type): string
 	{
 		return $this->generate([
 			$userName,
@@ -34,6 +34,6 @@ readonly class GeometryDashCheckService
 
 	public function generateLevelComment(string $userName, string $comment, int $levelId, int $percent): string
 	{
-		return $this->generateComment($userName, $comment, $levelId, $percent, GeometryDashCommentType::LEVEL);
+		return $this->generateComment($userName, $comment, $levelId, $percent, GeometryDashCommentTypes::LEVEL);
 	}
 }

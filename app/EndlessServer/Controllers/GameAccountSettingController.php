@@ -6,9 +6,9 @@ use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Requests\GameAccountSettingUpdateRequest;
 use App\EndlessServer\Services\GameAccountSettingService;
-use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryState;
-use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestState;
-use App\GeometryDash\Enums\GeometryDashAccountSettingMessageState;
+use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingMessageStates;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,7 +42,7 @@ readonly class GameAccountSettingController
 			$data['twitch'] = '';
 		}
 
-		$this->service->update($account->id, GeometryDashAccountSettingMessageState::from($data['mS']), GeometryDashAccountSettingFriendRequestState::from($data['frS']), GeometryDashAccountSettingCommentHistoryState::from($data['cS']), $data['yt'], $data['twitter'], $data['twitch']);
+		$this->service->update($account->id, GeometryDashAccountSettingMessageStates::from($data['mS']), GeometryDashAccountSettingFriendRequestStates::from($data['frS']), GeometryDashAccountSettingCommentHistoryStates::from($data['cS']), $data['yt'], $data['twitter'], $data['twitch']);
 
 		return GeometryDashResponses::ACCOUNT_SETTING_UPDATE_SUCCESS->value;
 	}

@@ -9,5 +9,6 @@ enum GeometryDashLevelLengths: int
 	case MEDIUM = 2;
 	case LONG = 3;
 	case XL = 4;
+
 	case PLATFORMER = 5;
 }

@@ -2,7 +2,7 @@
 
 namespace App\GeometryDash\Enums;
 
-enum SpecialSongDownloadUrl: string
+enum SpecialSongDownloadUrls: string
 {
 	case CUSTOM = 'CUSTOMURL';
 }

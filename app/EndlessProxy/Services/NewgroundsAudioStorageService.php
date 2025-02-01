@@ -5,7 +5,7 @@ namespace App\EndlessProxy\Services;
 use App\EndlessProxy\Contracts\ExternalProxyStorageServiceContract;
 use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Models\NewgroundsSong;
-use App\GeometryDash\Enums\SpecialSongDownloadUrl;
+use App\GeometryDash\Enums\SpecialSongDownloadUrls;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Storage;
@@ -73,6 +73,6 @@ class NewgroundsAudioStorageService implements ExternalProxyStorageServiceContra
 
 	protected function shouldProcess(): bool
 	{
-		return $this->song->download_url !== SpecialSongDownloadUrl::CUSTOM->value;
+		return $this->song->download_url !== SpecialSongDownloadUrls::CUSTOM->value;
 	}
 }

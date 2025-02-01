@@ -2,7 +2,7 @@
 
 namespace App\GeometryDash\Enums;
 
-enum GeometryDashAccountSettingCommentHistoryState: int
+enum GeometryDashAccountSettingCommentHistoryStates: int
 {
 	case ALL = 0;
 	case FRIENDS_ONLY = 1;
