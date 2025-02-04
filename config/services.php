@@ -1,5 +1,7 @@
 <?php
 
+use App\GeometryDash\Enums\GeometryDashQuestCollectTypes;
+
 return [
 	'endless' => [
 		'proxy' => [
@@ -72,6 +74,53 @@ return [
 					'keys' => [
 						'min' => env('ENDLESS_SERVER_REWARDS_BIG_KEYS_MIN', 1),
 						'max' => env('ENDLESS_SERVER_REWARDS_BIG_KEYS_MAX', 6)
+					]
+				]
+			],
+			'quests' => [
+				'count' => env('ENDLESS_SERVER_QUESTS_COUNT', 3),
+				'generator' => [
+					GeometryDashQuestCollectTypes::ORB->value => [
+						'collect' => [
+							'min' => env('ENDLESS_SERVER_QUESTS_GENERATOR_ORB_COLLECT_MIN', 200),
+							'max' => env('ENDLESS_SERVER_QUESTS_GENERATOR_ORB_COLLECT_MAX', 2000)
+						],
+						'names' => explode(
+							',',
+							env('ENDLESS_SERVER_QUESTS_GENERATOR_ORB_NAMES', '')
+						),
+						'reward' => [
+							'every' => env('ENDLESS_SERVER_QUESTS_GENERATOR_ORB_REWARD_EVERY', 100),
+							'give' => env('ENDLESS_SERVER_QUESTS_GENERATOR_ORB_REWARD_GIVE', 4)
+						]
+					],
+					GeometryDashQuestCollectTypes::COIN->value => [
+						'collect' => [
+							'min' => env('ENDLESS_SERVER_QUESTS_GENERATOR_COIN_COLLECT_MIN', 2),
+							'max' => env('ENDLESS_SERVER_QUESTS_GENERATOR_COIN_COLLECT_MAX', 10)
+						],
+						'names' => explode(
+							',',
+							env('ENDLESS_SERVER_QUESTS_GENERATOR_COIN_NAMES', '')
+						),
+						'reward' => [
+							'every' => env('ENDLESS_SERVER_QUESTS_GENERATOR_COIN_REWARD_EVERY', 2),
+							'give' => env('ENDLESS_SERVER_QUESTS_GENERATOR_COIN_REWARD_GIVE', 4)
+						]
+					],
+					GeometryDashQuestCollectTypes::STAR->value => [
+						'collect' => [
+							'min' => env('ENDLESS_SERVER_QUESTS_GENERATOR_STAR_COLLECT_MIN', 3),
+							'max' => env('ENDLESS_SERVER_QUESTS_GENERATOR_STAR_COLLECT_MAX', 10)
+						],
+						'names' => explode(
+							',',
+							env('ENDLESS_SERVER_QUESTS_GENERATOR_STAR_NAMES', '')
+						),
+						'reward' => [
+							'every' => env('ENDLESS_SERVER_QUESTS_GENERATOR_STAR_REWARD_EVERY', 2),
+							'give' => env('ENDLESS_SERVER_QUESTS_GENERATOR_STAR_REWARD_GIVE', 4)
+						]
 					]
 				]
 			]

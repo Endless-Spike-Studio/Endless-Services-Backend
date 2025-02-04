@@ -11,6 +11,7 @@ use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerG
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountDataController as EndlessServerGameAccountDataController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
+use App\EndlessServer\Controllers\GameQuestController as EndlessServerGameQuestController;
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
 use App\EndlessServer\Controllers\GamePlayerDataController as EndlessServerGamePlayerDataController;
@@ -116,7 +117,7 @@ Route::group([
 
 		Route::post('/getGJRewards.php', [EndlessServerGameRewardController::class, 'get']);
 		Route::post('/requestUserAccess.php', [EndlessServerGameAccountController::class, 'requestAccess']);
-		// Route::post('/getGJChallenges.php', []);
+		Route::post('/getGJChallenges.php', [EndlessServerGameQuestController::class, 'get']);
 		// Route::post('/getGJUsers20.php', []);
 		// Route::post('/getGJScores20.php', []);
 		// Route::post('/uploadGJMessage20.php', []);
