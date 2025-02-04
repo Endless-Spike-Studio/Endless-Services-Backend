@@ -15,10 +15,10 @@ return new class extends Migration {
 			$table->id();
 			$table->foreignIdFor(Player::class);
 			$table->enum('type', [GeometryDashRewardTypes::SMALL->value, GeometryDashRewardTypes::BIG->value]);
-			$table->unsignedBigInteger('orbs');
-			$table->unsignedBigInteger('diamonds');
-			$table->unsignedBigInteger('shards');
-			$table->unsignedBigInteger('keys');
+			$table->integer('orbs');
+			$table->integer('diamonds');
+			$table->integer('shards');
+			$table->integer('keys');
 			$table->timestamps();
 		});
 	}
