@@ -3,10 +3,13 @@
 namespace App\EndlessServer\Controllers;
 
 use App\EndlessServer\Models\Account;
+use App\EndlessServer\Models\Player;
 use App\EndlessServer\Models\PlayerData;
 use App\EndlessServer\Requests\GamePlayerInfoFetchRequest;
+use App\EndlessServer\Requests\GamePlayerSearchRequest;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GameAccountSettingService;
+use App\EndlessServer\Services\GamePaginationService;
 use App\EndlessServer\Services\GamePlayerDataService;
 use App\EndlessServer\Services\GamePlayerStatisticService;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
@@ -19,10 +22,58 @@ readonly class GamePlayerController
 		protected GameAccountService         $accountService,
 		protected GameAccountSettingService  $accountSettingService,
 		protected GamePlayerDataService      $dataService,
-		protected GamePlayerStatisticService $statisticService
+		protected GamePlayerStatisticService $statisticService,
+		protected GamePaginationService      $paginationService
 	)
 	{
 
+	}
+
+	public function search(GamePlayerSearchRequest $request): string
+	{
+		$data = $request->validated();
+
+		$page = 1;
+
+		if (isset($data['page'])) {
+			$page = $data['page'] + 1;
+		}
+
+		$query = Player::query()
+			->where('name', 'LIKE', $data['str'] . '%');
+
+		if (is_numeric($data['str'])) {
+			$query->orWhere('id', $data['str']);
+		}
+
+		$paginate = $this->paginationService->generate($query, $page);
+
+		return implode('#', [
+			$paginate->items->map(function (Player $player) {
+				$this->dataService->initialize($player->id);
+				$this->statisticService->initialize($player->id);
+
+				return $this->objectService->merge([
+					GeometryDashPlayerInfoObjectDefinitions::NAME->value => $player->name,
+					GeometryDashPlayerInfoObjectDefinitions::ID->value => $player->id,
+					GeometryDashPlayerInfoObjectDefinitions::STARS->value => $player->data->stars,
+					GeometryDashPlayerInfoObjectDefinitions::DEMONS->value => $player->data->demons,
+					GeometryDashPlayerInfoObjectDefinitions::RANKING->value => PlayerData::query()
+						->where('stars', '<=', $player->data->stars)
+						->count(),
+					GeometryDashPlayerInfoObjectDefinitions::CREATOR_POINTS->value => $player->statistic->creator_points,
+					GeometryDashPlayerInfoObjectDefinitions::ICON_ID->value => $player->data->icon_id,
+					GeometryDashPlayerInfoObjectDefinitions::COLOR_1->value => $player->data->color1,
+					GeometryDashPlayerInfoObjectDefinitions::COLOR_2->value => $player->data->color2,
+					GeometryDashPlayerInfoObjectDefinitions::COINS->value => $player->data->coins,
+					GeometryDashPlayerInfoObjectDefinitions::ICON_TYPE->value => $player->data->icon_type,
+					GeometryDashPlayerInfoObjectDefinitions::SPECIAL->value => $player->data->special,
+					GeometryDashPlayerInfoObjectDefinitions::UUID->value => $player->uuid,
+					GeometryDashPlayerInfoObjectDefinitions::USER_COINS->value => $player->data->user_coins,
+				], GeometryDashPlayerInfoObjectDefinitions::GLUE);
+			})->join('|'),
+			$paginate->info
+		]);
 	}
 
 	public function info(GamePlayerInfoFetchRequest $request): int|string
