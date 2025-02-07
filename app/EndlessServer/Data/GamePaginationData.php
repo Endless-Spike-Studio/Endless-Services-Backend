@@ -10,7 +10,7 @@ class GamePaginationData
 		get {
 			return implode(':', [
 				$this->total,
-				($this->page - 1) * $this->perPage,
+				max(0, $this->page) * $this->perPage,
 				$this->perPage
 			]);
 		}
