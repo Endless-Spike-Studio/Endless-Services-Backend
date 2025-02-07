@@ -13,6 +13,7 @@ use App\EndlessServer\Controllers\GameAccountDataController as EndlessServerGame
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
 use App\EndlessServer\Controllers\GameLeaderboardController as EndlessServerGameLeaderboardController;
+use App\EndlessServer\Controllers\GameMessageController as EndlessServerGameMessageController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
 use App\EndlessServer\Controllers\GamePlayerDataController as EndlessServerGamePlayerDataController;
 use App\EndlessServer\Controllers\GameQuestController as EndlessServerGameQuestController;
@@ -121,7 +122,7 @@ Route::group([
 		Route::post('/getGJChallenges.php', [EndlessServerGameQuestController::class, 'get']);
 		Route::post('/getGJUsers20.php', [EndlessServerGamePlayerController::class, 'search']);
 		Route::post('/getGJScores20.php', [EndlessServerGameLeaderboardController::class, 'list']);
-		// Route::post('/uploadGJMessage20.php', []);
+		Route::post('/uploadGJMessage20.php', [EndlessServerGameMessageController::class, 'send']);
 		// Route::post('/getGJMessages20.php', []);
 		// Route::post('/downloadGJMessage20.php', []);
 		// Route::post('/deleteGJMessages20.php', []);

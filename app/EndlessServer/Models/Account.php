@@ -46,6 +46,11 @@ class Account extends Model implements MustVerifyEmailContract
 		return $this->hasMany(AccountComment::class);
 	}
 
+	public function messages(): HasMany
+	{
+		return $this->hasMany(AccountMessage::class);
+	}
+
 	public function roles(): HasManyThrough
 	{
 		return $this->hasManyThrough(Role::class, AccountRoleAssign::class, secondKey: 'id', secondLocalKey: 'role_id');
