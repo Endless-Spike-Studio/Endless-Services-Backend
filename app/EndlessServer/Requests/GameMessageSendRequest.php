@@ -19,7 +19,7 @@ class GameMessageSendRequest extends GameRequest
 			...$this->gdw(),
 			...$this->identifies(),
 			...$this->auth_gjp2(),
-			'toAccountIDD' => [
+			'toAccountID' => [
 				'required',
 				'integer',
 				Rule::exists(Account::class, 'id'),

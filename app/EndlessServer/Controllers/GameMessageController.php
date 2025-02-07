@@ -20,7 +20,7 @@ readonly class GameMessageController
 
 		$account->messages()
 			->create([
-				'target_account_id' => $data['toAccountIDD'],
+				'target_account_id' => $data['toAccountID'],
 				'subject' => Base64Url::decode($data['subject']),
 				'body' => Base64Url::decode($data['body']),
 				'readed' => false
