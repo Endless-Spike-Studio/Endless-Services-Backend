@@ -118,7 +118,7 @@ readonly class GameLeaderboardController
 					GeometryDashLeaderboardObjectDefinitions::PLAYER_UUID->value => $player->uuid,
 					GeometryDashPlayerInfoObjectDefinitions::USER_COINS->value => $player->data->user_coins,
 					GeometryDashPlayerInfoObjectDefinitions::DIAMONDS->value => $player->data->diamonds,
-				], ':');
+				], GeometryDashLeaderboardObjectDefinitions::GLUE);
 			})->join('|');
 	}
 }

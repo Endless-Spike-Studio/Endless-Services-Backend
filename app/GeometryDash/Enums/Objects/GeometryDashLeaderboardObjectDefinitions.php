@@ -4,6 +4,8 @@ namespace App\GeometryDash\Enums\Objects;
 
 enum GeometryDashLeaderboardObjectDefinitions: int
 {
+	public const string GLUE = ':';
+
 	case PLAYER_NAME = 1;
 	case PLAYER_ID = 2;
 	case PERCENT = 3;
