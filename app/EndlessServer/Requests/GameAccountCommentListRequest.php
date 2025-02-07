@@ -21,14 +21,7 @@ class GameAccountCommentListRequest extends GameRequest
 				'integer',
 				Rule::exists(Account::class, 'id')
 			],
-			'page' => [
-				'required',
-				'integer'
-			],
-			'total' => [
-				'nullable',
-				'integer'
-			],
+			...$this->pagination(),
 			...$this->secret()
 		];
 	}

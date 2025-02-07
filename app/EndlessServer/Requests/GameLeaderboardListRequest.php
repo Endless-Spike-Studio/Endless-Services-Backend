@@ -24,10 +24,7 @@ class GameLeaderboardListRequest extends GameRequest
 				'string',
 				Rule::enum(GeometryDashLeaderboardType::class)
 			],
-			'count' => [
-				'nullable',
-				'integer'
-			],
+			...$this->pagination(),
 			...$this->secret()
 		];
 	}

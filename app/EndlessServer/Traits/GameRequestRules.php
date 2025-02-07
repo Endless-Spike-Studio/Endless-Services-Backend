@@ -38,6 +38,24 @@ trait GameRequestRules
 		];
 	}
 
+	protected function pagination(): array
+	{
+		return [
+			'page' => [
+				'nullable',
+				'integer'
+			],
+			'count' => [
+				'nullable',
+				'integer'
+			],
+			'total' => [
+				'nullable',
+				'integer'
+			]
+		];
+	}
+
 	protected function identifies(): array
 	{
 		return [

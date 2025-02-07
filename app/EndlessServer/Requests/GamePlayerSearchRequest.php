@@ -19,14 +19,7 @@ class GamePlayerSearchRequest extends GameRequest
 				'required',
 				'string'
 			],
-			'total' => [
-				'nullable',
-				'integer'
-			],
-			'page' => [
-				'nullable',
-				'integer'
-			],
+			...$this->pagination(),
 			...$this->secret()
 		];
 	}
