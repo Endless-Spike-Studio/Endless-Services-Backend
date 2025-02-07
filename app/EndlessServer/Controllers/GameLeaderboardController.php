@@ -36,6 +36,10 @@ readonly class GameLeaderboardController
 	{
 		$data = $request->validated();
 
+		if (!isset($data['count'])) {
+			$data['count'] = 0;
+		}
+
 		$query = Player::query();
 
 		switch ($data['type']) {
@@ -48,11 +52,7 @@ readonly class GameLeaderboardController
 				// TODO
 				break;
 			case GeometryDashLeaderboardType::RELATIVE->value:
-				$half = 0;
-
-				if (isset($data['count'])) {
-					$half = round($data['count'] / 2);
-				}
+				$half = round($data['count'] / 2);
 
 				/** @var Account $account */
 				$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
@@ -95,9 +95,7 @@ readonly class GameLeaderboardController
 				);
 		}
 
-		if (isset($data['count'])) {
-			$query->take($data['count']);
-		}
+		$query->take($data['count']);
 
 		return $query->get()
 			->map(function (Player $player, int $index) {
