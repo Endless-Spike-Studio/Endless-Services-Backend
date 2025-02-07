@@ -39,4 +39,5 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ACCOUNT_MESSAGE_SEND_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses ACCOUNT_MESSAGE_LIST_FAILED_EMPTY = GeometryDashResponses::_2;
 	public const GeometryDashResponses ACCOUNT_MESSAGE_DOWNLOAD_FAILED_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses ACCOUNT_MESSAGE_DELETE_SUCCESS = GeometryDashResponses::__1;
 }

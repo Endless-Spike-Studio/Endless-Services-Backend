@@ -5,6 +5,7 @@ namespace App\EndlessServer\Controllers;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountMessage;
+use App\EndlessServer\Requests\GameMessageDeleteRequest;
 use App\EndlessServer\Requests\GameMessageDownloadRequest;
 use App\EndlessServer\Requests\GameMessageListRequest;
 use App\EndlessServer\Requests\GameMessageSendRequest;
@@ -124,5 +125,31 @@ readonly class GameMessageController
 			GeometryDashMessageObjectDefinition::IS_READ->value => $message->readed,
 			GeometryDashMessageObjectDefinition::IS_SENDER->value => isset($data['getSent'])
 		], GeometryDashMessageObjectDefinition::GLUE);
+	}
+
+	public function delete(GameMessageDeleteRequest $request): int
+	{
+		$data = $request->validated();
+
+		/** @var Account $account */
+		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+		$ids = collect();
+
+		if (isset($data['messageID'])) {
+			$ids->add($data['messageID']);
+		}
+
+		if (isset($data['messages'])) {
+			$message_ids = explode(',', $data['messages']);
+			$ids->push(...$message_ids);
+		}
+
+		AccountMessage::query()
+			->where(isset($data['isSender']) ? 'account_id' : 'target_account_id', $account->id)
+			->whereIn('id', $ids)
+			->delete();
+
+		return GeometryDashResponses::ACCOUNT_MESSAGE_DELETE_SUCCESS->value;
 	}
 }

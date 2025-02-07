@@ -125,7 +125,7 @@ Route::group([
 		Route::post('/uploadGJMessage20.php', [EndlessServerGameMessageController::class, 'send']);
 		Route::post('/getGJMessages20.php', [EndlessServerGameMessageController::class, 'list']);
 		Route::post('/downloadGJMessage20.php', [EndlessServerGameMessageController::class, 'download']);
-		// Route::post('/deleteGJMessages20.php', []);
+		Route::post('/deleteGJMessages20.php', [EndlessServerGameMessageController::class, 'delete']);
 		// Route::post('/uploadGJLevel21.php', []);
 		// Route::post('/getGJLevels21.php', []);
 		// Route::post('/uploadFriendRequest20.php', []);
