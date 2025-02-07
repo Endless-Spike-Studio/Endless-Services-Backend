@@ -38,7 +38,7 @@ class GameAccountRegisterRequest extends GameRequest
 	public function messages(): array
 	{
 		return [
-			'userName.unique' => GeometryDashResponses::ACCOUNT_REGISTER_FAILED_USERNAME_ALREADY_EXISTS->value,
+			'userName.unique' => GeometryDashResponses::ACCOUNT_REGISTER_FAILED_NAME_ALREADY_EXISTS->value,
 			'email.email' => GeometryDashResponses::ACCOUNT_REGISTER_FAILED_EMAIL_IS_INVALID->value,
 			'email.unique' => GeometryDashResponses::ACCOUNT_REGISTER_FAILED_EMAIL_ALREADY_EXISTS->value
 		];
