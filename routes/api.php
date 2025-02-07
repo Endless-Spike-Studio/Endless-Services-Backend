@@ -123,7 +123,7 @@ Route::group([
 		Route::post('/getGJUsers20.php', [EndlessServerGamePlayerController::class, 'search']);
 		Route::post('/getGJScores20.php', [EndlessServerGameLeaderboardController::class, 'list']);
 		Route::post('/uploadGJMessage20.php', [EndlessServerGameMessageController::class, 'send']);
-		// Route::post('/getGJMessages20.php', []);
+		Route::post('/getGJMessages20.php', [EndlessServerGameMessageController::class, 'list']);
 		// Route::post('/downloadGJMessage20.php', []);
 		// Route::post('/deleteGJMessages20.php', []);
 		// Route::post('/uploadGJLevel21.php', []);
