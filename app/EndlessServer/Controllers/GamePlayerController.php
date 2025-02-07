@@ -12,6 +12,7 @@ use App\EndlessServer\Services\GameAccountSettingService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\EndlessServer\Services\GamePlayerDataService;
 use App\EndlessServer\Services\GamePlayerStatisticService;
+use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 
@@ -47,6 +48,10 @@ readonly class GamePlayerController
 		}
 
 		$paginate = $this->paginationService->generate($query, $page);
+
+		if ($paginate->total <= 0) {
+			return GeometryDashResponses::PLAYER_SEARCH_FAILED_EMPTY->value;
+		}
 
 		return implode('#', [
 			$paginate->items->map(function (Player $player) {

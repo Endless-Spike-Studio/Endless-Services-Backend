@@ -35,4 +35,5 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses REWARD_GET_FAILED_INVALID_TYPE = GeometryDashResponses::_1;
 	public const GeometryDashResponses REQUEST_ACCOUNT_ACCESS_FAILED_NO_ROLES = GeometryDashResponses::_1;
 	public const GeometryDashResponses REQUEST_ACCOUNT_ACCESS_FAILED_NO_MOD_ROLES = GeometryDashResponses::_1;
+	public const GeometryDashResponses PLAYER_SEARCH_FAILED_EMPTY = GeometryDashResponses::_2;
 }
