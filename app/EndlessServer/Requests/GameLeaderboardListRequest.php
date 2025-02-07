@@ -5,11 +5,10 @@ namespace App\EndlessServer\Requests;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashLeaderboardType;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class GameLeaderboardListRequest extends FormRequest
+class GameLeaderboardListRequest extends GameRequest
 {
 	use GameRequestRules;
 
