@@ -3,6 +3,7 @@
 namespace App\EndlessServer\Controllers;
 
 use App\EndlessServer\Models\Account;
+use App\EndlessServer\Models\AccountMessage;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Models\PlayerData;
 use App\EndlessServer\Requests\GamePlayerInfoFetchRequest;
@@ -128,7 +129,10 @@ readonly class GamePlayerController
 			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_ID->value => '', // TODO
 			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_COMMENT->value => '', // TODO
 			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_AGE->value => '', // TODO
-			GeometryDashPlayerInfoObjectDefinitions::NEW_MESSAGE_COUNT->value => '', // TODO
+			GeometryDashPlayerInfoObjectDefinitions::NEW_MESSAGE_COUNT->value => AccountMessage::query()
+				->where('target_account_id', $account->id)
+				->where('readed', false)
+				->count(),
 			GeometryDashPlayerInfoObjectDefinitions::NEW_FRIEND_REQUEST_COUNT->value => '', // TODO
 			GeometryDashPlayerInfoObjectDefinitions::NEW_FRIEND_COUNT->value => '', // TODO
 			GeometryDashPlayerInfoObjectDefinitions::HAS_NEW_FRIEND_REQUEST->value => '', // TODO
