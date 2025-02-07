@@ -15,4 +15,11 @@ class AccountComment extends Model
 	{
 		return $this->belongsTo(Account::class);
 	}
+
+	protected function casts(): array
+	{
+		return [
+			'spam' => 'boolean'
+		];
+	}
 }
