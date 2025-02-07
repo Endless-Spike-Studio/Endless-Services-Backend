@@ -11,6 +11,10 @@ class GameFetchSongObjectRequest extends GameRequest
 	public function rules(): array
 	{
 		return [
+			...$this->versions(),
+			...$this->gdw(),
+			...$this->identifies(),
+			...$this->auth_gjp2(true),
 			'songID' => [
 				'required',
 				'string'

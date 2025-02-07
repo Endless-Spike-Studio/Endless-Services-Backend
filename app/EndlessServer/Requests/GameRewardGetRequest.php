@@ -16,6 +16,7 @@ class GameRewardGetRequest extends GameRequest
 	{
 		return [
 			...$this->versions(),
+			...$this->gdw(),
 			...$this->identifies(),
 			...$this->auth_gjp2(true),
 			'rewardType' => [

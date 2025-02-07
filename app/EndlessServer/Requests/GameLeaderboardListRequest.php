@@ -17,6 +17,7 @@ class GameLeaderboardListRequest extends FormRequest
 	{
 		return [
 			...$this->versions(),
+			...$this->gdw(),
 			...$this->identifies(),
 			...$this->auth_gjp2(true),
 			'type' => [

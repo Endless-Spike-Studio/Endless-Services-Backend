@@ -17,6 +17,7 @@ class GameMessageSendRequest extends FormRequest
 	{
 		return [
 			...$this->versions(),
+			...$this->gdw(),
 			...$this->identifies(),
 			...$this->auth_gjp2(),
 			'toAccountIDD' => [
