@@ -2,6 +2,7 @@
 
 namespace App\EndlessServer\Controllers;
 
+use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountMessage;
 use App\EndlessServer\Models\Player;
@@ -16,6 +17,7 @@ use App\EndlessServer\Services\GamePlayerStatisticService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
+use Illuminate\Support\Facades\Auth;
 
 readonly class GamePlayerController
 {
@@ -86,13 +88,24 @@ readonly class GamePlayerController
 	{
 		$data = $request->validated();
 
-		$account = Account::query()
+		/** @var Account $account */
+		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+		$targetAccount = Account::query()
 			->where('id', $data['targetAccountID'])
 			->first();
 
-		$this->accountSettingService->initialize($account->id);
+		$blocked = $targetAccount->blocklist()
+			->where('target_account_id', $account->id)
+			->exists();
 
-		$player = $this->accountService->queryAccountPlayer($account);
+		if ($blocked) {
+			return GeometryDashResponses::PLAYER_INFO_FETCH_FAILED_BLOCKED->value;
+		}
+
+		$this->accountSettingService->initialize($targetAccount->id);
+
+		$player = $this->accountService->queryAccountPlayer($targetAccount);
 
 		$this->dataService->initialize($player->id);
 		$this->statisticService->initialize($player->id);
@@ -130,7 +143,7 @@ readonly class GamePlayerController
 			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_COMMENT->value => '', // TODO
 			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_AGE->value => '', // TODO
 			GeometryDashPlayerInfoObjectDefinitions::NEW_MESSAGE_COUNT->value => AccountMessage::query()
-				->where('target_account_id', $account->id)
+				->where('target_account_id', $targetAccount->id)
 				->where('readed', false)
 				->count(),
 			GeometryDashPlayerInfoObjectDefinitions::NEW_FRIEND_REQUEST_COUNT->value => '', // TODO

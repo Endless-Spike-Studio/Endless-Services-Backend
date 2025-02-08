@@ -7,6 +7,7 @@ use App\EndlessProxy\Controllers\GameCustomContentProxyController as EndlessProx
 use App\EndlessProxy\Controllers\GameSongApiProxyController as EndlessProxyGameSongApiProxyController;
 use App\EndlessProxy\Controllers\NewgroundsAudioProxyController as EndlessProxyNewgroundsAudioProxyController;
 use App\EndlessServer\Controllers\AccountController as EndlessServerAccountController;
+use App\EndlessServer\Controllers\GameAccountBlocklistController as EndlessServerGameAccountBlocklistController;
 use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerGameAccountCommentController;
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountDataController as EndlessServerGameAccountDataController;
@@ -100,10 +101,13 @@ Route::group([
 
 		Route::post('/updateGJUserScore22.php', [EndlessServerGamePlayerDataController::class, 'update']);
 		Route::post('/getGJUserInfo20.php', [EndlessServerGamePlayerController::class, 'info']);
+
 		Route::post('/updateGJAccSettings20.php', [EndlessServerGameAccountSettingController::class, 'update']);
+
 		Route::post('/uploadGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'upload']);
 		Route::post('/getGJAccountComments20.php', [EndlessServerGameAccountCommentController::class, 'list']);
 		Route::post('/deleteGJAccComment20.php', [EndlessServerGameAccountCommentController::class, 'delete']);
+
 		Route::post('/getAccountURL.php', [EndlessServerGameAccountDataController::class, 'baseUrl']);
 
 		Route::group([
@@ -118,48 +122,70 @@ Route::group([
 		});
 
 		Route::post('/getGJRewards.php', [EndlessServerGameRewardController::class, 'get']);
+
 		Route::post('/requestUserAccess.php', [EndlessServerGameAccountController::class, 'requestAccess']);
+
 		Route::post('/getGJChallenges.php', [EndlessServerGameQuestController::class, 'get']);
+
 		Route::post('/getGJUsers20.php', [EndlessServerGamePlayerController::class, 'search']);
+
 		Route::post('/getGJScores20.php', [EndlessServerGameLeaderboardController::class, 'list']);
+
+		// Route::post('/getGJUserList20.php', []);
+
 		Route::post('/uploadGJMessage20.php', [EndlessServerGameMessageController::class, 'send']);
 		Route::post('/getGJMessages20.php', [EndlessServerGameMessageController::class, 'list']);
 		Route::post('/downloadGJMessage20.php', [EndlessServerGameMessageController::class, 'download']);
 		Route::post('/deleteGJMessages20.php', [EndlessServerGameMessageController::class, 'delete']);
-		// Route::post('/uploadGJLevel21.php', []);
-		// Route::post('/getGJLevels21.php', []);
+
 		// Route::post('/uploadFriendRequest20.php', []);
 		// Route::post('/readGJFriendRequest20.php', []);
+		// Route::post('/deleteGJFriendRequests20.php', []);
+		// Route::post('/getGJFriendRequests20.php', []);
+		// Route::post('/acceptGJFriendRequest20.php', []);
+
+		// Route::post('/removeGJFriend20.php', []);
+
+		Route::post('/blockGJUser20.php', [EndlessServerGameAccountBlocklistController::class, 'add']);
+		Route::post('/unblockGJUser20.php', [EndlessServerGameAccountBlocklistController::class, 'delete']);
+
+		// Route::post('/uploadGJLevel21.php', []);
+		// Route::post('/getGJLevels21.php', []);
 		// Route::post('/downloadGJLevel22.php', []);
 		// Route::post('/reportGJLevel.php', []);
 		// Route::post('/deleteGJLevelUser20.php', []);
 		// Route::post('/updateGJDesc20.php', []);
+
 		// Route::post('/uploadGJComment21.php', []);
 		// Route::post('/getGJComments21.php', []);
 		// Route::post('/deleteGJComment20.php', []);
-		// Route::post('/deleteGJFriendRequests20.php', []);
-		// Route::post('/getGJFriendRequests20.php', []);
-		// Route::post('/blockGJUser20.php', []);
-		// Route::post('/unblockGJUser20.php', []);
-		// Route::post('/getGJUserList20.php', []);
-		// Route::post('/removeGJFriend20.php', []);
-		// Route::post('/acceptGJFriendRequest20.php', []);
+
 		// Route::post('/getGJCommentHistory.php', []);
+
 		// Route::post('/getGJMapPacks21.php', []);
+
 		// Route::post('/getGJDailyLevel.php', []);
+
 		// Route::post('/getGJGauntlets21.php', []);
+
 		// Route::post('/likeGJItem211.php', []);
+
 		// Route::post('/getGJLevelScores211.php', []);
+		// Route::post('/getGJLevelScoresPlat.php', []);
+
 		// Route::post('/rateGJStars211.php', []);
 		// Route::post('/rateGJDemon21.php', []);
 		// Route::post('/suggestGJStars20.php', []);
+
 		Route::post('/getGJSongInfo.php', [EndlessServerGameSongController::class, 'getInfo']);
 		// Route::post('/getGJTopArtists.php', []);
+
 		// Route::post('/getGJLevelLists.php', []);
-		// Route::post('/getGJLevelScoresPlat.php', []);
 		// Route::post('/uploadGJLevelList.php', []);
 		// Route::post('/deleteGJLevelList.php', []);
+
 		// Route::post('/getGJSecretReward.php', []);
+
 		Route::post('/getCustomContentURL.php', [EndlessServerGameCustomContentController::class, 'getURL']);
 
 		Route::group([

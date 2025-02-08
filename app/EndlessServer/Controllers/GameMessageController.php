@@ -39,9 +39,21 @@ readonly class GameMessageController
 		/** @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
+		$targetAccount = Account::query()
+			->where('id', $data['toAccountID'])
+			->first();
+
+		$blocked = $targetAccount->blocklist()
+			->where('target_account_id', $account->id)
+			->exists();
+
+		if ($blocked) {
+			return GeometryDashResponses::PLAYER_INFO_FETCH_FAILED_BLOCKED->value;
+		}
+
 		$account->messages()
 			->create([
-				'target_account_id' => $data['toAccountID'],
+				'target_account_id' => $targetAccount->id,
 				'subject' => Base64Url::decode($data['subject']),
 				'body' => $this->algorithmService->xor(Base64Url::decode($data['body']), GeometryDashXorKeys::MESSAGE->value),
 				'readed' => false
