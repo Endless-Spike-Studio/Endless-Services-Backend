@@ -9,6 +9,8 @@ class AccountBlocklist extends Model
 {
 	protected $table = 'endless_server.account_blocklist';
 
+	protected $fillable = ['target_account_id'];
+
 	public function account(): BelongsTo
 	{
 		return $this->belongsTo(Account::class);

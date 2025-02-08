@@ -43,4 +43,5 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ACCOUNT_BLOCKLIST_ADD_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses ACCOUNT_BLOCKLIST_DELETE_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses PLAYER_INFO_FETCH_FAILED_BLOCKED = GeometryDashResponses::_1;
+	public const GeometryDashResponses PLAYER_LIST_FAILED_INVALID_TYPE = GeometryDashResponses::_1;
 }

@@ -4,16 +4,19 @@ namespace App\EndlessServer\Controllers;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
+use App\EndlessServer\Models\AccountBlocklist;
 use App\EndlessServer\Models\AccountMessage;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Models\PlayerData;
 use App\EndlessServer\Requests\GamePlayerInfoFetchRequest;
+use App\EndlessServer\Requests\GamePlayerListRequest;
 use App\EndlessServer\Requests\GamePlayerSearchRequest;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GameAccountSettingService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\EndlessServer\Services\GamePlayerDataService;
 use App\EndlessServer\Services\GamePlayerStatisticService;
+use App\GeometryDash\Enums\GeometryDashPlayerListTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
@@ -31,6 +34,52 @@ readonly class GamePlayerController
 	)
 	{
 
+	}
+
+	public function list(GamePlayerListRequest $request): string
+	{
+		$data = $request->validated();
+
+		/** @var Account $account */
+		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+		$query = Player::query();
+
+		switch ($data['type']) {
+			case GeometryDashPlayerListTypes::FRIENDS->value:
+				// TODO
+				break;
+			case GeometryDashPlayerListTypes::BLOCKLIST->value:
+				$blockAccountIDs = AccountBlocklist::query()
+					->where('account_id', $account->id)
+					->pluck('target_account_id');
+
+				$query->whereIn('uuid', $blockAccountIDs); // TODO: optimize
+				break;
+			default:
+				return GeometryDashResponses::PLAYER_LIST_FAILED_INVALID_TYPE->value;
+		}
+
+		return $query->get()
+			->map(function (Player $player) {
+				$this->dataService->initialize($player->id);
+				$this->statisticService->initialize($player->id);
+
+				$isNew = false;
+
+				return $this->objectService->merge([
+					GeometryDashPlayerInfoObjectDefinitions::NAME->value => $player->name,
+					GeometryDashPlayerInfoObjectDefinitions::ID->value => $player->id,
+					GeometryDashPlayerInfoObjectDefinitions::ICON_ID->value => $player->data->icon_id,
+					GeometryDashPlayerInfoObjectDefinitions::COLOR_1->value => $player->data->color1,
+					GeometryDashPlayerInfoObjectDefinitions::COLOR_2->value => $player->data->color2,
+					GeometryDashPlayerInfoObjectDefinitions::ICON_TYPE->value => $player->data->icon_type,
+					GeometryDashPlayerInfoObjectDefinitions::SPECIAL->value => $player->data->special,
+					GeometryDashPlayerInfoObjectDefinitions::UUID->value => $player->uuid,
+					GeometryDashPlayerInfoObjectDefinitions::MESSAGE_STATE->value => $player->account->setting->message_state->value,
+					GeometryDashPlayerInfoObjectDefinitions::HAS_NEW_FRIEND_REQUEST->value => $isNew
+				], GeometryDashPlayerInfoObjectDefinitions::GLUE);
+			})->join('|');
 	}
 
 	public function search(GamePlayerSearchRequest $request): string
