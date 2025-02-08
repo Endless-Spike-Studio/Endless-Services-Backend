@@ -3,10 +3,12 @@
 namespace App\EndlessServer\Requests;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
+use App\EndlessServer\Models\AccountMessage;
 use App\EndlessServer\Traits\GameRequestRules;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
-class GameMessageListRequest extends GameRequest
+class GameAccountMessageDownloadRequest extends GameRequest
 {
 	use GameRequestRules;
 
@@ -17,11 +19,15 @@ class GameMessageListRequest extends GameRequest
 			...$this->gdw(),
 			...$this->identifies(),
 			...$this->auth_gjp2(),
-			'getSent' => [
+			'messageID' => [
+				'required',
+				'integer',
+				Rule::exists(AccountMessage::class, 'id')
+			],
+			'isSender' => [
 				'nullable',
 				'boolean'
 			],
-			...$this->pagination(),
 			...$this->secret()
 		];
 	}

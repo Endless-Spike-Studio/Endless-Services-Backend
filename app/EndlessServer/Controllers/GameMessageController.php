@@ -5,10 +5,10 @@ namespace App\EndlessServer\Controllers;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountMessage;
-use App\EndlessServer\Requests\GameMessageDeleteRequest;
-use App\EndlessServer\Requests\GameMessageDownloadRequest;
-use App\EndlessServer\Requests\GameMessageListRequest;
-use App\EndlessServer\Requests\GameMessageSendRequest;
+use App\EndlessServer\Requests\GameAccountMessageDeleteRequest;
+use App\EndlessServer\Requests\GameAccountMessageDownloadRequest;
+use App\EndlessServer\Requests\GameAccountMessageListRequest;
+use App\EndlessServer\Requests\GameAccountMessageSendRequest;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashResponses;
@@ -32,7 +32,7 @@ readonly class GameMessageController
 
 	}
 
-	public function send(GameMessageSendRequest $request): int
+	public function send(GameAccountMessageSendRequest $request): int
 	{
 		$data = $request->validated();
 
@@ -50,7 +50,7 @@ readonly class GameMessageController
 		return GeometryDashResponses::ACCOUNT_MESSAGE_SEND_SUCCESS->value;
 	}
 
-	public function list(GameMessageListRequest $request): string
+	public function list(GameAccountMessageListRequest $request): string
 	{
 		$data = $request->validated();
 
@@ -87,7 +87,7 @@ readonly class GameMessageController
 		]);
 	}
 
-	public function download(GameMessageDownloadRequest $request): int|string
+	public function download(GameAccountMessageDownloadRequest $request): int|string
 	{
 		$data = $request->validated();
 
@@ -127,7 +127,7 @@ readonly class GameMessageController
 		], GeometryDashMessageObjectDefinition::GLUE);
 	}
 
-	public function delete(GameMessageDeleteRequest $request): int
+	public function delete(GameAccountMessageDeleteRequest $request): int
 	{
 		$data = $request->validated();
 
