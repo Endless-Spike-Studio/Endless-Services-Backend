@@ -112,6 +112,12 @@ readonly class GameAccountFriendRequestController
 				$this->playerDataService->initialize($targetAccountPlayer->id);
 				$this->playerStatisticService->initialize($targetAccountPlayer->id);
 
+				$comment = null;
+
+				if ($friendRequest->comment !== null) {
+					$comment = Base64Url::encode($friendRequest->comment, true);
+				}
+
 				return $this->objectService->merge([
 					GeometryDashAccountFriendRequestObjectDefinition::TARGET_NAME->value => $targetAccountPlayer->name,
 					GeometryDashAccountFriendRequestObjectDefinition::TARGET_USER_ID->value => $targetAccountPlayer->id,
@@ -122,7 +128,7 @@ readonly class GameAccountFriendRequestController
 					GeometryDashAccountFriendRequestObjectDefinition::TARGET_SPECIAL->value => $targetAccountPlayer->data->special,
 					GeometryDashAccountFriendRequestObjectDefinition::TARGET_UUID->value => $targetAccountPlayer->uuid,
 					GeometryDashAccountFriendRequestObjectDefinition::ID->value => $friendRequest->id,
-					GeometryDashAccountFriendRequestObjectDefinition::COMMENT->value => Base64Url::encode($friendRequest->comment, true),
+					GeometryDashAccountFriendRequestObjectDefinition::COMMENT->value => $comment,
 					GeometryDashAccountFriendRequestObjectDefinition::AGE->value => $friendRequest->created_at->diffForHumans(syntax: true),
 					GeometryDashAccountFriendRequestObjectDefinition::IS_NEW->value => !$friendRequest->readed
 				], GeometryDashAccountFriendRequestObjectDefinition::GLUE);
