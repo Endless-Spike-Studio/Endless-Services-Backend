@@ -14,7 +14,7 @@ readonly class GamePaginationService
 		}
 
 		return app(GamePaginationData::class, [
-			'items' => $query->get(),
+			'items' => $query->forPage($page, $perPage)->get(),
 
 			'total' => $query->count(),
 			'page' => $page,
