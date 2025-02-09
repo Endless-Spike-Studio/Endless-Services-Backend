@@ -54,10 +54,16 @@ readonly class GameAccountFriendRequestController
 			return GeometryDashResponses::ACCOUNT_FRIEND_REQUEST_SEND_FAILED_BLOCKED->value;
 		}
 
+		$comment = null;
+
+		if (isset($data['comment'])) {
+			$comment = Base64Url::decode($data['comment']);
+		}
+
 		$account->friendRequests()
 			->create([
 				'target_account_id' => $targetAccount->id,
-				'comment' => Base64Url::decode($data['comment']),
+				'comment' => $comment,
 				'readed' => false
 			]);
 
