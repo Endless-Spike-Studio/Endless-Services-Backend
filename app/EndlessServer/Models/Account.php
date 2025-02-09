@@ -51,9 +51,29 @@ class Account extends Model implements MustVerifyEmailContract
 		return $this->hasMany(AccountMessage::class);
 	}
 
+	public function receiveMessages(): HasMany
+	{
+		return $this->hasMany(AccountMessage::class, 'target_account_id');
+	}
+
 	public function blocklist(): HasMany
 	{
 		return $this->hasMany(AccountBlocklist::class);
+	}
+
+	public function friendRequests(): HasMany
+	{
+		return $this->hasMany(AccountFriendRequest::class);
+	}
+
+	public function receiveFriendRequests(): HasMany
+	{
+		return $this->hasMany(AccountFriendRequest::class, 'target_account_id');
+	}
+
+	public function friends(): HasManyThrough
+	{
+		return $this->hasManyThrough(Account::class, AccountFriend::class, secondKey: 'id', secondLocalKey: 'target_account_id');
 	}
 
 	public function roles(): HasManyThrough
