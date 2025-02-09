@@ -64,6 +64,10 @@ readonly class GamePlayerController
 				return GeometryDashResponses::PLAYER_LIST_FAILED_INVALID_TYPE->value;
 		}
 
+		if ($query->count() <= 0) {
+			return GeometryDashResponses::PLAYER_LIST_FAILED_EMPTY->value;
+		}
+
 		return $query->get()
 			->map(function (Player $player) {
 				$this->dataService->initialize($player->id);
