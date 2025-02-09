@@ -6,6 +6,7 @@ use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Exceptions\EndlessServerGameException;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Player;
+use App\EndlessServer\Repositories\AccountFriendRepository;
 use App\EndlessServer\Requests\GameLeaderboardListRequest;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePlayerDataService;
@@ -23,7 +24,8 @@ readonly class GameLeaderboardController
 		protected GeometryDashObjectService  $objectService,
 		protected GameAccountService         $accountService,
 		protected GamePlayerDataService      $playerDataService,
-		protected GamePlayerStatisticService $playerStatisticService
+		protected GamePlayerStatisticService $playerStatisticService,
+		protected AccountFriendRepository    $accountFriendRepository
 	)
 	{
 
@@ -49,7 +51,12 @@ readonly class GameLeaderboardController
 				});
 				break;
 			case GeometryDashLeaderboardType::FRIENDS->value:
-				// TODO
+				/** @var Account $account */
+				$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+				$friendAccountIDs = $this->accountFriendRepository->queryIdsByAccountId($account->id);
+
+				$query->whereIn('uuid', $friendAccountIDs); // TODO: optimize
 				break;
 			case GeometryDashLeaderboardType::RELATIVE->value:
 				$half = round($data['count'] / 2);
@@ -61,12 +68,11 @@ readonly class GameLeaderboardController
 					$player = $this->accountService->queryAccountPlayer($account);
 
 					$this->playerDataService->initialize($player->id);
+					$this->playerStatisticService->initialize($player->id);
 
 					$query->where('stars', '<=', $player->data->stars);
 
-					if (isset($half)) {
-						$query->take($half);
-					}
+					$query->take($half);
 				});
 
 				$rightQuery = Player::query()
@@ -74,12 +80,11 @@ readonly class GameLeaderboardController
 						$player = $this->accountService->queryAccountPlayer($account);
 
 						$this->playerDataService->initialize($player->id);
+						$this->playerStatisticService->initialize($player->id);
 
 						$query->where('stars', '>', $player->data->stars);
 
-						if (isset($half)) {
-							$query->take($half);
-						}
+						$query->take($half);
 					});
 
 				$query->union($rightQuery);

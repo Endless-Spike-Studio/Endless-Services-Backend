@@ -8,6 +8,7 @@ use App\EndlessServer\Models\AccountBlocklist;
 use App\EndlessServer\Models\AccountMessage;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Models\PlayerData;
+use App\EndlessServer\Repositories\AccountFriendRepository;
 use App\EndlessServer\Requests\GamePlayerInfoFetchRequest;
 use App\EndlessServer\Requests\GamePlayerListRequest;
 use App\EndlessServer\Requests\GamePlayerSearchRequest;
@@ -30,7 +31,8 @@ readonly class GamePlayerController
 		protected GameAccountSettingService  $accountSettingService,
 		protected GamePlayerDataService      $dataService,
 		protected GamePlayerStatisticService $statisticService,
-		protected GamePaginationService      $paginationService
+		protected GamePaginationService      $paginationService,
+		protected AccountFriendRepository    $accountFriendRepository
 	)
 	{
 
@@ -47,7 +49,9 @@ readonly class GamePlayerController
 
 		switch ($data['type']) {
 			case GeometryDashPlayerListTypes::FRIENDS->value:
-				// TODO
+				$friendAccountIDs = $this->accountFriendRepository->queryIdsByAccountId($account->id);
+
+				$query->whereIn('uuid', $friendAccountIDs); // TODO: optimize
 				break;
 			case GeometryDashPlayerListTypes::BLOCKLIST->value:
 				$blockAccountIDs = AccountBlocklist::query()

@@ -11,6 +11,7 @@ use App\EndlessServer\Controllers\GameAccountBlocklistController as EndlessServe
 use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerGameAccountCommentController;
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountDataController as EndlessServerGameAccountDataController;
+use App\EndlessServer\Controllers\GameAccountFriendRequestController as EndlessServerGameAccountFriendRequestController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
 use App\EndlessServer\Controllers\GameLeaderboardController as EndlessServerGameLeaderboardController;
@@ -138,11 +139,11 @@ Route::group([
 		Route::post('/downloadGJMessage20.php', [EndlessServerGameMessageController::class, 'download']);
 		Route::post('/deleteGJMessages20.php', [EndlessServerGameMessageController::class, 'delete']);
 
-		// Route::post('/uploadFriendRequest20.php', []);
-		// Route::post('/readGJFriendRequest20.php', []);
-		// Route::post('/deleteGJFriendRequests20.php', []);
-		// Route::post('/getGJFriendRequests20.php', []);
-		// Route::post('/acceptGJFriendRequest20.php', []);
+		Route::post('/uploadFriendRequest20.php', [EndlessServerGameAccountFriendRequestController::class, 'send']);
+		Route::post('/readGJFriendRequest20.php', [EndlessServerGameAccountFriendRequestController::class, 'read']);
+		Route::post('/deleteGJFriendRequests20.php', [EndlessServerGameAccountFriendRequestController::class, 'delete']);
+		Route::post('/getGJFriendRequests20.php', [EndlessServerGameAccountFriendRequestController::class, 'list']);
+		Route::post('/acceptGJFriendRequest20.php', [EndlessServerGameAccountFriendRequestController::class, 'accept']);
 
 		// Route::post('/removeGJFriend20.php', []);
 

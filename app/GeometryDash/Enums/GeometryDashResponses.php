@@ -44,4 +44,11 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ACCOUNT_BLOCKLIST_DELETE_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses PLAYER_INFO_FETCH_FAILED_BLOCKED = GeometryDashResponses::_1;
 	public const GeometryDashResponses PLAYER_LIST_FAILED_INVALID_TYPE = GeometryDashResponses::_1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_SEND_FAILED_BLOCKED = GeometryDashResponses::_1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_SEND_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_LIST_EMPTY = GeometryDashResponses::_2;
+	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_DELETE_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_READ_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_ACCEPT_SUCCESS = GeometryDashResponses::__1;
 }

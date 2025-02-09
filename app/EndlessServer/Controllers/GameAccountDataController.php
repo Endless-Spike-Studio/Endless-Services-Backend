@@ -10,6 +10,7 @@ use App\EndlessServer\Requests\GameFetchAccountDataBaseUrlRequest;
 use App\EndlessServer\Services\GameAccountDataStorageService;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePlayerDataService;
+use App\EndlessServer\Services\GamePlayerStatisticService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,7 @@ readonly class GameAccountDataController
 	public function __construct(
 		protected GameAccountService            $accountService,
 		protected GamePlayerDataService         $playerDataService,
+		protected GamePlayerStatisticService    $playerStatisticService,
 		protected GameAccountDataStorageService $storageService
 	)
 	{
@@ -41,6 +43,7 @@ readonly class GameAccountDataController
 		$player = $this->accountService->queryAccountPlayer($account);
 
 		$this->playerDataService->initialize($player->id);
+		$this->playerStatisticService->initialize($player->id);
 
 		$this->playerDataService->updateVersions($player->id, $data['gameVersion'], $data['binaryVersion']);
 
@@ -61,6 +64,7 @@ readonly class GameAccountDataController
 		$player = $this->accountService->queryAccountPlayer($account);
 
 		$this->playerDataService->initialize($player->id);
+		$this->playerStatisticService->initialize($player->id);
 
 		$this->storageService->account = $account;
 
