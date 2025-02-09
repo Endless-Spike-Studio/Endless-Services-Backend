@@ -51,4 +51,5 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_READ_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED_NOT_FOUND = GeometryDashResponses::_1;
 	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_ACCEPT_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_DELETE = GeometryDashResponses::__1;
 }

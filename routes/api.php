@@ -11,6 +11,7 @@ use App\EndlessServer\Controllers\GameAccountBlocklistController as EndlessServe
 use App\EndlessServer\Controllers\GameAccountCommentController as EndlessServerGameAccountCommentController;
 use App\EndlessServer\Controllers\GameAccountController as EndlessServerGameAccountController;
 use App\EndlessServer\Controllers\GameAccountDataController as EndlessServerGameAccountDataController;
+use App\EndlessServer\Controllers\GameAccountFriendController as EndlessServerGameAccountFriendController;
 use App\EndlessServer\Controllers\GameAccountFriendRequestController as EndlessServerGameAccountFriendRequestController;
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
@@ -145,7 +146,7 @@ Route::group([
 		Route::post('/getGJFriendRequests20.php', [EndlessServerGameAccountFriendRequestController::class, 'list']);
 		Route::post('/acceptGJFriendRequest20.php', [EndlessServerGameAccountFriendRequestController::class, 'accept']);
 
-		// Route::post('/removeGJFriend20.php', []);
+		Route::post('/removeGJFriend20.php', [EndlessServerGameAccountFriendController::class, 'delete']);
 
 		Route::post('/blockGJUser20.php', [EndlessServerGameAccountBlocklistController::class, 'add']);
 		Route::post('/unblockGJUser20.php', [EndlessServerGameAccountBlocklistController::class, 'delete']);
