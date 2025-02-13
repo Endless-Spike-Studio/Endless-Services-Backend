@@ -16,7 +16,10 @@ readonly class GamePaginationService
 		return app(GamePaginationData::class, [
 			'items' => $query->forPage($page, $perPage)->get(),
 
-			'total' => $query->count(),
+			'total' => tap($query->toBase(), function (Builder $query) {
+				$query->groups = null;
+				$query->orders = null;
+			})->count(),
 			'page' => $page,
 			'perPage' => $perPage
 		]);
