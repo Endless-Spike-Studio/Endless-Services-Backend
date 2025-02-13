@@ -181,7 +181,7 @@ Route::group([
 		// Route::post('/suggestGJStars20.php', []);
 
 		Route::post('/getGJSongInfo.php', [EndlessServerGameSongController::class, 'getInfo']);
-		// Route::post('/getGJTopArtists.php', []);
+		Route::post('/getGJTopArtists.php', [EndlessServerGameSongController::class, 'getTopArtists']);
 
 		// Route::post('/getGJLevelLists.php', []);
 		// Route::post('/uploadGJLevelList.php', []);

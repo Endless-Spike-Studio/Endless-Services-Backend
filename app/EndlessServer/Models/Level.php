@@ -2,6 +2,7 @@
 
 namespace App\EndlessServer\Models;
 
+use App\EndlessProxy\Models\NewgroundsSong;
 use App\GeometryDash\Enums\GeometryDashLevelCoinCounts;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
 use App\GeometryDash\Enums\GeometryDashLevelRatingStars;
@@ -26,6 +27,11 @@ class Level extends Model
 	public function originalLevel(): HasOne
 	{
 		return $this->hasOne(Level::class, 'original_level_id');
+	}
+
+	public function newgroundsSong(): BelongsTo
+	{
+		return $this->belongsTo(NewgroundsSong::class);
 	}
 
 	protected function casts(): array
