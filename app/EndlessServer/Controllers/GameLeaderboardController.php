@@ -56,7 +56,14 @@ readonly class GameLeaderboardController
 
 				$friendAccountIDs = $this->accountFriendRepository->queryIdsByAccountId($account->id);
 
-				$query->whereIn('uuid', $friendAccountIDs); // TODO: optimize
+				$friendAccountPlayerIDs = Account::query()
+					->whereIn('id', $friendAccountIDs)
+					->get()
+					->map(function (Account $account) {
+						return $this->accountService->queryAccountPlayer($account)->id;
+					});
+
+				$query->whereIn('id', $friendAccountPlayerIDs);
 				break;
 			case GeometryDashLeaderboardType::RELATIVE->value:
 				$half = round($data['count'] / 2);

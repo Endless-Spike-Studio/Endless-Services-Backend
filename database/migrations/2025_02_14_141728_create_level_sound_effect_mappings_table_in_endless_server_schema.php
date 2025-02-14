@@ -14,7 +14,8 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Level::class);
-			$table->timestamps(SoundEffect::class);
+			$table->foreignIdFor(SoundEffect::class);
+			$table->timestamps();
 		});
 	}
 

@@ -17,10 +17,13 @@ use App\EndlessServer\Services\GameAccountSettingService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\EndlessServer\Services\GamePlayerDataService;
 use App\EndlessServer\Services\GamePlayerStatisticService;
+use App\GeometryDash\Enums\GeometryDashFriendStates;
 use App\GeometryDash\Enums\GeometryDashPlayerListTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
+use Base64Url\Base64Url;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 readonly class GamePlayerController
@@ -51,14 +54,28 @@ readonly class GamePlayerController
 			case GeometryDashPlayerListTypes::FRIENDS->value:
 				$friendAccountIDs = $this->accountFriendRepository->queryIdsByAccountId($account->id);
 
-				$query->whereIn('uuid', $friendAccountIDs); // TODO: optimize
+				$friendAccountPlayerIDs = Account::query()
+					->whereIn('id', $friendAccountIDs)
+					->get()
+					->map(function (Account $account) {
+						return $this->accountService->queryAccountPlayer($account)->id;
+					});
+
+				$query->whereIn('id', $friendAccountPlayerIDs);
 				break;
 			case GeometryDashPlayerListTypes::BLOCKLIST->value:
 				$blockAccountIDs = AccountBlocklist::query()
 					->where('account_id', $account->id)
 					->pluck('target_account_id');
 
-				$query->whereIn('uuid', $blockAccountIDs); // TODO: optimize
+				$blockAccountPlayerIDs = Account::query()
+					->whereIn('id', $blockAccountIDs)
+					->get()
+					->map(function (Account $account) {
+						return $this->accountService->queryAccountPlayer($account)->id;
+					});
+
+				$query->whereIn('id', $blockAccountPlayerIDs);
 				break;
 			default:
 				return GeometryDashResponses::PLAYER_LIST_FAILED_INVALID_TYPE->value;
@@ -145,6 +162,8 @@ readonly class GamePlayerController
 	{
 		$data = $request->validated();
 
+		Carbon::setLocale('en');
+
 		/** @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
@@ -152,12 +171,41 @@ readonly class GamePlayerController
 			->where('id', $data['targetAccountID'])
 			->first();
 
-		$blocked = $targetAccount->blocklist()
-			->where('target_account_id', $account->id)
-			->exists();
+		$inComingFriendRequest = null;
+		$friendState = GeometryDashFriendStates::NONE->value;
 
-		if ($blocked) {
-			return GeometryDashResponses::PLAYER_INFO_FETCH_FAILED_BLOCKED->value;
+		if ($account !== null) {
+			$blocked = $targetAccount->blocklist()
+				->where('target_account_id', $account->id)
+				->exists();
+
+			if ($blocked) {
+				return GeometryDashResponses::PLAYER_INFO_FETCH_FAILED_BLOCKED->value;
+			}
+
+			$friend = $this->accountFriendRepository
+				->createQueryByAccountIdAndTargetAccountId($account->id, $targetAccount->id)
+				->first();
+
+			if ($friend !== null) {
+				$friendState = GeometryDashFriendStates::ALREADY->value;
+			}
+
+			$outComingFriendRequest = $account->friendRequests()
+				->where('target_account_id', $targetAccount->id)
+				->first();
+
+			if ($outComingFriendRequest !== null) {
+				$friendState = GeometryDashFriendStates::SEND->value;
+			}
+
+			$inComingFriendRequest = $targetAccount->receiveFriendRequests()
+				->where('account_id', $account->id)
+				->first();
+
+			if ($inComingFriendRequest !== null) {
+				$friendState = GeometryDashFriendStates::RECEIVED->value;
+			}
 		}
 
 		$this->accountSettingService->initialize($targetAccount->id);
@@ -195,23 +243,53 @@ readonly class GamePlayerController
 			GeometryDashPlayerInfoObjectDefinitions::GLOBAL_RANK->value => PlayerData::query()
 				->where('stars', '<=', $player->data->stars)
 				->count(),
-			GeometryDashPlayerInfoObjectDefinitions::FRIEND_STATE->value => '', // TODO
-			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_ID->value => '', // TODO
-			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_COMMENT->value => '', // TODO
-			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_AGE->value => '', // TODO
+			GeometryDashPlayerInfoObjectDefinitions::FRIEND_STATE->value => $friendState,
+			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_ID->value => value(function () use ($inComingFriendRequest) {
+				if ($inComingFriendRequest === null) {
+					return null;
+				}
+
+				return $inComingFriendRequest->id;
+			}),
+			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_COMMENT->value => value(function () use ($inComingFriendRequest) {
+				if ($inComingFriendRequest === null) {
+					return null;
+				}
+
+				$comment = null;
+
+				if ($inComingFriendRequest->comment !== null) {
+					$comment = Base64Url::encode($inComingFriendRequest->comment, true);
+				}
+
+				return $comment;
+			}),
+			GeometryDashPlayerInfoObjectDefinitions::IN_COMING_FRIEND_REQUEST_AGE->value => value(function () use ($inComingFriendRequest) {
+				if ($inComingFriendRequest === null) {
+					return null;
+				}
+
+				return $inComingFriendRequest->created_at->diffForHumans(syntax: true);
+			}),
 			GeometryDashPlayerInfoObjectDefinitions::NEW_MESSAGE_COUNT->value => AccountMessage::query()
 				->where('target_account_id', $targetAccount->id)
 				->where('readed', false)
 				->count(),
-			GeometryDashPlayerInfoObjectDefinitions::NEW_FRIEND_REQUEST_COUNT->value => '', // TODO
-			GeometryDashPlayerInfoObjectDefinitions::NEW_FRIEND_COUNT->value => '', // TODO
-			GeometryDashPlayerInfoObjectDefinitions::HAS_NEW_FRIEND_REQUEST->value => '', // TODO
+			GeometryDashPlayerInfoObjectDefinitions::NEW_FRIEND_REQUEST_COUNT->value => $targetAccount->receiveFriendRequests()
+				->where('readed', false)
+				->count(),
+			GeometryDashPlayerInfoObjectDefinitions::NEW_FRIEND_COUNT->value => $targetAccount->friends()
+				->where('readed', false)
+				->count(),
+			GeometryDashPlayerInfoObjectDefinitions::HAS_NEW_FRIEND_REQUEST->value => $targetAccount->receiveFriendRequests()
+				->where('readed', false)
+				->exists(),
 			GeometryDashPlayerInfoObjectDefinitions::SPIDER_ID->value => $player->data->spider_id,
 			GeometryDashPlayerInfoObjectDefinitions::TWITTER->value => $player->account->setting->twitter,
 			GeometryDashPlayerInfoObjectDefinitions::TWITCH->value => $player->account->setting->twitch,
 			GeometryDashPlayerInfoObjectDefinitions::DIAMONDS->value => $player->data->diamonds,
 			GeometryDashPlayerInfoObjectDefinitions::EXPLOSION_ID->value => $player->data->explosion_id,
-			GeometryDashPlayerInfoObjectDefinitions::MOD_LEVEL->value => '', // TODO
+			GeometryDashPlayerInfoObjectDefinitions::MOD_LEVEL->value => min($targetAccount->roles->max(fn($role) => $role->mod_level), 2),
 			GeometryDashPlayerInfoObjectDefinitions::COMMENT_HISTORY_STATE->value => $player->account->setting->comment_history_state->value,
 			GeometryDashPlayerInfoObjectDefinitions::COLOR_3->value => $player->data->color3,
 			GeometryDashPlayerInfoObjectDefinitions::MOONS->value => $player->data->moons,
