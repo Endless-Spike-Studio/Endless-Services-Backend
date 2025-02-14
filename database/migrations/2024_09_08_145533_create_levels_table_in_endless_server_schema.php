@@ -1,6 +1,5 @@
 <?php
 
-use App\EndlessProxy\Models\NewgroundsSong;
 use App\EndlessServer\Models\Level;
 use App\EndlessServer\Models\Player;
 use App\GeometryDash\Enums\GeometryDashLevelCoinCounts;
@@ -24,7 +23,6 @@ return new class extends Migration {
 			$table->integer('version');
 			$table->enum('length', [GeometryDashLevelLengths::TINY->value, GeometryDashLevelLengths::SHORT->value, GeometryDashLevelLengths::MEDIUM->value, GeometryDashLevelLengths::LONG->value, GeometryDashLevelLengths::XL->value, GeometryDashLevelLengths::PLATFORMER->value]);
 			$table->integer('audio_track_id')->nullable();
-			$table->foreignIdFor(NewgroundsSong::class)->nullable();
 			$table->integer('password')->nullable();
 			$table->foreignIdFor(Level::class, 'original_level_id');
 			$table->boolean('2p_mode');
@@ -33,10 +31,11 @@ return new class extends Migration {
 			$table->enum('requested_stars', [GeometryDashLevelRatingStars::__0->value, GeometryDashLevelRatingStars::__1->value, GeometryDashLevelRatingStars::__2->value, GeometryDashLevelRatingStars::__3->value, GeometryDashLevelRatingStars::__4->value, GeometryDashLevelRatingStars::__5->value, GeometryDashLevelRatingStars::__6->value, GeometryDashLevelRatingStars::__7->value, GeometryDashLevelRatingStars::__8->value, GeometryDashLevelRatingStars::__9->value, GeometryDashLevelRatingStars::__10->value])->nullable();
 			$table->enum('unlisted_type', [GeometryDashLevelUnlistedTypes::PUBLIC->value, GeometryDashLevelUnlistedTypes::FRIENDS_ONLY->value, GeometryDashLevelUnlistedTypes::SELF_ONLY->value]);
 			$table->boolean('ldm_mode');
-			$table->integer('wt')->nullable();
-			$table->integer('wt2')->nullable();
+			$table->integer('editor_time')->nullable();
+			$table->integer('previous_editor_time')->nullable();
 			$table->string('extra')->nullable();
 			$table->string('replay')->nullable();
+			$table->integer('verification_time')->nullable();
 			$table->timestamps();
 		});
 	}

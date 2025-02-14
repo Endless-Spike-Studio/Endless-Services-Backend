@@ -123,7 +123,13 @@ return [
 						]
 					]
 				]
-			]
+			],
+			'level_data' => [
+				'storage' => [
+					'disk' => env('ENDLESS_SERVER_LEVEL_DATA_STORAGE_DISK', 'oss'),
+					'format' => env('ENDLESS_SERVER_LEVEL_DATA_STORAGE_FORMAT', 'endless_server/level_data/{id}.dat')
+				]
+			],
 		]
 	]
 ];

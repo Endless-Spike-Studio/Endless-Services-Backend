@@ -10,7 +10,7 @@ use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashSongObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 
 readonly class GameSongController
 {
@@ -33,19 +33,20 @@ readonly class GameSongController
 			$page = $data['page'];
 		}
 
+		// TODO
 		$paginate = $this->paginationService->generate(Level::query()
-			->whereHas('newgroundsSong')
-			->select([
-				'newgrounds_song_id',
-				DB::raw('COUNT(newgrounds_song_id) AS count')
-			])
-			->groupBy('newgrounds_song_id')
-			->orderByDesc('count'), $page);
+			->whereHas('songMappings'), $page);
 
 		return implode('#', [
 			$paginate->items->map(function (Level $level) {
+				$song = Arr::first($level->songMappings);
+
+				if ($song === null) {
+					return null;
+				}
+
 				return $this->objectService->merge([
-					GeometryDashSongObjectDefinitions::ARTIST_NAME->value => $level->newgroundsSong->artist_name
+					GeometryDashSongObjectDefinitions::ARTIST_NAME->value => $song->artist_name
 				], ':');
 			})->join('|'),
 			$paginate->info

@@ -55,4 +55,7 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses PLAYER_LIST_FAILED_EMPTY = GeometryDashResponses::_2;
 	public const GeometryDashResponses SECRET_REWARD_GET_FAILED_EXPIRED = GeometryDashResponses::_1;
 	public const GeometryDashResponses SECRET_REWARD_GET_FAILED_LIMIT_REACHED = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_UPLOAD_FAILED_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_UPLOAD_DESCRIPTION_FAILED_LEVEL_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_UPLOAD_DESCRIPTION_SUCCESS = GeometryDashResponses::__1;
 }

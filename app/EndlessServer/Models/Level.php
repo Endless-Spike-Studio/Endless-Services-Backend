@@ -2,17 +2,19 @@
 
 namespace App\EndlessServer\Models;
 
-use App\EndlessProxy\Models\NewgroundsSong;
 use App\GeometryDash\Enums\GeometryDashLevelCoinCounts;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
 use App\GeometryDash\Enums\GeometryDashLevelRatingStars;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Level extends Model
 {
 	protected $table = 'endless_server.levels';
+
+	protected $fillable = ['player_id', 'name', 'description', 'version', 'length', 'audio_track_id', 'password', 'original_level_id', '2p_mode', 'objects', 'coins', 'requested_stars', 'unlisted_type', 'ldm_mode', 'editor_time', 'previous_editor_time', 'extra', 'replay', 'verification_time'];
 
 	public function player(): BelongsTo
 	{
@@ -29,9 +31,14 @@ class Level extends Model
 		return $this->hasOne(Level::class, 'original_level_id');
 	}
 
-	public function newgroundsSong(): BelongsTo
+	public function songMappings(): HasMany
 	{
-		return $this->belongsTo(NewgroundsSong::class);
+		return $this->hasMany(LevelSongMapping::class);
+	}
+
+	public function soundEffectMappings(): HasMany
+	{
+		return $this->hasMany(LevelSoundEffectMapping::class);
 	}
 
 	protected function casts(): array
