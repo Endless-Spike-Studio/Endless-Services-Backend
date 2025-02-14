@@ -12,6 +12,7 @@ use App\GeometryDash\Enums\GeometryDashSalts;
 use App\GeometryDash\Enums\GeometryDashXorKeys;
 use App\GeometryDash\Services\GeometryDashAlgorithmService;
 use Base64Url\Base64Url;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -54,7 +55,13 @@ readonly class GameSecretRewardController
 
 		$rewards = collect($secretReward->rewards)
 			->map(function ($value, $key) {
-				return implode(',', [$key, $value]);
+				$rewards = [];
+
+				foreach (Arr::wrap($value) as $reward) {
+					$rewards[] = implode(',', [$key, $reward]);
+				}
+
+				return implode(',', $rewards);
 			})
 			->join(',');
 
