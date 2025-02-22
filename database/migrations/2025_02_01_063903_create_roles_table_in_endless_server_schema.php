@@ -13,7 +13,7 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->string('name');
-			$table->enum('mod_level', [GeometryDashModLevels::PLAYER->value, GeometryDashModLevels::MOD->value, GeometryDashModLevels::ELDER_MOD->value]);
+			$table->forEnum('mod_level', GeometryDashModLevels::class);
 			$table->string('comment_color')->nullable();
 			$table->timestamps();
 		});

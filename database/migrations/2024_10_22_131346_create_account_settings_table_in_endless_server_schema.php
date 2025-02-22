@@ -16,9 +16,9 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Account::class)->unique();
-			$table->enum('message_state', [GeometryDashAccountSettingMessageStates::ALL->value, GeometryDashAccountSettingMessageStates::FRIENDS_ONLY->value, GeometryDashAccountSettingMessageStates::NONE->value]);
-			$table->enum('friend_request_state', [GeometryDashAccountSettingFriendRequestStates::ALL->value, GeometryDashAccountSettingFriendRequestStates::NONE->value]);
-			$table->enum('comment_history_state', [GeometryDashAccountSettingCommentHistoryStates::ALL->value, GeometryDashAccountSettingCommentHistoryStates::FRIENDS_ONLY->value, GeometryDashAccountSettingCommentHistoryStates::SELF_ONLY->value]);
+			$table->forEnum('message_state', GeometryDashAccountSettingMessageStates::class);
+			$table->forEnum('friend_request_state', GeometryDashAccountSettingFriendRequestStates::class);
+			$table->forEnum('comment_history_state', GeometryDashAccountSettingCommentHistoryStates::class);
 			$table->string('youtube');
 			$table->string('twitter');
 			$table->string('twitch');

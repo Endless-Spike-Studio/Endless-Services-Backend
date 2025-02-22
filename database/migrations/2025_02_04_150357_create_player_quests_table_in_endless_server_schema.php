@@ -15,7 +15,7 @@ return new class extends Migration {
 			$table->id();
 			$table->foreignIdFor(Player::class);
 			$table->string('name');
-			$table->enum('collect_type', [GeometryDashQuestCollectTypes::ORB->value, GeometryDashQuestCollectTypes::COIN->value, GeometryDashQuestCollectTypes::STAR->value]);
+			$table->forEnum('collect_type', GeometryDashQuestCollectTypes::class);
 			$table->integer('collect_count');
 			$table->integer('reward_count');
 			$table->timestamps();

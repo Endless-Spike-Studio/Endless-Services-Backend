@@ -16,14 +16,14 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Level::class)->unique();
-			$table->enum('difficulty', [GeometryDashLevelRatingDifficulties::EASY->value, GeometryDashLevelRatingDifficulties::NORMAL->value, GeometryDashLevelRatingDifficulties::HARD->value, GeometryDashLevelRatingDifficulties::HARDER->value, GeometryDashLevelRatingDifficulties::INSANE->value, GeometryDashLevelRatingDifficulties::AUTO_AND_DEMON->value])->nullable();
-			$table->enum('stars', [GeometryDashLevelRatingStars::__0->value, GeometryDashLevelRatingStars::__1->value, GeometryDashLevelRatingStars::__2->value, GeometryDashLevelRatingStars::__3->value, GeometryDashLevelRatingStars::__4->value, GeometryDashLevelRatingStars::__5->value, GeometryDashLevelRatingStars::__6->value, GeometryDashLevelRatingStars::__7->value, GeometryDashLevelRatingStars::__8->value, GeometryDashLevelRatingStars::__9->value, GeometryDashLevelRatingStars::__10->value])->nullable();
+			$table->forEnum('difficulty', GeometryDashLevelRatingDifficulties::class);
+			$table->forEnum('stars', GeometryDashLevelRatingStars::class);
 			$table->boolean('coin_verified');
 			$table->integer('featured_score');
 			$table->integer('epic_mode');
 			$table->boolean('auto');
 			$table->boolean('demon');
-			$table->enum('demon_difficulty', [GeometryDashLevelRatingDemonDifficulties::EASY->value, GeometryDashLevelRatingDemonDifficulties::MEDIUM->value, GeometryDashLevelRatingDemonDifficulties::HARD->value, GeometryDashLevelRatingDemonDifficulties::INSANE->value, GeometryDashLevelRatingDemonDifficulties::EXTREME->value]);
+			$table->forEnum('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::class);
 			$table->timestamps();
 		});
 	}

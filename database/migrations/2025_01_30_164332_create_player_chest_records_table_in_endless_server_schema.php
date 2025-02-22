@@ -14,7 +14,7 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Player::class);
-			$table->enum('type', [GeometryDashRewardTypes::SMALL->value, GeometryDashRewardTypes::BIG->value]);
+			$table->forEnum('type', GeometryDashRewardTypes::class);
 			$table->integer('orbs');
 			$table->integer('diamonds');
 			$table->integer('shards');

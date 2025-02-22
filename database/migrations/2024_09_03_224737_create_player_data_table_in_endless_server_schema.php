@@ -21,7 +21,7 @@ return new class extends Migration {
 			$table->integer('demons');
 			$table->integer('diamonds');
 			$table->integer('icon_id');
-			$table->enum('icon_type', [GeometryDashIconTypes::CUBE->value, GeometryDashIconTypes::SHIP->value, GeometryDashIconTypes::BALL->value, GeometryDashIconTypes::UFO->value, GeometryDashIconTypes::WAVE->value, GeometryDashIconTypes::ROBOT->value, GeometryDashIconTypes::SPIDER->value, GeometryDashIconTypes::SWING->value, GeometryDashIconTypes::JETPACK->value]);
+			$table->forEnum('icon_type', GeometryDashIconTypes::class);
 			$table->integer('coins');
 			$table->integer('user_coins');
 			$table->integer('color1');
