@@ -8,12 +8,12 @@ use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Repositories\AccountFriendRepository;
 use App\EndlessServer\Requests\GameLeaderboardListRequest;
+use App\EndlessServer\Responses\GameLeaderboardObjectResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePlayerDataService;
 use App\EndlessServer\Services\GamePlayerStatisticService;
 use App\GeometryDash\Enums\GeometryDashLeaderboardType;
 use App\GeometryDash\Enums\Objects\GeometryDashLeaderboardObjectDefinitions;
-use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -100,24 +100,8 @@ readonly class GameLeaderboardController
 		$query->take($data['count']);
 
 		return $query->get()
-			->map(function (Player $player, int $index) {
-				return $this->objectService->merge([
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_NAME->value => $player->name,
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_ID->value => $player->id,
-					GeometryDashPlayerInfoObjectDefinitions::STARS->value => $player->data->stars,
-					GeometryDashPlayerInfoObjectDefinitions::DEMONS->value => $player->data->demons,
-					GeometryDashLeaderboardObjectDefinitions::RANKING->value => $index + 1,
-					GeometryDashPlayerInfoObjectDefinitions::CREATOR_POINTS->value => $player->statistic->creator_points,
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_ICON_ID->value => $player->data->icon_id,
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_COLOR_1->value => $player->data->color1,
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_COLOR_2->value => $player->data->color2,
-					GeometryDashPlayerInfoObjectDefinitions::COINS->value => $player->data->coins,
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_ICON_TYPE->value => $player->data->icon_type,
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_SPECIAL->value => $player->data->special,
-					GeometryDashLeaderboardObjectDefinitions::PLAYER_UUID->value => $player->uuid,
-					GeometryDashPlayerInfoObjectDefinitions::USER_COINS->value => $player->data->user_coins,
-					GeometryDashPlayerInfoObjectDefinitions::DIAMONDS->value => $player->data->diamonds,
-				], GeometryDashLeaderboardObjectDefinitions::GLUE);
-			})->join('|');
+			->map(function (Player $player, int $index) use ($request) {
+				return new GameLeaderboardObjectResponse($player, $index + 1)->toResponse($request);
+			})->join(GeometryDashLeaderboardObjectDefinitions::SEPARATOR);
 	}
 }

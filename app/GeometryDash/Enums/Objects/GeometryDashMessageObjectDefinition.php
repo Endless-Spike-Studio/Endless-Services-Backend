@@ -4,7 +4,9 @@ namespace App\GeometryDash\Enums\Objects;
 
 enum GeometryDashMessageObjectDefinition: int
 {
+	public const string SEGMENTATION = '#';
 	public const string GLUE = ':';
+	public const string SEPARATOR = '|';
 
 	case ID = 1;
 	case ACCOUNT_ID = 2;

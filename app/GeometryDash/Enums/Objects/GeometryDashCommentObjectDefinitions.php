@@ -4,7 +4,9 @@ namespace App\GeometryDash\Enums\Objects;
 
 enum GeometryDashCommentObjectDefinitions: int
 {
+	public const string SEGMENTATION = '#';
 	public const string GLUE = '~';
+	public const string SEPARATOR = '|';
 
 	case LEVEL_ID = 1;
 	case CONTENT = 2;
@@ -16,7 +18,7 @@ enum GeometryDashCommentObjectDefinitions: int
 
 	case ID = 6;
 	case IS_SPAM = 7;
-	case ACCOUNT_ID = 8;
+	case PLAYER_UUID = 8;
 	case AGE = 9;
 	case PERCENT = 10;
 	case MOD_BADGE = 11;

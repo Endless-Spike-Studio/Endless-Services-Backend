@@ -11,6 +11,7 @@ use App\EndlessServer\Requests\GameAccountFriendRequestDeleteRequest;
 use App\EndlessServer\Requests\GameAccountFriendRequestListRequest;
 use App\EndlessServer\Requests\GameAccountFriendRequestReadRequest;
 use App\EndlessServer\Requests\GameAccountFriendRequestSendRequest;
+use App\EndlessServer\Responses\GameAccountFriendRequestObjectResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\EndlessServer\Services\GamePlayerDataService;
@@ -19,7 +20,6 @@ use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashAccountFriendRequestObjectDefinition;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Base64Url\Base64Url;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 readonly class GameAccountFriendRequestController
@@ -74,8 +74,6 @@ readonly class GameAccountFriendRequestController
 	{
 		$data = $request->validated();
 
-		Carbon::setLocale('en');
-
 		/** @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
@@ -99,35 +97,10 @@ readonly class GameAccountFriendRequestController
 			return GeometryDashResponses::ACCOUNT_FRIEND_REQUEST_LIST_EMPTY->value;
 		}
 
-		return implode('#', [
-			$paginate->items->map(function (AccountFriendRequest $friendRequest) use ($data, $getSent) {
-				$targetAccount = $friendRequest->account;
-
-				if ($getSent) {
-					$targetAccount = $friendRequest->targetAccount;
-				}
-
-				$comment = null;
-
-				if ($friendRequest->comment !== null) {
-					$comment = Base64Url::encode($friendRequest->comment, true);
-				}
-
-				return $this->objectService->merge([
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_NAME->value => $targetAccount->player->name,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_USER_ID->value => $targetAccount->player->id,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_ID->value => $targetAccount->player->data->icon_id,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_COLOR_ID->value => $targetAccount->player->data->color1,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_SECOND_COLOR_ID->value => $targetAccount->player->data->color2,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_TYPE->value => $targetAccount->player->data->icon_type,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_SPECIAL->value => $targetAccount->player->data->special,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_UUID->value => $targetAccount->player->uuid,
-					GeometryDashAccountFriendRequestObjectDefinition::ID->value => $friendRequest->id,
-					GeometryDashAccountFriendRequestObjectDefinition::COMMENT->value => $comment,
-					GeometryDashAccountFriendRequestObjectDefinition::AGE->value => $friendRequest->created_at->diffForHumans(syntax: true),
-					GeometryDashAccountFriendRequestObjectDefinition::IS_NEW->value => !$friendRequest->readed
-				], GeometryDashAccountFriendRequestObjectDefinition::GLUE);
-			})->join('|'),
+		return implode(GeometryDashAccountFriendRequestObjectDefinition::SEGMENTATION, [
+			$paginate->items->map(function (AccountFriendRequest $friendRequest) use ($getSent, $request) {
+				return new GameAccountFriendRequestObjectResponse($friendRequest, $getSent)->toResponse($request);
+			})->join(GeometryDashAccountFriendRequestObjectDefinition::SEPARATOR),
 			$paginate->info
 		]);
 	}

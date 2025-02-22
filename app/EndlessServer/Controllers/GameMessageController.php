@@ -9,15 +9,14 @@ use App\EndlessServer\Requests\GameAccountMessageDeleteRequest;
 use App\EndlessServer\Requests\GameAccountMessageDownloadRequest;
 use App\EndlessServer\Requests\GameAccountMessageListRequest;
 use App\EndlessServer\Requests\GameAccountMessageSendRequest;
+use App\EndlessServer\Responses\GameMessageObjectResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\GeometryDashXorKeys;
-use App\GeometryDash\Enums\Objects\GeometryDashMessageObjectDefinition;
 use App\GeometryDash\Services\GeometryDashAlgorithmService;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Base64Url\Base64Url;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 readonly class GameMessageController
@@ -66,33 +65,21 @@ readonly class GameMessageController
 	{
 		$data = $request->validated();
 
-		Carbon::setLocale('en');
-
 		/** @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
+		$getSent = isset($data['getSent']) && $data['getSent'] > 0;
+
 		$paginate = $this->paginationService->generate(AccountMessage::query()
-			->where(isset($data['getSent']) ? 'account_id' : 'target_account_id', $account->id), $data['page']);
+			->where($getSent ? 'account_id' : 'target_account_id', $account->id), $data['page']);
 
 		if ($paginate->total <= 0) {
 			return GeometryDashResponses::ACCOUNT_MESSAGE_LIST_FAILED_EMPTY->value;
 		}
 
 		return implode('#', [
-			$paginate->items->map(function (AccountMessage $message) use ($data) {
-				$targetAccount = isset($data['getSent']) ? $message->targetAccount : $message->account;
-
-				return $this->objectService->merge([
-					GeometryDashMessageObjectDefinition::ID->value => $message->id,
-					GeometryDashMessageObjectDefinition::ACCOUNT_ID->value => $targetAccount->id,
-					GeometryDashMessageObjectDefinition::PLAYER_ID->value => $targetAccount->player->id,
-					GeometryDashMessageObjectDefinition::SUBJECT->value => Base64Url::encode($message->subject, true),
-					GeometryDashMessageObjectDefinition::BODY->value => Base64Url::encode($this->algorithmService->xor($message->body, GeometryDashXorKeys::MESSAGE->value), true),
-					GeometryDashMessageObjectDefinition::PLAYER_NAME->value => $targetAccount->player->name,
-					GeometryDashMessageObjectDefinition::AGE->value => $message->created_at->diffForHumans(syntax: true),
-					GeometryDashMessageObjectDefinition::IS_READ->value => $message->readed,
-					GeometryDashMessageObjectDefinition::IS_SENDER->value => isset($data['getSent'])
-				], GeometryDashMessageObjectDefinition::GLUE);
+			$paginate->items->map(function (AccountMessage $message) use ($getSent, $request) {
+				return new GameMessageObjectResponse($message, $getSent)->toResponse($request);
 			})->join('|'),
 			$paginate->info
 		]);
@@ -102,13 +89,13 @@ readonly class GameMessageController
 	{
 		$data = $request->validated();
 
-		Carbon::setLocale('en');
-
 		/** @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
+		$getSent = isset($data['isSender']) && $data['isSender'] > 0;
+
 		$message = AccountMessage::query()
-			->where(isset($data['isSender']) ? 'account_id' : 'target_account_id', $account->id)
+			->where($getSent ? 'account_id' : 'target_account_id', $account->id)
 			->where('id', $data['messageID'])
 			->first();
 
@@ -116,25 +103,13 @@ readonly class GameMessageController
 			return GeometryDashResponses::ACCOUNT_MESSAGE_DOWNLOAD_FAILED_NOT_FOUND->value;
 		}
 
-		$targetAccount = isset($data['isSender']) ? $message->account : $message->targetAccount;
-
-		if (!isset($data['isSender'])) {
+		if (!$getSent) {
 			$message->update([
 				'readed' => true
 			]);
 		}
 
-		return $this->objectService->merge([
-			GeometryDashMessageObjectDefinition::ID->value => $message->id,
-			GeometryDashMessageObjectDefinition::ACCOUNT_ID->value => $targetAccount->id,
-			GeometryDashMessageObjectDefinition::PLAYER_ID->value => $targetAccount->player->id,
-			GeometryDashMessageObjectDefinition::SUBJECT->value => Base64Url::encode($message->subject, true),
-			GeometryDashMessageObjectDefinition::BODY->value => Base64Url::encode($this->algorithmService->xor($message->body, GeometryDashXorKeys::MESSAGE->value), true),
-			GeometryDashMessageObjectDefinition::PLAYER_NAME->value => $targetAccount->player->name,
-			GeometryDashMessageObjectDefinition::AGE->value => $message->created_at->diffForHumans(syntax: true),
-			GeometryDashMessageObjectDefinition::IS_READ->value => $message->readed,
-			GeometryDashMessageObjectDefinition::IS_SENDER->value => isset($data['getSent'])
-		], GeometryDashMessageObjectDefinition::GLUE);
+		return new GameMessageObjectResponse($message, $getSent)->toResponse($request);
 	}
 
 	public function delete(GameAccountMessageDeleteRequest $request): int

@@ -7,6 +7,7 @@ use App\GeometryDash\Enums\Objects\GeometryDashAccountFriendRequestObjectDefinit
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Base64Url\Base64Url;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Support\Carbon;
 
 readonly class GameAccountFriendRequestObjectResponse implements Responsable
 {
@@ -15,7 +16,7 @@ readonly class GameAccountFriendRequestObjectResponse implements Responsable
 		protected bool                 $getSent
 	)
 	{
-
+		Carbon::setLocale('en');
 	}
 
 	public function toResponse($request)
@@ -33,14 +34,14 @@ readonly class GameAccountFriendRequestObjectResponse implements Responsable
 		}
 
 		return app(GeometryDashObjectService::class)->merge([
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_NAME->value => $targetAccount->player->name,
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_USER_ID->value => $targetAccount->player->id,
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_ID->value => $targetAccount->player->data->icon_id,
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_COLOR_ID->value => $targetAccount->player->data->color1,
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_SECOND_COLOR_ID->value => $targetAccount->player->data->color2,
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_TYPE->value => $targetAccount->player->data->icon_type,
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_SPECIAL->value => $targetAccount->player->data->special,
-			GeometryDashAccountFriendRequestObjectDefinition::TARGET_UUID->value => $targetAccount->player->uuid,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_NAME->value => $targetAccount->player->name,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_USER_ID->value => $targetAccount->player->id,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_ICON_ID->value => $targetAccount->player->data->icon_id,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_COLOR_1->value => $targetAccount->player->data->color1,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_COLOR_2->value => $targetAccount->player->data->color2,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_ICON_TYPE->value => $targetAccount->player->data->icon_type,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_SPECIAL->value => $targetAccount->player->data->special,
+			GeometryDashAccountFriendRequestObjectDefinition::TARGET_PLAYER_UUID->value => $targetAccount->player->uuid,
 			GeometryDashAccountFriendRequestObjectDefinition::ID->value => $this->model->id,
 			GeometryDashAccountFriendRequestObjectDefinition::COMMENT->value => $comment,
 			GeometryDashAccountFriendRequestObjectDefinition::AGE->value => $this->model->created_at->diffForHumans(syntax: true),

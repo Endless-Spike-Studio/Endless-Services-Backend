@@ -8,12 +8,12 @@ use App\EndlessServer\Models\AccountComment;
 use App\EndlessServer\Requests\GameAccountCommentDeleteRequest;
 use App\EndlessServer\Requests\GameAccountCommentListRequest;
 use App\EndlessServer\Requests\GameAccountCommentUploadRequest;
+use App\EndlessServer\Responses\GameAccountCommentObjectResponse;
 use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashCommentObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Base64Url\Base64Url;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 readonly class GameAccountCommentController
@@ -46,21 +46,13 @@ readonly class GameAccountCommentController
 	{
 		$data = $request->validated();
 
-		Carbon::setLocale('en');
-
 		$paginate = $this->paginationService->generate(AccountComment::query()
 			->where('account_id', $data['accountID']), $data['page']);
 
-		return implode('#', [
-			$paginate->items->map(function (AccountComment $comment) {
-				return $this->objectService->merge([
-					GeometryDashCommentObjectDefinitions::CONTENT->value => Base64Url::encode($comment->content, true),
-					GeometryDashCommentObjectDefinitions::LIKES->value => 0, //TODO,
-					GeometryDashCommentObjectDefinitions::ID->value => $comment->id,
-					GeometryDashCommentObjectDefinitions::IS_SPAM->value => $comment->spam,
-					GeometryDashCommentObjectDefinitions::AGE->value => $comment->created_at->diffForHumans(syntax: true)
-				], GeometryDashCommentObjectDefinitions::GLUE);
-			})->join('|'),
+		return implode(GeometryDashCommentObjectDefinitions::SEGMENTATION, [
+			$paginate->items->map(function (AccountComment $comment) use ($request) {
+				return new GameAccountCommentObjectResponse($comment)->toResponse($request);
+			})->join(GeometryDashCommentObjectDefinitions::SEPARATOR),
 			$paginate->info
 		]);
 	}

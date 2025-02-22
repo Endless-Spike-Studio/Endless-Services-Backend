@@ -8,6 +8,7 @@ use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestStates;
 use App\GeometryDash\Enums\GeometryDashAccountSettingMessageStates;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -34,7 +35,7 @@ class Account extends Model implements MustVerifyEmailContract
 	public function player(): HasOne
 	{
 		return $this->hasOne(Player::class, 'uuid')
-			->withDefault(function () {
+			->withDefault(function (Player $player) {
 				$udid = Request::get('udid');
 
 				if ($udid === null) {
@@ -42,11 +43,11 @@ class Account extends Model implements MustVerifyEmailContract
 						->toString();
 				}
 
-				return $this->player()
-					->create([
-						'name' => $this->name,
-						'udid' => $udid
-					]);
+				$player->update([
+					'name' => $this->name,
+					'uuid' => $this->id,
+					'udid' => $udid
+				]);
 			});
 	}
 
@@ -58,17 +59,14 @@ class Account extends Model implements MustVerifyEmailContract
 	public function setting(): HasOne
 	{
 		return $this->hasOne(AccountSetting::class)
-			->withDefault(function () {
-				return $this->setting()
-					->create([
-						'message_state' => GeometryDashAccountSettingMessageStates::ALL->value,
-						'friend_request_state' => GeometryDashAccountSettingFriendRequestStates::ALL->value,
-						'comment_history_state' => GeometryDashAccountSettingCommentHistoryStates::ALL->value,
-						'youtube' => '',
-						'twitter' => '',
-						'twitch' => ''
-					]);
-			});
+			->withDefault([
+				'message_state' => GeometryDashAccountSettingMessageStates::ALL->value,
+				'friend_request_state' => GeometryDashAccountSettingFriendRequestStates::ALL->value,
+				'comment_history_state' => GeometryDashAccountSettingCommentHistoryStates::ALL->value,
+				'youtube' => '',
+				'twitter' => '',
+				'twitch' => ''
+			]);
 	}
 
 	public function comments(): HasMany
@@ -104,6 +102,22 @@ class Account extends Model implements MustVerifyEmailContract
 	public function friends(): HasManyThrough
 	{
 		return $this->hasManyThrough(Account::class, AccountFriend::class, secondKey: 'id', secondLocalKey: 'target_account_id');
+	}
+
+	public function modLevel(): Attribute
+	{
+		return new Attribute(function () {
+			return min($this->roles->max(fn($role) => $role->mod_level), 2);
+		});
+	}
+
+	public function commentColor(): Attribute
+	{
+		return new Attribute(function () {
+			return $this->roles()
+				->latest()
+				->value('comment_color');
+		});
 	}
 
 	public function roles(): HasManyThrough

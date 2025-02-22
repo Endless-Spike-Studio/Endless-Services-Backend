@@ -16,4 +16,9 @@ enum GeometryDashSongObjectDefinitions: int
 	case IS_VERIFIED = 8;
 	case PRIORITY = 9;
 	case DOWNLOAD_URL = 10;
+	case TYPE = 11;
+	case EXTRA_ARTIST_IDS = 12;
+	case IS_NEW = 13;
+	case NEW_TYPE = 14;
+	case EXTRA_ARTIST_INFORMATION = 15;
 }
