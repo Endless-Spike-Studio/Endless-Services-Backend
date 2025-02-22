@@ -77,8 +77,6 @@ readonly class GameLevelController
 			unset($attributes['player_id']);
 
 			$level->update($attributes);
-
-			goto end;
 		} else {
 			$level = Level::query()
 				->create($attributes);
@@ -87,7 +85,6 @@ readonly class GameLevelController
 		$this->storageService->level = $level;
 		$this->storageService->store($data['levelString']);
 
-		end:
 		return $level->id;
 	}
 
