@@ -81,15 +81,14 @@ readonly class GameMessageController
 		return implode('#', [
 			$paginate->items->map(function (AccountMessage $message) use ($data) {
 				$targetAccount = isset($data['getSent']) ? $message->targetAccount : $message->account;
-				$targetAccountPlayer = $this->accountService->queryAccountPlayer($targetAccount);
 
 				return $this->objectService->merge([
 					GeometryDashMessageObjectDefinition::ID->value => $message->id,
 					GeometryDashMessageObjectDefinition::ACCOUNT_ID->value => $targetAccount->id,
-					GeometryDashMessageObjectDefinition::PLAYER_ID->value => $targetAccountPlayer->id,
+					GeometryDashMessageObjectDefinition::PLAYER_ID->value => $targetAccount->player->id,
 					GeometryDashMessageObjectDefinition::SUBJECT->value => Base64Url::encode($message->subject, true),
 					GeometryDashMessageObjectDefinition::BODY->value => Base64Url::encode($this->algorithmService->xor($message->body, GeometryDashXorKeys::MESSAGE->value), true),
-					GeometryDashMessageObjectDefinition::PLAYER_NAME->value => $targetAccountPlayer->name,
+					GeometryDashMessageObjectDefinition::PLAYER_NAME->value => $targetAccount->player->name,
 					GeometryDashMessageObjectDefinition::AGE->value => $message->created_at->diffForHumans(syntax: true),
 					GeometryDashMessageObjectDefinition::IS_READ->value => $message->readed,
 					GeometryDashMessageObjectDefinition::IS_SENDER->value => isset($data['getSent'])
@@ -118,7 +117,6 @@ readonly class GameMessageController
 		}
 
 		$targetAccount = isset($data['isSender']) ? $message->account : $message->targetAccount;
-		$targetAccountPlayer = $this->accountService->queryAccountPlayer($targetAccount);
 
 		if (!isset($data['isSender'])) {
 			$message->update([
@@ -129,10 +127,10 @@ readonly class GameMessageController
 		return $this->objectService->merge([
 			GeometryDashMessageObjectDefinition::ID->value => $message->id,
 			GeometryDashMessageObjectDefinition::ACCOUNT_ID->value => $targetAccount->id,
-			GeometryDashMessageObjectDefinition::PLAYER_ID->value => $targetAccountPlayer->id,
+			GeometryDashMessageObjectDefinition::PLAYER_ID->value => $targetAccount->player->id,
 			GeometryDashMessageObjectDefinition::SUBJECT->value => Base64Url::encode($message->subject, true),
 			GeometryDashMessageObjectDefinition::BODY->value => Base64Url::encode($this->algorithmService->xor($message->body, GeometryDashXorKeys::MESSAGE->value), true),
-			GeometryDashMessageObjectDefinition::PLAYER_NAME->value => $targetAccountPlayer->name,
+			GeometryDashMessageObjectDefinition::PLAYER_NAME->value => $targetAccount->player->name,
 			GeometryDashMessageObjectDefinition::AGE->value => $message->created_at->diffForHumans(syntax: true),
 			GeometryDashMessageObjectDefinition::IS_READ->value => $message->readed,
 			GeometryDashMessageObjectDefinition::IS_SENDER->value => isset($data['getSent'])

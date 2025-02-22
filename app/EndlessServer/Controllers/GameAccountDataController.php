@@ -40,12 +40,10 @@ readonly class GameAccountDataController
 		/* @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
-		$player = $this->accountService->queryAccountPlayer($account);
-
-		$this->playerDataService->initialize($player->id);
-		$this->playerStatisticService->initialize($player->id);
-
-		$this->playerDataService->updateVersions($player->id, $data['gameVersion'], $data['binaryVersion']);
+		$account->player->data->update([
+			'game_version' => $data['gameVersion'],
+			'binary_version' => $data['binaryVersion']
+		]);
 
 		$this->storageService->account = $account;
 
@@ -61,19 +59,14 @@ readonly class GameAccountDataController
 		/* @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
-		$player = $this->accountService->queryAccountPlayer($account);
-
-		$this->playerDataService->initialize($player->id);
-		$this->playerStatisticService->initialize($player->id);
-
 		$this->storageService->account = $account;
 
 		$saveData = $this->storageService->fetch();
 
 		return implode(';', [
 			$saveData,
-			$player->data->game_version,
-			$player->data->binary_version,
+			$account->player->data->game_version,
+			$account->player->data->binary_version,
 			'?',
 			'?'
 		]);

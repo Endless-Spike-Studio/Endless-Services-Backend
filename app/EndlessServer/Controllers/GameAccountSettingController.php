@@ -28,8 +28,6 @@ readonly class GameAccountSettingController
 		/** @var Account $account */
 		$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
-		$this->service->initialize($account->id);
-
 		if ($data['yt'] === null) {
 			$data['yt'] = '';
 		}

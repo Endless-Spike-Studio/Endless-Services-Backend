@@ -5,7 +5,6 @@ namespace App\EndlessServer\Guards;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Player;
-use App\EndlessServer\Services\GameAccountService;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
@@ -62,9 +61,7 @@ class PlayerGuard implements Guard
 			return false;
 		}
 
-		$udid = Request::string('udid');
-
-		$this->player = app(GameAccountService::class)->queryAccountPlayer($account, $udid);
+		$this->player = $account->player;
 
 		return true;
 	}

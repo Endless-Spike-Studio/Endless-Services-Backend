@@ -6,47 +6,6 @@ use App\EndlessServer\Models\PlayerData;
 
 readonly class GamePlayerDataService
 {
-	public function initialize(int $playerId): void
-	{
-		$exists = PlayerData::query()
-			->where('player_id', $playerId)
-			->exists();
-
-		if ($exists) {
-			return;
-		}
-
-		PlayerData::query()
-			->create([
-				'player_id' => $playerId,
-				'game_version' => 0,
-				'binary_version' => 0,
-				'stars' => 0,
-				'moons' => 0,
-				'demons' => 0,
-				'diamonds' => 0,
-				'icon_id' => 1,
-				'icon_type' => 0,
-				'coins' => 0,
-				'user_coins' => 0,
-				'color1' => 0,
-				'color2' => 3,
-				'color3' => -1,
-				'cube_id' => 1,
-				'ship_id' => 1,
-				'ball_id' => 1,
-				'bird_id' => 1,
-				'dart_id' => 1,
-				'robot_id' => 1,
-				'glow_id' => 0,
-				'spider_id' => 1,
-				'explosion_id' => 1,
-				'swing_id' => 1,
-				'jetpack_id' => 1,
-				'special' => 1
-			]);
-	}
-
 	public function updateVersions(int $playerId, int $gameVersion, int $binaryVersion): void
 	{
 		PlayerData::query()

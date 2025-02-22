@@ -10,51 +10,6 @@ use App\GeometryDash\Enums\GeometryDashLevelRatingDemonDifficulties;
 
 readonly class GamePlayerStatisticService
 {
-	public function initialize(int $playerId): true
-	{
-		$exists = PlayerStatistic::query()
-			->where('player_id', $playerId)
-			->exists();
-
-		if ($exists) {
-			return true;
-		}
-
-		PlayerStatistic::query()
-			->create([
-				'player_id' => $playerId,
-				'creator_points' => 0,
-				'completed_dailies_count' => 0,
-				'completed_weeklies_count' => 0,
-				'completed_classic_auto_count' => 0,
-				'completed_classic_easy_count' => 0,
-				'completed_classic_normal_count' => 0,
-				'completed_classic_hard_count' => 0,
-				'completed_classic_harder_count' => 0,
-				'completed_classic_insane_count' => 0,
-				'completed_platformer_auto_count' => 0,
-				'completed_platformer_easy_count' => 0,
-				'completed_platformer_normal_count' => 0,
-				'completed_platformer_hard_count' => 0,
-				'completed_platformer_harder_count' => 0,
-				'completed_platformer_insane_count' => 0,
-				'completed_classic_easy_demons_count' => 0,
-				'completed_classic_medium_demons_count' => 0,
-				'completed_classic_hard_demons_count' => 0,
-				'completed_classic_insane_demons_count' => 0,
-				'completed_classic_extreme_demons_count' => 0,
-				'completed_platformer_easy_demons_count' => 0,
-				'completed_platformer_medium_demons_count' => 0,
-				'completed_platformer_hard_demons_count' => 0,
-				'completed_platformer_insane_demons_count' => 0,
-				'completed_platformer_extreme_demons_count' => 0,
-				'completed_gauntlet_levels_count' => 0,
-				'completed_gauntlet_demon_levels_count' => 0
-			]);
-
-		return true;
-	}
-
 	public function updateInterval(int $playerId, int $completed_dailies_count, int $completed_weeklies_count): void
 	{
 		PlayerStatistic::query()

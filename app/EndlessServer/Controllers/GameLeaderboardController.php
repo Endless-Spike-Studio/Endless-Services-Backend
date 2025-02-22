@@ -60,7 +60,7 @@ readonly class GameLeaderboardController
 					->whereIn('id', $friendAccountIDs)
 					->get()
 					->map(function (Account $account) {
-						return $this->accountService->queryAccountPlayer($account)->id;
+						return $account->player->id;
 					});
 
 				$query->whereIn('id', $friendAccountPlayerIDs);
@@ -72,24 +72,14 @@ readonly class GameLeaderboardController
 				$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
 
 				$query->with('data', function (Builder $query) use ($half, $account) {
-					$player = $this->accountService->queryAccountPlayer($account);
-
-					$this->playerDataService->initialize($player->id);
-					$this->playerStatisticService->initialize($player->id);
-
-					$query->where('stars', '<=', $player->data->stars);
+					$query->where('stars', '<=', $account->player->data->stars);
 
 					$query->take($half);
 				});
 
 				$rightQuery = Player::query()
 					->with('data', function (Builder $query) use ($half, $account) {
-						$player = $this->accountService->queryAccountPlayer($account);
-
-						$this->playerDataService->initialize($player->id);
-						$this->playerStatisticService->initialize($player->id);
-
-						$query->where('stars', '>', $player->data->stars);
+						$query->where('stars', '>', $account->player->data->stars);
 
 						$query->take($half);
 					});
@@ -111,9 +101,6 @@ readonly class GameLeaderboardController
 
 		return $query->get()
 			->map(function (Player $player, int $index) {
-				$this->playerDataService->initialize($player->id);
-				$this->playerStatisticService->initialize($player->id);
-
 				return $this->objectService->merge([
 					GeometryDashLeaderboardObjectDefinitions::PLAYER_NAME->value => $player->name,
 					GeometryDashLeaderboardObjectDefinitions::PLAYER_ID->value => $player->id,

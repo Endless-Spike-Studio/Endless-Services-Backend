@@ -3,6 +3,9 @@
 namespace App\EndlessServer\Models;
 
 use App\EndlessServer\Notifications\EmailVerificationNotification;
+use App\GeometryDash\Enums\GeometryDashAccountSettingCommentHistoryStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingFriendRequestStates;
+use App\GeometryDash\Enums\GeometryDashAccountSettingMessageStates;
 use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 
 class Account extends Model implements MustVerifyEmailContract
 {
@@ -28,7 +33,21 @@ class Account extends Model implements MustVerifyEmailContract
 
 	public function player(): HasOne
 	{
-		return $this->hasOne(Player::class, 'uuid');
+		return $this->hasOne(Player::class, 'uuid')
+			->withDefault(function () {
+				$udid = Request::get('udid');
+
+				if ($udid === null) {
+					$udid = Str::uuid()
+						->toString();
+				}
+
+				return $this->player()
+					->create([
+						'name' => $this->name,
+						'udid' => $udid
+					]);
+			});
 	}
 
 	public function gjp2(): HasOne
@@ -38,7 +57,18 @@ class Account extends Model implements MustVerifyEmailContract
 
 	public function setting(): HasOne
 	{
-		return $this->hasOne(AccountSetting::class);
+		return $this->hasOne(AccountSetting::class)
+			->withDefault(function () {
+				return $this->setting()
+					->create([
+						'message_state' => GeometryDashAccountSettingMessageStates::ALL->value,
+						'friend_request_state' => GeometryDashAccountSettingFriendRequestStates::ALL->value,
+						'comment_history_state' => GeometryDashAccountSettingCommentHistoryStates::ALL->value,
+						'youtube' => '',
+						'twitter' => '',
+						'twitch' => ''
+					]);
+			});
 	}
 
 	public function comments(): HasMany

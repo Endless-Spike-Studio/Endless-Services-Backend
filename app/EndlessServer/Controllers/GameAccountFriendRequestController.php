@@ -107,11 +107,6 @@ readonly class GameAccountFriendRequestController
 					$targetAccount = $friendRequest->targetAccount;
 				}
 
-				$targetAccountPlayer = $this->accountService->queryAccountPlayer($targetAccount);
-
-				$this->playerDataService->initialize($targetAccountPlayer->id);
-				$this->playerStatisticService->initialize($targetAccountPlayer->id);
-
 				$comment = null;
 
 				if ($friendRequest->comment !== null) {
@@ -119,14 +114,14 @@ readonly class GameAccountFriendRequestController
 				}
 
 				return $this->objectService->merge([
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_NAME->value => $targetAccountPlayer->name,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_USER_ID->value => $targetAccountPlayer->id,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_ID->value => $targetAccountPlayer->data->icon_id,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_COLOR_ID->value => $targetAccountPlayer->data->color1,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_SECOND_COLOR_ID->value => $targetAccountPlayer->data->color2,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_TYPE->value => $targetAccountPlayer->data->icon_type,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_SPECIAL->value => $targetAccountPlayer->data->special,
-					GeometryDashAccountFriendRequestObjectDefinition::TARGET_UUID->value => $targetAccountPlayer->uuid,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_NAME->value => $targetAccount->player->name,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_USER_ID->value => $targetAccount->player->id,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_ID->value => $targetAccount->player->data->icon_id,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_COLOR_ID->value => $targetAccount->player->data->color1,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_SECOND_COLOR_ID->value => $targetAccount->player->data->color2,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_ICON_TYPE->value => $targetAccount->player->data->icon_type,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_SPECIAL->value => $targetAccount->player->data->special,
+					GeometryDashAccountFriendRequestObjectDefinition::TARGET_UUID->value => $targetAccount->player->uuid,
 					GeometryDashAccountFriendRequestObjectDefinition::ID->value => $friendRequest->id,
 					GeometryDashAccountFriendRequestObjectDefinition::COMMENT->value => $comment,
 					GeometryDashAccountFriendRequestObjectDefinition::AGE->value => $friendRequest->created_at->diffForHumans(syntax: true),

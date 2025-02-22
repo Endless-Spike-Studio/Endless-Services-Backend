@@ -58,11 +58,9 @@ readonly class GameAccountController
 			return GeometryDashResponses::ACCOUNT_LOGIN_FAILED_WRONG_PASSWORD->value;
 		}
 
-		$player = $this->service->queryAccountPlayer($account, $data['udid']);
-
 		return implode(',', [
 			$account->id,
-			$player->id
+			$account->player->id
 		]);
 	}
 
