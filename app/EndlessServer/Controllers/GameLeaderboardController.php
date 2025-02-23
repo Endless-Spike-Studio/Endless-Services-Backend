@@ -6,9 +6,9 @@ use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Exceptions\EndlessServerGameException;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Player;
+use App\EndlessServer\Objects\GameLeaderboardObject;
 use App\EndlessServer\Repositories\AccountFriendRepository;
 use App\EndlessServer\Requests\GameLeaderboardListRequest;
-use App\EndlessServer\Responses\GameLeaderboardObjectResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePlayerDataService;
 use App\EndlessServer\Services\GamePlayerStatisticService;
@@ -101,7 +101,10 @@ readonly class GameLeaderboardController
 
 		return $query->get()
 			->map(function (Player $player, int $index) use ($request) {
-				return new GameLeaderboardObjectResponse($player, $index + 1)->toResponse($request);
-			})->join(GeometryDashLeaderboardObjectDefinitions::SEPARATOR);
+				return new GameLeaderboardObject($player, $index + 1)->except([
+					GeometryDashLeaderboardObjectDefinitions::AGE->value
+				])->merge();
+			})
+			->join(GeometryDashLeaderboardObjectDefinitions::SEPARATOR);
 	}
 }

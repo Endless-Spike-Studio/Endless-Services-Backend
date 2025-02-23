@@ -5,15 +5,16 @@ namespace App\EndlessServer\Controllers;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountMessage;
+use App\EndlessServer\Objects\GameMessageObject;
 use App\EndlessServer\Requests\GameAccountMessageDeleteRequest;
 use App\EndlessServer\Requests\GameAccountMessageDownloadRequest;
 use App\EndlessServer\Requests\GameAccountMessageListRequest;
 use App\EndlessServer\Requests\GameAccountMessageSendRequest;
-use App\EndlessServer\Responses\GameMessageObjectResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\GeometryDashXorKeys;
+use App\GeometryDash\Enums\Objects\GeometryDashMessageObjectDefinition;
 use App\GeometryDash\Services\GeometryDashAlgorithmService;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Base64Url\Base64Url;
@@ -79,7 +80,9 @@ readonly class GameMessageController
 
 		return implode('#', [
 			$paginate->items->map(function (AccountMessage $message) use ($getSent, $request) {
-				return new GameMessageObjectResponse($message, $getSent)->toResponse($request);
+				return new GameMessageObject($message, $getSent)->except([
+					GeometryDashMessageObjectDefinition::BODY->value
+				])->merge();
 			})->join('|'),
 			$paginate->info
 		]);
@@ -109,7 +112,7 @@ readonly class GameMessageController
 			]);
 		}
 
-		return new GameMessageObjectResponse($message, $getSent)->toResponse($request);
+		return new GameMessageObject($message, $getSent)->merge();
 	}
 
 	public function delete(GameAccountMessageDeleteRequest $request): int

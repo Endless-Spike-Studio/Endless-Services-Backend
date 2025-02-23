@@ -5,6 +5,7 @@ namespace App\EndlessProxy\Services;
 use App\EndlessProxy\Exceptions\SongResolveException;
 use App\EndlessProxy\Jobs\FetchSongDataJob;
 use App\EndlessProxy\Models\NewgroundsSong;
+use App\EndlessProxy\Objects\GameSongObject;
 use App\GeometryDash\Enums\GeometryDashSecrets;
 use App\GeometryDash\Enums\Objects\GeometryDashSongObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
@@ -136,13 +137,6 @@ readonly class NewgroundsAudioProxyService
 
 	public function toObject(NewgroundsSong $song): string
 	{
-		return $this->object->merge([
-			GeometryDashSongObjectDefinitions::ID->value => $song->song_id,
-			GeometryDashSongObjectDefinitions::NAME->value => $song->name,
-			GeometryDashSongObjectDefinitions::ARTIST_ID->value => $song->artist_id,
-			GeometryDashSongObjectDefinitions::ARTIST_NAME->value => $song->artist_name,
-			GeometryDashSongObjectDefinitions::SIZE->value => $song->size,
-			GeometryDashSongObjectDefinitions::DOWNLOAD_URL->value => $song->download_url
-		], GeometryDashSongObjectDefinitions::GLUE);
+		return new GameSongObject($song)->merge();
 	}
 }

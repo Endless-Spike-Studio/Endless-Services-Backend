@@ -6,12 +6,12 @@ use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountFriend;
 use App\EndlessServer\Models\AccountFriendRequest;
+use App\EndlessServer\Objects\GameAccountFriendRequestObject;
 use App\EndlessServer\Requests\GameAccountFriendRequestAcceptRequest;
 use App\EndlessServer\Requests\GameAccountFriendRequestDeleteRequest;
 use App\EndlessServer\Requests\GameAccountFriendRequestListRequest;
 use App\EndlessServer\Requests\GameAccountFriendRequestReadRequest;
 use App\EndlessServer\Requests\GameAccountFriendRequestSendRequest;
-use App\EndlessServer\Responses\GameAccountFriendRequestObjectResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\EndlessServer\Services\GamePlayerDataService;
@@ -99,7 +99,7 @@ readonly class GameAccountFriendRequestController
 
 		return implode(GeometryDashAccountFriendRequestObjectDefinition::SEGMENTATION, [
 			$paginate->items->map(function (AccountFriendRequest $friendRequest) use ($getSent, $request) {
-				return new GameAccountFriendRequestObjectResponse($friendRequest, $getSent)->toResponse($request);
+				return new GameAccountFriendRequestObject($friendRequest, $getSent)->merge();
 			})->join(GeometryDashAccountFriendRequestObjectDefinition::SEPARATOR),
 			$paginate->info
 		]);

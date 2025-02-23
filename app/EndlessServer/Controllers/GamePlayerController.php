@@ -3,14 +3,15 @@
 namespace App\EndlessServer\Controllers;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
+use App\EndlessServer\Exceptions\EndlessServerGameException;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountBlocklist;
 use App\EndlessServer\Models\Player;
+use App\EndlessServer\Objects\GamePlayerInfoObject;
 use App\EndlessServer\Repositories\AccountFriendRepository;
 use App\EndlessServer\Requests\GamePlayerInfoFetchRequest;
 use App\EndlessServer\Requests\GamePlayerListRequest;
 use App\EndlessServer\Requests\GamePlayerSearchRequest;
-use App\EndlessServer\Responses\GamePlayerInfoObjectResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GameAccountSettingService;
 use App\EndlessServer\Services\GamePaginationService;
@@ -18,6 +19,7 @@ use App\EndlessServer\Services\GamePlayerDataService;
 use App\EndlessServer\Services\GamePlayerStatisticService;
 use App\GeometryDash\Enums\GeometryDashPlayerListTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
+use App\GeometryDash\Enums\Objects\GeometryDashPlayerInfoObjectDefinitions;
 use App\GeometryDash\Services\GeometryDashObjectService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -83,7 +85,18 @@ readonly class GamePlayerController
 
 		return $query->get()
 			->map(function (Player $player) use ($request) {
-				return new GamePlayerInfoObjectResponse($player)->toResponse($request);
+				return new GamePlayerInfoObject($player)->only([
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_NAME->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_ID->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_ICON_ID->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_COLOR_1->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_COLOR_2->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_ICON_TYPE->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_SPECIAL->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_UUID->value,
+					GeometryDashPlayerInfoObjectDefinitions::ACCOUNT_MESSAGE_STATE->value,
+					GeometryDashPlayerInfoObjectDefinitions::ACCOUNT_HAS_NEW_FRIEND_REQUEST->value
+				])->merge();
 			})->join('|');
 	}
 
@@ -112,12 +125,30 @@ readonly class GamePlayerController
 
 		return implode('#', [
 			$paginate->items->map(function (Player $player) use ($request) {
-				return new GamePlayerInfoObjectResponse($player)->toResponse($request);
+				return new GamePlayerInfoObject($player)->only([
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_NAME->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_ID->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_STARS->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_DEMONS->value,
+					GeometryDashPlayerInfoObjectDefinitions::RANKING->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_CREATOR_POINTS->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_ICON_ID->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_COLOR_1->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_COLOR_2->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_COINS->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_ICON_TYPE->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_SPECIAL->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_UUID->value,
+					GeometryDashPlayerInfoObjectDefinitions::PLAYER_USER_COINS->value
+				])->merge();
 			})->join('|'),
 			$paginate->info
 		]);
 	}
 
+	/**
+	 * @throws EndlessServerGameException
+	 */
 	public function info(GamePlayerInfoFetchRequest $request): int|string
 	{
 		$data = $request->validated();
@@ -131,6 +162,8 @@ readonly class GamePlayerController
 			->where('id', $data['targetAccountID'])
 			->first();
 
-		return new GamePlayerInfoObjectResponse($targetAccount->player, $account->player)->toResponse($request);
+		return new GamePlayerInfoObject($targetAccount->player, $account->player)->except([
+			GeometryDashPlayerInfoObjectDefinitions::PLAYER_STREAK_ID->value
+		])->merge();
 	}
 }

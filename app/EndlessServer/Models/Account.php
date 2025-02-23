@@ -34,21 +34,18 @@ class Account extends Model implements MustVerifyEmailContract
 
 	public function player(): HasOne
 	{
+		$udid = Request::get('udid');
+
+		if ($udid === null) {
+			$udid = Str::uuid()
+				->toString();
+		}
+
 		return $this->hasOne(Player::class, 'uuid')
-			->withDefault(function (Player $player) {
-				$udid = Request::get('udid');
-
-				if ($udid === null) {
-					$udid = Str::uuid()
-						->toString();
-				}
-
-				$player->update([
-					'name' => $this->name,
-					'uuid' => $this->id,
-					'udid' => $udid
-				]);
-			});
+			->withDefault([
+				'name' => $this->name,
+				'udid' => $udid
+			]);
 	}
 
 	public function gjp2(): HasOne
@@ -107,6 +104,12 @@ class Account extends Model implements MustVerifyEmailContract
 	public function modLevel(): Attribute
 	{
 		return new Attribute(function () {
+			$this->loadCount('roles');
+
+			if ($this->roles_count <= 0) {
+				return null;
+			}
+
 			return min($this->roles->max(fn($role) => $role->mod_level), 2);
 		});
 	}
@@ -114,6 +117,12 @@ class Account extends Model implements MustVerifyEmailContract
 	public function commentColor(): Attribute
 	{
 		return new Attribute(function () {
+			$this->loadCount('roles');
+
+			if ($this->roles_count <= 0) {
+				return null;
+			}
+
 			return $this->roles()
 				->latest()
 				->value('comment_color');
