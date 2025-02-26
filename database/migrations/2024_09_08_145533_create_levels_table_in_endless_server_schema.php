@@ -2,6 +2,7 @@
 
 use App\EndlessServer\Models\Level;
 use App\EndlessServer\Models\Player;
+use App\GeometryDash\Enums\GeometryDashAudioTrackIds;
 use App\GeometryDash\Enums\GeometryDashLevelCoinCounts;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
 use App\GeometryDash\Enums\GeometryDashLevelRatingStars;
@@ -18,19 +19,20 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(Player::class);
+			$table->integer('game_version');
 			$table->string('name');
 			$table->string('description')->nullable();
 			$table->integer('version');
 			$table->forEnum('length', GeometryDashLevelLengths::class);
-			$table->integer('audio_track_id')->nullable();
+			$table->forEnum('audio_track_id', GeometryDashAudioTrackIds::class)->nullable();
 			$table->integer('password')->nullable();
 			$table->foreignIdFor(Level::class, 'original_level_id');
-			$table->boolean('2p_mode');
-			$table->integer('objects');
+			$table->boolean('two_player_mode_enabled');
+			$table->unsignedSmallInteger('objects');
 			$table->forEnum('coins', GeometryDashLevelCoinCounts::class);
 			$table->forEnum('requested_stars', GeometryDashLevelRatingStars::class);
 			$table->forEnum('unlisted_type', GeometryDashLevelUnlistedTypes::class);
-			$table->boolean('ldm_mode');
+			$table->boolean('ldm_enabled');
 			$table->integer('editor_time')->nullable();
 			$table->integer('previous_editor_time')->nullable();
 			$table->string('extra')->nullable();

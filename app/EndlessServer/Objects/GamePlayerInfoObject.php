@@ -224,7 +224,7 @@ readonly class GamePlayerInfoObject extends GameObject
 
 				return AccountMessage::query()
 					->where('target_account_id', $this->model->account->id)
-					->where('readed', false)
+					->where('new', true)
 					->count();
 			},
 			GeometryDashPlayerInfoObjectDefinitions::ACCOUNT_NEW_FRIEND_REQUEST_COUNT->value => function () {
@@ -237,7 +237,7 @@ readonly class GamePlayerInfoObject extends GameObject
 				}
 
 				return $this->model->account->receiveFriendRequests()
-					->where('readed', false)
+					->where('new', true)
 					->count();
 			},
 			GeometryDashPlayerInfoObjectDefinitions::ACCOUNT_NEW_FRIEND_COUNT->value => function () {
@@ -250,7 +250,7 @@ readonly class GamePlayerInfoObject extends GameObject
 				}
 
 				return $this->model->account->friends()
-					->where('readed', false)
+					->where('new', true)
 					->count();
 			},
 			GeometryDashPlayerInfoObjectDefinitions::ACCOUNT_HAS_NEW_FRIEND_REQUEST->value => function () {
@@ -263,7 +263,7 @@ readonly class GamePlayerInfoObject extends GameObject
 				}
 
 				return $this->model->account->receiveFriendRequests()
-					->where('readed', false)
+					->where('new', true)
 					->exists();
 			},
 			GeometryDashPlayerInfoObjectDefinitions::PLAYER_SPIDER_ID->value => function () {

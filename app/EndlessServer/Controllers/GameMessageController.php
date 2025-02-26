@@ -56,7 +56,7 @@ readonly class GameMessageController
 				'target_account_id' => $targetAccount->id,
 				'subject' => Base64Url::decode($data['subject']),
 				'body' => $this->algorithmService->xor(Base64Url::decode($data['body']), GeometryDashXorKeys::MESSAGE->value),
-				'readed' => false
+				'new' => true
 			]);
 
 		return GeometryDashResponses::ACCOUNT_MESSAGE_SEND_SUCCESS->value;
@@ -108,7 +108,7 @@ readonly class GameMessageController
 
 		if (!$getSent) {
 			$message->update([
-				'readed' => true
+				'new' => false
 			]);
 		}
 

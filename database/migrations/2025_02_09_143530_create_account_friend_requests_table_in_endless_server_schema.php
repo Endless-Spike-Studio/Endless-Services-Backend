@@ -15,7 +15,7 @@ return new class extends Migration {
 			$table->foreignIdFor(Account::class);
 			$table->foreignIdFor(Account::class, 'target_account_id');
 			$table->text('comment')->nullable();
-			$table->boolean('readed');
+			$table->boolean('new');
 			$table->timestamps();
 		});
 	}

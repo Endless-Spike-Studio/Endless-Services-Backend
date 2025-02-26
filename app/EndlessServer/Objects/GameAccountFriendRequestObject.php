@@ -60,7 +60,7 @@ readonly class GameAccountFriendRequestObject extends GameObject
 				return $this->model->created_at->diffForHumans(syntax: true);
 			},
 			GeometryDashAccountFriendRequestObjectDefinition::IS_NEW->value => function () {
-				return !$this->model->readed;
+				return $this->model->new;
 			}
 		];
 	}

@@ -46,7 +46,7 @@ readonly class GameMessageObject extends GameObject
 				return $this->model->created_at->diffForHumans(syntax: true);
 			},
 			GeometryDashMessageObjectDefinition::IS_READ->value => function () {
-				return $this->model->readed;
+				return !$this->model->new;
 			},
 			GeometryDashMessageObjectDefinition::IS_SENDER->value => function () {
 				return $this->getSent;

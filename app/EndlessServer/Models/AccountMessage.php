@@ -9,7 +9,7 @@ class AccountMessage extends Model
 {
 	protected $table = 'endless_server.account_messages';
 
-	protected $fillable = ['target_account_id', 'subject', 'body', 'readed'];
+	protected $fillable = ['target_account_id', 'subject', 'body', 'new'];
 
 	public function account(): BelongsTo
 	{
@@ -24,7 +24,7 @@ class AccountMessage extends Model
 	protected function casts(): array
 	{
 		return [
-			'readed' => 'boolean'
+			'new' => 'boolean'
 		];
 	}
 }

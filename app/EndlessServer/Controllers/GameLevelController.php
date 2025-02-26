@@ -44,6 +44,7 @@ readonly class GameLevelController
 
 		$attributes = [
 			'player_id' => $player->id,
+			'game_version' => $data['gameVersion'],
 			'name' => $data['levelName'],
 			'description' => $description,
 			'version' => $data['levelVersion'],
@@ -51,12 +52,12 @@ readonly class GameLevelController
 			'audio_track_id' => $data['audioTrack'],
 			'password' => $data['password'],
 			'original_level_id' => $data['original'],
-			'2p_mode' => $data['twoPlayer'],
+			'two_player_mode_enabled' => $data['twoPlayer'],
 			'objects' => $data['objects'],
 			'coins' => $data['coins'],
 			'requested_stars' => $data['requestedStars'],
 			'unlisted_type' => $data['unlisted'],
-			'ldm_mode' => $data['ldm'],
+			'ldm_enabled' => $data['ldm'],
 			'editor_time' => $data['wt'],
 			'previous_editor_time' => $data['wt2'],
 			'extra' => $data['extraString'],

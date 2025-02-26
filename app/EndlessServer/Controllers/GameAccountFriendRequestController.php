@@ -64,7 +64,7 @@ readonly class GameAccountFriendRequestController
 			->create([
 				'target_account_id' => $targetAccount->id,
 				'comment' => $comment,
-				'readed' => false
+				'new' => true
 			]);
 
 		return GeometryDashResponses::ACCOUNT_FRIEND_REQUEST_SEND_SUCCESS->value;
@@ -115,7 +115,7 @@ readonly class GameAccountFriendRequestController
 		$account->receiveFriendRequests()
 			->where('id', $data['requestID'])
 			->update([
-				'readed' => true
+				'new' => false
 			]);
 
 		return GeometryDashResponses::ACCOUNT_FRIEND_REQUEST_READ_SUCCESS->value;
@@ -143,7 +143,7 @@ readonly class GameAccountFriendRequestController
 				'target_account_id' => $friendRequest->account_id,
 				'comment' => $friendRequest->comment,
 				'alias' => null,
-				'readed' => false
+				'new' => true
 			]);
 
 		$friendRequest->delete();

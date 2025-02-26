@@ -9,7 +9,7 @@ class AccountFriend extends Model
 {
 	protected $table = 'endless_server.account_friends';
 
-	protected $fillable = ['account_id', 'target_account_id', 'comment', 'alias', 'readed'];
+	protected $fillable = ['account_id', 'target_account_id', 'comment', 'alias', 'new'];
 
 	public function account(): BelongsTo
 	{

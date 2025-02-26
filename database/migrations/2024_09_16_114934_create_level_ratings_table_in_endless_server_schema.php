@@ -3,6 +3,7 @@
 use App\EndlessServer\Models\Level;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDemonDifficulties;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
+use App\GeometryDash\Enums\GeometryDashLevelRatingEpicTypes;
 use App\GeometryDash\Enums\GeometryDashLevelRatingStars;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,11 +20,9 @@ return new class extends Migration {
 			$table->forEnum('difficulty', GeometryDashLevelRatingDifficulties::class);
 			$table->forEnum('stars', GeometryDashLevelRatingStars::class);
 			$table->boolean('coin_verified');
-			$table->integer('featured_score');
-			$table->integer('epic_mode');
-			$table->boolean('auto');
-			$table->boolean('demon');
-			$table->forEnum('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::class);
+			$table->unsignedInteger('featured_score');
+			$table->forEnum('epic_type', GeometryDashLevelRatingEpicTypes::class);
+			$table->forEnum('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::class)->nullable();
 			$table->timestamps();
 		});
 	}

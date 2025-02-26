@@ -14,7 +14,7 @@ class Level extends Model
 {
 	protected $table = 'endless_server.levels';
 
-	protected $fillable = ['player_id', 'name', 'description', 'version', 'length', 'audio_track_id', 'password', 'original_level_id', '2p_mode', 'objects', 'coins', 'requested_stars', 'unlisted_type', 'ldm_mode', 'editor_time', 'previous_editor_time', 'extra', 'replay', 'verification_time'];
+	protected $fillable = ['player_id', 'name', 'description', 'version', 'length', 'audio_track_id', 'password', 'original_level_id', 'two_player_mode_enabled', 'objects', 'coins', 'requested_stars', 'unlisted_type', 'ldm_enabled', 'editor_time', 'previous_editor_time', 'extra', 'replay', 'verification_time'];
 
 	public function player(): BelongsTo
 	{
@@ -45,10 +45,10 @@ class Level extends Model
 	{
 		return [
 			'length' => GeometryDashLevelLengths::class,
-			'2p_mode' => 'boolean',
+			'two_player_mode_enabled' => 'boolean',
 			'coins' => GeometryDashLevelCoinCounts::class,
 			'requested_stars' => GeometryDashLevelRatingStars::class,
-			'ldm_mode' => 'boolean'
+			'ldm_enabled' => 'boolean'
 		];
 	}
 }
