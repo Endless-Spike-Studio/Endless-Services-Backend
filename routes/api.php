@@ -1,6 +1,7 @@
 <?php
 
 use App\Base\Controllers\UserController;
+use App\Base\Controllers\WebsocketController;
 use App\EndlessProxy\Controllers\GameAccountDataProxyController as EndlessProxyGameAccountDataProxyController;
 use App\EndlessProxy\Controllers\GameApiProxyController as EndlessProxyGameApiProxyController;
 use App\EndlessProxy\Controllers\GameCustomContentProxyController as EndlessProxyGameCustomContentProxyController;
@@ -29,6 +30,8 @@ use Illuminate\Support\Facades\Route;
 Route::group([
 	'prefix' => 'Base'
 ], function () {
+	Route::get('/websocket', [WebsocketController::class, 'getInfo']);
+
 	Route::group([
 		'prefix' => 'User'
 	], function () {
@@ -41,11 +44,22 @@ Route::group([
 	'prefix' => 'EndlessProxy'
 ], function () {
 	Route::group([
+		'prefix' => 'call_counter'
+	], function () {
+		Route::get('/websocket', [EndlessProxyGameApiProxyController::class, 'getCallCounterWebsocketInfo']);
+		Route::get('/current', [EndlessProxyGameApiProxyController::class, 'getCallCount']);
+	});
+
+	Route::group([
+		'prefix' => 'network_log'
+	], function () {
+		Route::get('/websocket', [EndlessProxyGameApiProxyController::class, 'getNetworkLogWebsocketInfo']);
+		Route::get('/item/{key}', [EndlessProxyGameApiProxyController::class, 'fetchNetworkLog']);
+	});
+
+	Route::group([
 		'prefix' => 'GeometryDash'
 	], function () {
-		Route::get('/network/websocket', [EndlessProxyGameApiProxyController::class, 'getNetworkWebsocketInfo']);
-		Route::get('/network/{key}', [EndlessProxyGameApiProxyController::class, 'pullNetwork']);
-
 		Route::post('/getAccountURL.php', [EndlessProxyGameAccountDataProxyController::class, 'base']);
 
 		Route::group([

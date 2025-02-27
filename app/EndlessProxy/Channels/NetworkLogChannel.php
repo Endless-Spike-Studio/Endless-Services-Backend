@@ -5,7 +5,7 @@ namespace App\EndlessProxy\Channels;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Support\Facades\Request;
 
-class NetworkChannel extends Channel
+class NetworkLogChannel extends Channel
 {
 	public function __construct()
 	{
