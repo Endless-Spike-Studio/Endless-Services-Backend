@@ -58,7 +58,7 @@ readonly class GameAccountCommentController
 					GeometryDashCommentObjectDefinitions::AGE->value
 				])->merge();
 			})->join(GeometryDashCommentObjectDefinitions::SEPARATOR),
-			$paginate->info
+			$paginate->info()
 		]);
 	}
 

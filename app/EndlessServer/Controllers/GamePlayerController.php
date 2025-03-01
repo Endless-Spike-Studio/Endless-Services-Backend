@@ -97,7 +97,7 @@ readonly class GamePlayerController
 					GeometryDashPlayerInfoObjectDefinitions::ACCOUNT_MESSAGE_STATE->value,
 					GeometryDashPlayerInfoObjectDefinitions::ACCOUNT_HAS_NEW_FRIEND_REQUEST->value
 				])->merge();
-			})->join('|');
+			})->join(GeometryDashPlayerInfoObjectDefinitions::SEPARATOR);
 	}
 
 	public function search(GamePlayerSearchRequest $request): string
@@ -123,7 +123,7 @@ readonly class GamePlayerController
 			return GeometryDashResponses::PLAYER_SEARCH_FAILED_EMPTY->value;
 		}
 
-		return implode('#', [
+		return implode(GeometryDashPlayerInfoObjectDefinitions::SEGMENTATION, [
 			$paginate->items->map(function (Player $player) use ($request) {
 				return new GamePlayerInfoObject($player)->only([
 					GeometryDashPlayerInfoObjectDefinitions::PLAYER_NAME->value,
@@ -141,8 +141,8 @@ readonly class GamePlayerController
 					GeometryDashPlayerInfoObjectDefinitions::PLAYER_UUID->value,
 					GeometryDashPlayerInfoObjectDefinitions::PLAYER_USER_COINS->value
 				])->merge();
-			})->join('|'),
-			$paginate->info
+			})->join(GeometryDashPlayerInfoObjectDefinitions::SEPARATOR),
+			$paginate->info()
 		]);
 	}
 

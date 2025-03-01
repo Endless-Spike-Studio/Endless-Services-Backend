@@ -5,6 +5,7 @@ namespace App\GeometryDash\Enums\Objects;
 enum GeometryDashLevelObjectDefinitions: int
 {
 	public const string GLUE = ':';
+	public const string SEPARATOR = '|';
 
 	case ID = 1;
 	case NAME = 2;

@@ -49,7 +49,7 @@ readonly class GameSongController
 					GeometryDashSongObjectDefinitions::ARTIST_NAME->value => $song->artist_name
 				], ':');
 			})->join('|'),
-			$paginate->info
+			$paginate->info()
 		]);
 	}
 

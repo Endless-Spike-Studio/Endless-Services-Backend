@@ -3,6 +3,7 @@
 namespace App\EndlessServer\Controllers;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
+use App\EndlessServer\Exceptions\EndlessServerGameException;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountMessage;
 use App\EndlessServer\Objects\GameMessageObject;
@@ -10,6 +11,7 @@ use App\EndlessServer\Requests\GameAccountMessageDeleteRequest;
 use App\EndlessServer\Requests\GameAccountMessageDownloadRequest;
 use App\EndlessServer\Requests\GameAccountMessageListRequest;
 use App\EndlessServer\Requests\GameAccountMessageSendRequest;
+use App\EndlessServer\Responses\GameMessageListQueryResultResponse;
 use App\EndlessServer\Services\GameAccountService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashResponses;
@@ -78,13 +80,13 @@ readonly class GameMessageController
 			return GeometryDashResponses::ACCOUNT_MESSAGE_LIST_FAILED_EMPTY->value;
 		}
 
-		return implode('#', [
+		return implode(GeometryDashMessageObjectDefinition::SEGMENTATION, [
 			$paginate->items->map(function (AccountMessage $message) use ($getSent, $request) {
 				return new GameMessageObject($message, $getSent)->except([
 					GeometryDashMessageObjectDefinition::BODY->value
 				])->merge();
-			})->join('|'),
-			$paginate->info
+			})->join(GeometryDashMessageObjectDefinition::SEPARATOR),
+			$paginate->info()
 		]);
 	}
 

@@ -101,7 +101,7 @@ readonly class GameAccountFriendRequestController
 			$paginate->items->map(function (AccountFriendRequest $friendRequest) use ($getSent, $request) {
 				return new GameAccountFriendRequestObject($friendRequest, $getSent)->merge();
 			})->join(GeometryDashAccountFriendRequestObjectDefinition::SEPARATOR),
-			$paginate->info
+			$paginate->info()
 		]);
 	}
 

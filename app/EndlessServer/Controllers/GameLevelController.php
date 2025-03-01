@@ -212,15 +212,11 @@ readonly class GameLevelController
 
 				$query->whereIn('player_id', $friendPlayerIDs);
 				break;
-			case GeometryDashLevelSearchTypes::WORLD_MOST_LIKED->value:
-				return GeometryDashResponses::LEVEL_SEARCH_FAILED_TYPE_CANNOT_IMPLEMENTED->value;
 			case GeometryDashLevelSearchTypes::HALL_OF_FAME->value:
 				$query->whereHas('rating', function (Builder $query) {
 					$query->where('epic_type', '!=', GeometryDashLevelRatingEpicTypes::NONE->value);
 				});
 				break;
-			case GeometryDashLevelSearchTypes::WORLD_FEATURED->value:
-				return GeometryDashResponses::LEVEL_SEARCH_FAILED_TYPE_CANNOT_IMPLEMENTED->value;
 			case GeometryDashLevelSearchTypes::DAILY_HISTORY->value:
 				// TODO
 				break;
@@ -378,7 +374,7 @@ readonly class GameLevelController
 				return new GameLevelObject($level)->except([
 					GeometryDashLevelObjectDefinitions::DATA->value
 				])->merge();
-			})->join('|'),
+			})->join(GeometryDashLevelObjectDefinitions::SEPARATOR),
 			$paginate->items->map(function (Level $level) {
 				return $level->player;
 			})->unique(function (Player $player) {
@@ -399,7 +395,7 @@ readonly class GameLevelController
 				->map(function (LevelSongMapping $mapping) {
 					return new GameSongObject($mapping->newgroundsSong);
 				})->join(':'),
-			$paginate->info,
+			$paginate->info(),
 			sha1(
 				$paginate->items->map(function (Level $level) {
 					return implode('', [

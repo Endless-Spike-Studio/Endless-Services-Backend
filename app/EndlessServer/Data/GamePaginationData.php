@@ -4,25 +4,24 @@ namespace App\EndlessServer\Data;
 
 use Illuminate\Support\Collection;
 
-class GamePaginationData
+readonly class GamePaginationData
 {
-	public string $info {
-		get {
-			return implode(':', [
-				$this->total,
-				max(0, $this->page - 1) * $this->perPage,
-				$this->perPage
-			]);
-		}
-	}
-
 	public function __construct(
-		readonly Collection $items,
-		readonly int        $total,
-		readonly int        $page,
-		readonly int        $perPage
+		public Collection $items,
+		public int        $total,
+		public int        $page,
+		public int        $perPage
 	)
 	{
 
+	}
+
+	public function info(): string
+	{
+		return implode(':', [
+			$this->total,
+			max(0, $this->page - 1) * $this->perPage,
+			$this->perPage
+		]);
 	}
 }
