@@ -168,7 +168,7 @@ Route::group([
 		Route::post('/unblockGJUser20.php', [EndlessServerGameAccountBlocklistController::class, 'delete']);
 
 		Route::post('/uploadGJLevel21.php', [EndlessServerGameLevelController::class, 'upload']);
-		// Route::post('/getGJLevels21.php', []);
+		Route::post('/getGJLevels21.php', [EndlessServerGameLevelController::class, 'search']);
 		// Route::post('/downloadGJLevel22.php', []);
 		// Route::post('/reportGJLevel.php', []);
 		// Route::post('/deleteGJLevelUser20.php', []);

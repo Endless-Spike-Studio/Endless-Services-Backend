@@ -2,20 +2,38 @@
 
 namespace App\EndlessServer\Controllers;
 
+use App\EndlessProxy\Objects\GameSongObject;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
+use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Level;
+use App\EndlessServer\Models\LevelSongMapping;
 use App\EndlessServer\Models\Player;
+use App\EndlessServer\Objects\GameLevelObject;
+use App\EndlessServer\Repositories\AccountFriendRepository;
+use App\EndlessServer\Requests\GameLevelSearchRequest;
 use App\EndlessServer\Requests\GameLevelUpdateDescriptionRequest;
 use App\EndlessServer\Requests\GameLevelUploadRequest;
 use App\EndlessServer\Services\GameLevelDataStorageService;
+use App\EndlessServer\Services\GamePaginationService;
+use App\GeometryDash\Enums\GeometryDashLevelRatingDemonDifficulties;
+use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
+use App\GeometryDash\Enums\GeometryDashLevelRatingEpicTypes;
+use App\GeometryDash\Enums\GeometryDashLevelSearchDifficulties;
+use App\GeometryDash\Enums\GeometryDashLevelSearchTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
+use App\GeometryDash\Enums\GeometryDashSalts;
+use App\GeometryDash\Enums\Objects\GeometryDashLevelObjectDefinitions;
+use App\GeometryDash\GeometryDashLevelSearchDemonFilters;
 use Base64Url\Base64Url;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 
 readonly class GameLevelController
 {
 	public function __construct(
-		protected GameLevelDataStorageService $storageService
+		protected GameLevelDataStorageService $storageService,
+		protected GamePaginationService       $paginationService,
+		protected AccountFriendRepository     $accountFriendRepository
 	)
 	{
 
@@ -116,5 +134,284 @@ readonly class GameLevelController
 		]);
 
 		return GeometryDashResponses::LEVEL_UPLOAD_DESCRIPTION_SUCCESS->value;
+	}
+
+	public function search(GameLevelSearchRequest $request): string
+	{
+		$data = $request->validated();
+
+		$query = Level::query();
+
+		switch ($data['type']) {
+			case GeometryDashLevelSearchTypes::SEARCH->value:
+				$query->where('name', 'LIKE', $data['str'] . '%');
+				break;
+			case GeometryDashLevelSearchTypes::MOST_DOWNLOADED->value:
+				// TODO
+				break;
+			case GeometryDashLevelSearchTypes::MOST_LIKED->value:
+				// TODO
+				break;
+			case GeometryDashLevelSearchTypes::TRENDING->value:
+				// TODO: order by likes desc
+				$query->where('created_at', '>=', now()->subDays(7));
+				break;
+			case GeometryDashLevelSearchTypes::RECENT->value:
+				$query->latest();
+				break;
+			case GeometryDashLevelSearchTypes::LIST_PLAYER->value:
+				/** @var Player $player */
+				$player = Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->user();
+
+				if (isset($data['local'])) {
+					$query->where('player_id', $player->id);
+				} else {
+					$query->where('player_id', $data['str']);
+				}
+				break;
+			case GeometryDashLevelSearchTypes::FEATURED->value:
+				$query->whereHas('rating', function (Builder $query) {
+					$query->where('featured_score', '>', 0);
+				});
+				break;
+			case GeometryDashLevelSearchTypes::MAGIC->value:
+				$query->where('objects', '>=', 65535);
+				break;
+			case GeometryDashLevelSearchTypes::MOD_SENT->value:
+				// TODO
+				break;
+			case GeometryDashLevelSearchTypes::LEVEL_LIST->value:
+				$levelIds = explode(',', $data['str']);
+				$query->whereIn('id', $levelIds);
+				break;
+			case GeometryDashLevelSearchTypes::AWARDED->value:
+				$query->whereHas('rating', function (Builder $query) {
+					$query->where('stars', '>', 0);
+				});
+				break;
+			case GeometryDashLevelSearchTypes::FOLLOWED->value:
+				$followedPlayerIds = explode(',', $data['followed']);
+				$query->whereIn('player_id', $followedPlayerIds);
+				break;
+			case GeometryDashLevelSearchTypes::FRIENDS->value:
+				/** @var ?Account $account */
+				$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+				if ($account === null) {
+					return GeometryDashResponses::LEVEL_SEARCH_FAILED_NO_LOGIN->value;
+				}
+
+				$friendAccountIDs = $this->accountFriendRepository->queryIdsByAccountId($account->id);
+
+				$friendPlayerIDs = Account::query()
+					->whereIn('id', $friendAccountIDs)
+					->get()
+					->map(function (Account $account) {
+						return $account->player->id;
+					});
+
+				$query->whereIn('player_id', $friendPlayerIDs);
+				break;
+			case GeometryDashLevelSearchTypes::WORLD_MOST_LIKED->value:
+				return GeometryDashResponses::LEVEL_SEARCH_FAILED_TYPE_CANNOT_IMPLEMENTED->value;
+			case GeometryDashLevelSearchTypes::HALL_OF_FAME->value:
+				$query->whereHas('rating', function (Builder $query) {
+					$query->where('epic_type', '!=', GeometryDashLevelRatingEpicTypes::NONE->value);
+				});
+				break;
+			case GeometryDashLevelSearchTypes::WORLD_FEATURED->value:
+				return GeometryDashResponses::LEVEL_SEARCH_FAILED_TYPE_CANNOT_IMPLEMENTED->value;
+			case GeometryDashLevelSearchTypes::DAILY_HISTORY->value:
+				// TODO
+				break;
+			case GeometryDashLevelSearchTypes::WEEKLY_HISTORY->value:
+				// TODO
+				break;
+			case GeometryDashLevelSearchTypes::LIST_LEVELS->value:
+				// TODO
+				break;
+		}
+
+		if (isset($data['diff'])) {
+			switch ($data['diff']) {
+				case GeometryDashLevelSearchDifficulties::NA->value:
+					$query->whereHas('rating', function (Builder $query) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::NA->value);
+					});
+					break;
+				case GeometryDashLevelSearchDifficulties::AUTO->value:
+					$query->whereHas('rating', function (Builder $query) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value);
+						$query->whereNull('demon_difficulty');
+					});
+					break;
+				case GeometryDashLevelSearchDifficulties::EASY->value:
+					$query->whereHas('rating', function (Builder $query) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::EASY->value);
+					});
+					break;
+				case GeometryDashLevelSearchDifficulties::NORMAL->value:
+					$query->whereHas('rating', function (Builder $query) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::NORMAL->value);
+					});
+					break;
+				case GeometryDashLevelSearchDifficulties::HARD->value:
+					$query->whereHas('rating', function (Builder $query) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::HARD->value);
+					});
+					break;
+				case GeometryDashLevelSearchDifficulties::HARDER->value:
+					$query->whereHas('rating', function (Builder $query) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::HARDER->value);
+					});
+					break;
+				case GeometryDashLevelSearchDifficulties::INSANE->value:
+					$query->whereHas('rating', function (Builder $query) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::INSANE->value);
+					});
+					break;
+				case GeometryDashLevelSearchDifficulties::DEMON->value:
+					$query->whereHas('rating', function (Builder $query) use ($data) {
+						$query->where('difficulty', GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value);
+						$query->whereNotNull('demon_difficulty');
+
+						if (isset($data['demon_filter'])) {
+							switch ($data['demon_filter']) {
+								case GeometryDashLevelSearchDemonFilters::EASY_DEMON->value:
+									$query->where('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::EASY->value);
+									break;
+								case GeometryDashLevelSearchDemonFilters::MEDIUM_DEMON->value:
+									$query->where('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::MEDIUM->value);
+									break;
+								case GeometryDashLevelSearchDemonFilters::HARD_DEMON->value:
+									$query->where('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::HARD->value);
+									break;
+								case GeometryDashLevelSearchDemonFilters::INSANE_DEMON->value:
+									$query->where('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::INSANE->value);
+									break;
+								case GeometryDashLevelSearchDemonFilters::EXTREME_DEMON->value:
+									$query->where('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::EXTREME->value);
+									break;
+							}
+						}
+					});
+					break;
+			}
+		}
+
+		if (isset($data['len'])) {
+			$query->where('length', $data['len']);
+		}
+
+		if (isset($data['star']) && $data['star'] > 0) {
+			$query->whereHas('rating', function (Builder $query) {
+				$query->where('stars', '>', 0);
+			});
+		}
+
+		if (isset($data['uncompleted']) && $data['uncompleted'] > 0) {
+			$completedLevelIds = $data['completedLevels'];
+			$query->whereNotIn('id', $completedLevelIds);
+		}
+
+		if (isset($data['onlyCompleted']) && $data['onlyCompleted'] > 0) {
+			$completedLevelIds = $data['completedLevels'];
+			$query->whereIn('id', $completedLevelIds);
+		}
+
+		if (isset($data['original']) && $data['original'] > 0) {
+			$query->whereNotNull('original_level_id');
+		}
+
+		if (isset($data['coins']) && $data['coins'] > 0) {
+			$query->where('coins', '>', 0);
+		}
+
+		if (isset($data['twoPlayer']) && $data['twoPlayer'] > 0) {
+			$query->where('two_player_mode_enabled', true);
+		}
+
+		if (isset($data['song'])) {
+			if (isset($data['customSong']) && $data['customSong'] > 0) {
+				$query->whereHas('songMappings', function (Builder $query) use ($data) {
+					$query->where('newground_song_id', $data['song']);
+				});
+			} else {
+				$query->where('audio_track_id', $data['song']);
+			}
+		}
+
+		if (isset($data['noStar']) && $data['noStar'] > 0) {
+			$query->whereHas('rating', function (Builder $query) {
+				$query->where('stars', '<=', 0);
+			});
+		}
+
+		if (isset($data['featured']) && $data['featured'] > 0) {
+			$query->whereHas('rating', function (Builder $query) {
+				$query->where('featured_score', '>', 0);
+			});
+		}
+
+		if (isset($data['epic']) && $data['epic'] > 0) {
+			$query->whereHas('rating', function (Builder $query) {
+				$query->where('epic_type', GeometryDashLevelRatingEpicTypes::EPIC->value);
+			});
+		}
+
+		if (isset($data['legendary']) && $data['legendary'] > 0) {
+			$query->whereHas('rating', function (Builder $query) {
+				$query->where('epic_type', GeometryDashLevelRatingEpicTypes::LEGENDARY->value);
+			});
+		}
+
+		if (isset($data['mythic']) && $data['mythic'] > 0) {
+			$query->whereHas('rating', function (Builder $query) {
+				$query->where('epic_type', GeometryDashLevelRatingEpicTypes::MYTHIC->value);
+			});
+		}
+
+		$paginate = $this->paginationService->generate($query, $data['page']);
+
+		return implode('#', [
+			$paginate->items->map(function (Level $level) {
+				return new GameLevelObject($level)->except([
+					GeometryDashLevelObjectDefinitions::DATA->value
+				])->merge();
+			})->join('|'),
+			$paginate->items->map(function (Level $level) {
+				return $level->player;
+			})->unique(function (Player $player) {
+				return $player->id;
+			})->map(function (Player $player) {
+				return implode(':', [
+					$player->id,
+					$player->name,
+					$player->uuid
+				]);
+			})->join('|'),
+			$paginate->items->map(function (Level $level) {
+				return $level->songMappings;
+			})->flatten()
+				->unique(function (LevelSongMapping $mapping) {
+					return $mapping->newgrounds_song_id;
+				})
+				->map(function (LevelSongMapping $mapping) {
+					return new GameSongObject($mapping->newgroundsSong);
+				})->join(':'),
+			$paginate->info,
+			sha1(
+				$paginate->items->map(function (Level $level) {
+					return implode('', [
+						substr($level->id, 0, 1),
+						substr($level->id, -1),
+						$level->rating->stars,
+						$level->coins->value,
+						$level->rating->coin_verified
+					]);
+				})->join('') .
+				GeometryDashSalts::LEVEL_UPLOAD_SEED->value
+			)
+		]);
 	}
 }

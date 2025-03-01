@@ -65,9 +65,13 @@ readonly class GameLevelObject extends GameObject
 				return 0; // TODO
 			},
 			GeometryDashLevelObjectDefinitions::LENGTH->value => function () {
-				return $this->model->length;
+				return $this->model->length->value;
 			},
 			GeometryDashLevelObjectDefinitions::IS_DEMON->value => function () {
+				if ($this->model->rating->difficulty !== GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value) {
+					return false;
+				}
+
 				return $this->model->rating->demon_difficulty !== null;
 			},
 			GeometryDashLevelObjectDefinitions::STARS->value => function () {
@@ -77,6 +81,10 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->rating->featured_score;
 			},
 			GeometryDashLevelObjectDefinitions::IS_AUTO->value => function () {
+				if ($this->model->rating->difficulty !== GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value) {
+					return false;
+				}
+
 				return $this->model->rating->demon_difficulty === null;
 			},
 			GeometryDashLevelObjectDefinitions::PASSWORD->value => function () {
@@ -104,13 +112,13 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->songMappings[0]->newgrounds_song_id;
 			},
 			GeometryDashLevelObjectDefinitions::COINS->value => function () {
-				return $this->model->coins;
+				return $this->model->coins->value;
 			},
 			GeometryDashLevelObjectDefinitions::IS_COIN_VERIFIED->value => function () {
 				return $this->model->rating->coin_verified;
 			},
 			GeometryDashLevelObjectDefinitions::REQUESTED_STARS->value => function () {
-				return $this->model->requested_stars;
+				return $this->model->requested_stars->value;
 			},
 			GeometryDashLevelObjectDefinitions::IS_LDM->value => function () {
 				return $this->model->ldm_enabled;

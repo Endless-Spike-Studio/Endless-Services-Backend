@@ -10,8 +10,8 @@ enum GeometryDashLevelRatingDifficulties: int
 	case HARD = 30;
 	case HARDER = 40;
 	case INSANE = 50;
-	case AUTO_AND_DEMON = 60;
+	case AUTO_OR_DEMON = 60;
 
-	public const GeometryDashLevelRatingDifficulties AUTO = GeometryDashLevelRatingDifficulties::AUTO_AND_DEMON;
-	public const GeometryDashLevelRatingDifficulties DEMON = GeometryDashLevelRatingDifficulties::AUTO_AND_DEMON;
+	public const GeometryDashLevelRatingDifficulties AUTO = GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON;
+	public const GeometryDashLevelRatingDifficulties DEMON = GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON;
 }

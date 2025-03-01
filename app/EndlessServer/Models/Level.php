@@ -4,6 +4,8 @@ namespace App\EndlessServer\Models;
 
 use App\GeometryDash\Enums\GeometryDashLevelCoinCounts;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
+use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
+use App\GeometryDash\Enums\GeometryDashLevelRatingEpicTypes;
 use App\GeometryDash\Enums\GeometryDashLevelRatingStars;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +16,7 @@ class Level extends Model
 {
 	protected $table = 'endless_server.levels';
 
-	protected $fillable = ['player_id', 'name', 'description', 'version', 'length', 'audio_track_id', 'password', 'original_level_id', 'two_player_mode_enabled', 'objects', 'coins', 'requested_stars', 'unlisted_type', 'ldm_enabled', 'editor_time', 'previous_editor_time', 'extra', 'replay', 'verification_time'];
+	protected $fillable = ['player_id', 'game_version', 'name', 'description', 'version', 'length', 'audio_track_id', 'password', 'original_level_id', 'two_player_mode_enabled', 'objects', 'coins', 'requested_stars', 'unlisted_type', 'ldm_enabled', 'editor_time', 'previous_editor_time', 'extra', 'replay', 'verification_time'];
 
 	public function player(): BelongsTo
 	{
@@ -23,7 +25,14 @@ class Level extends Model
 
 	public function rating(): HasOne
 	{
-		return $this->hasOne(LevelRating::class);
+		return $this->hasOne(LevelRating::class)->withDefault([
+			'difficulty' => GeometryDashLevelRatingDifficulties::NA->value,
+			'stars' => GeometryDashLevelRatingStars::__0->value,
+			'coin_verified' => false,
+			'featured_score' => 0,
+			'epic_type' => GeometryDashLevelRatingEpicTypes::NONE->value,
+			'demon_difficulty' => null
+		]);
 	}
 
 	public function originalLevel(): HasOne
