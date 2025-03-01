@@ -10,6 +10,8 @@ use App\EndlessServer\Models\LevelSongMapping;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Objects\GameLevelObject;
 use App\EndlessServer\Repositories\AccountFriendRepository;
+use App\EndlessServer\Requests\GameLevelDownloadRequest;
+use App\EndlessServer\Requests\GameLevelReportRequest;
 use App\EndlessServer\Requests\GameLevelSearchRequest;
 use App\EndlessServer\Requests\GameLevelUpdateDescriptionRequest;
 use App\EndlessServer\Requests\GameLevelUploadRequest;
@@ -24,6 +26,8 @@ use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\GeometryDashSalts;
 use App\GeometryDash\Enums\Objects\GeometryDashLevelObjectDefinitions;
 use App\GeometryDash\GeometryDashLevelSearchDemonFilters;
+use App\GeometryDash\Services\GeometryDashAlgorithmService;
+use App\GeometryDash\Services\GeometryDashObjectService;
 use Base64Url\Base64Url;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -31,9 +35,11 @@ use Illuminate\Support\Facades\Auth;
 readonly class GameLevelController
 {
 	public function __construct(
-		protected GameLevelDataStorageService $storageService,
-		protected GamePaginationService       $paginationService,
-		protected AccountFriendRepository     $accountFriendRepository
+		protected GameLevelDataStorageService  $storageService,
+		protected GamePaginationService        $paginationService,
+		protected AccountFriendRepository      $accountFriendRepository,
+		protected GeometryDashAlgorithmService $algorithmService,
+		protected GeometryDashObjectService    $objectService
 	)
 	{
 
@@ -107,6 +113,59 @@ readonly class GameLevelController
 		return $level->id;
 	}
 
+	public function report(GameLevelReportRequest $request): int
+	{
+		$data = $request->validated();
+
+		$level = Level::query()
+			->where('id', $data['levelID'])
+			->first();
+
+		$level->reports()
+			->create();
+
+		return GeometryDashResponses::LEVEL_REPORT_SUCCESS->value;
+	}
+
+	public function download(GameLevelDownloadRequest $request): string
+	{
+		$data = $request->validated();
+
+		/** @var Player $player */
+		$player = Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->user();
+
+		$level = Level::query()
+			->where('id', $data['levelID'])
+			->first();
+
+		$level->downloadRecords()
+			->updateOrCreate([
+				'player_id' => $player->id
+			]);
+
+		$levelObjectString = new GameLevelObject($level)->merge();
+		$levelObject = $this->objectService->split($levelObjectString, GeometryDashLevelObjectDefinitions::GLUE);
+
+		return implode('#', [
+			$levelObjectString,
+			$this->algorithmService->generateLevelDivided($levelObject[GeometryDashLevelObjectDefinitions::DATA->value], 40, 39),
+			sha1(
+				implode(',', [
+					$level->player_id,
+					$level->rating->stars,
+					(int)($level->rating->difficulty === GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value && $level->rating->demon_difficulty !== null),
+					$level->id,
+					(int)$level->rating->coin_verified,
+					$level->rating->featured_score,
+					$level->password,
+					0 // TODO: special ID
+				]) .
+				GeometryDashSalts::LEVEL->value
+			),
+			config('app.name')
+		]);
+	}
+
 	public function updateDescription(GameLevelUpdateDescriptionRequest $request): int
 	{
 		$data = $request->validated();
@@ -147,7 +206,8 @@ readonly class GameLevelController
 				$query->where('name', 'LIKE', $data['str'] . '%');
 				break;
 			case GeometryDashLevelSearchTypes::MOST_DOWNLOADED->value:
-				// TODO
+				$query->withCount('downloadRecords');
+				$query->orderByDesc('download_records_count');
 				break;
 			case GeometryDashLevelSearchTypes::MOST_LIKED->value:
 				// TODO
@@ -406,7 +466,7 @@ readonly class GameLevelController
 						$level->rating->coin_verified
 					]);
 				})->join('') .
-				GeometryDashSalts::LEVEL_UPLOAD_SEED->value
+				GeometryDashSalts::LEVEL->value
 			)
 		]);
 	}

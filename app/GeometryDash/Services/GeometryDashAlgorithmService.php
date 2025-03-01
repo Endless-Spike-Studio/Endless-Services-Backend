@@ -31,4 +31,23 @@ class GeometryDashAlgorithmService
 	{
 		return sha1($password . GeometryDashSalts::GJP2->value);
 	}
+
+	public function generateLevelDivided(string $data, int $size, int $limit): string
+	{
+		$hash = 'aaaaa';
+		$dataLength = strlen($data);
+		$divided = (int)($dataLength / $size);
+
+		$times = 0;
+		for ($offset = 0; $offset < $dataLength; $offset += $divided) {
+			if ($times > $limit) {
+				break;
+			}
+
+			$hash[$times] = $data[$offset];
+			$times++;
+		}
+
+		return sha1($hash . GeometryDashSalts::LEVEL->value);
+	}
 }

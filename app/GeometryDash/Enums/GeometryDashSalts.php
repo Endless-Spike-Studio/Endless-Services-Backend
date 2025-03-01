@@ -4,7 +4,7 @@ namespace App\GeometryDash\Enums;
 
 enum GeometryDashSalts: string
 {
-	case LEVEL_UPLOAD_SEED = 'xI25fpAapCQg';
+	case LEVEL = 'xI25fpAapCQg';
 	case COMMENT_CHK = 'xPT6iUrtws0J';
 	case LIKE_AND_RATE_CHK = 'ysg6pUrtjn0J';
 	case UPDATE_PROFILE_CHK = 'xI35fsAapCRg';

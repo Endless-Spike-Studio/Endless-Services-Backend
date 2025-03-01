@@ -53,7 +53,8 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->rating->difficulty;
 			},
 			GeometryDashLevelObjectDefinitions::DOWNLOADS->value => function () {
-				return 0; // TODO
+				return $this->model->downloadRecords()
+					->count();
 			},
 			GeometryDashLevelObjectDefinitions::AUDIO_TRACK->value => function () {
 				return $this->model->audio_track_id;

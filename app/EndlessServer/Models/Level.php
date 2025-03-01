@@ -49,6 +49,16 @@ class Level extends Model
 		return $this->hasMany(LevelSoundEffectMapping::class);
 	}
 
+	public function downloadRecords(): HasMany
+	{
+		return $this->hasMany(LevelDownloadRecord::class);
+	}
+
+	public function reports(): HasMany
+	{
+		return $this->hasMany(LevelReport::class);
+	}
+
 	protected function casts(): array
 	{
 		return [
