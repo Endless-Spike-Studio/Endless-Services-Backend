@@ -118,7 +118,7 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->rating->coin_verified;
 			},
 			GeometryDashLevelObjectDefinitions::REQUESTED_STARS->value => function () {
-				return $this->model->requested_stars->value;
+				return $this->model->requested_stars;
 			},
 			GeometryDashLevelObjectDefinitions::IS_LDM->value => function () {
 				return $this->model->ldm_enabled;

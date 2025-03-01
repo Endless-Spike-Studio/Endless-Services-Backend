@@ -5,7 +5,6 @@ use App\EndlessServer\Models\Player;
 use App\GeometryDash\Enums\GeometryDashAudioTrackIds;
 use App\GeometryDash\Enums\GeometryDashLevelCoinCounts;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
-use App\GeometryDash\Enums\GeometryDashLevelRatingStars;
 use App\GeometryDash\Enums\GeometryDashLevelUnlistedTypes;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,7 +29,7 @@ return new class extends Migration {
 			$table->boolean('two_player_mode_enabled');
 			$table->unsignedSmallInteger('objects');
 			$table->forEnum('coins', GeometryDashLevelCoinCounts::class);
-			$table->forEnum('requested_stars', GeometryDashLevelRatingStars::class);
+			$table->unsignedInteger('requested_stars');
 			$table->forEnum('unlisted_type', GeometryDashLevelUnlistedTypes::class);
 			$table->boolean('ldm_enabled');
 			$table->integer('editor_time')->nullable();

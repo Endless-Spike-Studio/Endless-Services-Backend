@@ -6,7 +6,6 @@ use App\GeometryDash\Enums\GeometryDashLevelCoinCounts;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
 use App\GeometryDash\Enums\GeometryDashLevelRatingEpicTypes;
-use App\GeometryDash\Enums\GeometryDashLevelRatingStars;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,7 +26,7 @@ class Level extends Model
 	{
 		return $this->hasOne(LevelRating::class)->withDefault([
 			'difficulty' => GeometryDashLevelRatingDifficulties::NA->value,
-			'stars' => GeometryDashLevelRatingStars::__0->value,
+			'stars' => 0,
 			'coin_verified' => false,
 			'featured_score' => 0,
 			'epic_type' => GeometryDashLevelRatingEpicTypes::NONE->value,
@@ -56,7 +55,6 @@ class Level extends Model
 			'length' => GeometryDashLevelLengths::class,
 			'two_player_mode_enabled' => 'boolean',
 			'coins' => GeometryDashLevelCoinCounts::class,
-			'requested_stars' => GeometryDashLevelRatingStars::class,
 			'ldm_enabled' => 'boolean'
 		];
 	}
