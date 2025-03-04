@@ -10,6 +10,7 @@ use App\EndlessServer\Models\LevelSongMapping;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Objects\GameLevelObject;
 use App\EndlessServer\Repositories\AccountFriendRepository;
+use App\EndlessServer\Requests\GameLevelDeleteRequest;
 use App\EndlessServer\Requests\GameLevelDownloadRequest;
 use App\EndlessServer\Requests\GameLevelReportRequest;
 use App\EndlessServer\Requests\GameLevelSearchRequest;
@@ -469,5 +470,20 @@ readonly class GameLevelController
 				GeometryDashSalts::LEVEL->value
 			)
 		]);
+	}
+
+	public function delete(GameLevelDeleteRequest $request): int
+	{
+		$data = $request->validated();
+
+		/** @var Player $player */
+		$player = Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->user();
+
+		Level::query()
+			->where('player_id', $player->id)
+			->where('id', $data['levelID'])
+			->delete();
+
+		return GeometryDashResponses::LEVEL_DELETE_SUCCESS->value;
 	}
 }

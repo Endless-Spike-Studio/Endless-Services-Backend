@@ -171,7 +171,7 @@ Route::group([
 		Route::post('/getGJLevels21.php', [EndlessServerGameLevelController::class, 'search']);
 		Route::post('/downloadGJLevel22.php', [EndlessServerGameLevelController::class, 'download']);
 		Route::post('/reportGJLevel.php', [EndlessServerGameLevelController::class, 'report']);
-		// Route::post('/deleteGJLevelUser20.php', []);
+		Route::post('/deleteGJLevelUser20.php', [EndlessServerGameLevelController::class, 'delete']);
 		Route::post('/updateGJDesc20.php', [EndlessServerGameLevelController::class, 'updateDescription']);
 
 		// Route::post('/uploadGJComment21.php', []);
