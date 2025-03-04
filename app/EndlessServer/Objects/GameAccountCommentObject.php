@@ -3,6 +3,7 @@
 namespace App\EndlessServer\Objects;
 
 use App\EndlessServer\Models\AccountComment;
+use App\EndlessServer\Models\LevelComment;
 use App\GeometryDash\Enums\Objects\GeometryDashCommentObjectDefinitions;
 use App\GeometryDash\Objects\GameObject;
 use Base64Url\Base64Url;
@@ -10,7 +11,7 @@ use Base64Url\Base64Url;
 readonly class GameAccountCommentObject extends GameObject
 {
 	public function __construct(
-		protected AccountComment $model
+		protected AccountComment|LevelComment $model
 	)
 	{
 		parent::__construct(GeometryDashCommentObjectDefinitions::class, GeometryDashCommentObjectDefinitions::GLUE);
@@ -20,7 +21,11 @@ readonly class GameAccountCommentObject extends GameObject
 	{
 		return [
 			GeometryDashCommentObjectDefinitions::LEVEL_ID->value => function () {
-				return 0; // TODO
+				if ($this->model instanceof LevelComment) {
+					return $this->model->level_id;
+				}
+
+				return 0;
 			},
 			GeometryDashCommentObjectDefinitions::CONTENT->value => function () {
 				return Base64Url::encode($this->model->content, true);
@@ -41,7 +46,11 @@ readonly class GameAccountCommentObject extends GameObject
 				return $this->model->created_at->diffForHumans(syntax: true);
 			},
 			GeometryDashCommentObjectDefinitions::PERCENT->value => function () {
-				return 0; // TODO
+				if ($this->model instanceof LevelComment) {
+					return $this->model->percent;
+				}
+
+				return 0;
 			},
 			GeometryDashCommentObjectDefinitions::MOD_BADGE->value => function () {
 				return $this->model->account->mod_level;
