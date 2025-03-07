@@ -59,6 +59,11 @@ class Level extends Model
 		return $this->hasMany(LevelReport::class);
 	}
 
+	public function comments(): HasMany
+	{
+		return $this->hasMany(LevelComment::class);
+	}
+
 	protected function casts(): array
 	{
 		return [

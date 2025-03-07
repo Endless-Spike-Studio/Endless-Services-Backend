@@ -39,7 +39,7 @@ abstract readonly class GameObject
 		return $this;
 	}
 
-	public function merge()
+	public function merge(?string $glue = null)
 	{
 		$object = [];
 
@@ -59,7 +59,11 @@ abstract readonly class GameObject
 			}
 		}
 
-		return app(GeometryDashObjectService::class)->merge($object, $this->glue);
+		if ($glue === null) {
+			$glue = $this->glue;
+		}
+
+		return app(GeometryDashObjectService::class)->merge($object, $glue);
 	}
 
 	/**

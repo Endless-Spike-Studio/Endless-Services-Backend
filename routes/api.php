@@ -17,6 +17,7 @@ use App\EndlessServer\Controllers\GameAccountFriendRequestController as EndlessS
 use App\EndlessServer\Controllers\GameAccountSettingController as EndlessServerGameAccountSettingController;
 use App\EndlessServer\Controllers\GameCustomContentController as EndlessServerGameCustomContentController;
 use App\EndlessServer\Controllers\GameLeaderboardController as EndlessServerGameLeaderboardController;
+use App\EndlessServer\Controllers\GameLevelCommentController as EndlessServerGameLevelCommentController;
 use App\EndlessServer\Controllers\GameLevelController as EndlessServerGameLevelController;
 use App\EndlessServer\Controllers\GameMessageController as EndlessServerGameMessageController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
@@ -174,9 +175,9 @@ Route::group([
 		Route::post('/deleteGJLevelUser20.php', [EndlessServerGameLevelController::class, 'delete']);
 		Route::post('/updateGJDesc20.php', [EndlessServerGameLevelController::class, 'updateDescription']);
 
-		// Route::post('/uploadGJComment21.php', []);
-		// Route::post('/getGJComments21.php', []);
-		// Route::post('/deleteGJComment20.php', []);
+		Route::post('/uploadGJComment21.php', [EndlessServerGameLevelCommentController::class, 'upload']);
+		Route::post('/getGJComments21.php', [EndlessServerGameLevelCommentController::class, 'list']);
+		Route::post('/deleteGJComment20.php', [EndlessServerGameLevelCommentController::class, 'delete']);
 
 		// Route::post('/getGJCommentHistory.php', []);
 

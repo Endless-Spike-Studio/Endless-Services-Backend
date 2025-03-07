@@ -33,7 +33,7 @@ readonly class GamePlayerInfoObject extends GameObject
 	 */
 	protected function check(): void
 	{
-		if (!$this->isSelf()) {
+		if (!$this->isSelf() && $this->viewer !== null) {
 			$blocked = $this->model->account->blocklist()
 				->where('target_account_id', $this->viewer->account->id)
 				->exists();

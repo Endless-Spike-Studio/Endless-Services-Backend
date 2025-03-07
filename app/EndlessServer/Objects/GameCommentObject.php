@@ -8,7 +8,7 @@ use App\GeometryDash\Enums\Objects\GeometryDashCommentObjectDefinitions;
 use App\GeometryDash\Objects\GameObject;
 use Base64Url\Base64Url;
 
-readonly class GameAccountCommentObject extends GameObject
+readonly class GameCommentObject extends GameObject
 {
 	public function __construct(
 		protected AccountComment|LevelComment $model

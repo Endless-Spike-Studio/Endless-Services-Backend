@@ -5,7 +5,7 @@ namespace App\EndlessServer\Controllers;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\AccountComment;
-use App\EndlessServer\Objects\GameAccountCommentObject;
+use App\EndlessServer\Objects\GameCommentObject;
 use App\EndlessServer\Requests\GameAccountCommentDeleteRequest;
 use App\EndlessServer\Requests\GameAccountCommentListRequest;
 use App\EndlessServer\Requests\GameAccountCommentUploadRequest;
@@ -51,7 +51,7 @@ readonly class GameAccountCommentController
 
 		return implode(GeometryDashCommentObjectDefinitions::SEGMENTATION, [
 			$paginate->items->map(function (AccountComment $comment) use ($request) {
-				return new GameAccountCommentObject($comment)->only([
+				return new GameCommentObject($comment)->only([
 					GeometryDashCommentObjectDefinitions::CONTENT->value,
 					GeometryDashCommentObjectDefinitions::LIKES->value,
 					GeometryDashCommentObjectDefinitions::ID->value,
