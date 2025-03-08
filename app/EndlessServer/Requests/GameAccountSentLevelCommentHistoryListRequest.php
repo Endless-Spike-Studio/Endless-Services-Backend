@@ -2,12 +2,12 @@
 
 namespace App\EndlessServer\Requests;
 
-use App\EndlessServer\Models\Level;
+use App\EndlessServer\Models\Player;
 use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashLevelCommentModes;
 use Illuminate\Validation\Rule;
 
-class GameLevelCommentListRequest extends GameRequest
+class GameAccountSentLevelCommentHistoryListRequest extends GameRequest
 {
 	use GameRequestRules;
 
@@ -18,15 +18,15 @@ class GameLevelCommentListRequest extends GameRequest
 			...$this->identifies(),
 			...$this->auth_gjp2(true),
 			...$this->pagination(),
-			'levelID' => [
-				'required',
-				'integer',
-				Rule::exists(Level::class, 'id')
-			],
 			'mode' => [
 				'required',
 				'integer',
 				Rule::enum(GeometryDashLevelCommentModes::class)
+			],
+			'userID' => [
+				'required',
+				'integer',
+				Rule::exists(Player::class, 'id')
 			],
 			...$this->secret()
 		];

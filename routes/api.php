@@ -179,7 +179,7 @@ Route::group([
 		Route::post('/getGJComments21.php', [EndlessServerGameLevelCommentController::class, 'list']);
 		Route::post('/deleteGJComment20.php', [EndlessServerGameLevelCommentController::class, 'delete']);
 
-		// Route::post('/getGJCommentHistory.php', []);
+		Route::post('/getGJCommentHistory.php', [EndlessServerGameLevelCommentController::class, 'history']);
 
 		// Route::post('/getGJMapPacks21.php', []);
 

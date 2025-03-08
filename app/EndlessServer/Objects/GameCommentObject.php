@@ -42,6 +42,9 @@ readonly class GameCommentObject extends GameObject
 			GeometryDashCommentObjectDefinitions::IS_SPAM->value => function () {
 				return $this->model->spam;
 			},
+			GeometryDashCommentObjectDefinitions::PLAYER_UUID->value => function () {
+				return $this->model->account->player->uuid;
+			},
 			GeometryDashCommentObjectDefinitions::AGE->value => function () {
 				return $this->model->created_at->diffForHumans(syntax: true);
 			},
