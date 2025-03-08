@@ -6,6 +6,7 @@ use App\EndlessProxy\Objects\GameSongObject;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Level;
+use App\EndlessServer\Models\LevelGauntlet;
 use App\EndlessServer\Models\LevelSongMapping;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Objects\GameLevelObject;
@@ -200,7 +201,31 @@ readonly class GameLevelController
 	{
 		$data = $request->validated();
 
+		$page = 1;
+
+		if (isset($data['page'])) {
+			$page = $data['page'];
+		}
+
 		$query = Level::query();
+
+		if (isset($data['gauntlet'])) {
+			$gauntlet = LevelGauntlet::query()
+				->where('gauntlet_id', $data['gauntlet'])
+				->first();
+
+			$levels = [
+				$gauntlet->level1_id,
+				$gauntlet->level2_id,
+				$gauntlet->level3_id,
+				$gauntlet->level4_id,
+				$gauntlet->level5_id
+			];
+
+			$query->whereIn('id', $levels);
+
+			goto result;
+		}
 
 		switch ($data['type']) {
 			case GeometryDashLevelSearchTypes::SEARCH->value:
@@ -427,8 +452,10 @@ readonly class GameLevelController
 				$query->where('epic_type', GeometryDashLevelRatingEpicTypes::MYTHIC->value);
 			});
 		}
-		
-		$paginate = $this->paginationService->generate($query, $data['page']);
+
+		result:
+
+		$paginate = $this->paginationService->generate($query, $page);
 
 		return implode('#', [
 			$paginate->items->map(function (Level $level) {

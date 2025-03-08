@@ -7,6 +7,7 @@ use App\EndlessServer\Services\GameLevelDataStorageService;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
 use App\GeometryDash\Enums\Objects\GeometryDashLevelObjectDefinitions;
 use App\GeometryDash\Objects\GameObject;
+use Illuminate\Support\Facades\Request;
 
 readonly class GameLevelObject extends GameObject
 {
@@ -134,7 +135,7 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->rating->demon_difficulty;
 			},
 			GeometryDashLevelObjectDefinitions::GAUNTLET_ID->value => function () {
-				return null; // TODO
+				return Request::get('gauntlet');
 			},
 			GeometryDashLevelObjectDefinitions::OBJECTS->value => function () {
 				return $this->model->objects;

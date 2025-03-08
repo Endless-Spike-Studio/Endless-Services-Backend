@@ -3,6 +3,7 @@
 namespace App\EndlessServer\Requests;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
+use App\EndlessServer\Models\LevelGauntlet;
 use App\EndlessServer\Traits\GameRequestRules;
 use App\GeometryDash\Enums\GeometryDashLevelLengths;
 use App\GeometryDash\Enums\GeometryDashLevelSearchDifficulties;
@@ -21,7 +22,7 @@ class GameLevelSearchRequest extends GameRequest
 			...$this->identifies(),
 			...$this->auth_gjp2(true),
 			'type' => [
-				'required',
+				'nullable',
 				'integer',
 				Rule::enum(GeometryDashLevelSearchTypes::class)
 			],
@@ -30,13 +31,13 @@ class GameLevelSearchRequest extends GameRequest
 				'string'
 			],
 			'diff' => [
-				'required',
+				'nullable',
 				'exclude_if:diff,-',
 				'integer',
 				Rule::enum(GeometryDashLevelSearchDifficulties::class)
 			],
 			'len' => [
-				'required',
+				'nullable',
 				'exclude_if:len,-',
 				'integer',
 				Rule::enum(GeometryDashLevelLengths::class)
@@ -105,6 +106,11 @@ class GameLevelSearchRequest extends GameRequest
 			'local' => [
 				'required_if:type,' . GeometryDashLevelSearchTypes::LIST_PLAYER->value,
 				'boolean'
+			],
+			'gauntlet' => [
+				'nullable',
+				'integer',
+				Rule::exists(LevelGauntlet::class, 'gauntlet_id')
 			],
 			...$this->pagination(),
 			...$this->secret()
