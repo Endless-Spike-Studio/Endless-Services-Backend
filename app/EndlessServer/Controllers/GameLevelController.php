@@ -427,7 +427,7 @@ readonly class GameLevelController
 				$query->where('epic_type', GeometryDashLevelRatingEpicTypes::MYTHIC->value);
 			});
 		}
-
+		
 		$paginate = $this->paginationService->generate($query, $data['page']);
 
 		return implode('#', [
