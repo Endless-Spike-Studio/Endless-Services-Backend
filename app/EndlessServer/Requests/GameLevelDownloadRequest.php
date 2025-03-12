@@ -3,10 +3,8 @@
 namespace App\EndlessServer\Requests;
 
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
-use App\EndlessServer\Models\Level;
 use App\EndlessServer\Traits\GameRequestRules;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class GameLevelDownloadRequest extends GameRequest
 {
@@ -20,8 +18,7 @@ class GameLevelDownloadRequest extends GameRequest
 			...$this->auth_gjp2(true),
 			'levelID' => [
 				'required',
-				'integer',
-				Rule::exists(Level::class, 'id')
+				'integer'
 			],
 			'inc' => [
 				'nullable',

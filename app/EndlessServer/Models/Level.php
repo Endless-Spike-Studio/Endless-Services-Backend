@@ -8,6 +8,7 @@ use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
 use App\GeometryDash\Enums\GeometryDashLevelRatingEpicTypes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -62,6 +63,11 @@ class Level extends Model
 	public function comments(): HasMany
 	{
 		return $this->hasMany(LevelComment::class);
+	}
+
+	public function mapPacks(): BelongsToMany
+	{
+		return $this->belongsToMany(MapPack::class, MapPackLevel::class);
 	}
 
 	protected function casts(): array

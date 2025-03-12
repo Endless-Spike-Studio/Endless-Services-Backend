@@ -185,7 +185,7 @@ Route::group([
 
 		Route::post('/getGJMapPacks21.php', [EndlessServerGameMapPackController::class, 'list']);
 
-		// Route::post('/getGJDailyLevel.php', []);
+		Route::post('/getGJDailyLevel.php', [EndlessServerGameLevelController::class, 'getSpecial']);
 
 		Route::post('/getGJGauntlets21.php', [EndlessServerGameLevelGauntletController::class, 'list']);
 

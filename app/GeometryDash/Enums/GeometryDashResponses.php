@@ -63,4 +63,6 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses LEVEL_DELETE_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses LEVEL_COMMENT_UPLOAD_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses LEVEL_COMMENT_DELETE_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses SPECIAL_LEVEL_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_NOT_FOUND = GeometryDashResponses::_1;
 }

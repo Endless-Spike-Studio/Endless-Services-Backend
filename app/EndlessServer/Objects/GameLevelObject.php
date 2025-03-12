@@ -3,6 +3,9 @@
 namespace App\EndlessServer\Objects;
 
 use App\EndlessServer\Models\Level;
+use App\EndlessServer\Models\LevelDaily;
+use App\EndlessServer\Models\LevelEvent;
+use App\EndlessServer\Models\LevelWeekly;
 use App\EndlessServer\Services\GameLevelDataStorageService;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
 use App\GeometryDash\Enums\Objects\GeometryDashLevelObjectDefinitions;
@@ -12,7 +15,8 @@ use Illuminate\Support\Facades\Request;
 readonly class GameLevelObject extends GameObject
 {
 	public function __construct(
-		protected Level $model
+		protected Level                                  $model,
+		protected LevelDaily|LevelWeekly|LevelEvent|null $special
 	)
 	{
 		parent::__construct(GeometryDashLevelObjectDefinitions::class, GeometryDashLevelObjectDefinitions::GLUE);
@@ -126,7 +130,11 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->ldm_enabled;
 			},
 			GeometryDashLevelObjectDefinitions::SPECIAL_ID->value => function () {
-				return null; // TODO
+				if ($this->special === null) {
+					return null;
+				}
+
+				return $this->special->id;
 			},
 			GeometryDashLevelObjectDefinitions::EPIC_TYPE->value => function () {
 				return $this->model->rating->epic_type;

@@ -6,8 +6,11 @@ use App\EndlessProxy\Objects\GameSongObject;
 use App\EndlessServer\Enums\EndlessServerAuthenticationGuards;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Models\Level;
+use App\EndlessServer\Models\LevelDaily;
+use App\EndlessServer\Models\LevelEvent;
 use App\EndlessServer\Models\LevelGauntlet;
 use App\EndlessServer\Models\LevelSongMapping;
+use App\EndlessServer\Models\LevelWeekly;
 use App\EndlessServer\Models\Player;
 use App\EndlessServer\Objects\GameLevelObject;
 use App\EndlessServer\Repositories\AccountFriendRepository;
@@ -17,6 +20,7 @@ use App\EndlessServer\Requests\GameLevelReportRequest;
 use App\EndlessServer\Requests\GameLevelSearchRequest;
 use App\EndlessServer\Requests\GameLevelUpdateDescriptionRequest;
 use App\EndlessServer\Requests\GameLevelUploadRequest;
+use App\EndlessServer\Requests\GameSpecialLevelFetchRequest;
 use App\EndlessServer\Services\GameLevelDataStorageService;
 use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDemonDifficulties;
@@ -26,6 +30,8 @@ use App\GeometryDash\Enums\GeometryDashLevelSearchDifficulties;
 use App\GeometryDash\Enums\GeometryDashLevelSearchTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\GeometryDashSalts;
+use App\GeometryDash\Enums\GeometryDashSpecialLevelIds;
+use App\GeometryDash\Enums\GeometryDashSpecialLevelTypes;
 use App\GeometryDash\Enums\Objects\GeometryDashLevelObjectDefinitions;
 use App\GeometryDash\GeometryDashLevelSearchDemonFilters;
 use App\GeometryDash\Services\GeometryDashAlgorithmService;
@@ -115,6 +121,54 @@ readonly class GameLevelController
 		return $level->id;
 	}
 
+	public function getSpecial(GameSpecialLevelFetchRequest $request): int|string
+	{
+		$data = $request->validated();
+
+		$offset = 0;
+
+		$special = null;
+
+		$now = now();
+
+		switch ($data['type']) {
+			case GeometryDashSpecialLevelTypes::DAILY->value:
+				$special = LevelDaily::query()
+					->latest()
+					->whereNull('expired_at')
+					->orWhere('expired_at', '>', $now)
+					->first();
+				break;
+			case GeometryDashSpecialLevelTypes::WEEKLY->value:
+				$offset = 100000;
+
+				$special = LevelWeekly::query()
+					->latest()
+					->whereNull('expired_at')
+					->orWhere('expired_at', '>', $now)
+					->first();
+				break;
+			case GeometryDashSpecialLevelTypes::EVENT->value:
+				$offset = 200000;
+
+				$special = LevelEvent::query()
+					->latest()
+					->whereNull('expired_at')
+					->orWhere('expired_at', '>', $now)
+					->first();
+				break;
+		}
+
+		if ($special === null) {
+			return GeometryDashResponses::SPECIAL_LEVEL_NOT_FOUND->value;
+		}
+
+		return implode('|', [
+			$offset + $special->id,
+			$now->diffInSeconds($special->expired_at)
+		]);
+	}
+
 	public function report(GameLevelReportRequest $request): int
 	{
 		$data = $request->validated();
@@ -136,16 +190,83 @@ readonly class GameLevelController
 		/** @var Player $player */
 		$player = Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->user();
 
-		$level = Level::query()
-			->where('id', $data['levelID'])
-			->first();
+		$special = null;
+
+		switch ($data['levelID']) {
+			case GeometryDashSpecialLevelIds::DAILY->value:
+				$now = now();
+
+				$daily = LevelDaily::query()
+					->latest()
+					->whereNull('expired_at')
+					->orWhere('expired_at', '>', $now)
+					->first();
+
+				if ($daily === null) {
+					return GeometryDashResponses::SPECIAL_LEVEL_NOT_FOUND->value;
+				}
+
+				$special = $daily;
+
+				$level = Level::query()
+					->where('id', $daily->level_id)
+					->first();
+				break;
+			case GeometryDashSpecialLevelIds::WEEKLY->value:
+				$now = now();
+
+				$weekly = LevelWeekly::query()
+					->latest()
+					->whereNull('expired_at')
+					->orWhere('expired_at', '>', $now)
+					->first();
+
+				if ($weekly === null) {
+					return GeometryDashResponses::SPECIAL_LEVEL_NOT_FOUND->value;
+				}
+
+				$special = $weekly;
+
+				$level = Level::query()
+					->where('id', $weekly->level_id)
+					->first();
+				break;
+			case GeometryDashSpecialLevelIds::EVENT->value:
+				$now = now();
+
+				$event = LevelEvent::query()
+					->latest()
+					->whereNull('expired_at')
+					->orWhere('expired_at', '>', $now)
+					->first();
+
+				if ($event === null) {
+					return GeometryDashResponses::SPECIAL_LEVEL_NOT_FOUND->value;
+				}
+
+				$special = $event;
+
+				$level = Level::query()
+					->where('id', $event->level_id)
+					->first();
+				break;
+			default:
+				$level = Level::query()
+					->where('id', $data['levelID'])
+					->first();
+				break;
+		}
+
+		if ($level === null) {
+			return GeometryDashResponses::LEVEL_NOT_FOUND->value;
+		}
 
 		$level->downloadRecords()
 			->updateOrCreate([
 				'player_id' => $player->id
 			]);
 
-		$levelObjectString = new GameLevelObject($level)->merge();
+		$levelObjectString = new GameLevelObject($level, $special)->merge();
 		$levelObject = $this->objectService->split($levelObjectString, GeometryDashLevelObjectDefinitions::GLUE);
 
 		return implode('#', [
@@ -160,11 +281,15 @@ readonly class GameLevelController
 					(int)$level->rating->coin_verified,
 					$level->rating->featured_score,
 					$level->password,
-					0 // TODO: special ID
+					$special !== null ? $special->id : 0
 				]) .
 				GeometryDashSalts::LEVEL->value
 			),
-			config('app.name')
+			$special !== null ? implode(':', [
+				$level->player->id,
+				$level->player->name,
+				$level->player->uuid
+			]) : config('app.name')
 		]);
 	}
 
