@@ -16,7 +16,7 @@ readonly class GameLevelObject extends GameObject
 {
 	public function __construct(
 		protected Level                                  $model,
-		protected LevelDaily|LevelWeekly|LevelEvent|null $special
+		protected LevelDaily|LevelWeekly|LevelEvent|null $special = null
 	)
 	{
 		parent::__construct(GeometryDashLevelObjectDefinitions::class, GeometryDashLevelObjectDefinitions::GLUE);
