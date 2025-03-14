@@ -429,10 +429,24 @@ readonly class GameLevelController
 				});
 				break;
 			case GeometryDashLevelSearchTypes::DAILY_HISTORY->value:
-				// TODO
+				$now = now();
+
+				$pastDailiesLevelIds = LevelDaily::query()
+					->where('expired_at', '<', $now)
+					->latest()
+					->pluck('level_id');
+
+				$query->whereIn('id', $pastDailiesLevelIds);
 				break;
 			case GeometryDashLevelSearchTypes::WEEKLY_HISTORY->value:
-				// TODO
+				$now = now();
+
+				$pastWeekliesLevelIds = LevelWeekly::query()
+					->where('expired_at', '<', $now)
+					->latest()
+					->pluck('level_id');
+
+				$query->whereIn('id', $pastWeekliesLevelIds);
 				break;
 			case GeometryDashLevelSearchTypes::LIST_LEVELS->value:
 				// TODO
