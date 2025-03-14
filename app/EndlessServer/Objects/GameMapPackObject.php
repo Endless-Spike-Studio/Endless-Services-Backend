@@ -25,7 +25,11 @@ readonly class GameMapPackObject extends GameObject
 				return $this->model->name;
 			},
 			GeometryDashMapPackObjectDefinition::LEVELS->value => function () {
-				return $this->model->levels->pluck('level_id')->join(',');
+				return $this->model->levels()
+					->orderByDesc('index')
+					->get()
+					->pluck('level_id')
+					->join(',');
 			},
 			GeometryDashMapPackObjectDefinition::STARS->value => function () {
 				return $this->model->stars;

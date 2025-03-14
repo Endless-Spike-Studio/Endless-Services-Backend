@@ -15,6 +15,7 @@ return new class extends Migration {
 			$table->id();
 			$table->foreignIdFor(MapPack::class);
 			$table->foreignIdFor(Level::class);
+			$table->unsignedInteger('index')->nullable();
 			$table->timestamps();
 		});
 	}
