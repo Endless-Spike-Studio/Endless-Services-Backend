@@ -20,6 +20,7 @@ use App\EndlessServer\Controllers\GameLeaderboardController as EndlessServerGame
 use App\EndlessServer\Controllers\GameLevelCommentController as EndlessServerGameLevelCommentController;
 use App\EndlessServer\Controllers\GameLevelController as EndlessServerGameLevelController;
 use App\EndlessServer\Controllers\GameLevelGauntletController as EndlessServerGameLevelGauntletController;
+use App\EndlessServer\Controllers\GameLevelListController as EndlessServerGameLevelListController;
 use App\EndlessServer\Controllers\GameMapPackController as EndlessServerGameMapPackController;
 use App\EndlessServer\Controllers\GameMessageController as EndlessServerGameMessageController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
@@ -201,9 +202,9 @@ Route::group([
 		Route::post('/getGJSongInfo.php', [EndlessServerGameSongController::class, 'getInfo']);
 		Route::post('/getGJTopArtists.php', [EndlessServerGameSongController::class, 'getTopArtists']);
 
-		// Route::post('/getGJLevelLists.php', []);
-		// Route::post('/uploadGJLevelList.php', []);
-		// Route::post('/deleteGJLevelList.php', []);
+		Route::post('/getGJLevelLists.php', [EndlessServerGameLevelListController::class, 'list']);
+		Route::post('/uploadGJLevelList.php', [EndlessServerGameLevelListController::class, 'upload']);
+		Route::post('/deleteGJLevelList.php', [EndlessServerGameLevelListController::class, 'delete']);
 
 		Route::post('/getGJSecretReward.php', [EndlessServerGameSecretRewardController::class, 'get']);
 

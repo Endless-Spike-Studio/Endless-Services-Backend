@@ -70,6 +70,11 @@ class Level extends Model
 		return $this->belongsToMany(MapPack::class, MapPackLevel::class);
 	}
 
+	public function levelLists(): BelongsToMany
+	{
+		return $this->belongsToMany(LevelList::class, LevelListLevel::class);
+	}
+
 	protected function casts(): array
 	{
 		return [

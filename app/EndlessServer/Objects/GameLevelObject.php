@@ -10,6 +10,7 @@ use App\EndlessServer\Services\GameLevelDataStorageService;
 use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
 use App\GeometryDash\Enums\Objects\GeometryDashLevelObjectDefinitions;
 use App\GeometryDash\Objects\GameObject;
+use Base64Url\Base64Url;
 use Illuminate\Support\Facades\Request;
 
 readonly class GameLevelObject extends GameObject
@@ -32,7 +33,13 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->name;
 			},
 			GeometryDashLevelObjectDefinitions::DESCRIPTION->value => function () {
-				return $this->model->description;
+				$description = null;
+
+				if ($this->model->description !== null) {
+					$description = Base64Url::encode($this->model->description, true);
+				}
+
+				return $description;
 			},
 			GeometryDashLevelObjectDefinitions::DATA->value => function () {
 				$storage = app(GameLevelDataStorageService::class);

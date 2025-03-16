@@ -51,7 +51,7 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_READ_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_ACCEPT_FAILED_NOT_FOUND = GeometryDashResponses::_1;
 	public const GeometryDashResponses ACCOUNT_FRIEND_REQUEST_ACCEPT_SUCCESS = GeometryDashResponses::__1;
-	public const GeometryDashResponses ACCOUNT_FRIEND_DELETE = GeometryDashResponses::__1;
+	public const GeometryDashResponses ACCOUNT_FRIEND_DELETE_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses PLAYER_LIST_FAILED_EMPTY = GeometryDashResponses::_2;
 	public const GeometryDashResponses SECRET_REWARD_GET_FAILED_EXPIRED = GeometryDashResponses::_1;
 	public const GeometryDashResponses SECRET_REWARD_GET_FAILED_LIMIT_REACHED = GeometryDashResponses::_1;
@@ -65,4 +65,8 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses LEVEL_COMMENT_DELETE_SUCCESS = GeometryDashResponses::__1;
 	public const GeometryDashResponses SPECIAL_LEVEL_NOT_FOUND = GeometryDashResponses::_1;
 	public const GeometryDashResponses LEVEL_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_LIST_UPLOAD_FAILED_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_LIST_LIST_FAILED_NO_LOGIN = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_SEARCH_FAILED_LEVEL_LIST_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_LIST_DELETE_SUCCESS = GeometryDashResponses::__1;
 }

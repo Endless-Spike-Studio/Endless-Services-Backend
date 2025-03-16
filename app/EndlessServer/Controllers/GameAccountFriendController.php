@@ -32,6 +32,6 @@ readonly class GameAccountFriendController
 			->where('account_id', $targetAccount->id)
 			->delete();
 
-		return GeometryDashResponses::ACCOUNT_FRIEND_DELETE->value;
+		return GeometryDashResponses::ACCOUNT_FRIEND_DELETE_SUCCESS->value;
 	}
 }

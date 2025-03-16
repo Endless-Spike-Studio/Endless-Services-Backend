@@ -9,6 +9,7 @@ use App\EndlessServer\Models\Level;
 use App\EndlessServer\Models\LevelDaily;
 use App\EndlessServer\Models\LevelEvent;
 use App\EndlessServer\Models\LevelGauntlet;
+use App\EndlessServer\Models\LevelList;
 use App\EndlessServer\Models\LevelSongMapping;
 use App\EndlessServer\Models\LevelWeekly;
 use App\EndlessServer\Models\Player;
@@ -61,7 +62,7 @@ readonly class GameLevelController
 		$player = Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->user();
 
 		if (!isset($data['original'])) {
-			$data['original'] = 0;
+			$data['original'] = null;
 		}
 
 		if (!isset($data['extraString'])) {
@@ -326,6 +327,9 @@ readonly class GameLevelController
 	{
 		$data = $request->validated();
 
+		/** @var Player $player */
+		$player = Auth::guard(EndlessServerAuthenticationGuards::PLAYER->value)->user();
+
 		$page = 1;
 
 		if (isset($data['page'])) {
@@ -449,8 +453,25 @@ readonly class GameLevelController
 				$query->whereIn('id', $pastWeekliesLevelIds);
 				break;
 			case GeometryDashLevelSearchTypes::LIST_LEVELS->value:
-				// TODO
-				break;
+				$list = LevelList::query()
+					->where('id', $data['str'])
+					->first();
+
+				if ($list === null) {
+					return GeometryDashResponses::LEVEL_SEARCH_FAILED_LEVEL_LIST_NOT_FOUND->value;
+				}
+
+				$list->downloadRecords()
+					->updateOrCreate([
+						'player_id' => $player->id
+					]);
+
+				$levelIds = $list->levels()
+					->orderBy('index')
+					->pluck('level_id');
+
+				$query->whereIn('id', $levelIds);
+				goto result;
 		}
 
 		if (isset($data['diff'])) {
