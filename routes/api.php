@@ -21,6 +21,7 @@ use App\EndlessServer\Controllers\GameLevelCommentController as EndlessServerGam
 use App\EndlessServer\Controllers\GameLevelController as EndlessServerGameLevelController;
 use App\EndlessServer\Controllers\GameLevelGauntletController as EndlessServerGameLevelGauntletController;
 use App\EndlessServer\Controllers\GameLevelListController as EndlessServerGameLevelListController;
+use App\EndlessServer\Controllers\GameLikeController as EndlessServerGameLikeController;
 use App\EndlessServer\Controllers\GameMapPackController as EndlessServerGameMapPackController;
 use App\EndlessServer\Controllers\GameMessageController as EndlessServerGameMessageController;
 use App\EndlessServer\Controllers\GamePlayerController as EndlessServerGamePlayerController;
@@ -190,7 +191,7 @@ Route::group([
 
 		Route::post('/getGJGauntlets21.php', [EndlessServerGameLevelGauntletController::class, 'list']);
 
-		// Route::post('/likeGJItem211.php', []);
+		Route::post('/likeGJItem211.php', [EndlessServerGameLikeController::class, 'forItem']);
 
 		// Route::post('/getGJLevelScores211.php', []);
 		// Route::post('/getGJLevelScoresPlat.php', []);

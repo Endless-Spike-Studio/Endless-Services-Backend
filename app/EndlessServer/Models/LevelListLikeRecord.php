@@ -9,6 +9,8 @@ class LevelListLikeRecord extends Model
 {
 	protected $table = 'endless_server.level_list_like_records';
 
+	protected $fillable = ['player_id'];
+
 	public function levelList(): BelongsTo
 	{
 		return $this->belongsTo(LevelList::class);
