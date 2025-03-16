@@ -25,7 +25,7 @@ return new class extends Migration {
 			$table->forEnum('length', GeometryDashLevelLengths::class);
 			$table->forEnum('audio_track_id', GeometryDashAudioTrackIds::class)->nullable();
 			$table->integer('password')->nullable();
-			$table->foreignIdFor(Level::class, 'original_level_id');
+			$table->foreignIdFor(Level::class, 'original_level_id')->nullable();
 			$table->boolean('two_player_mode_enabled');
 			$table->unsignedSmallInteger('objects');
 			$table->forEnum('coins', GeometryDashLevelCoinCounts::class);
