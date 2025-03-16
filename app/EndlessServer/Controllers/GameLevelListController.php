@@ -136,12 +136,6 @@ readonly class GameLevelListController
 			case GeometryDashLevelListSearchTypes::LIST_PLAYER->value:
 				$query->where('account_id', $data['str']);
 				break;
-			case GeometryDashLevelListSearchTypes::DEFAULT->value:
-
-				break;
-			case GeometryDashLevelListSearchTypes::MAGIC->value:
-
-				break;
 			case GeometryDashLevelListSearchTypes::AWARDED->value:
 				$query->whereHas('rating', function (Builder $query) {
 					$query->where('diamonds', '>', 0);
