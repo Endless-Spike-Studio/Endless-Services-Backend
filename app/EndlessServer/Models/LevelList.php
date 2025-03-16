@@ -32,4 +32,9 @@ class LevelList extends Model
 	{
 		return $this->hasMany(LevelListDownloadRecord::class);
 	}
+
+	public function likeRecords(): HasMany
+	{
+		return $this->hasMany(LevelListLikeRecord::class);
+	}
 }

@@ -75,7 +75,8 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->game_version;
 			},
 			GeometryDashLevelObjectDefinitions::LIKES->value => function () {
-				return 0; // TODO
+				return $this->model->likeRecords()
+					->count();
 			},
 			GeometryDashLevelObjectDefinitions::LENGTH->value => function () {
 				return $this->model->length->value;

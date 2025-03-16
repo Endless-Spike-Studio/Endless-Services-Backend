@@ -34,7 +34,8 @@ readonly class GameCommentObject extends GameObject
 				return $this->model->account->player->id;
 			},
 			GeometryDashCommentObjectDefinitions::LIKES->value => function () {
-				return 0; // TODO
+				return $this->model->likeRecords()
+					->count();
 			},
 			GeometryDashCommentObjectDefinitions::ID->value => function () {
 				return $this->model->id;

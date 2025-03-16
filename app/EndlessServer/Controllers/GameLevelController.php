@@ -365,10 +365,12 @@ readonly class GameLevelController
 				$query->orderByDesc('download_records_count');
 				break;
 			case GeometryDashLevelSearchTypes::MOST_LIKED->value:
-				// TODO
+				$query->withCount('likeRecords');
+				$query->orderByDesc('like_records_count');
 				break;
 			case GeometryDashLevelSearchTypes::TRENDING->value:
-				// TODO: order by likes desc
+				$query->withCount('likeRecords');
+				$query->orderByDesc('like_records_count');
 				$query->where('created_at', '>=', now()->subDays(7));
 				break;
 			case GeometryDashLevelSearchTypes::RECENT->value:

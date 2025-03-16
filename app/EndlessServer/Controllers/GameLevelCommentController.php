@@ -68,7 +68,8 @@ readonly class GameLevelCommentController
 				$query->latest();
 				break;
 			case GeometryDashLevelCommentModes::MOST_LIKED:
-				// TODO
+				$query->withCount('likeRecords');
+				$query->orderByDesc('like_records_count');
 				break;
 		}
 
@@ -112,7 +113,8 @@ readonly class GameLevelCommentController
 				$query->latest();
 				break;
 			case GeometryDashLevelCommentModes::MOST_LIKED:
-				// TODO
+				$query->withCount('likeRecords');
+				$query->orderByDesc('like_records_count');
 				break;
 		}
 

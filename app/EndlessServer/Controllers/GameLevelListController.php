@@ -16,6 +16,7 @@ use App\GeometryDash\Enums\GeometryDashLevelListSearchTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashLevelListObjectDefinitions;
 use Base64Url\Base64Url;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 
 readonly class GameLevelListController
@@ -117,13 +118,16 @@ readonly class GameLevelListController
 				$query->where('name', 'LIKE', $data['str'] . '%');
 				break;
 			case GeometryDashLevelListSearchTypes::MOST_DOWNLOADED->value:
-				// TODO
+				$query->withCount('downloadRecords');
+				$query->orderByDesc('download_records_count');
 				break;
 			case GeometryDashLevelListSearchTypes::MOST_LIKED->value:
-				// TODO
+				$query->withCount('likeRecords');
+				$query->orderByDesc('like_records_count');
 				break;
 			case GeometryDashLevelListSearchTypes::TRENDING->value:
-				// TODO: order by likes desc
+				$query->withCount('likeRecords');
+				$query->orderByDesc('like_records_count');
 				$query->where('created_at', '>=', now()->subDays(7));
 				break;
 			case GeometryDashLevelListSearchTypes::RECENT->value:
@@ -139,7 +143,9 @@ readonly class GameLevelListController
 
 				break;
 			case GeometryDashLevelListSearchTypes::AWARDED->value:
-				// TODO
+				$query->whereHas('rating', function (Builder $query) {
+					$query->where('diamonds', '>', 0);
+				});
 				break;
 			case GeometryDashLevelListSearchTypes::FOLLOWED->value:
 				$followedAccountIds = explode(',', $data['followed']);

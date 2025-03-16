@@ -75,6 +75,11 @@ class Level extends Model
 		return $this->belongsToMany(LevelList::class, LevelListLevel::class);
 	}
 
+	public function likeRecords(): Level
+	{
+		return $this->hasMany(LevelLikeRecord::class);
+	}
+
 	protected function casts(): array
 	{
 		return [

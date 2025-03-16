@@ -4,6 +4,7 @@ namespace App\EndlessServer\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AccountComment extends Model
 {
@@ -14,6 +15,11 @@ class AccountComment extends Model
 	public function account(): BelongsTo
 	{
 		return $this->belongsTo(Account::class);
+	}
+
+	public function likeRecords(): HasMany
+	{
+		return $this->hasMany(AccountCommentLikeRecord::class);
 	}
 
 	protected function casts(): array
