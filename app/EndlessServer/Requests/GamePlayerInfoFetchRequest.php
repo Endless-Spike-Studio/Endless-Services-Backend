@@ -15,7 +15,7 @@ class GamePlayerInfoFetchRequest extends GameRequest
 		return [
 			...$this->versions(),
 			...$this->gdw(),
-			...$this->auth_gjp2(),
+			...$this->auth_gjp2(true),
 			'targetAccountID' => [
 				'required',
 				'integer',
