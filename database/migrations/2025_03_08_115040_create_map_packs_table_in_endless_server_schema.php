@@ -13,8 +13,8 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->string('name');
-			$table->unsignedInteger('stars');
-			$table->unsignedInteger('coins');
+			$table->integer('stars');
+			$table->integer('coins');
 			$table->forEnum('difficulty', GeometryDashMapPackDifficulties::class)->nullable();
 			$table->string('text_color')->nullable();
 			$table->string('bar_color')->nullable();

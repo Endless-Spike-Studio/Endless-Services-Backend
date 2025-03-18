@@ -17,7 +17,7 @@ return new class extends Migration {
 			$table->foreignIdFor(Level::class);
 			$table->string('content');
 			$table->boolean('spam');
-			$table->unsignedInteger('percent')->nullable();
+			$table->integer('percent')->nullable();
 			$table->timestamps();
 		});
 	}

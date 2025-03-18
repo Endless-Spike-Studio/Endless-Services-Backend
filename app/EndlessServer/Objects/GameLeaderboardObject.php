@@ -2,6 +2,8 @@
 
 namespace App\EndlessServer\Objects;
 
+use App\EndlessServer\Models\LevelNormalScore;
+use App\EndlessServer\Models\LevelPlatformerScore;
 use App\EndlessServer\Models\Player;
 use App\GeometryDash\Enums\Objects\GeometryDashLeaderboardObjectDefinitions;
 use App\GeometryDash\Objects\GameObject;
@@ -9,8 +11,8 @@ use App\GeometryDash\Objects\GameObject;
 readonly class GameLeaderboardObject extends GameObject
 {
 	public function __construct(
-		protected Player $model,
-		protected int    $rank = 1
+		protected Player|LevelNormalScore|LevelPlatformerScore $model,
+		protected int                                          $rank = 1
 	)
 	{
 		parent::__construct(GeometryDashLeaderboardObjectDefinitions::class, GeometryDashLeaderboardObjectDefinitions::GLUE);
@@ -20,55 +22,149 @@ readonly class GameLeaderboardObject extends GameObject
 	{
 		return [
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_NAME->value => function () {
-				return $this->model->name;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->name;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_ID->value => function () {
-				return $this->model->id;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->id;
 			},
-			GeometryDashLeaderboardObjectDefinitions::PLAYER_STARS->value => function () {
-				return $this->model->data->stars;
+			GeometryDashLeaderboardObjectDefinitions::PLAYER_STARS_OR_PERCENT->value => function () {
+				if ($this->model instanceof Player) {
+					return $this->model->data->stars;
+				}
+
+				if ($this->model instanceof LevelNormalScore) {
+					return $this->model->percent;
+				}
+
+				if ($this->model instanceof LevelPlatformerScore) {
+					return $this->model->time;
+				}
+
+				return null;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_DEMONS->value => function () {
-				return $this->model->data->demons;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->demons;
 			},
 			GeometryDashLeaderboardObjectDefinitions::RANKING->value => function () {
 				return $this->rank;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_CREATOR_POINTS->value => function () {
-				return $this->model->statistic->creator_points;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->statistic->creator_points;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_ICON_ID->value => function () {
-				return $this->model->data->icon_id;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->icon_id;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_COLOR_1->value => function () {
-				return $this->model->data->color1;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->color1;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_COLOR_2->value => function () {
-				return $this->model->data->color2;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->color2;
 			},
-			GeometryDashLeaderboardObjectDefinitions::PLAYER_COINS->value => function () {
-				return $this->model->data->coins;
+			GeometryDashLeaderboardObjectDefinitions::COINS->value => function () {
+				if ($this->model instanceof Player) {
+					return $this->model->account->player->data->coins;
+				}
+
+				return $this->model->coins;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_ICON_TYPE->value => function () {
-				return $this->model->data->icon_type;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->icon_type;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_SPECIAL->value => function () {
-				return $this->model->data->special;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->special;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_UUID->value => function () {
-				return $this->model->uuid;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->uuid;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_USER_COINS->value => function () {
-				return $this->model->data->user_coins;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->user_coins;
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_DIAMONDS->value => function () {
-				return $this->model->data->diamonds;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->diamonds;
 			},
 			GeometryDashLeaderboardObjectDefinitions::AGE->value => function () {
-				return $this->model->data->updated_at->diffForHumans(syntax: true);
+				return $this->model->updated_at->diffForHumans(syntax: true);
 			},
 			GeometryDashLeaderboardObjectDefinitions::PLAYER_MOONS->value => function () {
-				return $this->model->data->moons;
+				$player = $this->model->account->player;
+
+				if ($this->model instanceof Player) {
+					$player = $this->model;
+				}
+
+				return $player->data->moons;
 			}
 		];
 	}

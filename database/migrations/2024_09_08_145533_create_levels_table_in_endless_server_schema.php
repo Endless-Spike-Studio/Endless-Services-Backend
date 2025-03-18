@@ -27,9 +27,9 @@ return new class extends Migration {
 			$table->integer('password')->nullable();
 			$table->foreignIdFor(Level::class, 'original_level_id')->nullable();
 			$table->boolean('two_player_mode_enabled');
-			$table->unsignedSmallInteger('objects');
+			$table->integer('objects');
 			$table->forEnum('coins', GeometryDashLevelCoinCounts::class);
-			$table->unsignedInteger('requested_stars');
+			$table->integer('requested_stars');
 			$table->forEnum('unlisted_type', GeometryDashLevelUnlistedTypes::class);
 			$table->boolean('ldm_enabled');
 			$table->integer('editor_time')->nullable();

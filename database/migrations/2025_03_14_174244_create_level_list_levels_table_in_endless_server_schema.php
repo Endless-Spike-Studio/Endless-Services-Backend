@@ -15,7 +15,7 @@ return new class extends Migration {
 			$table->id();
 			$table->foreignIdFor(LevelList::class);
 			$table->foreignIdFor(Level::class);
-			$table->unsignedInteger('index')->nullable();
+			$table->integer('index')->nullable();
 			$table->timestamps();
 		});
 	}

@@ -13,7 +13,7 @@ return new class extends Migration {
 		Schema::create($this->name, function (Blueprint $table) {
 			$table->id();
 			$table->foreignIdFor(LevelList::class);
-			$table->unsignedInteger('require_levels')->nullable();
+			$table->integer('require_levels')->nullable();
 			$table->integer('diamonds');
 			$table->timestamps();
 		});

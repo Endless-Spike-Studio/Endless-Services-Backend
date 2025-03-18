@@ -17,9 +17,9 @@ return new class extends Migration {
 			$table->id();
 			$table->foreignIdFor(Level::class)->unique();
 			$table->forEnum('difficulty', GeometryDashLevelRatingDifficulties::class);
-			$table->unsignedInteger('stars');
+			$table->integer('stars');
 			$table->boolean('coin_verified');
-			$table->unsignedInteger('featured_score');
+			$table->integer('featured_score');
 			$table->forEnum('epic_type', GeometryDashLevelRatingEpicTypes::class);
 			$table->forEnum('demon_difficulty', GeometryDashLevelRatingDemonDifficulties::class)->nullable();
 			$table->timestamps();

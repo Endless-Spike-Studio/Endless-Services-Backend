@@ -75,4 +75,5 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses ITEM_LIKE_FAILED_LEVEL_COMMENT_NOT_FOUND = GeometryDashResponses::_1;
 	public const GeometryDashResponses ITEM_LIKE_FAILED_ACCOUNT_COMMENT_NOT_FOUND = GeometryDashResponses::_1;
 	public const GeometryDashResponses ITEM_LIKE_FAILED_LEVEL_LIST_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_NORMAL_SCORE_LOAD_FAILED_NO_LOGIN = GeometryDashResponses::_1;
 }

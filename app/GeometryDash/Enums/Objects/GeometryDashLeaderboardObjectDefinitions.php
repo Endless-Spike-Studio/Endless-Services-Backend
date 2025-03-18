@@ -22,7 +22,7 @@ enum GeometryDashLeaderboardObjectDefinitions: int
 	case PLAYER_ICON_ID = 9;
 	case PLAYER_COLOR_1 = 10;
 	case PLAYER_COLOR_2 = 11;
-	case PLAYER_COINS = 13;
+	case COINS = 13;
 	case PLAYER_ICON_TYPE = 14;
 	case PLAYER_SPECIAL = 15;
 	case PLAYER_UUID = 16;
