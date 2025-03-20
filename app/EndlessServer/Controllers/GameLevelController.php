@@ -29,6 +29,7 @@ use App\GeometryDash\Enums\GeometryDashLevelRatingDifficulties;
 use App\GeometryDash\Enums\GeometryDashLevelRatingEpicTypes;
 use App\GeometryDash\Enums\GeometryDashLevelSearchDifficulties;
 use App\GeometryDash\Enums\GeometryDashLevelSearchTypes;
+use App\GeometryDash\Enums\GeometryDashLevelUnlistedTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\GeometryDashSalts;
 use App\GeometryDash\Enums\GeometryDashSpecialLevelIds;
@@ -356,9 +357,52 @@ readonly class GameLevelController
 			goto result;
 		}
 
+		if ($data['type'] !== GeometryDashLevelSearchTypes::SEARCH->value) {
+			$query->where('unlisted_type', GeometryDashLevelUnlistedTypes::PUBLIC->value);
+		}
+
 		switch ($data['type']) {
 			case GeometryDashLevelSearchTypes::SEARCH->value:
-				$query->where('name', 'LIKE', $data['str'] . '%');
+				if (is_numeric($data['str'])) {
+					$level = Level::query()
+						->where('id', $data['str'])
+						->first();
+
+					if ($level === null) {
+						return GeometryDashResponses::LEVEL_SEARCH_FAILED_LEVEL_NOT_FOUND->value;
+					}
+
+					switch ($level->unlisted_type) {
+						case GeometryDashLevelUnlistedTypes::PUBLIC->value:
+							$query->where('id', $level->id);
+							break;
+						case GeometryDashLevelUnlistedTypes::FRIENDS_ONLY->value:
+							/** @var ?Account $account */
+							$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+							if ($account === null) {
+								return GeometryDashResponses::LEVEL_SEARCH_FAILED_NO_LOGIN->value;
+							}
+
+							$friendAccountIDs = $this->accountFriendRepository->queryIdsByAccountId($account->id);
+
+							$friendPlayerIDs = Account::query()
+								->whereIn('id', $friendAccountIDs)
+								->get()
+								->map(function (Account $account) {
+									return $account->player->id;
+								});
+
+							$query->where('id', $level->id);
+							$query->whereIn('player_id', $friendPlayerIDs);
+							break;
+						case GeometryDashLevelUnlistedTypes::SELF_ONLY->value:
+							$query->whereNot('id', $level->id);
+							break;
+					}
+				} else {
+					$query->where('name', 'LIKE', $data['str'] . '%');
+				}
 				break;
 			case GeometryDashLevelSearchTypes::MOST_DOWNLOADED->value:
 				$query->withCount('downloadRecords');

@@ -13,6 +13,7 @@ use App\EndlessServer\Requests\GameLevelListListRequest;
 use App\EndlessServer\Requests\GameLevelListUploadRequest;
 use App\EndlessServer\Services\GamePaginationService;
 use App\GeometryDash\Enums\GeometryDashLevelListSearchTypes;
+use App\GeometryDash\Enums\GeometryDashLevelListUnlistedTypes;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use App\GeometryDash\Enums\Objects\GeometryDashLevelListObjectDefinitions;
 use Base64Url\Base64Url;
@@ -113,9 +114,45 @@ readonly class GameLevelListController
 
 		$query = LevelList::query();
 
+		if ($data['type'] !== GeometryDashLevelListSearchTypes::SEARCH->value) {
+			$query->where('unlisted_type', GeometryDashLevelListUnlistedTypes::PUBLIC->value);
+		}
+
 		switch ($data['type']) {
 			case GeometryDashLevelListSearchTypes::SEARCH->value:
-				$query->where('name', 'LIKE', $data['str'] . '%');
+				if (is_numeric($data['str'])) {
+					$list = LevelList::query()
+						->where('id', $data['str'])
+						->first();
+
+					if ($list === null) {
+						return GeometryDashResponses::LEVEL_LIST_SEARCH_FAILED_NOT_FOUND->value;
+					}
+
+					switch ($list->unlisted_type) {
+						case GeometryDashLevelListUnlistedTypes::PUBLIC->value:
+							$query->where('id', $list->id);
+							break;
+						case GeometryDashLevelListUnlistedTypes::FRIENDS_ONLY->value:
+							/** @var ?Account $account */
+							$account = Auth::guard(EndlessServerAuthenticationGuards::ACCOUNT->value)->user();
+
+							if ($account === null) {
+								return GeometryDashResponses::LEVEL_SEARCH_FAILED_NO_LOGIN->value;
+							}
+
+							$friendAccountIDs = $this->accountFriendRepository->queryIdsByAccountId($account->id);
+
+							$query->where('id', $list->id);
+							$query->whereIn('account_id', $friendAccountIDs);
+							break;
+						case GeometryDashLevelListUnlistedTypes::SELF_ONLY->value:
+							$query->whereNot('id', $list->id);
+							break;
+					}
+				} else {
+					$query->where('name', 'LIKE', $data['str'] . '%');
+				}
 				break;
 			case GeometryDashLevelListSearchTypes::MOST_DOWNLOADED->value:
 				$query->withCount('downloadRecords');
