@@ -7,6 +7,7 @@ use App\EndlessProxy\Exceptions\CustomContentResolveException;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -55,6 +56,10 @@ class GeometryDashCustomContentStorageService implements ExternalProxyStorageSer
 					->post('/getCustomContentURL.php')
 					->body();
 			});
+
+			Log::debug(implode('|', [__CLASS__, __FUNCTION__, 'upstream']), [
+				'base' => $upstream
+			]);
 
 			$data = $this->proxy
 				->getRequest()

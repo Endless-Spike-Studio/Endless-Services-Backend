@@ -8,6 +8,7 @@ use App\GeometryDash\Enums\GeometryDashSecrets;
 use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Random\Randomizer;
 
@@ -41,6 +42,10 @@ readonly class GameAccountDataProxyController
 					])
 					->body();
 			});
+
+			Log::debug(implode('|', [__CLASS__, __FUNCTION__, 'upstream']), [
+				'base' => $upstream
+			]);
 
 			return $this->proxy
 				->getRequest()
