@@ -16,13 +16,17 @@ class GeometryDashCustomContentStorageService implements ExternalProxyStorageSer
 {
 	public string $path {
 		set {
+			$this->realpath = $value;
 			$this->path = $this->format;
 			$this->path = Str::replace('{path}', $value, $this->path);
 		}
 	}
+
 	protected string $disk;
 	protected string $format;
 	protected Filesystem $storage;
+
+	protected string $realpath;
 
 	public function __construct(
 		protected readonly GeometryDashProxyService $proxy
@@ -57,14 +61,10 @@ class GeometryDashCustomContentStorageService implements ExternalProxyStorageSer
 					->body();
 			});
 
-			Log::debug(implode('|', [__CLASS__, __FUNCTION__, 'upstream']), [
-				'base' => $upstream
-			]);
-
 			$data = $this->proxy
 				->getRequest()
 				->baseUrl($upstream)
-				->get($this->path)
+				->get($this->realpath)
 				->body();
 
 			return $this->storage->put($this->path, $data);

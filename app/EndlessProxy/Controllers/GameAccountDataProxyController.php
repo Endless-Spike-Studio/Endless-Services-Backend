@@ -43,10 +43,6 @@ readonly class GameAccountDataProxyController
 					->body();
 			});
 
-			Log::debug(implode('|', [__CLASS__, __FUNCTION__, 'upstream']), [
-				'base' => $upstream
-			]);
-
 			return $this->proxy
 				->getRequest()
 				->baseUrl($upstream)
