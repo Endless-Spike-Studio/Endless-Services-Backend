@@ -278,7 +278,7 @@ readonly class GameLevelController
 				implode(',', [
 					$level->player_id,
 					$level->rating->stars,
-					(int)($level->rating->difficulty === GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value && $level->rating->demon_difficulty !== null),
+					(int)($level->rating->difficulty->value === GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value && $level->rating->demon_difficulty !== null),
 					$level->id,
 					(int)$level->rating->coin_verified,
 					$level->rating->featured_score,

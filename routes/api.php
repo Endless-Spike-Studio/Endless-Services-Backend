@@ -21,6 +21,7 @@ use App\EndlessServer\Controllers\GameLevelCommentController as EndlessServerGam
 use App\EndlessServer\Controllers\GameLevelController as EndlessServerGameLevelController;
 use App\EndlessServer\Controllers\GameLevelGauntletController as EndlessServerGameLevelGauntletController;
 use App\EndlessServer\Controllers\GameLevelListController as EndlessServerGameLevelListController;
+use App\EndlessServer\Controllers\GameLevelRatingSuggestController as EndlessServerGameLevelRatingSuggestController;
 use App\EndlessServer\Controllers\GameLevelScoreController as EndlessServerGameLevelScoreController;
 use App\EndlessServer\Controllers\GameLikeController as EndlessServerGameLikeController;
 use App\EndlessServer\Controllers\GameMapPackController as EndlessServerGameMapPackController;
@@ -197,9 +198,9 @@ Route::group([
 		Route::post('/getGJLevelScores211.php', [EndlessServerGameLevelScoreController::class, 'loadNormal']);
 		Route::post('/getGJLevelScoresPlat.php', [EndlessServerGameLevelScoreController::class, 'loadPlatformer']);
 
-		// Route::post('/rateGJStars211.php', []);
-		// Route::post('/rateGJDemon21.php', []);
-		// Route::post('/suggestGJStars20.php', []);
+		Route::post('/rateGJStars211.php', [EndlessServerGameLevelRatingSuggestController::class, 'voteStars']);
+		Route::post('/rateGJDemon21.php', [EndlessServerGameLevelRatingSuggestController::class, 'voteDemon']);
+		Route::post('/suggestGJStars20.php', [EndlessServerGameLevelRatingSuggestController::class, 'suggestStars']);
 
 		Route::post('/getGJSongInfo.php', [EndlessServerGameSongController::class, 'getInfo']);
 		Route::post('/getGJTopArtists.php', [EndlessServerGameSongController::class, 'getTopArtists']);

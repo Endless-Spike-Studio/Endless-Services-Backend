@@ -78,4 +78,14 @@ enum GeometryDashResponses: int
 	public const GeometryDashResponses LEVEL_NORMAL_SCORE_LOAD_FAILED_NO_LOGIN = GeometryDashResponses::_1;
 	public const GeometryDashResponses LEVEL_SEARCH_FAILED_LEVEL_NOT_FOUND = GeometryDashResponses::_1;
 	public const GeometryDashResponses LEVEL_LIST_SEARCH_FAILED_NOT_FOUND = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_VOTE_STARS_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_VOTE_STARS_FAILED_ALREADY_VOTED = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_VOTE_DEMON_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_VOTE_DEMON_FAILED_ALREADY_VOTED = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_VOTE_DEMON_FAILED_NO_RATING = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_DEMON_FAILED_ALREADY_VOTED = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_DEMON_FAILED_NO_RATING = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_DEMON_SUCCESS = GeometryDashResponses::__1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_FAILED_ALREADY_VOTED = GeometryDashResponses::_1;
+	public const GeometryDashResponses LEVEL_RATING_SUGGEST_SUCCESS = GeometryDashResponses::__1;
 }

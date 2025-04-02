@@ -15,7 +15,7 @@ class Player extends Model
 
 	public function account(): BelongsTo
 	{
-		return $this->belongsTo(Account::class, 'uuid');
+		return $this->belongsTo(Account::class);
 	}
 
 	public function data(): HasOne

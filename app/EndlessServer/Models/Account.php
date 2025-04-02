@@ -34,17 +34,19 @@ class Account extends Model implements MustVerifyEmailContract
 
 	public function player(): HasOne
 	{
-		$udid = Request::get('udid');
-
-		if ($udid === null) {
-			$udid = Str::uuid()
-				->toString();
-		}
-
-		return $this->hasOne(Player::class, 'uuid')
+		return $this->hasOne(Player::class)
 			->withDefault([
 				'name' => $this->name,
-				'udid' => $udid
+				'udid' => value(function () {
+					$udid = Request::get('udid');
+
+					if ($udid === null) {
+						$udid = Str::uuid()
+							->toString();
+					}
+
+					return $udid;
+				})
 			]);
 	}
 

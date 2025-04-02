@@ -129,6 +129,26 @@ return [
 					'disk' => env('ENDLESS_SERVER_LEVEL_DATA_STORAGE_DISK', 'oss'),
 					'format' => env('ENDLESS_SERVER_LEVEL_DATA_STORAGE_FORMAT', 'endless_server/level_data/{id}.dat')
 				]
+			],
+			'level_rating_suggest' => [
+				'enabled' => env('ENDLESS_SERVER_LEVEL_RATING_SUGGEST_ENABLED', true),
+				'min_votes' => env('ENDLESS_SERVER_LEVEL_RATING_SUGGEST_MIN_VOTES', 10),
+				'overrideable' => env('ENDLESS_SERVER_LEVEL_RATING_SUGGEST_OVERRIDABLE', true)
+			],
+			'demon_rating_suggest' => [
+				'enabled' => env('ENDLESS_SERVER_DEMON_RATING_SUGGEST_ENABLED', true),
+				'min_votes' => env('ENDLESS_SERVER_DEMON_RATING_SUGGEST_MIN_VOTES', 10),
+				'overrideable' => env('ENDLESS_SERVER_DEMON_RATING_SUGGEST_OVERRIDABLE', true)
+			],
+			'mod_level_rating_suggest' => [
+				'enabled' => env('ENDLESS_SERVER_MOD_LEVEL_RATING_SUGGEST_ENABLED', true),
+				'min_votes' => env('ENDLESS_SERVER_MOD_LEVEL_RATING_SUGGEST_MIN_VOTES', 3),
+				'overrideable' => env('ENDLESS_SERVER_MOD_LEVEL_RATING_SUGGEST_OVERRIDABLE', true)
+			],
+			'mod_demon_rating_suggest' => [
+				'enabled' => env('ENDLESS_SERVER_MOD_DEMON_RATING_SUGGEST_ENABLED', true),
+				'min_votes' => env('ENDLESS_SERVER_MOD_DEMON_RATING_SUGGEST_MIN_VOTES', 3),
+				'overrideable' => env('ENDLESS_SERVER_MOD_DEMON_RATING_SUGGEST_OVERRIDABLE', true)
 			]
 		]
 	]

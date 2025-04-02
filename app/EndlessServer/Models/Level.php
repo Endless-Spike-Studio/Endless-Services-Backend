@@ -80,6 +80,16 @@ class Level extends Model
 		return $this->hasMany(LevelLikeRecord::class);
 	}
 
+	public function ratingStarSuggests(): HasMany
+	{
+		return $this->hasMany(LevelRatingStarSuggest::class);
+	}
+
+	public function demonRatingSuggests(): HasMany
+	{
+		return $this->hasMany(LevelDemonRatingSuggest::class);
+	}
+
 	protected function casts(): array
 	{
 		return [

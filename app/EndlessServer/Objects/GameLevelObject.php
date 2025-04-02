@@ -55,14 +55,14 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->player->id;
 			},
 			GeometryDashLevelObjectDefinitions::IS_RATED->value => function () {
-				if ($this->model->rating->difficulty === GeometryDashLevelRatingDifficulties::NA->value) {
+				if ($this->model->rating->difficulty->value === GeometryDashLevelRatingDifficulties::NA->value) {
 					return 0;
 				}
 
 				return 10;
 			},
 			GeometryDashLevelObjectDefinitions::DIFFICULTY->value => function () {
-				return $this->model->rating->difficulty;
+				return $this->model->rating->difficulty->value;
 			},
 			GeometryDashLevelObjectDefinitions::DOWNLOADS->value => function () {
 				return $this->model->downloadRecords()
@@ -81,8 +81,8 @@ readonly class GameLevelObject extends GameObject
 			GeometryDashLevelObjectDefinitions::LENGTH->value => function () {
 				return $this->model->length->value;
 			},
-			GeometryDashLevelObjectDefinitions::IS_DEMON->value => function () {
-				if ($this->model->rating->difficulty !== GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value) {
+			GeometryDashLevelObjectDefinitions::IS_DEMON->value => function (): int {
+				if ($this->model->rating->difficulty->value !== GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value) {
 					return false;
 				}
 
@@ -94,8 +94,8 @@ readonly class GameLevelObject extends GameObject
 			GeometryDashLevelObjectDefinitions::FEATURED_SCORE->value => function () {
 				return $this->model->rating->featured_score;
 			},
-			GeometryDashLevelObjectDefinitions::IS_AUTO->value => function () {
-				if ($this->model->rating->difficulty !== GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value) {
+			GeometryDashLevelObjectDefinitions::IS_AUTO->value => function (): int {
+				if ($this->model->rating->difficulty->value !== GeometryDashLevelRatingDifficulties::AUTO_OR_DEMON->value) {
 					return false;
 				}
 
@@ -148,7 +148,11 @@ readonly class GameLevelObject extends GameObject
 				return $this->model->rating->epic_type;
 			},
 			GeometryDashLevelObjectDefinitions::DEMON_DIFFICULTY->value => function () {
-				return $this->model->rating->demon_difficulty;
+				if ($this->model->rating->demon_difficulty === null) {
+					return null;
+				}
+
+				return $this->model->rating->demon_difficulty->value;
 			},
 			GeometryDashLevelObjectDefinitions::GAUNTLET_ID->value => function () {
 				return Request::get('gauntlet');
