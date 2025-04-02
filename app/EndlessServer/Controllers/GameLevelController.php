@@ -10,6 +10,7 @@ use App\EndlessServer\Models\LevelDaily;
 use App\EndlessServer\Models\LevelEvent;
 use App\EndlessServer\Models\LevelGauntlet;
 use App\EndlessServer\Models\LevelList;
+use App\EndlessServer\Models\LevelRatingSuggest;
 use App\EndlessServer\Models\LevelSongMapping;
 use App\EndlessServer\Models\LevelWeekly;
 use App\EndlessServer\Models\Player;
@@ -439,7 +440,11 @@ readonly class GameLevelController
 				$query->where('objects', '>=', 65535);
 				break;
 			case GeometryDashLevelSearchTypes::MOD_SENT->value:
-				// TODO
+				$levelIds = LevelRatingSuggest::query()
+					->whereNull('apply_at')
+					->pluck('level_id');
+
+				$query->whereIn('id', $levelIds);
 				break;
 			case GeometryDashLevelSearchTypes::LEVEL_LIST->value:
 				$levelIds = explode(',', $data['str']);

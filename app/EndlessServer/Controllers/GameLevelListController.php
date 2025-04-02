@@ -194,9 +194,6 @@ readonly class GameLevelListController
 
 				$query->whereIn('account_id', $friendAccountIDs);
 				break;
-			case GeometryDashLevelListSearchTypes::MOD_SENT->value:
-				// TODO
-				break;
 		}
 
 		$paginate = $this->paginationService->generate($query, $data['page']);
