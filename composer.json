@@ -3,6 +3,7 @@
 		"php": "^8.4",
 		"alphasnow/aliyun-oss-laravel": "^4.9.0",
 		"laravel/framework": "^11.41.3",
+		"laravel/octane": "^2.9",
 		"laravel/reverb": "^1.4.6",
 		"laravel/tinker": "^2.10.1",
 		"spomky-labs/base64url": "^2.0.4"
