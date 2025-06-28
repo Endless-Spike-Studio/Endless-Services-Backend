@@ -49,13 +49,13 @@ readonly class GameLevelRatingSuggestController
 			'stars' => $data['stars']
 		]);
 
-		if (config('services.endless.server.level_rating_suggest.enabled')) {
-			if ($level->rating === null || config('services.endless.server.level_rating_suggest.overrideable')) {
+		if (config('services.endless_server.level_rating_suggest.enabled')) {
+			if ($level->rating === null || config('services.endless_server.level_rating_suggest.overrideable')) {
 				$query = LevelRatingStarSuggest::query()
 					->where('level_id', $data['levelID'])
 					->whereNull('apply_at');
 
-				if ($query->count() > config('services.endless.server.level_rating_suggest.min_votes')) {
+				if ($query->count() > config('services.endless_server.level_rating_suggest.min_votes')) {
 					$stars = $query->average('stars');
 
 					if ($stars < 1) {
@@ -113,13 +113,13 @@ readonly class GameLevelRatingSuggestController
 			'rating' => $data['rating']
 		]);
 
-		if (config('services.endless.server.demon_rating_suggest.enabled')) {
-			if ($level->rating->demon_difficulty->value === GeometryDashLevelRatingDemonDifficulties::UNKNOWN->value || config('services.endless.server.demon_rating_suggest.overrideable')) {
+		if (config('services.endless_server.demon_rating_suggest.enabled')) {
+			if ($level->rating->demon_difficulty->value === GeometryDashLevelRatingDemonDifficulties::UNKNOWN->value || config('services.endless_server.demon_rating_suggest.overrideable')) {
 				$query = LevelDemonRatingSuggest::query()
 					->where('level_id', $data['levelID'])
 					->whereNull('apply_at');
 
-				if ($query->count() > config('services.endless.server.demon_rating_suggest.min_votes')) {
+				if ($query->count() > config('services.endless_server.demon_rating_suggest.min_votes')) {
 					$rating = $query->average('rating');
 
 					if ($rating < 1) {
@@ -182,8 +182,8 @@ readonly class GameLevelRatingSuggestController
 			'rating' => $data['rating']
 		]);
 
-		if (config('services.endless.server.mod_demon_rating_suggest.enabled')) {
-			if ($level->rating->demon_difficulty->value === GeometryDashLevelRatingDemonDifficulties::UNKNOWN->value || config('services.endless.server.mod_demon_rating_suggest.overrideable')) {
+		if (config('services.endless_server.mod_demon_rating_suggest.enabled')) {
+			if ($level->rating->demon_difficulty->value === GeometryDashLevelRatingDemonDifficulties::UNKNOWN->value || config('services.endless_server.mod_demon_rating_suggest.overrideable')) {
 				$query = LevelDemonRatingSuggest::query()
 					->whereHas('player.account.roles', function (Builder $query) {
 						$query->whereNot('mod_level', GeometryDashModLevels::PLAYER->value);
@@ -191,7 +191,7 @@ readonly class GameLevelRatingSuggestController
 					->where('level_id', $data['levelID'])
 					->whereNull('apply_at');
 
-				if ($query->count() > config('services.endless.server.mod_demon_rating_suggest.min_votes')) {
+				if ($query->count() > config('services.endless_server.mod_demon_rating_suggest.min_votes')) {
 					$rating = $query->average('rating');
 
 					if ($rating < 1) {
@@ -252,8 +252,8 @@ readonly class GameLevelRatingSuggestController
 			'feature' => $data['feature']
 		]);
 
-		if (config('services.endless.server.mod_level_rating_suggest.enabled')) {
-			if ($level->rating === null || config('services.endless.server.mod_level_rating_suggest.overrideable')) {
+		if (config('services.endless_server.mod_level_rating_suggest.enabled')) {
+			if ($level->rating === null || config('services.endless_server.mod_level_rating_suggest.overrideable')) {
 				$query = LevelRatingSuggest::query()
 					->whereHas('player.account.roles', function (Builder $query) {
 						$query->whereNot('mod_level', GeometryDashModLevels::PLAYER->value);
@@ -261,7 +261,7 @@ readonly class GameLevelRatingSuggestController
 					->where('level_id', $data['levelID'])
 					->whereNull('apply_at');
 
-				if ($query->count() > config('services.endless.server.mod_level_rating_suggest.min_votes')) {
+				if ($query->count() > config('services.endless_server.mod_level_rating_suggest.min_votes')) {
 					$stars = $query->average('stars');
 
 					if ($stars < 1) {

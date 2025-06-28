@@ -38,7 +38,7 @@ readonly class GameQuestController
 
 		$this->service->initialize($player->id);
 
-		$configCount = config('services.endless.server.quests.count');
+		$configCount = config('services.endless_server.quests.count');
 
 		$now = now();
 		$today = Carbon::today();

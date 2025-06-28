@@ -31,7 +31,7 @@ readonly class GameApiProxyController
 				->getRequest()
 				->post($path, $data);
 
-			if (config('services.endless.proxy.network_log_enabled')) {
+			if (config('services.endless_proxy.network_log_enabled')) {
 				GameApiProxyNetworkLogEvent::broadcast($request->ip(), [
 					'path' => $path,
 					'data' => $data,
@@ -83,7 +83,7 @@ readonly class GameApiProxyController
 	public function getNetworkLogWebsocketInfo(): SuccessResponse
 	{
 		return new SuccessResponse([
-			'enabled' => config('services.endless.proxy.network_log_enabled'),
+			'enabled' => config('services.endless_proxy.network_log_enabled'),
 
 			'channel' => app(NetworkLogChannel::class),
 			'event' => GameApiProxyNetworkLogEvent::class

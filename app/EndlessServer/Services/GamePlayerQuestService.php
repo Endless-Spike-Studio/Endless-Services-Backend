@@ -17,7 +17,7 @@ class GamePlayerQuestService
 	 */
 	public function initialize(int $playerId): void
 	{
-		$configCount = config('services.endless.server.quests.count');
+		$configCount = config('services.endless_server.quests.count');
 
 		$today = Carbon::today();
 
@@ -43,7 +43,7 @@ class GamePlayerQuestService
 				);
 			}
 
-			$availableNames = config('services.endless.server.quests.' . $type->value . '.names');
+			$availableNames = config('services.endless_server.quests.' . $type->value . '.names');
 
 			$name = null;
 
@@ -61,12 +61,12 @@ class GamePlayerQuestService
 			}
 
 			$collectCount = $randomizer->getInt(
-				config('services.endless.server.quests.' . $type->value . '.collect.min'),
-				config('services.endless.server.quests.' . $type->value . '.collect.max')
+				config('services.endless_server.quests.' . $type->value . '.collect.min'),
+				config('services.endless_server.quests.' . $type->value . '.collect.max')
 			);
 
 			$rewardCount = round(
-				$collectCount / config('services.endless.server.quests.' . $type->value . '.reward.every') * config('services.endless.server.quests.' . $type->value . '.reward.give')
+				$collectCount / config('services.endless_server.quests.' . $type->value . '.reward.every') * config('services.endless_server.quests.' . $type->value . '.reward.give')
 			);
 
 			PlayerQuest::query()

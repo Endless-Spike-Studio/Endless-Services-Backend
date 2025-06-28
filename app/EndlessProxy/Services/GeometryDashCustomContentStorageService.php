@@ -32,8 +32,8 @@ class GeometryDashCustomContentStorageService implements ExternalProxyStorageSer
 		protected readonly GeometryDashProxyService $proxy
 	)
 	{
-		$this->disk = config('services.endless.proxy.geometry_dash.custom_contents.storage.disk');
-		$this->format = config('services.endless.proxy.geometry_dash.custom_contents.storage.format');
+		$this->disk = config('services.endless_proxy.geometry_dash.custom_contents.storage.disk');
+		$this->format = config('services.endless_proxy.geometry_dash.custom_contents.storage.format');
 
 		$this->storage = Storage::disk($this->disk);
 	}

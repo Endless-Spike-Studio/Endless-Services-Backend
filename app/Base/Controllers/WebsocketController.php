@@ -13,10 +13,10 @@ readonly class WebsocketController
 		return new SuccessResponse([
 			'broadcaster' => 'reverb',
 			'key' => config('broadcasting.connections.reverb.key'),
-			'wsHost' => config('websocket.host'),
-			'wsPath' => config('websocket.path'),
-			'wsPort' => config('websocket.ws_port'),
-			'wssPort' => config('websocket.wss_port'),
+			'wsHost' => config('services.websocket.host'),
+			'wsPath' => config('services.websocket.path'),
+			'wsPort' => config('services.websocket.ws_port'),
+			'wssPort' => config('services.websocket.wss_port'),
 			'forceTLS' => false,
 			'enabledTransports' => ['ws', 'wss'],
 			'authEndpoint' => URL::action([BroadcastController::class, 'authenticate'])

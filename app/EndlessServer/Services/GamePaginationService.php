@@ -10,7 +10,7 @@ readonly class GamePaginationService
 	public function generate(Builder $query, int $page, ?int $perPage = null)
 	{
 		if ($perPage === null) {
-			$perPage = config('services.endless.server.per_page');
+			$perPage = config('services.endless_server.per_page');
 		}
 
 		return app(GamePaginationData::class, [

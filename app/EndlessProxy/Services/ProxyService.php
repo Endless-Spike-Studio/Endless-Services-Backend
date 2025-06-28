@@ -12,11 +12,11 @@ class ProxyService
 	{
 		return Http::createPendingRequest()
 			->withOptions([
-				RequestOptions::PROXY => config('services.endless.proxy.server')
+				RequestOptions::PROXY => config('services.endless_proxy.server')
 			])
 			->retry(
-				config('services.endless.proxy.retry.times'),
-				config('services.endless.proxy.retry.delay')
+				config('services.endless_proxy.retry.times'),
+				config('services.endless_proxy.retry.delay')
 			);
 	}
 }

@@ -19,6 +19,6 @@ readonly class GeometryDashProxyService
 			->getRequest()
 			->asForm()
 			->withUserAgent(false)
-			->baseUrl(rtrim(config('services.endless.proxy.geometry_dash.base'), '/') . '/');
+			->baseUrl(rtrim(config('services.endless_proxy.geometry_dash.base'), '/') . '/');
 	}
 }

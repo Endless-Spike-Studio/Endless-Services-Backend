@@ -44,7 +44,7 @@ readonly class GameRewardController
 
 		if ($lastSmallChestRecord !== null) {
 			$smallChestRemainTime = max(-$lastSmallChestRecord->created_at->addSeconds(
-				config('services.endless.server.rewards.small.wait')
+				config('services.endless_server.rewards.small.wait')
 			)->diffInSeconds(), 0);
 		}
 
@@ -58,7 +58,7 @@ readonly class GameRewardController
 
 		if ($lastBigChestRecord !== null) {
 			$bigChestRemainTime = max(-$lastBigChestRecord->created_at->addSeconds(
-				config('services.endless.server.rewards.big.wait')
+				config('services.endless_server.rewards.big.wait')
 			)->diffInSeconds(), 0);
 		}
 
@@ -71,26 +71,26 @@ readonly class GameRewardController
 				break;
 			case GeometryDashRewardTypes::SMALL->value:
 				if ($bigChestRemainTime <= 0) {
-					$smallChestRemainTime = config('services.endless.server.rewards.small.wait');
+					$smallChestRemainTime = config('services.endless_server.rewards.small.wait');
 
 					$orbs = $randomizer->getInt(
-						config('services.endless.server.rewards.small.orbs.min'),
-						config('services.endless.server.rewards.small.orbs.max')
+						config('services.endless_server.rewards.small.orbs.min'),
+						config('services.endless_server.rewards.small.orbs.max')
 					);
 
 					$diamonds = $randomizer->getInt(
-						config('services.endless.server.rewards.small.diamonds.min'),
-						config('services.endless.server.rewards.small.diamonds.max')
+						config('services.endless_server.rewards.small.diamonds.min'),
+						config('services.endless_server.rewards.small.diamonds.max')
 					);
 
 					$shards = $randomizer->getInt(
-						config('services.endless.server.rewards.small.shards.min'),
-						config('services.endless.server.rewards.small.shards.max')
+						config('services.endless_server.rewards.small.shards.min'),
+						config('services.endless_server.rewards.small.shards.max')
 					);
 
 					$keys = $randomizer->getInt(
-						config('services.endless.server.rewards.small.keys.min'),
-						config('services.endless.server.rewards.small.keys.max')
+						config('services.endless_server.rewards.small.keys.min'),
+						config('services.endless_server.rewards.small.keys.max')
 					);
 
 					$smallChestReward = implode(',', [$orbs, $diamonds, $shards, $keys]);
@@ -114,26 +114,26 @@ readonly class GameRewardController
 				$smallChestReward = $emptyReward;
 
 				if ($bigChestRemainTime <= 0) {
-					$bigChestRemainTime = config('services.endless.server.rewards.big.wait');
+					$bigChestRemainTime = config('services.endless_server.rewards.big.wait');
 
 					$orbs = $randomizer->getInt(
-						config('services.endless.server.rewards.big.orbs.min'),
-						config('services.endless.server.rewards.big.orbs.max')
+						config('services.endless_server.rewards.big.orbs.min'),
+						config('services.endless_server.rewards.big.orbs.max')
 					);
 
 					$diamonds = $randomizer->getInt(
-						config('services.endless.server.rewards.big.diamonds.min'),
-						config('services.endless.server.rewards.big.diamonds.max')
+						config('services.endless_server.rewards.big.diamonds.min'),
+						config('services.endless_server.rewards.big.diamonds.max')
 					);
 
 					$shards = $randomizer->getInt(
-						config('services.endless.server.rewards.big.shards.min'),
-						config('services.endless.server.rewards.big.shards.max')
+						config('services.endless_server.rewards.big.shards.min'),
+						config('services.endless_server.rewards.big.shards.max')
 					);
 
 					$keys = $randomizer->getInt(
-						config('services.endless.server.rewards.big.keys.min'),
-						config('services.endless.server.rewards.big.keys.max')
+						config('services.endless_server.rewards.big.keys.min'),
+						config('services.endless_server.rewards.big.keys.max')
 					);
 
 					$bigChestReward = implode(',', [$orbs, $diamonds, $shards, $keys]);

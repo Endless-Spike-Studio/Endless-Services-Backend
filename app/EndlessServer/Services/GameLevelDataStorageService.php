@@ -29,8 +29,8 @@ class GameLevelDataStorageService
 		protected readonly GeometryDashProxyService $proxy
 	)
 	{
-		$this->disk = config('services.endless.server.level_data.storage.disk');
-		$this->format = config('services.endless.server.level_data.storage.format');
+		$this->disk = config('services.endless_server.level_data.storage.disk');
+		$this->format = config('services.endless_server.level_data.storage.format');
 
 		$this->storage = Storage::disk($this->disk);
 	}

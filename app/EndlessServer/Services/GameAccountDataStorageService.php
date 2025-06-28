@@ -29,8 +29,8 @@ class GameAccountDataStorageService
 		protected readonly GeometryDashProxyService $proxy
 	)
 	{
-		$this->disk = config('services.endless.server.account_data.storage.disk');
-		$this->format = config('services.endless.server.account_data.storage.format');
+		$this->disk = config('services.endless_server.account_data.storage.disk');
+		$this->format = config('services.endless_server.account_data.storage.format');
 
 		$this->storage = Storage::disk($this->disk);
 	}
