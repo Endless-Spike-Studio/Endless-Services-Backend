@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Base\Controllers;
+namespace App\EndlessServices\Controllers;
 
 use App\Api\Responses\SuccessResponse;
 use Illuminate\Broadcasting\BroadcastController;

@@ -1,6 +1,6 @@
 <?php
 
-use App\Base\Models\User;
+use App\EndlessServices\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

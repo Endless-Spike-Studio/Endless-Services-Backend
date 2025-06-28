@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Base\Requests;
+namespace App\EndlessServices\Requests;
 
-use App\Base\Models\User;
 use App\Api\Requests\ApiRequest;
+use App\EndlessServices\Models\User;
 use Illuminate\Validation\Rule;
 
 class UserRegisterRequest extends ApiRequest

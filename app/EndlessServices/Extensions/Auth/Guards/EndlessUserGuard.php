@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Base\Extensions\Auth\Guards;
+namespace App\EndlessServices\Extensions\Auth\Guards;
 
 use App\Api\Requests\ApiRequest;
-use App\Base\Extensions\Auth\Providers\EndlessUserProvider;
-use App\Base\Models\User;
+use App\EndlessServices\Extensions\Auth\Providers\EndlessUserProvider;
+use App\EndlessServices\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
 use SensitiveParameter;

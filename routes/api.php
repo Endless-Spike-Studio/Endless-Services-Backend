@@ -1,7 +1,5 @@
 <?php
 
-use App\Base\Controllers\UserController;
-use App\Base\Controllers\WebsocketController;
 use App\EndlessProxy\Controllers\GameAccountDataProxyController as EndlessProxyGameAccountDataProxyController;
 use App\EndlessProxy\Controllers\GameApiProxyController as EndlessProxyGameApiProxyController;
 use App\EndlessProxy\Controllers\GameCustomContentProxyController as EndlessProxyGameCustomContentProxyController;
@@ -32,10 +30,12 @@ use App\EndlessServer\Controllers\GameQuestController as EndlessServerGameQuestC
 use App\EndlessServer\Controllers\GameRewardController as EndlessServerGameRewardController;
 use App\EndlessServer\Controllers\GameSecretRewardController as EndlessServerGameSecretRewardController;
 use App\EndlessServer\Controllers\GameSongController as EndlessServerGameSongController;
+use App\EndlessServices\Controllers\UserController;
+use App\EndlessServices\Controllers\WebsocketController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
-	'prefix' => 'Base'
+	'prefix' => 'EndlessServices'
 ], function () {
 	Route::get('/websocket', [WebsocketController::class, 'getInfo']);
 

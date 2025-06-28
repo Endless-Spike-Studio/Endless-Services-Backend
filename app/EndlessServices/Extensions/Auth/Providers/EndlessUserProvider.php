@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Base\Extensions\Auth\Providers;
+namespace App\EndlessServices\Extensions\Auth\Providers;
 
-use App\Base\Models\User;
-use App\Base\Models\UserToken;
+use App\EndlessServices\Models\User;
+use App\EndlessServices\Models\UserToken;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Database\Query\Builder;

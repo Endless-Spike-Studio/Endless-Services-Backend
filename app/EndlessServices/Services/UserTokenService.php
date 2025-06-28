@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Base\Services;
+namespace App\EndlessServices\Services;
 
-use App\Base\Models\User;
-use App\Base\Models\UserToken;
+use App\EndlessServices\Models\User;
+use App\EndlessServices\Models\UserToken;
 use DateTime;
 use Illuminate\Support\Str;
 

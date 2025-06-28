@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Base\Controllers;
+namespace App\EndlessServices\Controllers;
 
-use App\Base\Requests\UserLoginRequest;
-use App\Base\Requests\UserRegisterRequest;
-use App\Base\Services\UserService;
 use App\Api\Responses\SuccessResponse;
+use App\EndlessServices\Requests\UserLoginRequest;
+use App\EndlessServices\Requests\UserRegisterRequest;
+use App\EndlessServices\Services\UserService;
 
 readonly class UserController
 {
