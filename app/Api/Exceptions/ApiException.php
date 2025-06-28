@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Common\Exceptions;
+namespace App\Api\Exceptions;
 
-use App\Common\Responses\FailedResponse;
+use App\Api\Responses\FailedResponse;
 use Exception;
 use Throwable;
 
-class FailedException extends Exception
+class ApiException extends Exception
 {
 	public function __construct(
 		protected                     $message,

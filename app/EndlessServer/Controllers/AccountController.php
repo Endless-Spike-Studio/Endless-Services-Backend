@@ -2,8 +2,8 @@
 
 namespace App\EndlessServer\Controllers;
 
-use App\Common\Responses\FailedResponse;
-use App\Common\Responses\SuccessResponse;
+use App\Api\Responses\FailedResponse;
+use App\Api\Responses\SuccessResponse;
 use App\EndlessServer\Data\EmailVerificationData;
 use App\EndlessServer\Models\Account;
 use App\EndlessServer\Requests\AccountVerifyRequest;

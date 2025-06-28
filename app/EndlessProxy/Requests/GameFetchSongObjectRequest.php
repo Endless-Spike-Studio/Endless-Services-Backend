@@ -2,7 +2,7 @@
 
 namespace App\EndlessProxy\Requests;
 
-use App\Common\Requests\ApiRequest;
+use App\Api\Requests\ApiRequest;
 
 class GameFetchSongObjectRequest extends ApiRequest
 {

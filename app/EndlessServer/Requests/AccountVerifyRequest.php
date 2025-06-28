@@ -2,7 +2,7 @@
 
 namespace App\EndlessServer\Requests;
 
-use App\Common\Requests\ApiRequest;
+use App\Api\Requests\ApiRequest;
 
 class AccountVerifyRequest extends ApiRequest
 {

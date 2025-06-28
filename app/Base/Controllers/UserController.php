@@ -5,7 +5,7 @@ namespace App\Base\Controllers;
 use App\Base\Requests\UserLoginRequest;
 use App\Base\Requests\UserRegisterRequest;
 use App\Base\Services\UserService;
-use App\Common\Responses\SuccessResponse;
+use App\Api\Responses\SuccessResponse;
 
 readonly class UserController
 {

@@ -2,7 +2,7 @@
 
 namespace App\EndlessProxy\Controllers;
 
-use App\Common\Responses\SuccessResponse;
+use App\Api\Responses\SuccessResponse;
 use App\EndlessProxy\Channels\CallCounterChannel;
 use App\EndlessProxy\Channels\NetworkLogChannel;
 use App\EndlessProxy\Events\GameApiProxyCallCounterUpdateEvent;

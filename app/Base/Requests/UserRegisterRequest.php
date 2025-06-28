@@ -3,7 +3,7 @@
 namespace App\Base\Requests;
 
 use App\Base\Models\User;
-use App\Common\Requests\ApiRequest;
+use App\Api\Requests\ApiRequest;
 use Illuminate\Validation\Rule;
 
 class UserRegisterRequest extends ApiRequest

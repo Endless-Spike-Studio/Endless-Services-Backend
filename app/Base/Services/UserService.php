@@ -4,7 +4,7 @@ namespace App\Base\Services;
 
 use App\Base\Models\User;
 use App\Base\Models\UserToken;
-use App\Common\Responses\FailedResponse;
+use App\Api\Responses\FailedResponse;
 use Illuminate\Support\Facades\Hash;
 
 readonly class UserService

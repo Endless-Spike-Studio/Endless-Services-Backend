@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Common\Responses;
+namespace App\Api\Responses;
 
 class FailedResponse extends SuccessResponse
 {

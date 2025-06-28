@@ -2,7 +2,7 @@
 
 namespace App\Base\Controllers;
 
-use App\Common\Responses\SuccessResponse;
+use App\Api\Responses\SuccessResponse;
 use Illuminate\Broadcasting\BroadcastController;
 use Illuminate\Support\Facades\URL;
 
