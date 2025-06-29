@@ -2,13 +2,13 @@
 
 namespace App\EndlessProxy\Controllers;
 
+use App\Api\Requests\ApiRequest;
 use App\EndlessProxy\Exceptions\ProxyException;
+use App\EndlessProxy\Requests\GameFetchAccountServerRequest;
 use App\EndlessProxy\Services\GeometryDashProxyService;
 use App\GeometryDash\Enums\GeometryDashSecrets;
 use Illuminate\Http\Client\HttpClientException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Random\Randomizer;
 
@@ -21,12 +21,18 @@ readonly class GameAccountDataProxyController
 
 	}
 
-	public function base(): string
+	public function base(GameFetchAccountServerRequest $request): string
 	{
-		return URL::action([__CLASS__, 'handle'], '/');
+		$data = $request->validated();
+
+		return URL::action([__CLASS__, 'handle'], [
+			'accountID' => $data['accountID'],
+			'type' => $data['type'],
+			'path' => '/'
+		]);
 	}
 
-	public function handle(Request $request, string $path): string
+	public function handle(ApiRequest $request, string $path): string
 	{
 		try {
 			$data = $request->all();

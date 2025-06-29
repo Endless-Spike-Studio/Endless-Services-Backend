@@ -2,13 +2,13 @@
 
 namespace App\EndlessServer\Requests;
 
+use App\Api\Requests\ApiRequest;
 use App\EndlessServer\Exceptions\EndlessServerGameException;
 use App\GeometryDash\Enums\GeometryDashResponses;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
 use Throwable;
 
-class GameRequest extends FormRequest
+class GameRequest extends ApiRequest
 {
 	/**
 	 * @throws EndlessServerGameException

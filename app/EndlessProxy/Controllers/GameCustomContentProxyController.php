@@ -17,7 +17,9 @@ readonly class GameCustomContentProxyController
 
 	public function base(): string
 	{
-		return URL::action([__CLASS__, 'handle'], '/');
+		return URL::action([__CLASS__, 'handle'], [
+			'path' => '/'
+		]);
 	}
 
 	public function handle(string $path): StreamedResponse

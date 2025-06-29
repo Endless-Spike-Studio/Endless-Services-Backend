@@ -17,7 +17,9 @@ readonly class GameCustomContentController
 
 	public function getURL(): string
 	{
-		return URL::action([__CLASS__, 'handle'], '/');
+		return URL::action([__CLASS__, 'handle'], [
+			'path' => '/'
+		]);
 	}
 
 	public function handle(string $path): StreamedResponse
