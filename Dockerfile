@@ -1,4 +1,4 @@
-FROM registry.cn-shanghai.aliyuncs.com/endless-spike-studio/endless-services-runtime
+FROM ghcr.io/Endless-Spike-Studio/Endless-Services-Runtime
 
 COPY . /app
 WORKDIR /app
