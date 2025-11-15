@@ -1,6 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Schedule" type="PhpLocalRunConfigurationType" factoryName="PHP Console"
-                   path="$PROJECT_DIR$/artisan" scriptParameters="schedule:work">
-        <method v="2"/>
-    </configuration>
-</component>

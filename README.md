@@ -1,22 +1,25 @@
-# Geometry Dash Chinese ![CI](https://img.shields.io/github/workflow/status/Geometry-Dash-Chinese/Geometry-Dash-Chinese/%E9%A1%B9%E7%9B%AE%E6%B5%8B%E8%AF%95)
+# Endless Services
 
-> provide some useful third party ```Geometry Dash``` services in China
+提供了一些好用的 `Geometry Dash` 服务
 
-### Manual deploy
+> #### Endless Proxy
+> 由于未知原因, 在中国大陆无法正常游玩官服		
+> 该服务提供了一个中间代理服务器用于链接官服
 
-```shell
-composer install --no-dev
-pnpm install
-php vendor/bin/envoy run deploy
-php artisan octane:start # optional: using octane
-```
-
-## Project supported by JetBrains
-
-Many thanks to Jetbrains for providing a license for me to work on this and other open-source projects.
-
-[![](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://www.jetbrains.com/?from=https://github.com/Geometry-Dash-Chinese)
-
-### License
-
-[GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0)
+> #### Endless Server
+> 该服务提供了一个私服
+> 并拥有很多炫酷的新功能
+>
+> - 自定义歌曲
+> - 自定义 SFX
+> - 网页端比赛系统
+> - 网页端个人资料查看
+> - 网页端关卡搜索查看
+> - 网页端 Map Pack 查看
+> - 网页端 Gauntlets 查看
+> - 网页端 List 查看
+> - 网页端歌曲搜索查看
+> - 网页端 SFX 搜索查看
+> - 网页端 Daily 和 Weekly 及历史查看
+> - 网页端 Mod 人员查看
+> - 网页端排行榜查看
